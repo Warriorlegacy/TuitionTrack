@@ -47,10 +47,11 @@ export async function GET(request: Request) {
       timestamp: new Date().toISOString(),
       active: true,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
+    const errorMessage = err instanceof Error ? err.message : String(err);
     console.error("Unhandled error in keep-alive cron job:", err);
     return NextResponse.json(
-      { error: "Unhandled internal server error", details: err.message || err },
+      { error: "Unhandled internal server error", details: errorMessage },
       { status: 500 }
     );
   }
