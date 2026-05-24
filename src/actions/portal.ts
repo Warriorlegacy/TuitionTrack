@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 import { getAuthContext, requireTeacherContext } from "@/lib/auth";
@@ -94,12 +95,19 @@ export async function completeOnboardingAction(formData: FormData) {
   }
 
   const supabase = createSupabaseServerClient();
-  await supabase.from("users").upsert({
-    id: context.user.id,
-    email: context.user.email.toLowerCase(),
-    name,
-    role: context.profile?.role ?? "teacher",
-  });
+  const { error } = await supabase
+      .from("users")
+      .upsert({
+        id: context.user.id,
+        email: context.user.email.toLowerCase(),
+        name,
+        role: context.profile?.role ?? "teacher",
+      });
+
+  if (error) {
+    console.error("Error in completeOnboardingAction:", error);
+    // Continue anyway as this is not critical for onboarding flow
+  }
 
   revalidatePortal();
   redirect("/app/dashboard");
@@ -475,15 +483,17 @@ export async function updateProfileAction(name: string, role: AppRole): Promise<
     return { success: false, message: "Supabase is not configured." };
   }
 
-  const supabase = createSupabaseServerClient();
+const supabase = createSupabaseServerClient();
   
   // Update public profile
-  const { error: profileError } = await supabase.from("users").upsert({
-    id: context.user.id,
-    email: context.user.email.toLowerCase(),
-    name: name.trim(),
-    role: role,
-  });
+  const { error: profileError } = await supabase
+    .from("users")
+    .upsert({
+      id: context.user.id,
+      email: context.user.email.toLowerCase(),
+      name: name.trim(),
+      role: role,
+    });
 
   if (profileError) {
     return { success: false, message: profileError.message };
@@ -509,7 +519,6 @@ export async function assignUserRoleAction(email: string, role: AppRole): Promis
   }
 
   const supabase = createSupabaseServerClient();
-  // @ts-expect-error: assign_user_role is a new RPC function not yet in generated types
   const { error } = await supabase.rpc("assign_user_role", {
     target_email: email,
     new_role: role,
@@ -521,4 +530,73 @@ export async function assignUserRoleAction(email: string, role: AppRole): Promis
 
   revalidatePortal();
   return { success: true, message: `Successfully assigned role as ${role}.` };
+}
+
+type ReportRow = {
+  id: string;
+  content: string;
+  status: string;
+};
+
+export async function generateReportAction(input: {
+  student_id: string;
+  subject?: string;
+  language?: "en" | "hi";
+  tutor_notes?: string;
+}): Promise<ActionResult & { report?: ReportRow }> {
+  const context = await requireTeacherContext();
+  if (!context.configured || !context.user) {
+    return { success: false, message: "Unauthorized" };
+  }
+
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || ''}/api/reports/generate`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        // Pass cookies to the API route to maintain session
+        Cookie: cookies().toString(),
+      },
+      body: JSON.stringify(input),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      return { success: false, message: error.error || "Failed to generate report." };
+    }
+
+    const report = (await response.json()) as ReportRow;
+    revalidatePortal();
+    return { success: true, message: "Report generated successfully.", report };
+  } catch (err) {
+    return { success: false, message: (err as Error).message };
+  }
+}
+
+export async function sendReportAction(reportId: string, email?: string): Promise<ActionResult> {
+  const context = await requireTeacherContext();
+  if (!context.configured || !context.user) {
+    return { success: false, message: "Unauthorized" };
+  }
+
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || ''}/api/reports/send`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Cookie: cookies().toString(),
+      },
+      body: JSON.stringify({ report_id: reportId, email }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      return { success: false, message: error.error || "Failed to send report." };
+    }
+
+    revalidatePortal();
+    return { success: true, message: "Report sent successfully." };
+  } catch (err) {
+    return { success: false, message: (err as Error).message };
+  }
 }

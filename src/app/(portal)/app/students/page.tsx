@@ -22,6 +22,7 @@ export default async function StudentsPage() {
       <StudentTable 
         students={data.students} 
         roleMap={data.roleMap} 
+        riskMap={data.riskMap}
         canManage={context.canManage} 
       />
     </div>

@@ -272,16 +272,16 @@ async function fetchAnnouncements(context: AuthContext) {
 }
 
 export async function getDashboardPageData(context: AuthContext) {
-  const [homework, fees, attendance, tests, announcements] = await Promise.all([
+  const [homework, fees, attendance, tests, announcements, atRiskStudents] = await Promise.all([
     fetchHomework(context),
     fetchFees(context),
     fetchAttendance(context),
     fetchTests(context),
     fetchAnnouncements(context),
+    getAtRiskStudents(context),
   ]);
 
   const pendingHomework = homework.filter((entry) => entry.status === "pending").length;
-  const pendingFees = fees.filter((entry) => entry.status !== "paid").length;
   const attendancePercent = attendance.length
     ? Math.round((attendance.filter((entry) => entry.present).length / attendance.length) * 100)
     : 0;
@@ -290,6 +290,8 @@ export async function getDashboardPageData(context: AuthContext) {
         (tests.reduce((total, current) => total + current.percentage, 0) / tests.length).toFixed(1),
       )
     : 0;
+
+  const highRiskCount = atRiskStudents.filter((entry) => entry.risk_level === "high").length;
 
   const stats: DashboardStat[] =
     context.role === "teacher"
@@ -305,9 +307,9 @@ export async function getDashboardPageData(context: AuthContext) {
             helper: "Assignments still waiting for completion",
           },
           {
-            label: "Fees pending",
-            value: String(pendingFees),
-            helper: "Fee records still marked unpaid or overdue",
+            label: "At-Risk Students",
+            value: String(highRiskCount),
+            helper: "Students marked as high risk by EduPulse AI",
           },
           {
             label: "Attendance",
@@ -408,9 +410,19 @@ export async function getStudentsPageData(context: AuthContext) {
     roleMap[u.email.toLowerCase()] = u.role;
   });
 
+  const atRiskStudents = await getAtRiskStudents(context);
+  const riskMap: Record<string, 'low' | 'medium' | 'high' | null> = {};
+  students.forEach((s) => {
+    riskMap[s.id] = 'low';
+  });
+  atRiskStudents.forEach((r) => {
+    riskMap[r.student_id] = r.risk_level;
+  });
+
   return {
     students,
     roleMap,
+    riskMap,
   };
 }
 
@@ -450,23 +462,7 @@ export async function getAnnouncementsPageData(context: AuthContext) {
   };
 }
 
-export async function getReportsPageData(context: AuthContext) {
-  const [homework, attendance, tests, fees] = await Promise.all([
-    fetchHomework(context),
-    fetchAttendance(context),
-    fetchTests(context),
-    fetchFees(context),
-  ]);
 
-  return {
-    summaries: buildReportSummaries(context.accessibleStudents, homework, attendance, tests, fees),
-    marksChart: buildMarksChart(tests),
-    feeChart: [
-      { name: "Paid", value: fees.filter((entry) => entry.status === "paid").length },
-      { name: "Pending", value: fees.filter((entry) => entry.status !== "paid").length },
-    ],
-  };
-}
 
 export async function getSettingsPageData(context: AuthContext) {
   return {
@@ -474,5 +470,249 @@ export async function getSettingsPageData(context: AuthContext) {
     studentsCount: context.accessibleStudents.length,
     mappedParentEmails: context.accessibleStudents.filter((entry) => entry.parent_email).length,
     mappedStudentEmails: context.accessibleStudents.filter((entry) => entry.student_email).length,
+  };
+}
+
+
+// ── EduPulse AI — New Types ───────────────────────────────────────────────────
+
+export type AtRiskStudent = {
+  student_id: string;
+  student_name: string;
+  class_name: string;
+  parent_email: string | null;
+  attendance_pct: number | null;
+  avg_score: number | null;
+  homework_pct: number | null;
+  risk_score: number | null;
+  risk_level: 'low' | 'medium' | 'high' | null;
+  latest_period: string | null;
+};
+
+export type PerformanceSummary = {
+  student_id: string;
+  student_name: string;
+  class_name: string;
+  period_label: string;
+  attendance_pct: number | null;
+  score_1: number | null;
+  score_2: number | null;
+  score_3: number | null;
+  avg_score: number | null;
+  homework_pct: number | null;
+  risk_score: number | null;
+  risk_level: 'low' | 'medium' | 'high' | null;
+  tutor_notes: string | null;
+  created_at: string;
+};
+
+export type AIReportSummary = {
+  id: string;
+  student_id: string;
+  student_name: string;
+  class_name: string;
+  subject: string | null;
+  status: string;
+  sent_at: string | null;
+  sent_to: string | null;
+  created_at: string;
+};
+
+// ── EduPulse AI — At-Risk Detection ──────────────────────────────────────────
+
+async function fetchPerformanceRecords(context: AuthContext) {
+  const supabase = createSupabaseServerClient();
+  const teacherId = context.profile?.id;
+  if (!teacherId) return [];
+
+  const { data } = await supabase
+    .from('performance_records')
+    .select(
+      'id, student_id, period_label, attendance_pct, score_1, score_2, score_3, homework_pct, risk_score, risk_level, created_at, student:students(name,class)'
+    )
+    .order('created_at', { ascending: false });
+
+  if (!data) return [];
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return data.map((row: any) => ({
+    id: row.id,
+    student_id: row.student_id,
+    period_label: row.period_label,
+    attendance_pct: row.attendance_pct,
+    score_1: row.score_1,
+    score_2: row.score_2,
+    score_3: row.score_3,
+    homework_pct: row.homework_pct,
+    risk_score: row.risk_score,
+    risk_level: row.risk_level,
+    created_at: row.created_at,
+    student_name: row.student?.name ?? 'Unknown',
+    class_name: row.student?.class ?? 'N/A',
+    avg_score: row.score_1 && row.score_2 && row.score_3
+      ? Number(((row.score_1 + row.score_2 + row.score_3) / 3).toFixed(1))
+      : (row.score_1 ?? null),
+    tutor_notes: row.tutor_notes ?? null,
+  })) as PerformanceSummary[];
+}
+
+async function fetchAIReports(context: AuthContext) {
+  const supabase = createSupabaseServerClient();
+  const teacherId = context.profile?.id;
+  if (!teacherId) return [];
+
+  const { data } = await supabase
+    .from('reports')
+    .select(
+      'id, student_id, status, subject, sent_at, sent_to, created_at, student:students(name,class)'
+    )
+    .order('created_at', { ascending: false })
+    .limit(100);
+
+  if (!data) return [];
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return data.map((row: any) => ({
+    id: row.id,
+    student_id: row.student_id,
+    student_name: row.student?.name ?? 'Unknown',
+    class_name: row.student?.class ?? 'N/A',
+    subject: row.subject,
+    status: row.status,
+    sent_at: row.sent_at,
+    sent_to: row.sent_to,
+    created_at: row.created_at,
+  })) as AIReportSummary[];
+}
+
+export async function getAtRiskStudents(context: AuthContext): Promise<AtRiskStudent[]> {
+  const records = await fetchPerformanceRecords(context);
+
+  const latestByStudent = new Map<string, PerformanceSummary>();
+  records.forEach((r) => {
+    const existing = latestByStudent.get(r.student_id);
+    if (!existing || new Date(r.created_at) > new Date(existing.created_at)) {
+      latestByStudent.set(r.student_id, r);
+    }
+  });
+
+  return Array.from(latestByStudent.values())
+    .filter((r) => r.risk_level === 'high' || r.risk_level === 'medium')
+    .sort((a, b) => (b.risk_score ?? 0) - (a.risk_score ?? 0))
+    .map((r) => ({
+      student_id: r.student_id,
+      student_name: r.student_name,
+      class_name: r.class_name,
+      parent_email: null,
+      attendance_pct: r.attendance_pct,
+      avg_score: r.score_1 && r.score_2 && r.score_3
+        ? Number(((r.score_1 + r.score_2 + r.score_3) / 3).toFixed(1))
+        : (r.score_1 ?? null),
+      homework_pct: r.homework_pct,
+      risk_score: r.risk_score,
+      risk_level: r.risk_level,
+      latest_period: r.period_label,
+    })) as AtRiskStudent[];
+}
+
+export async function getAllPerformanceHistory(
+  context: AuthContext,
+  studentId: string,
+): Promise<PerformanceSummary[]> {
+  const records = await fetchPerformanceRecords(context);
+  return records.filter((r) => r.student_id === studentId).sort(
+    (a, b) => new Date(a.period_label).getTime() - new Date(b.period_label).getTime(),
+  );
+}
+
+export async function getAIReportsForStudent(
+  context: AuthContext,
+  studentId: string,
+): Promise<AIReportSummary[]> {
+  const supabase = createSupabaseServerClient();
+  const teacherId = context.profile?.id;
+  if (!teacherId) return [];
+
+  const { data } = await supabase
+    .from('reports')
+    .select('id, student_id, status, subject, sent_at, sent_to, created_at')
+    .eq('student_id', studentId)
+    .order('created_at', { ascending: false });
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return ((data ?? []) as any[]).map((row) => ({
+    id: row.id,
+    student_id: row.student_id,
+    student_name: '',
+    class_name: '',
+    subject: row.subject,
+    status: row.status,
+    sent_at: row.sent_at,
+    sent_to: row.sent_to,
+    created_at: row.created_at,
+  })) as AIReportSummary[];
+}
+
+export async function getReportsPageData(context: AuthContext) {
+  const [homework, attendance, tests, fees, reports] = await Promise.all([
+    fetchHomework(context),
+    fetchAttendance(context),
+    fetchTests(context),
+    fetchFees(context),
+    fetchAIReports(context),
+  ]);
+
+  return {
+    summaries: buildReportSummaries(context.accessibleStudents, homework, attendance, tests, fees),
+    marksChart: buildMarksChart(tests),
+    feeChart: [
+      { name: 'Paid', value: fees.filter((entry) => entry.status === 'paid').length },
+      { name: 'Pending', value: fees.filter((entry) => entry.status !== 'paid').length },
+    ],
+    recentReports: reports.slice(0, 10),
+    atRiskCount: (await getAtRiskStudents(context)).length,
+  };
+}
+
+export async function getAnalyticsPageData(context: AuthContext) {
+  const atRisk = await getAtRiskStudents(context);
+  const records = await fetchPerformanceRecords(context);
+  const reports = await fetchAIReports(context);
+
+  const totalStudents = context.accessibleStudents.length;
+  const highRisk = atRisk.filter((s) => s.risk_level === 'high').length;
+  const mediumRisk = atRisk.filter((s) => s.risk_level === 'medium').length;
+  const lowRisk = totalStudents - highRisk - mediumRisk;
+
+  const studentRecords = new Map<string, PerformanceSummary[]>();
+  records.forEach((r) => {
+    const arr = studentRecords.get(r.student_id) ?? [];
+    arr.push(r);
+    studentRecords.set(r.student_id, arr);
+  });
+
+  let improvingCount = 0;
+  let decliningCount = 0;
+  studentRecords.forEach((arr) => {
+    if (arr.length >= 2) {
+      const sorted = [...arr].sort((a, b) =>
+        new Date(a.period_label).getTime() - new Date(b.period_label).getTime(),
+      );
+      const firstAvg = sorted[0].score_1 ?? 0;
+      const lastAvg = sorted[sorted.length - 1].score_1 ?? 0;
+      if (lastAvg > firstAvg) improvingCount++;
+      else if (lastAvg < firstAvg) decliningCount++;
+    }
+  });
+
+  return {
+    totalStudents,
+    highRisk,
+    mediumRisk,
+    lowRisk,
+    improvingCount,
+    decliningCount,
+    atRiskStudents: atRisk,
+    recentReportsCount: reports?.length ?? 0,
   };
 }

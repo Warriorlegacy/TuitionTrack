@@ -26,10 +26,12 @@ import { StudentFormDialog } from "@/components/students/student-form-dialog";
 export function StudentTable({
   students,
   roleMap,
+  riskMap,
   canManage,
 }: {
   students: StudentRow[];
   roleMap: Record<string, string>;
+  riskMap?: Record<string, 'low' | 'medium' | 'high' | null>;
   canManage: boolean;
 }) {
   const router = useRouter();
@@ -119,7 +121,22 @@ export function StudentTable({
               <TableBody>
                 {filteredStudents.map((student) => (
                   <TableRow key={student.id}>
-                    <TableCell className="font-medium">{student.name}</TableCell>
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-2">
+                        {student.name}
+                        {riskMap && riskMap[student.id] && riskMap[student.id] !== 'low' && (
+                          <Badge 
+                            variant="outline" 
+                            className={cn(
+                              "h-5 px-1.5 text-[10px] uppercase tracking-wider",
+                              riskMap[student.id] === 'high' ? "border-red-200 bg-red-50 text-red-700" : "border-amber-200 bg-amber-50 text-amber-700"
+                            )}
+                          >
+                            {riskMap[student.id]} Risk
+                          </Badge>
+                        )}
+                      </div>
+                    </TableCell>
                     <TableCell>{student.class}</TableCell>
                     <TableCell>
                       <div>

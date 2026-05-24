@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
   }
 
   const { url, anonKey } = getSupabaseConfig();
-  const supabase = createServerClient<Database>(url, anonKey, {
+   const supabase = createServerClient<Database, "public">(url, anonKey, {
     cookies: {
       getAll() {
         return request.cookies.getAll();
