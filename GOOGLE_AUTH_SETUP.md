@@ -21,7 +21,7 @@ To enable Google Login and Signup, you need to configure Google as an OAuth prov
 2. Click **+ Create Credentials** > **OAuth client ID**.
 3. Set **Application type** to **Web application**.
 4. Under **Authorized redirect URIs**, add this URL:
-   `https://libtrkkntvvlywiqcock.supabase.co/auth/v1/callback`
+   `https://zlkkicrqwoxzhsfehouj.supabase.co/auth/v1/callback`
 5. Click **Create**.
 6. **Copy** the **Client ID** and **Client Secret**.
 
