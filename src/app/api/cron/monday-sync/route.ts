@@ -101,7 +101,8 @@ export async function GET(request: Request) {
         teacherMap.get(r.teacher_id)!.push(r);
       });
 
-      for (const [, students] of teacherMap) {
+      const teacherValues = Array.from(teacherMap.values());
+      for (const students of teacherValues) {
         const teacherEmail = students[0].teacher_email;
         const teacherName = students[0].teacher_name || "Tutor";
         const html = `
