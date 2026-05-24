@@ -1,5 +1,11 @@
+-- TuitionTrack Database Schema
+-- Run this on your Supabase SQL editor to set up all tables, RLS, and functions.
+-- All statements are idempotent (safe to run multiple times).
+
+-- ── Extensions ────────────────────────────────────────────────
 create extension if not exists pgcrypto;
 
+-- ── Custom Enums ──────────────────────────────────────────────
 do $$
 begin
   if not exists (select 1 from pg_type where typname = 'user_role') then
@@ -14,6 +20,8 @@ begin
     create type public.fee_status as enum ('paid', 'unpaid', 'overdue');
   end if;
 end $$;
+
+-- ── Helper Functions ──────────────────────────────────────────
 
 create or replace function public.user_email()
 returns text
@@ -57,6 +65,47 @@ begin
   return new;
 end;
 $$;
+
+-- ── assign_user_role RPC ─────────────────────────────────────
+-- Called by teachers to fix portal access for parent/student accounts.
+create or replace function public.assign_user_role(target_email text, new_role public.user_role)
+returns void
+language plpgsql
+security definer
+as $$
+declare
+  target_user_id uuid;
+begin
+  -- Find the user by email
+  select id into target_user_id
+  from auth.users
+  where lower(email) = lower(target_email);
+
+  if target_user_id is null then
+    raise exception 'No user found with email: %', target_email;
+  end if;
+
+  -- Update the public.users table
+  update public.users
+  set role = new_role
+  where id = target_user_id;
+
+  if not found then
+    -- If no record in public.users, create one
+    insert into public.users (id, email, role)
+    values (target_user_id, lower(target_email), new_role)
+    on conflict (id) do update set role = new_role;
+  end if;
+
+  -- Sync role to auth user metadata
+  update auth.users
+  set raw_app_meta_data = 
+    coalesce(raw_app_meta_data, '{}'::jsonb) || jsonb_build_object('role', new_role)
+  where id = target_user_id;
+end;
+$$;
+
+-- ── Tables ────────────────────────────────────────────────────
 
 create table if not exists public.users (
   id uuid primary key references auth.users (id) on delete cascade,
@@ -132,6 +181,8 @@ create table if not exists public.announcements (
   created_at timestamptz not null default timezone('utc', now())
 );
 
+-- ── Indexes ───────────────────────────────────────────────────
+
 create index if not exists idx_students_teacher_id on public.students (teacher_id);
 create index if not exists idx_students_parent_email on public.students (lower(parent_email));
 create index if not exists idx_students_student_email on public.students (lower(student_email));
@@ -145,6 +196,8 @@ create index if not exists idx_fees_student_id on public.fees (student_id);
 create index if not exists idx_tests_teacher_id on public.tests (teacher_id);
 create index if not exists idx_tests_student_id on public.tests (student_id);
 create index if not exists idx_announcements_teacher_id on public.announcements (teacher_id);
+
+-- ── Triggers ──────────────────────────────────────────────────
 
 drop trigger if exists users_set_updated_at on public.users;
 create trigger users_set_updated_at
@@ -170,6 +223,8 @@ before update on public.fees
 for each row
 execute function public.set_updated_at();
 
+-- ── Row Level Security ────────────────────────────────────────
+
 alter table public.users enable row level security;
 alter table public.students enable row level security;
 alter table public.homework enable row level security;
@@ -178,6 +233,7 @@ alter table public.fees enable row level security;
 alter table public.tests enable row level security;
 alter table public.announcements enable row level security;
 
+-- Users policies
 drop policy if exists "users select self" on public.users;
 create policy "users select self"
 on public.users
@@ -197,10 +253,12 @@ for update
 using (auth.uid() = id)
 with check (auth.uid() = id);
 
+-- Students policies
 drop policy if exists "students teacher full access" on public.students;
 create policy "students teacher full access"
 on public.students
 for all
+to authenticated
 using (teacher_id = auth.uid())
 with check (teacher_id = auth.uid());
 
@@ -208,15 +266,18 @@ drop policy if exists "students parent student select" on public.students;
 create policy "students parent student select"
 on public.students
 for select
+to authenticated
 using (
   lower(coalesce(parent_email, '')) = public.user_email()
   or lower(coalesce(student_email, '')) = public.user_email()
 );
 
+-- Homework policies
 drop policy if exists "homework teacher full access" on public.homework;
 create policy "homework teacher full access"
 on public.homework
 for all
+to authenticated
 using (teacher_id = auth.uid())
 with check (teacher_id = auth.uid());
 
@@ -224,12 +285,15 @@ drop policy if exists "homework parent student select" on public.homework;
 create policy "homework parent student select"
 on public.homework
 for select
+to authenticated
 using (public.can_access_student(student_id));
 
+-- Attendance policies
 drop policy if exists "attendance teacher full access" on public.attendance;
 create policy "attendance teacher full access"
 on public.attendance
 for all
+to authenticated
 using (teacher_id = auth.uid())
 with check (teacher_id = auth.uid());
 
@@ -237,6 +301,7 @@ drop policy if exists "attendance parent select" on public.attendance;
 create policy "attendance parent select"
 on public.attendance
 for select
+to authenticated
 using (
   exists (
     select 1
@@ -246,10 +311,12 @@ using (
   )
 );
 
+-- Fees policies
 drop policy if exists "fees teacher full access" on public.fees;
 create policy "fees teacher full access"
 on public.fees
 for all
+to authenticated
 using (teacher_id = auth.uid())
 with check (teacher_id = auth.uid());
 
@@ -257,6 +324,7 @@ drop policy if exists "fees parent select" on public.fees;
 create policy "fees parent select"
 on public.fees
 for select
+to authenticated
 using (
   exists (
     select 1
@@ -266,10 +334,12 @@ using (
   )
 );
 
+-- Tests policies
 drop policy if exists "tests teacher full access" on public.tests;
 create policy "tests teacher full access"
 on public.tests
 for all
+to authenticated
 using (teacher_id = auth.uid())
 with check (teacher_id = auth.uid());
 
@@ -277,12 +347,15 @@ drop policy if exists "tests parent student select" on public.tests;
 create policy "tests parent student select"
 on public.tests
 for select
+to authenticated
 using (public.can_access_student(student_id));
 
+-- Announcements policies
 drop policy if exists "announcements teacher full access" on public.announcements;
 create policy "announcements teacher full access"
 on public.announcements
 for all
+to authenticated
 using (teacher_id = auth.uid())
 with check (teacher_id = auth.uid());
 
@@ -290,6 +363,7 @@ drop policy if exists "announcements linked select" on public.announcements;
 create policy "announcements linked select"
 on public.announcements
 for select
+to authenticated
 using (
   exists (
     select 1
@@ -301,6 +375,9 @@ using (
       )
   )
 );
+
+-- ── Realtime Publication ──────────────────────────────────────
+-- Enable Realtime for all tables that need live updates in the portal.
 
 alter publication supabase_realtime add table public.students;
 alter publication supabase_realtime add table public.homework;

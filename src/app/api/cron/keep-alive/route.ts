@@ -5,11 +5,9 @@ import { createClient } from "@supabase/supabase-js";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  const authHeader = request.headers.get("authorization");
-  
-  // Secure the cron endpoint by validating the Vercel CRON_SECRET if it's configured
-  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-    return new Response("Unauthorized", { status: 401 });
+  // Verify this request is from Vercel Cron via the auto-injected header
+  if (request.headers.get("x-vercel-cron") !== "1") {
+    return new Response("Forbidden", { status: 403 });
   }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;

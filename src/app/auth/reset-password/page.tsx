@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { CheckCircle2Icon, KeyIcon, Loader2Icon, ShieldCheckIcon } from "lucide-react";
+import { Loader2Icon, ShieldCheckIcon } from "lucide-react";
 import { toast } from "sonner";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { Brand } from "@/components/brand";
@@ -22,38 +23,30 @@ export default function ResetPasswordPage() {
   const [isPending, startTransition] = useTransition();
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isSuccess, setIsSuccess] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const handleUpdatePassword = () => {
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match.");
-      return;
-    }
-
+  const handleReset = () => {
     if (password.length < 6) {
       toast.error("Password must be at least 6 characters.");
       return;
     }
 
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
     startTransition(async () => {
       const supabase = createSupabaseBrowserClient();
-      
-      const { error } = await supabase.auth.updateUser({
-        password: password,
-      });
+      const { error } = await supabase.auth.updateUser({ password });
 
       if (error) {
         toast.error(error.message);
         return;
       }
 
-      setIsSuccess(true);
+      setIsSubmitted(true);
       toast.success("Password updated successfully.");
-      
-      // Delay redirect to show success state
-      setTimeout(() => {
-        router.push("/app/dashboard");
-      }, 2000);
     });
   };
 
@@ -65,90 +58,98 @@ export default function ResetPasswordPage() {
             <Brand />
             <div className="space-y-4">
               <h1 className="text-4xl font-semibold text-slate-950">
-                Secure your workspace.
+                Choose your new password.
               </h1>
               <p className="max-w-md text-base leading-7 text-slate-600">
-                You&apos;ve successfully verified your identity. Now, choose a strong new password 
-                to protect your TuitionTrack account and data.
+                Set a secure password for your TuitionTrack account. Make sure
+                it&apos;s at least 6 characters and something you&apos;ll remember.
               </p>
             </div>
           </div>
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 rounded-2xl border border-white/80 bg-white/75 p-4 text-sm text-slate-600">
-              <ShieldCheckIcon className="size-5 text-primary" />
-              <span>Passwords are encrypted and never stored in plain text.</span>
-            </div>
-            <div className="rounded-2xl border border-white/80 bg-white/75 p-6 text-xs text-slate-500 italic">
-              &quot;Security is not a product, but a process.&quot; — Bruce Schneier
-            </div>
+          <div className="rounded-3xl border border-white/80 bg-white/75 p-6 text-sm text-slate-600">
+            Once your password is changed, you&apos;ll be able to log in
+            immediately with your new credentials.
           </div>
         </section>
 
-        <section className="flex flex-col justify-center">
+        <section className="flex flex-col justify-center gap-5">
           <Card className="border-white/90 bg-white/92 shadow-soft">
             <CardHeader className="space-y-3">
-              <div className="flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <KeyIcon className="size-5" />
-              </div>
-              <CardTitle className="text-2xl">Confirm New Password</CardTitle>
+              <CardTitle className="text-2xl">Set new password</CardTitle>
               <CardDescription className="leading-6">
-                Please enter a new password for your account. Make sure it&apos;s something secure that you haven&apos;t used before.
+                Enter your new password below. After resetting, you&apos;ll be
+                logged in and redirected to the dashboard.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {!isSuccess ? (
-                <div className="flex flex-col gap-6">
-                  <div className="space-y-4">
-                    <div className="flex flex-col gap-2">
-                      <Label htmlFor="password">New password</Label>
-                      <Input
-                        id="password"
-                        type="password"
-                        placeholder="At least 6 characters"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                      />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <Label htmlFor="confirm-password">Confirm new password</Label>
-                      <Input
-                        id="confirm-password"
-                        type="password"
-                        placeholder="Repeat your new password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                      />
-                    </div>
+              {!isSubmitted ? (
+                <div className="flex flex-col gap-5">
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="password">New password</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      placeholder="At least 6 characters"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      required
+                      minLength={6}
+                    />
                   </div>
-                  <Button 
-                    className="h-11 shadow-sm" 
+                  <div className="flex flex-col gap-2">
+                    <Label htmlFor="confirm-password">Confirm password</Label>
+                    <Input
+                      id="confirm-password"
+                      type="password"
+                      placeholder="Repeat your new password"
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      required
+                      minLength={6}
+                    />
+                  </div>
+                  <Button
+                    className="h-11 shadow-sm"
                     disabled={isPending || !password || !confirmPassword}
-                    onClick={handleUpdatePassword}
+                    onClick={handleReset}
                   >
-                    {isPending ? <Loader2Icon className="size-4 animate-spin mr-2" /> : null}
-                    Update Password
+                    {isPending ? (
+                      <Loader2Icon className="mr-2 size-4 animate-spin" />
+                    ) : null}
+                    Update password
                   </Button>
                 </div>
               ) : (
-                <div className="flex flex-col items-center gap-6 py-8 text-center">
+                <div className="flex flex-col items-center gap-6 py-4 text-center">
                   <div className="flex size-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
-                    <CheckCircle2Icon className="size-10" />
+                    <ShieldCheckIcon className="size-8" />
                   </div>
                   <div className="space-y-2">
-                    <h3 className="text-xl font-semibold text-slate-900">Success!</h3>
+                    <h3 className="text-lg font-semibold text-slate-900">
+                      Password updated
+                    </h3>
                     <p className="text-sm text-slate-600">
-                      Your password has been reset successfully. Redirecting you to your dashboard...
+                      Your password has been changed successfully. You&apos;re
+                      now logged in and can proceed to the dashboard.
                     </p>
                   </div>
-                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-                    <div className="h-full bg-emerald-500 animate-progress origin-left" />
-                  </div>
+                  <Button
+                    className="w-full"
+                    onClick={() => router.push("/app/dashboard")}
+                  >
+                    Go to dashboard
+                  </Button>
                 </div>
               )}
             </CardContent>
           </Card>
+
+          <p className="text-center text-sm text-slate-500">
+            Remembered your password?{" "}
+            <Link href="/login" className="font-medium text-primary">
+              Log in instead
+            </Link>
+          </p>
         </section>
       </div>
     </main>
