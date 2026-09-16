@@ -53,11 +53,30 @@ const config: Config = {
           "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Marketing tokens (Blueprint #77) — rgb channels so /opacity modifiers work
+        tt: {
+          hero: "rgb(var(--tt-hero-rgb) / <alpha-value>)",
+          herodeep: "rgb(var(--tt-hero-deep-rgb) / <alpha-value>)",
+          ivory: "rgb(var(--tt-ivory-rgb) / <alpha-value>)",
+          ink: "rgb(var(--tt-ink-rgb) / <alpha-value>)",
+          accent: "rgb(var(--tt-accent-rgb) / <alpha-value>)",
+          amber: "rgb(var(--tt-amber-rgb) / <alpha-value>)",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+        // Marketing tokens (Blueprint #77) — mirror of --tt-radius-* in globals.css
+        "tt-sm": "var(--tt-radius-sm)",
+        "tt-md": "var(--tt-radius-md)",
+        "tt-lg": "var(--tt-radius-lg)",
+        "tt-xl": "var(--tt-radius-xl)",
+      },
+      fontFamily: {
+        // ponytail: reuse Geist vars already loaded in layout, no new webfonts
+        "tt-display": ["var(--font-geist-sans)", "system-ui", "sans-serif"],
+        "tt-mono": ["var(--font-geist-mono)", "ui-monospace", "monospace"],
       },
       boxShadow: {
         soft: "0 18px 40px -26px rgba(15, 23, 42, 0.35)",

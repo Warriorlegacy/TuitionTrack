@@ -1,6 +1,11 @@
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[];
 
+// MVP-1 AI loop: flexible row shape for new tables (migration 20260914).
+// Keeps typed .from() table names without hand-maintaining 24 full schemas.
+export type Flex = { id?: string } & Record<string, unknown>;
+
 export type AppRole = "teacher" | "parent" | "student";
+export type OrgRole = "owner" | "tutor" | "parent" | "student";
 export type HomeworkStatus = "pending" | "completed";
 export type FeeStatus = "paid" | "unpaid" | "overdue";
 export type SubscriptionPlan = 'free' | 'solo' | 'pro' | 'center' | 'white_label';
@@ -110,6 +115,7 @@ export interface Database {
           parent_email: string | null;
           student_email: string | null;
           teacher_id: string;
+          org_id: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -122,6 +128,7 @@ export interface Database {
           parent_email?: string | null;
           student_email?: string | null;
           teacher_id: string;
+          org_id?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -294,6 +301,74 @@ export interface Database {
           }
         ];
       };
+      syllabus_nodes: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      orgs: {
+        Row: { id: string; name: string; created_by: string | null; created_at: string; updated_at: string };
+        Insert: { id?: string; name: string; created_by?: string | null; created_at?: string; updated_at?: string };
+        Update: Partial<Database["public"]["Tables"]["orgs"]["Insert"]>;
+        Relationships: [];
+      };
+      org_members: {
+        Row: { org_id: string; user_id: string; role: OrgRole; created_at: string };
+        Insert: { org_id: string; user_id: string; role: OrgRole; created_at?: string };
+        Update: Partial<Database["public"]["Tables"]["org_members"]["Insert"]>;
+        Relationships: [];
+      };
+      batches: {
+        Row: { id: string; org_id: string; name: string; teacher_id: string | null; created_at: string };
+        Insert: { id?: string; org_id: string; name: string; teacher_id?: string | null; created_at?: string };
+        Update: Partial<Database["public"]["Tables"]["batches"]["Insert"]>;
+        Relationships: [];
+      };
+      batch_enrollments: {
+        Row: { batch_id: string; student_id: string; created_at: string };
+        Insert: { batch_id: string; student_id: string; created_at?: string };
+        Update: Partial<Database["public"]["Tables"]["batch_enrollments"]["Insert"]>;
+        Relationships: [];
+      };
+      guardian_links: {
+        Row: {
+          id: string; student_id: string; guardian_user_id: string | null;
+          guardian_email: string | null; relationship: string;
+          verified_consent_at: string | null; created_at: string;
+        };
+        Insert: {
+          id?: string; student_id: string; guardian_user_id?: string | null;
+          guardian_email?: string | null; relationship?: string;
+          verified_consent_at?: string | null; created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["guardian_links"]["Insert"]>;
+        Relationships: [];
+      };
+      ai_budgets: {
+        Row: { student_id: string; monthly_cap_usd: number; kill_switch: boolean; updated_at: string };
+        Insert: { student_id: string; monthly_cap_usd?: number; kill_switch?: boolean; updated_at?: string };
+        Update: Partial<Database["public"]["Tables"]["ai_budgets"]["Insert"]>;
+        Relationships: [];
+      };
+      documents: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      document_chunks: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      questions: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      question_options: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      question_solutions: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      assessments: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      assessment_items: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      attempts: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      attempt_responses: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      learning_events: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      concept_mastery: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      mistakes: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      spaced_items: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      review_events: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      study_plans: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      plan_tasks: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      conversations: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      messages: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      tool_calls: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      model_usage: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      ai_evaluations: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      audit_logs: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      consent_records: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
     };
     Views: Record<string, {
       Row: Record<string, unknown>;

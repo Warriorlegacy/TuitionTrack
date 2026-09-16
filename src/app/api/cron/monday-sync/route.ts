@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 export const dynamic = "force-dynamic";
 
@@ -28,100 +29,97 @@ type ParentDigestRecord = {
   test_scores: { subject: string; marks: number; total: number }[] | null;
 };
 
+const PORTAL_URL = process.env.NEXT_PUBLIC_APP_URL ?? "https://tuitiontrack-app.vercel.app";
+
+/**
+ * Weekly sync (blueprint #30): Monday tutor high-risk alerts + parent digests.
+ *
+ * Aggregation now happens in-database via the RPCs in
+ * `20260916000000_weekly_sync_rpcs.sql`. This route previously POSTed raw SQL to
+ * the Supabase *Management* API with the service_role key, which always 401'd
+ * (that endpoint needs a Personal Access Token) — and because the error object
+ * was treated as a record array, it returned `success: true` while sending
+ * nothing. Failures now surface instead of hiding.
+ */
 export async function GET(request: Request) {
+  // Fail closed: without CRON_SECRET the `x-vercel-cron` header alone is
+  // spoofable by any caller, so an unconfigured secret must not open the route.
+  const cronSecret = process.env.CRON_SECRET;
+  if (!cronSecret) {
+    return NextResponse.json({ error: "CRON_SECRET is not configured" }, { status: 500 });
+  }
+  const authorized =
+    request.headers.get("Authorization") === `Bearer ${cronSecret}` ||
+    request.headers.get("x-vercel-cron") === "1";
+  if (!authorized) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const resendKey = process.env.RESEND_API_KEY;
+  if (!resendKey) {
+    return NextResponse.json({ error: "Resend API key not configured" }, { status: 500 });
+  }
+
+  let supabase;
   try {
-    // 1. Verify this request is from Vercel Cron
-    const authHeader = request.headers.get("Authorization");
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}` && request.headers.get("x-vercel-cron") !== "1") {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    supabase = createSupabaseAdminClient();
+  } catch (err) {
+    return NextResponse.json({ error: (err as Error).message }, { status: 500 });
+  }
+
+  try {
+    // ── Data ────────────────────────────────────────────────────────────
+    const [{ data: highRisk, error: hrErr }, { data: digests, error: pdErr }] = await Promise.all([
+      supabase.rpc("weekly_high_risk_students"),
+      supabase.rpc("weekly_parent_digests"),
+    ]);
+
+    if (hrErr) {
+      return NextResponse.json({ error: `high-risk query failed: ${hrErr.message}` }, { status: 500 });
+    }
+    if (pdErr) {
+      return NextResponse.json({ error: `parent digest query failed: ${pdErr.message}` }, { status: 500 });
     }
 
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-    const projectRef = supabaseUrl.replace("https://", "").split(".")[0];
-    const resendKey = process.env.RESEND_API_KEY;
+    const highRiskRecords = (highRisk ?? []) as unknown as HighRiskRecord[];
+    const parentDigestRecords = (digests ?? []) as unknown as ParentDigestRecord[];
 
-    if (!resendKey) {
-      return NextResponse.json({ error: "Resend API key not configured" }, { status: 500 });
+    // ── Task A: tutor high-risk alerts, one email per teacher ────────────
+    const tutorSends: Promise<Response>[] = [];
+    const teacherMap = new Map<string, HighRiskRecord[]>();
+    for (const r of highRiskRecords) {
+      const list = teacherMap.get(r.teacher_id) ?? [];
+      list.push(r);
+      teacherMap.set(r.teacher_id, list);
     }
 
-    // --- TASK A: TUTOR HIGH-RISK ALERTS ---
-    
-    const tutorQuery = `
-      SELECT 
-        pr.student_id, pr.risk_level, pr.risk_score, pr.attendance_pct, pr.homework_pct,
-        s.name as student_name, s.class as student_class,
-        u.id as teacher_id, u.email as teacher_email, u.name as teacher_name
-      FROM public.performance_records pr
-      JOIN public.students s ON pr.student_id = s.id
-      JOIN public.users u ON s.teacher_id = u.id
-      WHERE pr.risk_level = 'high'
-      AND pr.created_at >= (now() - interval '7 days');
-    `;
+    for (const students of Array.from(teacherMap.values())) {
+      const teacherEmail = students[0].teacher_email;
+      if (!teacherEmail) continue;
+      const teacherName = students[0].teacher_name || "Tutor";
+      const html = `
+        <div style="font-family: sans-serif; color: #333;">
+          <h2 style="color: #dc2626;">⚠️ High-Risk Alert: Action Required</h2>
+          <p>Hello ${teacherName},</p>
+          <p>The following students have been identified as <strong>HIGH RISK</strong> this week:</p>
+          <ul style="background: #fef2f2; padding: 20px; border-radius: 8px; border: 1px solid #fee2e2;">
+            ${students
+              .map(
+                (s) => `
+              <li style="margin-bottom: 12px;">
+                <strong>${s.student_name}</strong> (Class ${s.student_class})<br/>
+                Risk Score: ${s.risk_score}/100 | Attendance: ${s.attendance_pct}% | Homework: ${s.homework_pct}%
+              </li>
+            `,
+              )
+              .join("")}
+          </ul>
+          <p><a href="${PORTAL_URL}/app/reports" style="color: #2563eb;">View Detailed Reports</a></p>
+        </div>
+      `;
 
-    const tutorResponse = await fetch(`https://api.supabase.com/v1/projects/${projectRef}/database/query`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${supabaseServiceKey}` },
-      body: JSON.stringify({ query: tutorQuery }),
-    });
-
-    const highRiskRecords = (await tutorResponse.json()) as HighRiskRecord[];
-
-    // --- TASK B: WEEKLY PARENT DIGESTS ---
-
-    const parentQuery = `
-      SELECT 
-        s.id as student_id, s.name as student_name, s.parent_email, s.parent_name,
-        u.name as teacher_name,
-        (SELECT count(*) FROM public.attendance a WHERE a.student_id = s.id AND a.date >= (now() - interval '7 days')) as classes_total,
-        (SELECT count(*) FROM public.attendance a WHERE a.student_id = s.id AND a.date >= (now() - interval '7 days') AND a.present = true) as classes_attended,
-        (SELECT count(*) FROM public.homework h WHERE h.student_id = s.id AND h.due_date >= (now() - interval '7 days')) as hw_total,
-        (SELECT count(*) FROM public.homework h WHERE h.student_id = s.id AND h.due_date >= (now() - interval '7 days') AND h.status = 'completed') as hw_completed,
-        (SELECT json_agg(t) FROM (SELECT subject, marks, total FROM public.tests WHERE student_id = s.id AND date >= (now() - interval '7 days')) t) as test_scores
-      FROM public.students s
-      JOIN public.users u ON s.teacher_id = u.id
-      WHERE s.parent_email IS NOT NULL AND s.parent_email != '';
-    `;
-
-    const parentResponse = await fetch(`https://api.supabase.com/v1/projects/${projectRef}/database/query`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": `Bearer ${supabaseServiceKey}` },
-      body: JSON.stringify({ query: parentQuery }),
-    });
-
-    const parentDigestRecords = (await parentResponse.json()) as ParentDigestRecord[];
-
-    // --- EXECUTE TASK A: SEND TUTOR EMAILS ---
-
-    const tutorPromises = [];
-    if (highRiskRecords && highRiskRecords.length > 0) {
-      const teacherMap = new Map<string, HighRiskRecord[]>();
-      highRiskRecords.forEach(r => {
-        if (!teacherMap.has(r.teacher_id)) teacherMap.set(r.teacher_id, []);
-        teacherMap.get(r.teacher_id)!.push(r);
-      });
-
-      const teacherValues = Array.from(teacherMap.values());
-      for (const students of teacherValues) {
-        const teacherEmail = students[0].teacher_email;
-        const teacherName = students[0].teacher_name || "Tutor";
-        const html = `
-          <div style="font-family: sans-serif; color: #333;">
-            <h2 style="color: #dc2626;">⚠️ High-Risk Alert: Action Required</h2>
-            <p>Hello ${teacherName},</p>
-            <p>The following students have been identified as <strong>HIGH RISK</strong> this week:</p>
-            <ul style="background: #fef2f2; padding: 20px; border-radius: 8px; border: 1px solid #fee2e2;">
-              ${students.map(s => `
-                <li style="margin-bottom: 12px;">
-                  <strong>${s.student_name}</strong> (Class ${s.student_class})<br/>
-                  Risk Score: ${s.risk_score}/100 | Attendance: ${s.attendance_pct}% | Homework: ${s.homework_pct}%
-                </li>
-              `).join("")}
-            </ul>
-            <p><a href="https://tuitiontrack-app.vercel.app/app/reports" style="color: #2563eb;">View Detailed Reports</a></p>
-          </div>
-        `;
-        tutorPromises.push(fetch("https://api.resend.com/emails", {
+      tutorSends.push(
+        fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -130,59 +128,67 @@ export async function GET(request: Request) {
             subject: `⚠️ Action Required: ${students.length} High-Risk Students Detected`,
             html,
           }),
-        }));
-      }
+        }),
+      );
     }
 
-    // --- EXECUTE TASK B: SEND PARENT EMAILS ---
+    // ── Task B: parent weekly digests ───────────────────────────────────
+    const parentSends: Promise<Response>[] = [];
+    for (const r of parentDigestRecords) {
+      if (!r.parent_email) continue;
+      if (r.classes_total === 0 && r.hw_total === 0 && (!r.test_scores || r.test_scores.length === 0)) continue;
 
-    const parentPromises = [];
-    if (parentDigestRecords && parentDigestRecords.length > 0) {
-      for (const r of parentDigestRecords) {
-        if (r.classes_total === 0 && r.hw_total === 0 && (!r.test_scores || r.test_scores.length === 0)) continue;
-
-        const html = `
-          <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
-            <div style="background: #2563eb; color: white; padding: 24px; text-align: center;">
-              <h1 style="margin: 0; font-size: 20px;">Weekly Progress Digest</h1>
-              <p style="margin: 4px 0 0; opacity: 0.9;">${r.student_name} &bull; ${new Date().toLocaleDateString('en-IN', { month: 'long', day: 'numeric' })}</p>
-            </div>
-            <div style="padding: 24px;">
-              <p>Hello ${r.parent_name || 'Parent'},</p>
-              <p>Here is a summary of ${r.student_name}'s activity in tuition classes this week:</p>
-              
-              <div style="display: grid; grid-template-cols: 1fr 1fr; gap: 16px; margin: 24px 0;">
-                <div style="background: #f8fafc; padding: 16px; border-radius: 8px; text-align: center;">
-                  <div style="font-size: 12px; color: #64748b; text-transform: uppercase;">Attendance</div>
-                  <div style="font-size: 24px; font-weight: bold; color: #0f172a;">${r.classes_attended}/${r.classes_total}</div>
-                </div>
-                <div style="background: #f8fafc; padding: 16px; border-radius: 8px; text-align: center;">
-                  <div style="font-size: 12px; color: #64748b; text-transform: uppercase;">Homework</div>
-                  <div style="font-size: 24px; font-weight: bold; color: #0f172a;">${r.hw_completed}/${r.hw_total}</div>
-                </div>
-              </div>
-
-              ${r.test_scores && r.test_scores.length > 0 ? `
-                <h3 style="font-size: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Recent Test Results</h3>
-                <table style="width: 100%; border-collapse: collapse;">
-                  ${r.test_scores.map(t => `
-                    <tr>
-                      <td style="padding: 8px 0; color: #475569;">${t.subject}</td>
-                      <td style="padding: 8px 0; text-align: right; font-weight: 600;">${t.marks}/${t.total}</td>
-                    </tr>
-                  `).join("")}
-                </table>
-              ` : ''}
-
-              <p style="margin-top: 32px; font-size: 14px; color: #64748b; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 24px;">
-                Generated by EduPulse AI for ${r.teacher_name}'s Classes.<br/>
-                Login to the <a href="https://tuitiontrack-app.vercel.app" style="color: #2563eb;">Parent Portal</a> for full history.
-              </p>
-            </div>
+      const html = `
+        <div style="font-family: sans-serif; color: #333; max-width: 600px; margin: 0 auto; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden;">
+          <div style="background: #2563eb; color: white; padding: 24px; text-align: center;">
+            <h1 style="margin: 0; font-size: 20px;">Weekly Progress Digest</h1>
+            <p style="margin: 4px 0 0; opacity: 0.9;">${r.student_name} &bull; ${new Date().toLocaleDateString("en-IN", { month: "long", day: "numeric" })}</p>
           </div>
-        `;
+          <div style="padding: 24px;">
+            <p>Hello ${r.parent_name || "Parent"},</p>
+            <p>Here is a summary of ${r.student_name}'s activity in tuition classes this week:</p>
 
-        parentPromises.push(fetch("https://api.resend.com/emails", {
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 24px 0;">
+              <div style="background: #f8fafc; padding: 16px; border-radius: 8px; text-align: center;">
+                <div style="font-size: 12px; color: #64748b; text-transform: uppercase;">Attendance</div>
+                <div style="font-size: 24px; font-weight: bold; color: #0f172a;">${r.classes_attended}/${r.classes_total}</div>
+              </div>
+              <div style="background: #f8fafc; padding: 16px; border-radius: 8px; text-align: center;">
+                <div style="font-size: 12px; color: #64748b; text-transform: uppercase;">Homework</div>
+                <div style="font-size: 24px; font-weight: bold; color: #0f172a;">${r.hw_completed}/${r.hw_total}</div>
+              </div>
+            </div>
+
+            ${
+              r.test_scores && r.test_scores.length > 0
+                ? `
+              <h3 style="font-size: 16px; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px;">Recent Test Results</h3>
+              <table style="width: 100%; border-collapse: collapse;">
+                ${r.test_scores
+                  .map(
+                    (t) => `
+                  <tr>
+                    <td style="padding: 8px 0; color: #475569;">${t.subject}</td>
+                    <td style="padding: 8px 0; text-align: right; font-weight: 600;">${t.marks}/${t.total}</td>
+                  </tr>
+                `,
+                  )
+                  .join("")}
+              </table>
+            `
+                : ""
+            }
+
+            <p style="margin-top: 32px; font-size: 14px; color: #64748b; text-align: center; border-top: 1px solid #e2e8f0; padding-top: 24px;">
+              Generated by EduPulse AI for ${r.teacher_name}'s Classes.<br/>
+              Login to the <a href="${PORTAL_URL}" style="color: #2563eb;">Parent Portal</a> for full history.
+            </p>
+          </div>
+        </div>
+      `;
+
+      parentSends.push(
+        fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: { Authorization: `Bearer ${resendKey}`, "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -191,16 +197,25 @@ export async function GET(request: Request) {
             subject: `Weekly Update: ${r.student_name}'s Performance`,
             html,
           }),
-        }));
-      }
+        }),
+      );
     }
 
-    await Promise.all([...tutorPromises, ...parentPromises]);
+    const results = await Promise.allSettled([...tutorSends, ...parentSends]);
+    const failed = results.filter((r) => r.status === "rejected").length;
+    const rejectedByApi = results.filter(
+      (r) => r.status === "fulfilled" && !(r.value as Response).ok,
+    ).length;
 
-    return NextResponse.json({ 
-      success: true, 
-      tutor_alerts: tutorPromises.length, 
-      parent_digests: parentPromises.length 
+    return NextResponse.json({
+      success: failed === 0 && rejectedByApi === 0,
+      tutor_alerts: tutorSends.length,
+      parent_digests: parentSends.length,
+      failed,
+      rejected_by_api: rejectedByApi,
+      ...(rejectedByApi > 0
+        ? { hint: "Some sends were rejected — check the Resend domain and API key." }
+        : {}),
     });
   } catch (err) {
     console.error("Unhandled error in weekly-sync cron:", err);

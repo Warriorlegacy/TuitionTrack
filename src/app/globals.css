@@ -218,3 +218,97 @@ details .faq-chevron {
 details[open] .faq-answer {
   animation: fade-in-up 0.3s ease-out both;
 }
+
+/* ── TuitionTrack AI marketing tokens (Blueprint #77, single source of truth) ──
+   TS mirror: src/lib/tokens.ts. No magic numbers in marketing components. */
+:root {
+  --tt-radius-sm: 12px;
+  --tt-radius-md: 18px;
+  --tt-radius-lg: 28px;
+  --tt-radius-xl: 40px;
+  --tt-section-gap: clamp(80px, 12vw, 180px);
+  --tt-hero: #060b1a;
+  --tt-hero-deep: #0b1437;
+  --tt-ivory: #faf7f1;
+  --tt-ink: #0a0f22;
+  --tt-accent: #6b97ff;
+  --tt-amber: #f5a524;
+  /* rgb channels for Tailwind /opacity modifiers */
+  --tt-hero-rgb: 6 11 26;
+  --tt-hero-deep-rgb: 11 20 55;
+  --tt-ivory-rgb: 250 247 241;
+  --tt-ink-rgb: 10 15 34;
+  --tt-accent-rgb: 107 151 255;
+  --tt-amber-rgb: 245 165 36;
+}
+
+@layer components {
+  /* Cinematic hero: near-black/navy with controlled glow (no purple-gradient soup) */
+  .tt-hero-bg {
+    background:
+      radial-gradient(60% 50% at 78% 30%, rgba(107, 151, 255, 0.22), transparent 70%),
+      radial-gradient(45% 40% at 12% 82%, rgba(45, 212, 191, 0.1), transparent 70%),
+      linear-gradient(180deg, var(--tt-hero) 0%, var(--tt-hero-deep) 78%, var(--tt-hero) 100%);
+  }
+
+  .tt-ivory-bg {
+    background:
+      radial-gradient(50% 32% at 50% 0%, rgba(107, 151, 255, 0.08), transparent 70%),
+      var(--tt-ivory);
+  }
+
+  .tt-glass {
+    @apply border border-white/15 bg-white/[0.06] backdrop-blur;
+  }
+}
+
+@layer utilities {
+  .tt-section {
+    padding-block: var(--tt-section-gap);
+  }
+
+  .tt-display {
+    font-family: var(--font-geist-sans), system-ui, sans-serif;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+
+  /* Tabular numerals for metrics (#77) */
+  .tt-tnum {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Mono labels for data/technical moments (#77) */
+  .tt-mono-label {
+    font-family: var(--font-geist-mono), ui-monospace, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+  }
+}
+
+/* Never block interaction; visible keyboard focus everywhere */
+.tt-focus:focus-visible {
+  outline: 2px solid var(--tt-accent);
+  outline-offset: 3px;
+}
+
+/* Reduced-motion + WebGL fallbacks (Blueprint #74/#75) */
+@media (prefers-reduced-motion: reduce) {
+  .tt-hero-bg,
+  .tt-ivory-bg {
+    background: var(--tt-hero);
+  }
+
+  .tt-ivory-bg {
+    background: var(--tt-ivory);
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

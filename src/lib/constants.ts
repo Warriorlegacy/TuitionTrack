@@ -8,6 +8,10 @@ export const roleLabels: Record<AppRole, string> = {
 
 export const routeTitles: Record<string, string> = {
   "/app/dashboard": "Dashboard",
+  "/app/today": "Today",
+  "/app/progress": "Progress",
+  "/app/planner": "Planner",
+  "/app/tutor": "AI Tutor",
   "/app/students": "Students",
   "/app/homework": "Homework",
   "/app/attendance": "Attendance",
@@ -20,8 +24,12 @@ export const routeTitles: Record<string, string> = {
 
 export type NavIcon =
   | "layout-dashboard"
-  | "users"
+  | "home"
+  | "sparkles"
+  | "calendar-days"
+  | "line-chart"
   | "book-open-check"
+  | "users"
   | "calendar-check-2"
   | "file-pen-line"
   | "wallet"
@@ -41,6 +49,30 @@ export const appNav: NavItem[] = [
     href: "/app/dashboard",
     label: "Dashboard",
     icon: "layout-dashboard",
+    roles: ["teacher", "parent", "student"],
+  },
+  {
+    href: "/app/today",
+    label: "Today",
+    icon: "home",
+    roles: ["teacher", "parent", "student"],
+  },
+  {
+    href: "/app/progress",
+    label: "Progress",
+    icon: "line-chart",
+    roles: ["teacher", "parent", "student"],
+  },
+  {
+    href: "/app/planner",
+    label: "Planner",
+    icon: "calendar-days",
+    roles: ["teacher", "parent", "student"],
+  },
+  {
+    href: "/app/tutor",
+    label: "AI Tutor",
+    icon: "sparkles",
     roles: ["teacher", "parent", "student"],
   },
   {

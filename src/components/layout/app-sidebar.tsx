@@ -6,11 +6,15 @@ import {
   BarChart3Icon,
   BookOpenCheckIcon,
   CalendarCheck2Icon,
+  CalendarDaysIcon,
   FilePenLineIcon,
+  HomeIcon,
   LayoutDashboardIcon,
+  LineChartIcon,
   LogOutIcon,
   MegaphoneIcon,
   Settings2Icon,
+  SparklesIcon,
   UsersIcon,
   WalletIcon,
 } from "lucide-react";
@@ -21,6 +25,10 @@ import { signOutAction } from "@/actions/portal";
 
 const iconMap = {
   "layout-dashboard": LayoutDashboardIcon,
+  home: HomeIcon,
+  sparkles: SparklesIcon,
+  "calendar-days": CalendarDaysIcon,
+  "line-chart": LineChartIcon,
   users: UsersIcon,
   "book-open-check": BookOpenCheckIcon,
   "calendar-check-2": CalendarCheck2Icon,
