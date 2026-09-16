@@ -1,41 +1,44 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
-// Force dynamic rendering to prevent Next.js from caching this API route
+// Daily keep-alive ping. Fails closed: without CRON_SECRET the spoofable
+// x-vercel-cron header must not open the route (same policy as the other
+// /api/cron/* routes).
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
-  // Verify this request is from Vercel Cron via the auto-injected header
-  if (request.headers.get("x-vercel-cron") !== "1") {
-    return new Response("Forbidden", { status: 403 });
+  const cronSecret = process.env.CRON_SECRET;
+  if (!cronSecret) {
+    return NextResponse.json({ error: "CRON_SECRET is not configured" }, { status: 500 });
+  }
+
+  const authorized =
+    request.headers.get("Authorization") === `Bearer ${cronSecret}` ||
+    request.headers.get("x-vercel-cron") === "1";
+  if (!authorized) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
   if (!supabaseUrl || !supabaseAnonKey) {
     return NextResponse.json(
       { error: "Supabase credentials are not configured in environment variables" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 
   try {
-    // Connect to the Supabase database using the client
+    // Lightweight read against `users` keeps the free-tier project from
+    // auto-pausing due to inactivity.
     const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-    // Query the users table with a limit of 1 to trigger database activity.
-    // This simple, lightweight request keeps the Supabase project active and prevents auto-pausing.
-    const { error } = await supabase
-      .from("users")
-      .select("id")
-      .limit(1);
+    const { error } = await supabase.from("users").select("id").limit(1);
 
     if (error) {
       console.error("Keep-alive database query failed:", error);
       return NextResponse.json(
         { error: "Database query failed", details: error.message },
-        { status: 500 }
+        { status: 500 },
       );
     }
 
@@ -50,7 +53,7 @@ export async function GET(request: Request) {
     console.error("Unhandled error in keep-alive cron job:", err);
     return NextResponse.json(
       { error: "Unhandled internal server error", details: errorMessage },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

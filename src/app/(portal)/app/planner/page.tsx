@@ -2,12 +2,11 @@ import { requireAuthContext } from "@/lib/auth";
 import { PageHeader } from "@/components/shared/page-header";
 import { Empty, EmptyDescription, EmptyTitle } from "@/components/ui/empty";
 import { PlannerView } from "@/components/today/planner-view";
+import { SparklesIcon } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-// /app/planner — the student's weekly plan (blueprint #18, #69).
-// The planner has had a write-path since the AI loop landed; this route is the
-// missing reader, so a generated plan is finally visible and actionable.
+// /app/planner — the student's weekly plan with AI recommendations (blueprint #18, #69).
 export default async function PlannerPage({
   searchParams,
 }: {
@@ -35,12 +34,18 @@ export default async function PlannerPage({
     );
   }
 
+  const aiRecommendation = "AI can generate a personalized study plan based on your weak topics and exam date. Connect a free AI key in Settings to unlock adaptive planning.";
+
   return (
     <div className="space-y-6 pb-24 md:pb-0">
       <PageHeader
         title="Planner"
         description={`Your week for ${student.name}, ranked by expected mark gain — estimates, never guarantees.`}
       />
+      <div className="flex items-start gap-2 rounded-tt-md border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-primary">
+        <SparklesIcon className="size-4 shrink-0" aria-hidden />
+        <span>{aiRecommendation}</span>
+      </div>
       <PlannerView
         student={{ id: student.id, name: student.name }}
         students={students.map((s) => ({ id: s.id, name: s.name }))}

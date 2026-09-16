@@ -79,9 +79,11 @@ const STARTERS: Record<string, string> = {
 export function TutorView({
   student,
   students,
+  modes = MODES,
 }: {
   student: TutorStudent;
   students: TutorStudent[];
+  modes?: typeof MODES;
 }) {
   const router = useRouter();
   const online = useOnline();
@@ -128,6 +130,8 @@ export function TutorView({
 
   const canSend = input.trim().length > 0 && !sending && online;
 
+  // SSE streaming send: first token renders as soon as the provider emits it.
+  // Falls back to the JSON path only if the stream never opens (older deploy).
   const send = async (text: string) => {
     const clean = text.trim();
     if (!clean || sending) return;
@@ -135,8 +139,27 @@ export function TutorView({
     setInput("");
     setMessages((m) => [...m, { role: "user", content: clean }]);
     setSending(true);
+
+    const assistantIndex = messages.length + 1; // optimistic slot for the streaming bubble
+    let acc = "";
+    let sawError: string | null = null;
+    let saveOk = false;
+
+    const upsertAssistant = (patch: Partial<ChatMessage>) => {
+      setMessages((m) => {
+        const next = [...m];
+        const existing = next[assistantIndex];
+        if (existing && existing.role === "assistant") {
+          next[assistantIndex] = { ...existing, ...patch };
+        } else {
+          next[assistantIndex] = { role: "assistant", content: acc, ...patch };
+        }
+        return next;
+      });
+    };
+
     try {
-      const res = await fetch("/api/ai/tutor", {
+      const res = await fetch("/api/ai/tutor?stream=1", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -147,29 +170,95 @@ export function TutorView({
           source_only: sourceOnly,
         }),
       });
-      const j = (await res.json()) as {
-        reply?: string;
-        citations?: { document_id: string; title: string }[];
-        error?: string;
-        conversation_id?: string;
-        model?: string;
+
+      const ct = res.headers.get("content-type") ?? "";
+      if (!res.ok || !ct.includes("text/event-stream")) {
+        // JSON error or non-streaming fallback (e.g. 429/401/502 JSON body).
+        const j = (await res.json().catch(() => ({}))) as {
+          reply?: string; error?: string; conversation_id?: string; model?: string;
+          citations?: { document_id: string; title: string }[];
+        };
+        if (j.reply) {
+          upsertAssistant({ content: j.reply, model: j.model, citations: j.citations });
+          if (j.conversation_id) setConversationId(j.conversation_id);
+          track(student.id, "ai_doubt_asked", { mode, source_only: sourceOnly });
+          return;
+        }
+        throw new Error(j.error ?? `Request failed (${res.status}).`);
+      }
+
+      const reader = res.body?.getReader();
+      if (!reader) throw new Error("Streaming not supported in this browser.");
+      const dec = new TextDecoder();
+      let buf = "";
+
+      const handleFrame = (frame: string) => {
+        const eventLine = frame.split("\n").find((l) => l.startsWith("event:"));
+        const dataLine = frame.split("\n").find((l) => l.startsWith("data:"));
+        if (!dataLine) return;
+        const event = eventLine ? eventLine.slice(6).trim() : "message";
+        let payload: Record<string, unknown> = {};
+        try { payload = JSON.parse(dataLine.slice(5).trim()) as Record<string, unknown>; } catch { return; }
+
+        if (event === "meta") {
+          const cid = payload.conversation_id;
+          if (typeof cid === "string") setConversationId(cid);
+        } else if (event === "delta") {
+          const t = typeof payload.text === "string" ? payload.text : "";
+          if (t) {
+            acc += t;
+            upsertAssistant({ content: acc });
+          }
+        } else if (event === "done") {
+          saveOk = true;
+          const cid = payload.conversation_id;
+          if (typeof cid === "string") setConversationId(cid);
+          const cites = Array.isArray(payload.citations)
+            ? (payload.citations as { document_id: string; title: string }[])
+            : undefined;
+          upsertAssistant({
+            content: acc || "(empty reply)",
+            model: typeof payload.model === "string" ? payload.model : undefined,
+            citations: cites,
+          });
+        } else if (event === "error") {
+          sawError = typeof payload.error === "string" ? payload.error : "Tutor unavailable.";
+        }
       };
-      if (!res.ok || j.error) throw new Error(j.error ?? `Request failed (${res.status}).`);
-      if (j.conversation_id) setConversationId(j.conversation_id);
-      setMessages((m) => [
-        ...m,
-        { role: "assistant", content: j.reply ?? "(empty reply)", citations: j.citations, model: j.model },
-      ]);
+
+      // Parse SSE frames: split on blank lines, buffer partial chunks.
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        let sep: number;
+        while ((sep = buf.indexOf("\n\n")) >= 0) {
+          const frame = buf.slice(0, sep);
+          buf = buf.slice(sep + 2);
+          if (frame.trim()) handleFrame(frame);
+        }
+      }
+      const tail = buf.trim();
+      if (tail) handleFrame(tail);
+
+      if (sawError && !acc) throw new Error(sawError);
+      if (sawError) setError(sawError); // partial reply already saved + shown
+      if (!saveOk && !acc && !sawError) throw new Error("Tutor returned an empty stream.");
       track(student.id, "ai_doubt_asked", { mode, source_only: sourceOnly });
       inputRef.current?.focus();
     } catch (e) {
+      // Only surface an error bubble if nothing was rendered; a thrown error
+      // here means the optimistic assistant slot was never filled.
       setError(e instanceof Error ? e.message : "Tutor unavailable — try again.");
+      if (!acc) {
+        setMessages((m) => m.filter((_, i) => i !== assistantIndex));
+      }
     } finally {
       setSending(false);
     }
   };
 
-  const activeMode = useMemo(() => MODES.find((m) => m.id === mode) ?? MODES[0], [mode]);
+  const activeMode = useMemo(() => modes.find((m) => m.id === mode) ?? modes[0], [mode, modes]);
 
   return (
     <div className="space-y-4">
@@ -218,7 +307,7 @@ export function TutorView({
 
       {/* Mode picker */}
       <div role="tablist" aria-label="Tutor mode" className="flex flex-wrap gap-2">
-        {MODES.map((m) => (
+        {modes.map((m) => (
           <button
             key={m.id}
             role="tab"

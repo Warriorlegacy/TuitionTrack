@@ -3,10 +3,11 @@ import { getTestsPageData } from "@/lib/queries";
 import { PageHeader } from "@/components/shared/page-header";
 import { Empty, EmptyDescription, EmptyTitle } from "@/components/ui/empty";
 import { ProgressView } from "@/components/today/progress-view";
+import { SparklesIcon } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
-// /app/progress — mastery heatmap, Mistake Book, readiness trend (isolated slice).
+// /app/progress — mastery heatmap, Mistake Book, readiness trend with AI insights.
 export default async function ProgressPage({
   searchParams,
 }: {
@@ -44,12 +45,25 @@ export default async function ProgressPage({
       percentage: t.percentage,
     }));
 
+  const weakSubjects = recentTests
+    .filter((t) => t.percentage < 70)
+    .sort((a, b) => a.percentage - b.percentage)
+    .slice(0, 3);
+
+  const aiInsight = weakSubjects.length > 0
+    ? `AI recommends focusing on ${weakSubjects[0].subject} (${weakSubjects[0].percentage.toFixed(1)}%). Use AI Tutor for targeted practice.`
+    : "Strong performance across recent tests. Use AI Tutor for advanced topics and exam strategy.";
+
   return (
     <div className="space-y-6 pb-24 md:pb-0">
       <PageHeader
         title="Progress"
         description={`Mastery, mistakes and readiness for ${student.name} — estimates, never guarantees.`}
       />
+      <div className="flex items-start gap-2 rounded-tt-md border border-primary/20 bg-primary/5 px-4 py-3 text-sm text-primary">
+        <SparklesIcon className="size-4 shrink-0" aria-hidden />
+        <span>{aiInsight}</span>
+      </div>
       <ProgressView
         student={{ id: student.id, name: student.name, class: student.class }}
         recentTests={recentTests}

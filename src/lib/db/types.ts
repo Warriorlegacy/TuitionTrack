@@ -346,6 +346,38 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["ai_budgets"]["Insert"]>;
         Relationships: [];
       };
+      user_ai_keys: {
+        Row: {
+          id: string; user_id: string; provider: string; label: string;
+          encrypted_key: string; key_fingerprint: string; status: string;
+          last_used_at: string | null; last_error: string | null;
+          metadata: Record<string, unknown>; created_at: string; updated_at: string;
+        };
+        Insert: {
+          id?: string; user_id: string; provider: string; label?: string;
+          encrypted_key: string; key_fingerprint: string; status?: string;
+          last_used_at?: string | null; last_error?: string | null;
+          metadata?: Record<string, unknown>; created_at?: string; updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["user_ai_keys"]["Insert"]>;
+        Relationships: [];
+      };
+      user_ai_preferences: {
+        Row: {
+          user_id: string; default_provider: string; default_model: string;
+          tier_a_model: string | null; tier_b_model: string | null; tier_c_model: string | null;
+          allow_free_fallbacks: boolean; prefer_free_tiers: boolean;
+          metadata: Record<string, unknown>; created_at: string; updated_at: string;
+        };
+        Insert: {
+          user_id: string; default_provider?: string; default_model?: string;
+          tier_a_model?: string | null; tier_b_model?: string | null; tier_c_model?: string | null;
+          allow_free_fallbacks?: boolean; prefer_free_tiers?: boolean;
+          metadata?: Record<string, unknown>; created_at?: string; updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["user_ai_preferences"]["Insert"]>;
+        Relationships: [];
+      };
       documents: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
       document_chunks: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
       questions: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
@@ -400,6 +432,8 @@ export type DbEnums = {
   subscription_plan: SubscriptionPlan;
   subscription_status: SubscriptionStatus;
   user_role: AppRole;
+  ai_provider: "openai" | "anthropic" | "google" | "groq" | "together" | "openrouter" | "huggingface" | "custom";
+  ai_key_status: "active" | "revoked" | "expired";
 };
 
 export type UserRow = Database["public"]["Tables"]["users"]["Row"];

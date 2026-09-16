@@ -20,6 +20,7 @@ export const routeTitles: Record<string, string> = {
   "/app/announcements": "Announcements",
   "/app/reports": "Reports",
   "/app/settings": "Settings",
+  "/app/ai-settings": "AI Settings",
 };
 
 export type NavIcon =
@@ -120,6 +121,12 @@ export const appNav: NavItem[] = [
   {
     href: "/app/settings",
     label: "Settings",
+    icon: "settings-2",
+    roles: ["teacher", "parent", "student"],
+  },
+  {
+    href: "/app/ai-settings",
+    label: "AI Settings",
     icon: "settings-2",
     roles: ["teacher", "parent", "student"],
   },

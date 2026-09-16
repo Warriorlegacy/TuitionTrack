@@ -4,6 +4,7 @@ import { requireStudentAccess, badRequest } from "@/lib/ai/guard";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { complete, PROMPT_VERSION } from "@/lib/ai/provider";
 import { initialFsrs } from "@/lib/ai/fsrs-lite";
+import { getBestKeyForTier } from "@/lib/ai/byok";
 import { checkRateLimit, logUsage, logEvent } from "@/lib/ai/usage";
 
 export const dynamic = "force-dynamic";
@@ -24,11 +25,13 @@ export async function POST(request: Request) {
   let stubbed = true;
   if (!cards.length) {
     try {
+      const best = await getBestKeyForTier(supabase, context.user.id, "B");
       const r = await complete({
         tier: "B",
         system: `Create ${input.count} flashcards as JSON [{front, back}]. Atomic facts, one idea per card, exam-accurate.`,
         user: `Concept id: ${input.concept_id ?? "general"}. Count ${input.count}.`,
         maxTokens: 900,
+        ...(best ? { apiKeyOverride: best.key, providerKind: best.provider.kind, baseUrlOverride: best.provider.baseUrl, modelOverride: best.model } : {}),
       });
       stubbed = r.stubbed;
       const m = r.text.match(/\[[\s\S]*\]/);

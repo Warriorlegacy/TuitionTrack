@@ -70,10 +70,12 @@ export function TodayView({
   student,
   students,
   recentTests,
+  aiRecommendation,
 }: {
   student: TodayStudent;
   students: TodayStudent[];
   recentTests: RecentTest[];
+  aiRecommendation?: string;
 }) {
   const router = useRouter();
   const reduce = useReducedMotion();
@@ -214,13 +216,19 @@ export function TodayView({
                   Highest impact: Repair “{nodeTitle(weakest)}”
                 </>
               ) : (
-                "Run your first diagnostic to get today’s plan"
+                "Run your first diagnostic to get today's plan"
               )}
             </h3>
             <p className="mt-2 text-sm leading-6 text-slate-600">
               12-min recovery · 15-min practice · {Math.min(10, Math.max(dueCount, 1) * 2)}-min revision · 5-min re-test.
               {weakest ? ` ${nodeTitle(weakest)} sits at ${pct(weakest.mastery)}% — fixing it first moves readiness most.` : ""}
             </p>
+            {aiRecommendation ? (
+              <div className="mt-3 flex items-start gap-2 rounded-tt-sm bg-primary/5 px-3 py-2 text-sm text-primary">
+                <SparklesIcon className="size-4 shrink-0" aria-hidden />
+                <span>{aiRecommendation}</span>
+              </div>
+            ) : null}
             <div className="mt-5 flex flex-wrap items-center gap-3">
               <Button
                 size="lg"

@@ -1,29 +1,74 @@
 // Provider abstraction + cost tiers (blueprint #45, #47, #65).
 //
-// The blueprint is explicit on two points: the AI layer must not be hard-coded
-// around one model vendor, and calls must route by cost tier. This module speaks
-// any OpenAI-compatible chat-completions API:
+// Multi-provider BYOK: OpenAI, Anthropic, Google, Groq, Together AI, OpenRouter,
+// HuggingFace, or any OpenAI-compatible endpoint. Free-tier models are prioritized
+// when user preference allows. Server-side secrets only; client never sees keys.
 //
-//   • OpenAI      — default for an `sk-…` key
-//   • OpenRouter  — auto-detected from an `sk-or-…` key, so the three tiers can
-//                   mix vendors (OpenAI / Anthropic / Google) without touching
-//                   route code
-//   • any other   — set AI_BASE_URL to an OpenAI-compatible endpoint
-//
-// LLM explains; the deterministic layer verifies (blueprint #22).
+// Degradation contract (blueprint #83): with no platform key and no BYOK key,
+// complete() returns an actionable stub result instead of throwing, so routes
+// fall back to deterministic templates instead of 5xx-ing the whole feature.
 
-export const PROMPT_VERSION = "mvp1-2026-09-16";
+export const PROMPT_VERSION = "mvp1-2026-09-16b";
 export type AiTier = "A" | "B" | "C" | "deterministic";
 
-const OPENAI_BASE_URL = "https://api.openai.com/v1";
-const OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1";
+// ── Provider endpoints ──────────────────────────────────────────────
+const ENDPOINTS: Record<string, { base: string; kind: "openai" | "anthropic" | "google" | "custom" }> = {
+  openai:      { base: "https://api.openai.com/v1", kind: "openai" },
+  anthropic:   { base: "https://api.anthropic.com/v1", kind: "anthropic" },
+  google:      { base: "https://generativelanguage.googleapis.com/v1beta", kind: "google" },
+  groq:        { base: "https://api.groq.com/openai/v1", kind: "openai" },
+  together:    { base: "https://api.together.xyz/v1", kind: "openai" },
+  openrouter:  { base: "https://openrouter.ai/api/v1", kind: "openai" },
+  huggingface: { base: "https://router.huggingface.co/v1", kind: "openai" },
+  nvidia:      { base: "https://integrate.api.nvidia.com/v1", kind: "openai" },
+  custom:      { base: "", kind: "custom" },
+};
 
-// Per-tier defaults, namespaced per provider. AI_MODEL_TIER_* always wins, so a
-// deployment can pin e.g. Tier A to a cheap Gemini slug and Tier C to Claude.
-const DEFAULT_MODELS: Record<"A" | "B" | "C", { openai: string; openrouter: string }> = {
-  A: { openai: "gpt-4o-mini", openrouter: "openai/gpt-4o-mini" }, // classify / OCR / tag
-  B: { openai: "gpt-4o-mini", openrouter: "openai/gpt-4o-mini" }, // tutor / question gen
-  C: { openai: "gpt-4o", openrouter: "openai/gpt-4o" }, // hard reasoning / teacher copilot
+// ── Free-tier-friendly defaults (overridden by AI_MODEL_TIER_* env or user prefs) ──
+// OpenRouter free slugs verified against /api/v1/models on 2026-09-16 — the old
+// google/gemini-2.0-flash-exp:free was retired (404: no endpoints found).
+// Google: gemini-2.0-* retired (404 as of 2026-09); 2.5/3.x are current.
+// NVIDIA NIM: meta/llama-3.1-8b-instruct reached EOL (410); nemotron is current.
+const FREE_MODELS: Record<"A" | "B" | "C", Record<string, string>> = {
+  A: {
+    openai: "gpt-4o-mini", anthropic: "claude-3-haiku-20240307", google: "gemini-2.5-flash-lite",
+    groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+    openrouter: "nvidia/nemotron-3.5-lightning:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
+    nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", custom: "",
+  },
+  B: {
+    openai: "gpt-4o-mini", anthropic: "claude-3-haiku-20240307", google: "gemini-2.5-flash",
+    groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+    openrouter: "nvidia/nemotron-3.5-lightning:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
+    nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", custom: "",
+  },
+  C: {
+    openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-2.5-pro",
+    groq: "openai/gpt-oss-120b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+    openrouter: "nvidia/nemotron-3-ultra-550b-a55b:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
+    nvidia: "nvidia/nemotron-3-super-120b-a12b", custom: "",
+  },
+};
+
+const PAID_MODELS: Record<"A" | "B" | "C", Record<string, string>> = {
+  A: {
+    openai: "gpt-4o-mini", anthropic: "claude-3-5-haiku-20241022", google: "gemini-2.5-flash-lite",
+    groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+    openrouter: "openai/gpt-4o-mini", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
+    nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", custom: "",
+  },
+  B: {
+    openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-2.5-flash",
+    groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+    openrouter: "openai/gpt-4o", huggingface: "meta-llama/Llama-3.1-70B-Instruct",
+    nvidia: "nvidia/nemotron-3-super-120b-a12b", custom: "",
+  },
+  C: {
+    openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-2.5-pro",
+    groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+    openrouter: "openai/gpt-4o", huggingface: "meta-llama/Llama-3.1-70B-Instruct",
+    nvidia: "nvidia/nemotron-3-super-120b-a12b", custom: "",
+  },
 };
 
 const ENV_MODELS: Record<"A" | "B" | "C", string | undefined> = {
@@ -32,47 +77,124 @@ const ENV_MODELS: Record<"A" | "B" | "C", string | undefined> = {
   C: process.env.AI_MODEL_TIER_C,
 };
 
-type Provider = { baseUrl: string; kind: "openai" | "openrouter" | "custom" };
+// ── Provider detection from key prefix ─────────────────────────────
+export type ProviderKind = "openai" | "anthropic" | "google" | "groq" | "together" | "openrouter" | "huggingface" | "nvidia" | "custom";
 
-function resolveProvider(apiKey: string): Provider {
-  const explicit = process.env.AI_BASE_URL?.trim().replace(/\/+$/, "");
-  if (explicit) {
-    return {
-      baseUrl: explicit,
-      kind: explicit.includes("openrouter.ai") ? "openrouter" : "custom",
-    };
+export interface ResolvedProvider {
+  kind: ProviderKind;
+  baseUrl: string;
+  apiKey: string;
+  model: string;
+  headers: Record<string, string>;
+}
+
+export function detectProviderFromKey(apiKey: string): ProviderKind {
+  if (apiKey.startsWith("sk-or-")) return "openrouter";
+  if (apiKey.startsWith("gsk_")) return "groq";
+  if (apiKey.startsWith("sg-")) return "together";
+  if (apiKey.startsWith("hf_")) return "huggingface";
+  // Google issues both legacy AIza… keys and new AQ.… API keys (2025+).
+  if (apiKey.startsWith("AIza") || apiKey.startsWith("AQ.")) return "google";
+  // NVIDIA NIM (build.nvidia.com) exposes an OpenAI-compatible /v1 API.
+  if (apiKey.startsWith("nvapi-")) return "nvidia";
+  if (apiKey.startsWith("sk-ant-")) return "anthropic";
+  if (apiKey.startsWith("sk-")) return "openai";
+  return "custom";
+}
+
+// ── Platform-level fallback keys (free-first) ──────────────────────
+// BYOK always wins; these keep AI features working when a user has no key.
+// Order matters: cheapest/generous free tiers first.
+const PLATFORM_KEYS: { kind: ProviderKind; key: string | undefined }[] = [
+  { kind: "groq", key: process.env.GROQ_API_KEY },
+  { kind: "google", key: process.env.GEMINI_API_KEY },
+  { kind: "openrouter", key: process.env.OPENROUTER_API_KEY },
+  { kind: "nvidia", key: process.env.NVIDIA_NIM_API_KEY },
+  { kind: "huggingface", key: process.env.HUGGINGFACE_API_KEY },
+  { kind: "openai", key: process.env.OPENAI_API_KEY },
+];
+
+/** First configured platform key (free tiers first). Callers then resolve kind via the entry. */
+export function getPlatformKey(): { kind: ProviderKind; key: string } | null {
+  for (const entry of PLATFORM_KEYS) {
+    const k = entry.key?.trim();
+    if (k) return { kind: detectProviderFromKey(k) === "custom" ? entry.kind : detectProviderFromKey(k), key: k };
   }
-  // OpenRouter keys are `sk-or-v1-…`; sending one to api.openai.com yields a
-  // confusing 401, so detect it instead of requiring an extra env var.
-  if (apiKey.startsWith("sk-or-")) return { baseUrl: OPENROUTER_BASE_URL, kind: "openrouter" };
-  return { baseUrl: OPENAI_BASE_URL, kind: "openai" };
+  return null;
 }
 
-function modelForTierOn(tier: "A" | "B" | "C", provider: Provider): string {
-  const override = ENV_MODELS[tier];
-  if (override) return override;
-  return provider.kind === "openrouter" ? DEFAULT_MODELS[tier].openrouter : DEFAULT_MODELS[tier].openai;
+/** All configured platform keys, free-first — used for automatic fallback on provider errors. */
+export function getPlatformKeyChain(): { kind: ProviderKind; key: string }[] {
+  const out: { kind: ProviderKind; key: string }[] = [];
+  for (const entry of PLATFORM_KEYS) {
+    const k = entry.key?.trim();
+    if (!k) continue;
+    const detected = detectProviderFromKey(k);
+    out.push({ kind: detected === "custom" ? entry.kind : detected, key: k });
+  }
+  return out;
 }
 
-/** Resolved model slug for a tier (used for logging and cost attribution). */
-export function modelForTier(tier: AiTier): string {
-  if (tier === "deterministic") return "deterministic-v1";
-  return modelForTierOn(tier, resolveProvider(process.env.OPENAI_API_KEY ?? ""));
+export function resolveProviderFromKind(kind: ProviderKind, apiKey: string, baseUrl?: string): ResolvedProvider {
+  const ep = ENDPOINTS[kind] ?? ENDPOINTS.custom;
+  const resolvedBase = baseUrl?.trim().replace(/\/+$/, "") || ep.base;
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+
+  if (kind === "anthropic") {
+    headers["x-api-key"] = apiKey;
+    headers["anthropic-version"] = "2023-06-01";
+  } else if (kind === "google") {
+    headers["x-goog-api-key"] = apiKey;
+  } else {
+    headers.Authorization = `Bearer ${apiKey}`;
+  }
+
+  if (kind === "openrouter") {
+    headers["X-Title"] = "TuitionTrack AI";
+    if (process.env.NEXT_PUBLIC_APP_URL) headers["HTTP-Referer"] = process.env.NEXT_PUBLIC_APP_URL;
+  }
+
+  return { kind, baseUrl: resolvedBase, apiKey, model: "", headers };
 }
 
-// Rough USD per 1k tokens. Overridden in practice by real billing in
-// model_usage; this exists so the per-student budget guard (#65) has a number.
+// ── Model selection ────────────────────────────────────────────────
+// Priority: explicit userPref (per-tier BYOK pref) > envOverride (platform
+// default) > free/paid pool. "deterministic" tier never calls a model; if it
+// somehow reaches here it routes to the tier-B default.
+export function pickModel(
+  tier: AiTier,
+  providerKind: ProviderKind,
+  preferFree: boolean,
+  envOverride?: string | null,
+  userPref?: string | null,
+): string {
+  if (userPref) return userPref;
+  if (envOverride) return envOverride;
+  const t: "A" | "B" | "C" = tier === "deterministic" ? "B" : tier;
+  const pool = preferFree ? FREE_MODELS[t][providerKind] : PAID_MODELS[t][providerKind];
+  return pool ?? FREE_MODELS[t].openai;
+}
+
+// ── Cost estimation ────────────────────────────────────────────────
 const PRICE_PER_1K: Record<string, { in: number; out: number }> = {
   "gpt-4o-mini": { in: 0.00015, out: 0.0006 },
   "gpt-4o": { in: 0.0025, out: 0.01 },
   "openai/gpt-4o-mini": { in: 0.00015, out: 0.0006 },
   "openai/gpt-4o": { in: 0.0025, out: 0.01 },
-  "google/gemini-flash-1.5": { in: 0.000075, out: 0.0003 },
-  "anthropic/claude-3.5-sonnet": { in: 0.003, out: 0.015 },
+  "google/gemini-2.0-flash-exp:free": { in: 0, out: 0 },
+  "gemini-2.5-flash-lite": { in: 0.000075, out: 0.0003 },
+  "gemini-2.5-flash": { in: 0.00015, out: 0.0006 },
+  "gemini-2.5-pro": { in: 0.00125, out: 0.005 },
+  "nvidia/nemotron-3.5-lightning:free": { in: 0, out: 0 },
+  "nvidia/nemotron-3-ultra-550b-a55b:free": { in: 0, out: 0 },
+  "google/gemini-2.0-flash": { in: 0.000075, out: 0.0003 },
+  "google/gemini-2.0-pro": { in: 0.0005, out: 0.002 },
+  "anthropic/claude-3-haiku-20240307": { in: 0.00025, out: 0.00125 },
+  "anthropic/claude-3-5-sonnet-20241022": { in: 0.003, out: 0.015 },
+  "groq/llama-3.1-8b-instant": { in: 0, out: 0 },
+  "meta-llama/Llama-3.1-8B-Instruct": { in: 0, out: 0 },
+  "together_ai": { in: 0.0002, out: 0.0006 },
 };
-
-// Conservative fallback: unknown models are priced at the cheap tier so spend is
-// never *under*-counted against the student's cap.
 const FALLBACK_PRICE = { in: 0.00015, out: 0.0006 };
 
 export function estimateCostUsd(model: string, inTok: number, outTok: number): number {
@@ -80,12 +202,19 @@ export function estimateCostUsd(model: string, inTok: number, outTok: number): n
   return Number((((inTok / 1000) * p.in + (outTok / 1000) * p.out).toFixed(6)));
 }
 
+// ── Types ──────────────────────────────────────────────────────────
 export type CompleteArgs = {
   tier: AiTier;
   system: string;
   user: string;
   maxTokens?: number;
   temperature?: number;
+  userId?: string;            // reserved: BYOK resolution happens at the route
+  providerKind?: ProviderKind; // explicit override
+  modelOverride?: string;      // explicit model slug (highest priority)
+  apiKeyOverride?: string;     // explicit key (BYOK flow)
+  baseUrlOverride?: string;    // explicit endpoint
+  signal?: AbortSignal;        // streams: abort when the client disconnects
 };
 
 export type CompleteResult = {
@@ -99,105 +228,331 @@ export type CompleteResult = {
   latencyMs: number;
 };
 
+// Shown to students when no key is configured anywhere. Actionable, not an error dump.
+export const STUB_TEXT =
+  "(AI not set up yet) Add your own API key in Settings → AI to enable the live tutor. " +
+  "Free options that need no credit card: OpenRouter (Gemini free), Google Gemini, or Groq.";
+
 const approxTokens = (s: string) => Math.max(1, Math.ceil(s.length / 4));
 
-// Deterministic stub so the slice works with no API key / zero spend.
-function stubReply(system: string, user: string): string {
-  const socratic = system.includes("Socratic");
-  if (socratic) {
-    return (
-      `Let's work this through step by step.\n\n` +
-      `1. What do you already know from the question? Reply with the given values.\n` +
-      `2. What is it asking for — a value, a reason, or a method?\n` +
-      `3. Try the first step on your own, then say "check my answer".\n\n` +
-      `Hint: restate the question in your own words first. ` +
-      `(Stub tutor — set OPENAI_API_KEY for full Tier-B tutoring. Prompt ${PROMPT_VERSION}.)\n` +
-      `You said: "${user.slice(0, 160)}"`
-    );
+// ── Core completion (with provider failover) ─────────────────────
+// ── Provider failover ──────────────────────────────────────────
+// Candidate chain: explicit BYOK override alone (BYOK errors must surface to
+// the user so bad keys get fixed), else all configured platform keys
+// (free-first). A dead/retired provider never takes a whole feature down.
+function resolveChain(args: CompleteArgs): { kind: ProviderKind; key: string }[] {
+  if (args.apiKeyOverride) {
+    return [{ kind: args.providerKind || detectProviderFromKey(args.apiKeyOverride), key: args.apiKeyOverride }];
   }
-  return (
-    `Stub response (no OPENAI_API_KEY). Prompt ${PROMPT_VERSION}.\n` + `Echo: ${user.slice(0, 300)}`
-  );
+  return getPlatformKeyChain();
 }
 
-export async function complete(args: CompleteArgs): Promise<CompleteResult> {
-  const started = Date.now();
-  const apiKey = process.env.OPENAI_API_KEY;
-
-  if (!apiKey || args.tier === "deterministic") {
-    const provider = resolveProvider(apiKey ?? "");
-    const model = args.tier === "deterministic" ? "deterministic-v1" : modelForTierOn(args.tier, provider);
-    const text = stubReply(args.system, args.user);
-    const inTok = approxTokens(args.system + args.user);
-    const outTok = approxTokens(text);
-    return {
-      text,
-      model: "stub-" + model,
-      inputTokens: inTok,
-      outputTokens: outTok,
-      costUsd: 0,
-      cached: false,
-      stubbed: true,
-      latencyMs: Date.now() - started,
-    };
-  }
-
-  const provider = resolveProvider(apiKey);
-  const model = modelForTierOn(args.tier, provider);
-
-  const headers: Record<string, string> = {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${apiKey}`,
+function stubResult(started: number): CompleteResult {
+  return {
+    text: STUB_TEXT, model: "stub", inputTokens: 0, outputTokens: 0,
+    costUsd: 0, cached: false, stubbed: true, latencyMs: Date.now() - started,
   };
-  if (provider.kind === "openrouter") {
-    // OpenRouter attribution headers (optional, but they surface the app in
-    // their dashboard and keep requests identifiable in rate-limit reviews).
-    headers["X-Title"] = "TuitionTrack AI";
-    if (process.env.NEXT_PUBLIC_APP_URL) headers["HTTP-Referer"] = process.env.NEXT_PUBLIC_APP_URL;
-  }
+}
 
-  const res = await fetch(`${provider.baseUrl}/chat/completions`, {
-    method: "POST",
-    headers,
+function resolveAttemptProvider(
+  args: CompleteArgs,
+  entry: { kind: ProviderKind; key: string },
+  tier: "A" | "B" | "C",
+): ResolvedProvider {
+  const provider = resolveProviderFromKind(entry.kind, entry.key, args.baseUrlOverride || process.env.AI_BASE_URL || undefined);
+  // Explicit per-call override wins (BYOK user pref flows through here);
+  // otherwise fall back to platform env defaults, then the free pool.
+  provider.model = args.modelOverride || pickModel(tier, provider.kind, true, ENV_MODELS[tier], null);
+  return provider;
+}
+
+async function requestCompletion(
+  provider: ResolvedProvider,
+  tier: "A" | "B" | "C",
+  args: CompleteArgs,
+  stream: boolean,
+): Promise<Response> {
+  const maxTokens = args.maxTokens ?? 600;
+  const temperature = args.temperature ?? (tier === "A" ? 0.1 : 0.6);
+  const streamBody = stream ? { stream: true } : {};
+  if (provider.kind === "anthropic") {
+    return fetch(`${provider.baseUrl}/messages`, {
+      method: "POST", headers: provider.headers, signal: args.signal,
+      body: JSON.stringify({
+        model: provider.model, max_tokens: maxTokens, temperature,
+        ...streamBody, system: args.system, messages: [{ role: "user", content: args.user }],
+      }),
+    });
+  }
+  if (provider.kind === "google") {
+    const action = stream ? `streamGenerateContent?alt=sse&` : `generateContent?`;
+    const url = `${provider.baseUrl}/models/${provider.model}:${action}key=${encodeURIComponent(provider.apiKey)}`;
+    return fetch(url, {
+      method: "POST", headers: { "Content-Type": "application/json" }, signal: args.signal,
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: args.user }] }],
+        systemInstruction: { parts: [{ text: args.system }] },
+        generationConfig: { maxOutputTokens: maxTokens, temperature },
+      }),
+    });
+  }
+  // OpenAI-compatible (openai, groq, together, openrouter, huggingface, nvidia, custom)
+  return fetch(`${provider.baseUrl}/chat/completions`, {
+    method: "POST", headers: provider.headers, signal: args.signal,
     body: JSON.stringify({
-      model,
-      max_tokens: args.maxTokens ?? 600,
-      temperature: args.temperature ?? (args.tier === "A" ? 0.1 : 0.6),
+      model: provider.model, max_tokens: maxTokens, temperature, ...streamBody,
       messages: [
         { role: "system", content: args.system },
         { role: "user", content: args.user },
       ],
     }),
   });
+}
 
-  if (!res.ok) {
-    const body = (await res.text()).slice(0, 300);
-    if (res.status === 401) {
-      throw new Error(
-        `provider 401 (${provider.kind} @ ${provider.baseUrl}) — the API key was rejected. ` +
-          (provider.kind === "openai"
-            ? "OPENAI_API_KEY looks like an OpenAI key; if it is an OpenRouter key (sk-or-…) " +
-              "set AI_BASE_URL=https://openrouter.ai/api/v1."
-            : "Check the key and AI_BASE_URL, and that the model slug is valid for this provider.") +
-          ` Response: ${body}`,
-      );
+export async function complete(args: CompleteArgs): Promise<CompleteResult> {
+  const started = Date.now();
+  const tier: "A" | "B" | "C" = args.tier === "deterministic" ? "B" : args.tier;
+  const chain = resolveChain(args);
+  if (!chain.length) return stubResult(started);
+
+  let lastErr: unknown;
+  for (const entry of chain) {
+    const provider = resolveAttemptProvider(args, entry, tier);
+    try {
+      const res = await requestCompletion(provider, tier, args, false);
+      if (!res.ok) {
+        const body = (await res.text()).slice(0, 300);
+        throw new Error(`provider ${res.status} (${provider.kind}): ${body}`);
+      }
+      let text = "";
+      let inTok = approxTokens(args.system + args.user);
+      let outTok = 0;
+      if (provider.kind === "google") {
+        const data = await res.json();
+        text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+        outTok = approxTokens(text);
+      } else if (provider.kind === "anthropic") {
+        const data = await res.json();
+        text = data.content?.[0]?.text ?? "";
+        inTok = data.usage?.input_tokens ?? inTok;
+        outTok = data.usage?.output_tokens ?? approxTokens(text);
+      } else {
+        const data = await res.json();
+        text = data.choices?.[0]?.message?.content ?? "";
+        inTok = data.usage?.prompt_tokens ?? inTok;
+        outTok = data.usage?.completion_tokens ?? approxTokens(text);
+      }
+      return {
+        text, model: provider.model, inputTokens: inTok, outputTokens: outTok,
+        costUsd: estimateCostUsd(provider.model, inTok, outTok),
+        cached: false, stubbed: false, latencyMs: Date.now() - started,
+      };
+    } catch (e) {
+      lastErr = e; // try the next provider in the chain
     }
-    throw new Error(`provider ${res.status} (${provider.kind}): ${body}`);
+  }
+  throw new Error(`All AI providers failed — last error: ${(lastErr as Error)?.message ?? "unknown"}`);
+}
+
+// ── Streaming (SSE) ────────────────────────────────────────────────
+// Streaming mirror of complete(): same key/model resolution, same stub
+// degradation. Deltas are pushed to onDelta as they arrive; the resolved
+// CompleteResult carries the full text + usage for persistence/logging.
+
+// Strict unknown-accessors: provider SSE payloads are untrusted JSON.
+const asObj = (v: unknown): Record<string, unknown> => (v && typeof v === "object" ? (v as Record<string, unknown>) : {});
+const asArr = (v: unknown): unknown[] => (Array.isArray(v) ? v : []);
+const asStr = (v: unknown): string => (typeof v === "string" ? v : "");
+const asNum = (v: unknown): number | undefined => (typeof v === "number" ? v : undefined);
+
+// One SSE `data:` payload → optional text delta + optional usage numbers.
+function extractProviderSse(
+  kind: ProviderKind,
+  payload: string,
+): { text: string | null; inTok?: number; outTok?: number } {
+  let j: unknown;
+  try { j = JSON.parse(payload); } catch { return { text: null }; }
+  const root = asObj(j);
+
+  if (kind === "google") {
+    const cand = asObj(asArr(root.candidates)[0]);
+    const text = asArr(asObj(cand.content).parts).map((p) => asStr(asObj(p).text)).join("");
+    const u = asObj(root.usageMetadata);
+    return { text: text || null, inTok: asNum(u.promptTokenCount), outTok: asNum(u.candidatesTokenCount) };
+  }
+  if (kind === "anthropic") {
+    if (root.type === "content_block_delta") return { text: asStr(asObj(root.delta).text) || null };
+    if (root.type === "message_start") return { text: null, inTok: asNum(asObj(asObj(root.message).usage).input_tokens) };
+    if (root.type === "message_delta") return { text: null, outTok: asNum(asObj(root.usage).output_tokens) };
+    return { text: null };
+  }
+  // OpenAI-compatible (openai, groq, together, openrouter, huggingface, custom)
+  const choice = asObj(asArr(root.choices)[0]);
+  const text = asStr(asObj(choice.delta).content) || asStr(asObj(choice.message).content) || asStr(choice.text);
+  const u = asObj(root.usage);
+  return { text: text || null, inTok: asNum(u.prompt_tokens), outTok: asNum(u.completion_tokens) };
+}
+
+// Estimates-only result (no provider-reported usage available).
+export function estimateUsageResult(opts: {
+  model: string; system: string; user: string; text: string; startedAt: number;
+}): CompleteResult {
+  const inTok = approxTokens(opts.system + opts.user);
+  const outTok = Math.max(1, approxTokens(opts.text));
+  return {
+    text: opts.text, model: opts.model, inputTokens: inTok, outputTokens: outTok,
+    costUsd: estimateCostUsd(opts.model, inTok, outTok),
+    cached: false, stubbed: false, latencyMs: Date.now() - opts.startedAt,
+  };
+}
+
+export async function streamComplete(
+  args: CompleteArgs,
+  onDelta: (text: string) => void,
+): Promise<CompleteResult> {
+  const started = Date.now();
+  const tier: "A" | "B" | "C" = args.tier === "deterministic" ? "B" : args.tier;
+
+  const chain = resolveChain(args);
+  if (!chain.length) {
+    onDelta(STUB_TEXT);
+    return stubResult(started);
   }
 
-  const data = await res.json();
-  const text: string = data.choices?.[0]?.message?.content ?? "";
-  const inTok: number = data.usage?.prompt_tokens ?? approxTokens(args.system + args.user);
-  const outTok: number = data.usage?.completion_tokens ?? approxTokens(text);
+  // NOTE: only connection/response-establishment failures failover. Once a
+  // stream starts delivering deltas, a mid-stream break propagates — the
+  // caller has already rendered partial text, so retrying would duplicate it.
+  let lastErr: unknown;
+  for (const entry of chain) {
+    const provider = resolveAttemptProvider(args, entry, tier);
+    let res: Response;
+    try {
+      res = await requestCompletion(provider, tier, args, true);
+    } catch (e) {
+      lastErr = e;
+      continue;
+    }
+    if (!res.ok) {
+      const bodyText = await res.text().catch(() => "");
+      lastErr = new Error(`provider ${res.status} (${provider.kind}): ${bodyText.slice(0, 300)}`);
+      continue;
+    }
+    const body = res.body;
+    if (!body) {
+      lastErr = new Error("Provider returned an empty stream body");
+      continue;
+    }
 
-  return {
-    text,
-    model,
-    inputTokens: inTok,
-    outputTokens: outTok,
-    costUsd: estimateCostUsd(model, inTok, outTok),
-    cached: false,
-    stubbed: false,
-    latencyMs: Date.now() - started,
-  };
+    const reader = body.getReader();
+    const dec = new TextDecoder();
+    let full = "";
+    let inTok = approxTokens(args.system + args.user);
+    let outTok = 0;
+    let buf = "";
+
+    // Returns true when the provider signalled end-of-stream.
+    const handlePayload = (payload: string): boolean => {
+      if (payload === "[DONE]") return true;
+      const { text, inTok: i, outTok: o } = extractProviderSse(provider.kind, payload);
+      if (i !== undefined) inTok = i;
+      if (o !== undefined) outTok = o;
+      if (text) { full += text; onDelta(text); }
+      return false;
+    };
+    const finish = (): CompleteResult => {
+      const finalOut = outTok || Math.max(1, approxTokens(full));
+      return {
+        text: full, model: provider.model, inputTokens: inTok, outputTokens: finalOut,
+        costUsd: estimateCostUsd(provider.model, inTok, finalOut),
+        cached: false, stubbed: false, latencyMs: Date.now() - started,
+      };
+    };
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += dec.decode(value, { stream: true });
+        let nl: number;
+        while ((nl = buf.indexOf("\n")) >= 0) {
+          const line = buf.slice(0, nl).trim();
+          buf = buf.slice(nl + 1);
+          if (line.startsWith("data:") && handlePayload(line.slice(5).trim())) {
+            await reader.cancel().catch(() => {});
+            return finish();
+          }
+        }
+      }
+      const tail = buf.trim();
+      if (tail.startsWith("data:")) handlePayload(tail.slice(5).trim());
+      return finish();
+    } finally {
+      try { await reader.cancel(); } catch { /* already closed */ }
+    }
+  }
+  throw new Error(`All AI providers failed — last error: ${(lastErr as Error)?.message ?? "unknown"}`);
+}
+
+// ── Embeddings (RAG #50) ─────────────────────────────────────────
+// OpenAI-compatible /embeddings (openai, together, openrouter, hf, custom) or
+// Google text-embedding. BYOK: the user's chat key usually embeds too; if not,
+// callers fall back to the platform key, then keyword-only retrieval.
+export const DEFAULT_EMBEDDING_MODEL = process.env.EMBEDDING_MODEL ?? "text-embedding-3-small";
+export const EMBEDDING_DIM = 1536; // text-embedding-3-small / text-embedding-ada-002
+
+export type EmbedResult = {
+  vectors: number[][];
+  model: string;
+  stubbed: boolean;
+};
+
+export async function embedTexts(
+  texts: string[],
+  opts: { apiKeyOverride?: string; providerKind?: ProviderKind; modelOverride?: string; baseUrlOverride?: string } = {},
+): Promise<EmbedResult> {
+  // Platform fallback: only OpenAI-compatible embedding surfaces (Google's
+  // embedding models are 768-dim and would fail the 1536-dim RPC guard).
+  const platform = getPlatformKeyChain().find(
+    (e) => e.kind === "openai" || e.kind === "together" || e.kind === "huggingface" || e.kind === "custom",
+  );
+  const apiKey = opts.apiKeyOverride || platform?.key || "";
+  if (!apiKey || texts.length === 0) return { vectors: [], model: "stub", stubbed: true };
+
+  const kind: ProviderKind = opts.providerKind || detectProviderFromKey(apiKey);
+  const model = opts.modelOverride || DEFAULT_EMBEDDING_MODEL;
+
+  if (kind === "google") {
+    // Google embeds one text per request on the v1beta surface.
+    const base = (opts.baseUrlOverride || process.env.AI_BASE_URL || ENDPOINTS.google.base).replace(/\/+$/, "");
+    const out: number[][] = [];
+    for (const t of texts) {
+      const res = await fetch(`${base}/models/${model}:embedContent?key=${encodeURIComponent(apiKey)}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ model: `models/${model}`, content: { parts: [{ text: t }] } }),
+      });
+      if (!res.ok) throw new Error(`embeddings ${res.status} (google): ${(await res.text()).slice(0, 200)}`);
+      const data = await res.json();
+      const v = asArr(asObj(data.embedding).values).map(Number);
+      if (!v.length) throw new Error("google embeddings: empty vector");
+      out.push(v);
+    }
+    return { vectors: out, model, stubbed: false };
+  }
+
+  const baseUrl = (opts.baseUrlOverride || process.env.AI_BASE_URL || ENDPOINTS[kind]?.base || "").replace(/\/+$/, "");
+  if (!baseUrl) throw new Error(`No embedding endpoint for provider ${kind}`);
+  const provider = resolveProviderFromKind(kind, apiKey, baseUrl);
+  const res = await fetch(`${baseUrl}/embeddings`, {
+    method: "POST",
+    headers: provider.headers,
+    body: JSON.stringify({ model, input: texts.map((t) => t.slice(0, 8000)) }),
+  });
+  if (!res.ok) throw new Error(`embeddings ${res.status} (${kind}): ${(await res.text()).slice(0, 200)}`);
+  const data = await res.json();
+  const out = asArr((data as { data?: unknown }).data)
+    .map((d) => asArr(asObj(d).embedding).map(Number))
+    .filter((v) => v.length > 0);
+  if (out.length !== texts.length) throw new Error(`embeddings: got ${out.length} vectors for ${texts.length} inputs`);
+  return { vectors: out, model, stubbed: false };
 }

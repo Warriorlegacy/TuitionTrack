@@ -5,7 +5,7 @@ import { TutorView } from "@/components/today/tutor-view";
 
 export const dynamic = "force-dynamic";
 
-// /app/tutor — Student AI tutor (blueprint #9, #69, #81). Isolated slice.
+// /app/tutor — Student AI tutor with BYOK multi-provider support (blueprint #9, #69, #81).
 export default async function TutorPage({
   searchParams,
 }: {
@@ -33,6 +33,15 @@ export default async function TutorPage({
     );
   }
 
+  // AI tutor modes for quick selection (ids must match /api/ai/tutor MODE_SYSTEM keys)
+  const tutorModes = [
+    { id: "socratic", label: "Socratic Tutor", blurb: "Hints before answers" },
+    { id: "exam_coach", label: "Exam Coach", blurb: "Scoring & strategy" },
+    { id: "concept_teacher", label: "Concept Teacher", blurb: "Explain from zero" },
+    { id: "doubt_solver", label: "Doubt Solver", blurb: "Resolve exact doubt" },
+    { id: "mistake_coach", label: "Mistake Coach", blurb: "Fix root causes" },
+  ];
+
   return (
     <div className="space-y-6 pb-24 md:pb-0">
       <PageHeader
@@ -42,6 +51,7 @@ export default async function TutorPage({
       <TutorView
         student={{ id: student.id, name: student.name }}
         students={students.map((s) => ({ id: s.id, name: s.name }))}
+        modes={tutorModes}
       />
     </div>
   );

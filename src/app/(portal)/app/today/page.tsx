@@ -6,7 +6,7 @@ import { TodayView } from "@/components/today/today-view";
 
 export const dynamic = "force-dynamic";
 
-// /app/today — Student Today command centre (isolated slice, portal untouched).
+// /app/today — Student Today command centre with AI recommendations (blueprint #9, #69).
 export default async function TodayPage({
   searchParams,
 }: {
@@ -44,6 +44,15 @@ export default async function TodayPage({
       percentage: t.percentage,
     }));
 
+  // AI recommendation: highest-impact action based on recent performance
+  const weakSubject = recentTests.length > 0
+    ? recentTests.reduce((min, t) => (t.percentage < min.percentage ? t : min), recentTests[0])
+    : null;
+
+  const aiRecommendation = weakSubject
+    ? `Practice ${weakSubject.subject} — recent score ${weakSubject.percentage.toFixed(1)}%. Start with a 15-minute recovery drill.`
+    : "Start a quick diagnostic quiz to identify your weakest topic.";
+
   return (
     <div className="space-y-6 pb-24 md:pb-0">
       <PageHeader
@@ -54,6 +63,7 @@ export default async function TodayPage({
         student={{ id: student.id, name: student.name, class: student.class }}
         students={students.map((s) => ({ id: s.id, name: s.name }))}
         recentTests={recentTests}
+        aiRecommendation={aiRecommendation}
       />
     </div>
   );

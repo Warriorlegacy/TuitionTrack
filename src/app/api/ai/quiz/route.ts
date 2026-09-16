@@ -3,6 +3,7 @@ import { quizSchema } from "@/lib/ai/schemas";
 import { requireStudentAccess, badRequest } from "@/lib/ai/guard";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { complete, PROMPT_VERSION } from "@/lib/ai/provider";
+import { getBestKeyForTier } from "@/lib/ai/byok";
 import { qualityGate } from "@/lib/ai/quality";
 import { checkRateLimit, logUsage, logEvent } from "@/lib/ai/usage";
 
@@ -28,11 +29,13 @@ export async function POST(request: Request) {
   let drafts: { stem: string; options: string[]; answer: string; explanation: string }[] = [];
   let stubbed = true;
   try {
+    const best = await getBestKeyForTier(supabase, context.user.id, "B");
     const r = await complete({
       tier: "B",
       system: `Generate ${input.count} ${input.qtype} questions at difficulty ${input.difficulty}/5. Return JSON array [{stem, options[4], answer, explanation}]. Syllabus-accurate, unambiguous.`,
       user: `Concept: ${concept?.title ?? "general practice"}. Count ${input.count}.`,
       maxTokens: 1200,
+      ...(best ? { apiKeyOverride: best.key, providerKind: best.provider.kind, baseUrlOverride: best.provider.baseUrl, modelOverride: best.model } : {}),
     });
     stubbed = r.stubbed;
     const m = r.text.match(/\[[\s\S]*\]/);
