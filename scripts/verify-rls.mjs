@@ -6,50 +6,53 @@
  *   node --env-file-if-exists=.env.local scripts/verify-rls.mjs
  *
  * Requires (already in .env.local):
+ *   DATABASE_URL                    — introspection of tables/policies (pg_catalog
+ *                                     is NOT exposed via PostgREST on Supabase)
  *   NEXT_PUBLIC_SUPABASE_URL
  *   NEXT_PUBLIC_SUPABASE_ANON_KEY   — used to prove RLS actually blocks
- *   SUPABASE_SERVICE_ROLE_KEY       — used for introspection (bypasses RLS)
+ *   SUPABASE_SECRET_KEY             — admin REST fallback checks
+ *                                     (legacy fallback: SUPABASE_SERVICE_ROLE_KEY)
  *
  * Checks:
  *   1. Every public BASE TABLE has rowsecurity = true
  *   2. Every RLS-enabled table has at least one policy
  *   3. Anon client gets 0 rows / permission error on protected tables (proof of enforcement)
  */
+import pg from "pg";
 import { createClient } from "@supabase/supabase-js";
 
+const dbUrl = process.env.DATABASE_URL;
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-const svc = process.env.SUPABASE_SERVICE_ROLE_KEY;
+// Prefer the current sb_secret_ key; fall back to the legacy service_role JWT.
+// Mirrors src/lib/supabase/env.ts — a stale legacy value must not shadow the
+// working key (this exact shadowing previously made every REST call 401).
+const svc = process.env.SUPABASE_SECRET_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-if (!url || !anon || !svc) {
-  console.error("✗ Missing NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, or SUPABASE_SERVICE_ROLE_KEY");
+if (!dbUrl) {
+  console.error("✗ Missing DATABASE_URL (Postgres connection string, used for introspection)");
+  process.exit(1);
+}
+if (!url || !anon) {
+  console.error("✗ Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
   process.exit(1);
 }
 
-const admin = createClient(url, svc, { auth: { persistSession: false } });
 const anonClient = createClient(url, anon, { auth: { persistSession: false } });
 
-// 1) Introspect tables + policies
-const { data: tables, error: tErr } = await admin
-  .from("pg_catalog.pg_tables")
-  .select("tablename, rowsecurity")
-  .eq("schemaname", "public");
-if (tErr) {
-  console.error("✗ Table introspection failed:", tErr.message);
-  process.exit(1);
-}
+const client = new pg.Client({ connectionString: dbUrl, ssl: { rejectUnauthorized: false } });
+await client.connect();
 
-const { data: policies, error: pErr } = await admin
-  .from("pg_catalog.pg_policies")
-  .select("tablename, policyname")
-  .eq("schemaname", "public");
-if (pErr) {
-  console.error("✗ Policy introspection failed:", pErr.message);
-  process.exit(1);
-}
+const { rows: tables } = await client.query(
+  `select tablename, rowsecurity from pg_tables where schemaname = 'public' order by tablename`,
+);
+const { rows: policies } = await client.query(
+  `select tablename, policyname from pg_policies where schemaname = 'public' order by tablename, policyname`,
+);
+await client.end();
 
 const policyByTable = {};
-for (const p of policies ?? []) {
+for (const p of policies) {
   (policyByTable[p.tablename] ??= []).push(p.policyname);
 }
 
@@ -57,8 +60,8 @@ for (const p of policies ?? []) {
 const ALLOW_NO_POLICY = new Set(["schema_migrations"]);
 
 let failures = 0;
-console.log(`\nPublic tables: ${tables.length} | Policies: ${(policies ?? []).length}\n`);
-console.log("table".padEnd(30) + "RLS".padEnd(9) + "policies");
+console.log(`\nPublic tables: ${tables.length} | Policies: ${policies.length}\n`);
+console.log("table".padEnd(30) + "RLS".padEnd(9) + "policies".padEnd(9) + "status");
 console.log("-".repeat(60));
 
 for (const t of tables) {
@@ -84,5 +87,9 @@ for (const name of protectedSamples) {
   if (!blocked) failures++;
 }
 
-console.log(`\n${failures === 0 ? "✅ ALL RLS CHECKS PASSED" : `❌ ${failures} failure(s) — fix before shipping`}`);
+console.log(
+  failures === 0
+    ? "\n✅ RLS verification passed — every table locked down, anon blocked."
+    : `\n❌ RLS verification FAILED — ${failures} issue(s) above.`,
+);
 process.exit(failures === 0 ? 0 : 1);
