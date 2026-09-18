@@ -1,6 +1,7 @@
 import { appNav } from "@/lib/constants";
 import { getAuthContext, requireAuthContext } from "@/lib/auth";
 import { SetupAlert } from "@/components/shared/setup-alert";
+import { SessionGuardian } from "@/components/auth/session-guardian";
 import { PortalShell } from "@/components/layout/portal-shell";
 
 export default async function AppLayout({
@@ -21,7 +22,9 @@ export default async function AppLayout({
   const authContext = await requireAuthContext();
 
   return (
-    <PortalShell
+    <>
+      <SessionGuardian />
+      <PortalShell
       navItems={appNav.filter((item) => item.roles.includes(authContext.role!))}
       role={authContext.role!}
       userName={authContext.profile?.name ?? authContext.user?.email ?? "User"}
@@ -29,5 +32,6 @@ export default async function AppLayout({
     >
       {children}
     </PortalShell>
+    </>
   );
 }

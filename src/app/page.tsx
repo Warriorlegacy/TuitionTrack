@@ -166,7 +166,7 @@ export default function Home() {
                     Get started for free <ArrowRightIcon className="ml-2 size-5" />
                   </Link>
                   <a
-                    href="/TuitionTrack.apk"
+                    href="/downloads/tuitiontrack.apk"
                     download
                     className={cn(
                       buttonVariants({ variant: "outline", size: "lg" }),
@@ -433,7 +433,7 @@ export default function Home() {
                   {/* Primary Download Button */}
                   <div className="pb-4">
                     <a
-                      href="/TuitionTrack.apk"
+                      href="/downloads/tuitiontrack.apk"
                       download
                       className={cn(
                         buttonVariants({ size: "lg" }),
@@ -449,7 +449,7 @@ export default function Home() {
                     <div className="flex flex-wrap gap-4">
                       {/* iOS App Store Badge - Directs to APK for now since iOS isn't published */}
                       <a
-                        href="/TuitionTrack.apk"
+                        href="/downloads/tuitiontrack.apk"
                         download
                         aria-label="Download iOS App Beta"
                         className="group relative inline-flex h-[56px] w-[190px] items-center gap-3 overflow-hidden rounded-xl bg-white/[0.06] px-5 ring-1 ring-white/10 backdrop-blur transition-all duration-300 hover:bg-white/[0.12] hover:ring-white/25"
@@ -466,7 +466,7 @@ export default function Home() {
 
                       {/* Google Play Badge */}
                       <a
-                        href="/TuitionTrack.apk"
+                        href="/downloads/tuitiontrack.apk"
                         download
                         aria-label="Download Android App"
                         className="group relative inline-flex h-[56px] w-[190px] items-center gap-3 overflow-hidden rounded-xl bg-white/[0.06] px-5 ring-1 ring-white/10 backdrop-blur transition-all duration-300 hover:bg-white/[0.12] hover:ring-white/25"

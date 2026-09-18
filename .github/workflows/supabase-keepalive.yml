@@ -1,0 +1,16 @@
+name: supabase-keepalive
+on:
+  schedule:
+    - cron: '0 4 * * 1,3,5'
+  workflow_dispatch:
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: node scripts/supabase-keepalive.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          APP_URL: ${{ secrets.APP_URL }}

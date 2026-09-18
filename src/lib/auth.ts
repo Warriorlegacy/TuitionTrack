@@ -30,9 +30,38 @@ export async function getAuthContext(): Promise<AuthContext> {
   }
 
   const supabase = createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+
+  // A transient Auth outage (cold start, network blip) must never read as
+  // "logged out". Retry once on transport-level failures only — a genuine
+  // missing/invalid session returns immediately with no delay.
+  const isTransientAuthError = (error: { message?: string; status?: number } | null) => {
+    if (!error) return false;
+    if (typeof error.status === "number" && error.status >= 500) return true;
+    return /fetch failed|network|timeout|econn|socket|502|503|504/i.test(
+      error.message ?? "",
+    );
+  };
+
+  const readUser = async () => supabase.auth.getUser();
+
+  let user: User | null = null;
+  try {
+    const first = await readUser();
+    user = first.data.user;
+    if (!user && isTransientAuthError(first.error)) {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      const retry = await readUser();
+      user = retry.data.user;
+    }
+  } catch {
+    // Network threw instead of returning an error — one retry, then logout.
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 500));
+      user = (await readUser()).data.user;
+    } catch {
+      user = null;
+    }
+  }
 
   if (!user) {
     return {
@@ -48,58 +77,76 @@ export async function getAuthContext(): Promise<AuthContext> {
   }
 
   const email = user.email?.toLowerCase() ?? null;
-  const { data: profile } = await supabase
-    .from("users")
-    .select("*")
-    .eq("id", user.id)
-    .maybeSingle<UserRow>();
 
-  // Use metadata role as fallback if profile record is missing
-  const metadataRole = user.user_metadata?.role as AppRole | undefined;
-  const effectiveRole = profile?.role ?? metadataRole ?? "teacher";
+  // DB failures below must degrade to fallbacks, never to "logged out":
+  // the user is authenticated at this point, so a profile/students query
+  // blip returns partial context instead of bouncing to /login.
+  try {
+    const { data: profile } = await supabase
+      .from("users")
+      .select("*")
+      .eq("id", user.id)
+      .maybeSingle<UserRow>();
 
-  let accessibleStudents: StudentRow[] = [];
+    // Use metadata role as fallback if profile record is missing
+    const metadataRole = user.user_metadata?.role as AppRole | undefined;
+    const effectiveRole = profile?.role ?? metadataRole ?? "teacher";
 
-  if (effectiveRole === "teacher") {
-    const { data } = await supabase
-      .from("students")
-      .select("*")
-      .eq("teacher_id", user.id)
-      .order("created_at", { ascending: false });
-    accessibleStudents = (data as StudentRow[] | null) ?? [];
-  } else if (effectiveRole === "parent" && email) {
-    const { data } = await supabase
-      .from("students")
-      .select("*")
-      .ilike("parent_email", email)
-      .order("created_at", { ascending: false });
-    accessibleStudents = (data as StudentRow[] | null) ?? [];
-  } else if (effectiveRole === "student" && email) {
-    const { data } = await supabase
-      .from("students")
-      .select("*")
-      .ilike("student_email", email)
-      .order("created_at", { ascending: false });
-    accessibleStudents = (data as StudentRow[] | null) ?? [];
+    let accessibleStudents: StudentRow[] = [];
+
+    if (effectiveRole === "teacher") {
+      const { data } = await supabase
+        .from("students")
+        .select("*")
+        .eq("teacher_id", user.id)
+        .order("created_at", { ascending: false });
+      accessibleStudents = (data as StudentRow[] | null) ?? [];
+    } else if (effectiveRole === "parent" && email) {
+      const { data } = await supabase
+        .from("students")
+        .select("*")
+        .ilike("parent_email", email)
+        .order("created_at", { ascending: false });
+      accessibleStudents = (data as StudentRow[] | null) ?? [];
+    } else if (effectiveRole === "student" && email) {
+      const { data } = await supabase
+        .from("students")
+        .select("*")
+        .ilike("student_email", email)
+        .order("created_at", { ascending: false });
+      accessibleStudents = (data as StudentRow[] | null) ?? [];
+    }
+
+    const teacherIds = Array.from(
+      new Set([
+        ...(effectiveRole === "teacher" ? [user.id] : []),
+        ...accessibleStudents.map((student) => student.teacher_id),
+      ]),
+    );
+
+    return {
+      configured: true,
+      user,
+      profile: profile ?? null,
+      role: effectiveRole,
+      email,
+      accessibleStudents,
+      teacherIds,
+      canManage: effectiveRole === "teacher",
+    };
+  } catch {
+    const metadataRole = (user.user_metadata?.role as AppRole | undefined) ?? "teacher";
+    return {
+      configured: true,
+      user,
+      profile: null,
+      role: metadataRole,
+      email,
+      accessibleStudents: [],
+      teacherIds: metadataRole === "teacher" ? [user.id] : [],
+      canManage: metadataRole === "teacher",
+    };
   }
-
-  const teacherIds = Array.from(
-    new Set([
-      ...(effectiveRole === "teacher" ? [user.id] : []),
-      ...accessibleStudents.map((student) => student.teacher_id),
-    ]),
-  );
-
-  return {
-    configured: true,
-    user,
-    profile: profile ?? null,
-    role: effectiveRole,
-    email,
-    accessibleStudents,
-    teacherIds,
-    canManage: effectiveRole === "teacher",
-  };
 }
 
 export async function requireAuthContext() {

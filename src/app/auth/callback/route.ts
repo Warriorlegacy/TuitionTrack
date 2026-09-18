@@ -9,7 +9,11 @@ export async function GET(request: NextRequest) {
   }
 
   const code = request.nextUrl.searchParams.get("code");
-  const redirectPath = request.nextUrl.searchParams.get("next") ?? "/app/dashboard";
+  // Only allow same-origin relative redirects — `new URL(userInput, base)`
+  // would follow "//evil.com" off-site (open redirect).
+  const rawNext = request.nextUrl.searchParams.get("next") ?? "/app/dashboard";
+  const redirectPath =
+    rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "/app/dashboard";
   let response = NextResponse.redirect(new URL(redirectPath, request.url));
 
   if (!code) {
@@ -17,12 +21,17 @@ export async function GET(request: NextRequest) {
   }
 
   const { url, anonKey } = getSupabaseConfig();
+  // Every cookie written during the exchange, replayed onto whichever
+  // redirect is ultimately returned (reassigning the response object below
+  // would otherwise silently drop the fresh session → instant "logout").
+  const appliedCookies: { name: string; value: string; options?: object }[] = [];
    const supabase = createServerClient<Database, "public">(url, anonKey, {
     cookies: {
       getAll() {
         return request.cookies.getAll();
       },
       setAll(cookiesToSet, headers) {
+        appliedCookies.push(...cookiesToSet);
         cookiesToSet.forEach(({ name, value, options }) => {
           response.cookies.set(name, value, options);
         });
@@ -87,7 +96,15 @@ export async function GET(request: NextRequest) {
     });
 
     if (!existingProfile?.name && role === "teacher") {
-      response = NextResponse.redirect(new URL("/auth/onboarding", request.url));
+      const onboarding = NextResponse.redirect(new URL("/auth/onboarding", request.url));
+      for (const c of appliedCookies) {
+        onboarding.cookies.set(
+          c.name,
+          c.value,
+          c.options as Parameters<NextResponse["cookies"]["set"]>[2],
+        );
+      }
+      response = onboarding;
     }
   }
 

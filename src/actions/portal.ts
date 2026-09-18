@@ -82,7 +82,14 @@ function revalidatePortal() {
 
 export async function signOutAction() {
   const supabase = createSupabaseServerClient();
-  await supabase.auth.signOut();
+  // Local scope: sign out this device only. Global would invalidate the
+  // refresh token server-side and log the user out of their phone too —
+  // the exact "auto-logout" complaint this polish fixes.
+  try {
+    await supabase.auth.signOut({ scope: "local" });
+  } catch {
+    // Still redirect: a failed network call must not trap the user.
+  }
   redirect("/login");
 }
 
