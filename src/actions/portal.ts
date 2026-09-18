@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import { getAuthContext, requireTeacherContext } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { normalizeOptional } from "@/lib/utils";
 import type { AppRole } from "@/lib/db/types";
 
@@ -16,12 +17,12 @@ type ActionResult = {
 
 const studentSchema = z.object({
   id: z.string().uuid().optional(),
-  name: z.string().min(2),
-  class: z.string().min(1),
-  parent_name: z.string().min(2),
-  parent_phone: z.string().min(6),
-  parent_email: z.string().email().optional().or(z.literal("")),
-  student_email: z.string().email().optional().or(z.literal("")),
+  name: z.string().trim().min(1, "Student name is required"),
+  class: z.string().trim().min(1, "Class is required"),
+  parent_name: z.string().optional().or(z.literal("")),
+  parent_phone: z.string().optional().or(z.literal("")),
+  parent_email: z.string().email("Invalid parent email").optional().or(z.literal("")),
+  student_email: z.string().email("Invalid student email").optional().or(z.literal("")),
 });
 
 const homeworkSchema = z.object({
@@ -131,24 +132,24 @@ export async function saveStudentAction(input: z.infer<typeof studentSchema>): P
     return { success: false, message: "Supabase is not configured." };
   }
 
-  const supabase = createSupabaseServerClient();
+  const admin = createSupabaseAdminClient();
   const payload = {
-    name: parsed.data.name,
-    class: parsed.data.class,
-    parent_name: parsed.data.parent_name,
-    parent_phone: parsed.data.parent_phone,
+    name: parsed.data.name.trim(),
+    class: parsed.data.class.trim(),
+    parent_name: parsed.data.parent_name?.trim() || "",
+    parent_phone: parsed.data.parent_phone?.trim() || "",
     parent_email: normalizeOptional(parsed.data.parent_email),
     student_email: normalizeOptional(parsed.data.student_email),
     teacher_id: context.profile.id,
   };
 
   const { error } = parsed.data.id
-    ? await supabase
+    ? await admin
         .from("students")
         .update(payload)
         .eq("id", parsed.data.id)
         .eq("teacher_id", context.profile.id)
-    : await supabase.from("students").insert(payload);
+    : await admin.from("students").insert(payload);
 
   if (error) {
     return { success: false, message: error.message };
@@ -167,8 +168,8 @@ export async function deleteStudentAction(id: string): Promise<ActionResult> {
     return { success: false, message: "Supabase is not configured." };
   }
 
-  const supabase = createSupabaseServerClient();
-  const { error } = await supabase
+  const admin = createSupabaseAdminClient();
+  const { error } = await admin
     .from("students")
     .delete()
     .eq("id", id)

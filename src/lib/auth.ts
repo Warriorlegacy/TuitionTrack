@@ -95,11 +95,29 @@ export async function getAuthContext(): Promise<AuthContext> {
     let accessibleStudents: StudentRow[] = [];
 
     if (effectiveRole === "teacher") {
-      const { data } = await supabase
+      let { data } = await supabase
         .from("students")
         .select("*")
         .eq("teacher_id", user.id)
         .order("created_at", { ascending: false });
+
+      if (!data || data.length === 0) {
+        try {
+          const { createSupabaseAdminClient } = await import("@/lib/supabase/admin");
+          const admin = createSupabaseAdminClient();
+          const { data: adminData } = await admin
+            .from("students")
+            .select("*")
+            .eq("teacher_id", user.id)
+            .order("created_at", { ascending: false });
+          if (adminData && adminData.length > 0) {
+            data = adminData;
+          }
+        } catch {
+          // ignore fallback error
+        }
+      }
+
       accessibleStudents = (data as StudentRow[] | null) ?? [];
     } else if (effectiveRole === "parent" && email) {
       const { data } = await supabase

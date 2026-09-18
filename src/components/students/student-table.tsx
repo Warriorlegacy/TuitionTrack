@@ -47,7 +47,7 @@ export function StudentTable({
     const query = studentSearch.trim().toLowerCase();
     if (!query) return students;
     return students.filter((student) =>
-      [student.name, student.class, student.parent_name, student.parent_phone]
+      [student.name, student.class, student.parent_name || "", student.parent_phone || ""]
         .join(" ")
         .toLowerCase()
         .includes(query),
@@ -140,8 +140,10 @@ export function StudentTable({
                     <TableCell>{student.class}</TableCell>
                     <TableCell>
                       <div>
-                        <p>{student.parent_name}</p>
-                        <p className="text-xs text-slate-500">{student.parent_phone}</p>
+                        <p>{student.parent_name || "—"}</p>
+                        {student.parent_phone ? (
+                          <p className="text-xs text-slate-500">{student.parent_phone}</p>
+                        ) : null}
                       </div>
                     </TableCell>
                     <TableCell className="text-sm">

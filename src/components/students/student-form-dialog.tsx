@@ -48,10 +48,27 @@ export function StudentFormDialog({
   }, [initialData, open]);
 
   const handleSubmit = () => {
+    const trimmedName = form.name.trim();
+    const trimmedClass = form.class.trim();
+
+    if (!trimmedName) {
+      toast.error("Student name is required.");
+      return;
+    }
+    if (!trimmedClass) {
+      toast.error("Class is required.");
+      return;
+    }
+
     startTransition(async () => {
       const result = await saveStudentAction({
         id: initialData?.id,
-        ...form,
+        name: trimmedName,
+        class: trimmedClass,
+        parent_name: form.parent_name.trim(),
+        parent_phone: form.parent_phone.trim(),
+        parent_email: form.parent_email.trim(),
+        student_email: form.student_email.trim(),
       });
 
       if (!result.success) {
@@ -71,23 +88,31 @@ export function StudentFormDialog({
         <DialogHeader>
           <DialogTitle>{initialData ? "Edit student" : "Add student"}</DialogTitle>
           <DialogDescription>
-            Parent and student email fields are used to map read-only portal access.
+            Only student name and class are required. Parent and contact details are optional.
           </DialogDescription>
         </DialogHeader>
         <div className="grid gap-4 sm:grid-cols-2">
           {[
-            ["Student name", "name"],
-            ["Class", "class"],
-            ["Parent name", "parent_name"],
-            ["Parent phone", "parent_phone"],
-            ["Parent email", "parent_email"],
-            ["Student email", "student_email"],
-          ].map(([label, key]) => (
+            { label: "Student name", key: "name", required: true, placeholder: "e.g. Udit" },
+            { label: "Class", key: "class", required: true, placeholder: "e.g. 9 or Class 9" },
+            { label: "Parent name", key: "parent_name", required: false, placeholder: "Optional (e.g. Vijay Shankar)" },
+            { label: "Parent phone", key: "parent_phone", required: false, placeholder: "Optional (e.g. 8004422805)" },
+            { label: "Parent email", key: "parent_email", required: false, placeholder: "Optional (e.g. parent@gmail.com)" },
+            { label: "Student email", key: "student_email", required: false, placeholder: "Optional (e.g. student@gmail.com)" },
+          ].map(({ label, key, required, placeholder }) => (
             <div key={key} className="flex flex-col gap-2">
-              <Label htmlFor={key}>{label}</Label>
+              <Label htmlFor={key} className="flex items-center gap-1.5">
+                <span>{label}</span>
+                {required ? (
+                  <span className="text-destructive font-semibold">*</span>
+                ) : (
+                  <span className="text-xs font-normal text-slate-400">(optional)</span>
+                )}
+              </Label>
               <Input
                 id={key}
                 type={key.includes("email") ? "email" : "text"}
+                placeholder={placeholder}
                 value={form[key as keyof typeof form]}
                 onChange={(event) =>
                   setForm((current) => ({ ...current, [key]: event.target.value }))
@@ -100,8 +125,11 @@ export function StudentFormDialog({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={isPending}>
-            {initialData ? "Save changes" : "Create student"}
+          <Button 
+            onClick={handleSubmit} 
+            disabled={isPending || !form.name.trim() || !form.class.trim()}
+          >
+            {isPending ? "Saving..." : initialData ? "Save changes" : "Create student"}
           </Button>
         </div>
       </DialogContent>
