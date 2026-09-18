@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import { PencilLineIcon, PlusIcon, SearchIcon, Trash2Icon } from "lucide-react";
+import { PencilLineIcon, PlusIcon, SearchIcon, Trash2Icon, Share2Icon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import type { StudentRow, AppRole } from "@/lib/db/types";
@@ -22,6 +22,7 @@ import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { StudentFormDialog } from "@/components/students/student-form-dialog";
+import { StudentInviteDialog } from "@/components/students/student-invite-dialog";
 
 export function StudentTable({
   students,
@@ -38,6 +39,7 @@ export function StudentTable({
   const [isPending, startTransition] = useTransition();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState<StudentRow | null>(null);
+  const [invitingStudent, setInvitingStudent] = useState<StudentRow | null>(null);
   const studentSearch = usePortalFiltersStore((store) => store.studentSearch);
   const setStudentSearch = usePortalFiltersStore((store) => store.setStudentSearch);
 
@@ -147,64 +149,103 @@ export function StudentTable({
                       </div>
                     </TableCell>
                     <TableCell className="text-sm">
-                      <div className="flex flex-col gap-2">
-                        {[
-                          { email: student.parent_email, role: "parent" as AppRole, label: "Parent" },
-                          { email: student.student_email, role: "student" as AppRole, label: "Student" },
-                        ].map((access) => {
-                          if (!access.email) return null;
-                          const currentRole = roleMap[access.email.toLowerCase()];
-                          const isCorrect = currentRole === access.role;
+                      {!(student.parent_email || student.student_email) ? (
+                        <div className="flex items-center gap-2">
+                          <span className="inline-flex items-center rounded-md bg-slate-100 px-2 py-1 text-[11px] font-medium text-slate-500">
+                            No portal linked
+                          </span>
+                          {canManage ? (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="h-7 px-2.5 text-xs gap-1.5 border-primary/30 text-primary hover:bg-primary/5 hover:border-primary font-medium"
+                              onClick={() => setInvitingStudent(student)}
+                            >
+                              <Share2Icon className="size-3.5" />
+                              Invite / Access
+                            </Button>
+                          ) : null}
+                        </div>
+                      ) : (
+                        <div className="flex flex-col gap-2">
+                          {[
+                            { email: student.parent_email, role: "parent" as AppRole, label: "Parent" },
+                            { email: student.student_email, role: "student" as AppRole, label: "Student" },
+                          ].map((access) => {
+                            if (!access.email) return null;
+                            const currentRole = roleMap[access.email.toLowerCase()];
+                            const isCorrect = currentRole === access.role;
 
-                          return (
-                            <div key={access.email} className="flex flex-col gap-1.5 border-l-2 border-slate-100 pl-3">
-                              <p className="text-xs font-medium text-slate-900">{access.label} Access</p>
-                              <p className="text-xs text-slate-500 truncate max-w-[180px]">{access.email}</p>
-                              <div className="flex items-center gap-2">
-                                {currentRole ? (
-                                  <Badge 
-                                    variant={isCorrect ? "outline" : "destructive"} 
-                                    className={cn(
-                                      "h-5 px-1.5 text-[10px] uppercase tracking-wider",
-                                      isCorrect ? "border-emerald-200 bg-emerald-50 text-emerald-700" : ""
-                                    )}
-                                  >
-                                    {isCorrect ? `${roleLabels[currentRole]} OK` : `Incorrect: ${roleLabels[currentRole as AppRole]}`}
-                                  </Badge>
-                                ) : (
-                                  <span className="text-[10px] text-slate-400">Account not created</span>
-                                )}
-                                
-                                {canManage && currentRole && !isCorrect ? (
-                                  <Button 
-                                    variant="ghost" 
-                                    size="sm" 
-                                    className="h-5 px-1.5 text-[10px] text-primary hover:bg-primary/5 font-semibold"
-                                    disabled={isPending}
-                                    onClick={() => {
-                                      startTransition(async () => {
-                                        const result = await assignUserRoleAction(access.email!, access.role);
-                                        if (result.success) {
-                                          toast.success(result.message);
-                                          router.refresh();
-                                        } else {
-                                          toast.error(result.message);
-                                        }
-                                      });
-                                    }}
-                                  >
-                                    Assign as {access.label}
-                                  </Button>
-                                ) : null}
+                            return (
+                              <div key={access.email} className="flex flex-col gap-1.5 border-l-2 border-slate-100 pl-3">
+                                <p className="text-xs font-medium text-slate-900">{access.label} Access</p>
+                                <p className="text-xs text-slate-500 truncate max-w-[180px]">{access.email}</p>
+                                <div className="flex items-center gap-2">
+                                  {currentRole ? (
+                                    <Badge 
+                                      variant={isCorrect ? "outline" : "destructive"} 
+                                      className={cn(
+                                        "h-5 px-1.5 text-[10px] uppercase tracking-wider",
+                                        isCorrect ? "border-emerald-200 bg-emerald-50 text-emerald-700" : ""
+                                      )}
+                                    >
+                                      {isCorrect ? `${roleLabels[currentRole]} OK` : `Incorrect: ${roleLabels[currentRole as AppRole]}`}
+                                    </Badge>
+                                  ) : (
+                                    <span className="text-[10px] text-slate-400">Account not created</span>
+                                  )}
+                                  
+                                  {canManage && currentRole && !isCorrect ? (
+                                    <Button 
+                                      variant="ghost" 
+                                      size="sm" 
+                                      className="h-5 px-1.5 text-[10px] text-primary hover:bg-primary/5 font-semibold"
+                                      disabled={isPending}
+                                      onClick={() => {
+                                        startTransition(async () => {
+                                          const result = await assignUserRoleAction(access.email!, access.role);
+                                          if (result.success) {
+                                            toast.success(result.message);
+                                            router.refresh();
+                                          } else {
+                                            toast.error(result.message);
+                                          }
+                                        });
+                                      }}
+                                    >
+                                      Assign as {access.label}
+                                    </Button>
+                                  ) : null}
+                                </div>
                               </div>
-                            </div>
-                          );
-                        })}
-                      </div>
+                            );
+                          })}
+                          {canManage ? (
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="h-6 w-fit px-2 text-[11px] text-primary hover:bg-primary/5 gap-1"
+                              onClick={() => setInvitingStudent(student)}
+                            >
+                              <Share2Icon className="size-3" />
+                              Share link / WhatsApp
+                            </Button>
+                          ) : null}
+                        </div>
+                      )}
                     </TableCell>
                     {canManage ? (
                       <TableCell>
                         <div className="flex justify-end gap-2">
+                          <Button
+                            variant="outline"
+                            size="icon-sm"
+                            title="Share Portal Access"
+                            onClick={() => setInvitingStudent(student)}
+                            className="text-primary hover:text-primary hover:bg-primary/5"
+                          >
+                            <Share2Icon />
+                          </Button>
                           <Button
                             variant="outline"
                             size="icon-sm"
@@ -234,12 +275,20 @@ export function StudentTable({
         )}
       </CardContent>
       {canManage ? (
-        <StudentFormDialog
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-          initialData={editingStudent}
-          onSaved={() => router.refresh()}
-        />
+        <>
+          <StudentFormDialog
+            open={dialogOpen}
+            onOpenChange={setDialogOpen}
+            initialData={editingStudent}
+            onSaved={() => router.refresh()}
+          />
+          <StudentInviteDialog
+            open={!!invitingStudent}
+            onOpenChange={(open) => !open && setInvitingStudent(null)}
+            student={invitingStudent}
+            onSaved={() => router.refresh()}
+          />
+        </>
       ) : null}
     </Card>
   );

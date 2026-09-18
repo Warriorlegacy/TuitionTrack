@@ -18,6 +18,25 @@
 // blueprint. Total provider time is capped by VIDEO_BUDGET_MS so serverless
 // functions never blow their timeout.
 
+export type LessonTopic = {
+  heading: string;
+  explain: string;
+  bullets: string[];
+  example: string;
+  visual: string;
+};
+
+// One block of the extended 1-hour one-shot lesson (~5 min spoken each).
+// narration is the FULL voice script for the block (~700-800 words per
+// 5 min); points are the on-screen bullets; visual drives the 3D scene.
+export type LessonSegment = {
+  heading: string;
+  minutes: number;
+  narration: string;
+  points: string[];
+  visual: string;
+};
+
 export type LessonScript = {
   kicker: string;
   title: string;
@@ -29,6 +48,16 @@ export type LessonScript = {
   ctaTitle: string;
   ctaBody: string;
   videoPrompt: string;
+  // Full topic-wise explanation (researched). Absent on the deterministic
+  // base only as `undefined` — renderers treat missing topics as "hook only".
+  topics?: LessonTopic[];
+  misconception?: string;
+  examTip?: string;
+  sources?: string[];
+  // Extended 1-hour one-shot (researched in chunks, cached to JSON).
+  // Absent until scripts/research-extended.ts covers the lesson.
+  segments?: LessonSegment[];
+  totalMinutes?: number;
 };
 
 export type VideoBytes = {
@@ -243,6 +272,26 @@ export function parseStoryboard(text: string, concept: string): LessonScript {
           body: str((s as { body?: unknown })?.body, fb.steps[Math.min(i, 2)].body),
         }))
       : fb.steps;
+    // Full-explanation topics: kept only when the model actually researched
+    // them (2+). No generic scaffold — unresearched lessons stay the 18s hook.
+    const topics: LessonTopic[] | undefined = Array.isArray(j.topics)
+      ? j.topics.slice(0, 5).map((t) => {
+          const o = (t ?? {}) as Partial<LessonTopic>;
+          const bullets = Array.isArray(o.bullets)
+            ? o.bullets.filter((b): b is string => typeof b === "string" && b.trim().length > 0).slice(0, 4).map((b) => b.trim().slice(0, 160))
+            : [];
+          return {
+            heading: str(o.heading, ""),
+            explain: str(o.explain, ""),
+            bullets,
+            example: str(o.example, ""),
+            visual: str(o.visual, ""),
+          };
+        }).filter((t) => t.heading && t.explain)
+      : [];
+    const sources = Array.isArray(j.sources)
+      ? j.sources.filter((s): s is string => typeof s === "string" && s.trim().length > 0).slice(0, 4).map((s) => s.trim().slice(0, 120))
+      : undefined;
     return {
       kicker: str(j.kicker, fb.kicker),
       title: str(j.title, fb.title),
@@ -254,6 +303,10 @@ export function parseStoryboard(text: string, concept: string): LessonScript {
       ctaTitle: str(j.ctaTitle, fb.ctaTitle),
       ctaBody: str(j.ctaBody, fb.ctaBody),
       videoPrompt: str(j.videoPrompt, fb.videoPrompt),
+      topics: topics.length >= 2 ? topics : undefined,
+      misconception: typeof j.misconception === "string" && j.misconception.trim() ? j.misconception.trim().slice(0, 220) : undefined,
+      examTip: typeof j.examTip === "string" && j.examTip.trim() ? j.examTip.trim().slice(0, 220) : undefined,
+      sources: sources?.length ? sources : undefined,
     };
   } catch {
     return deterministicStoryboard(concept);

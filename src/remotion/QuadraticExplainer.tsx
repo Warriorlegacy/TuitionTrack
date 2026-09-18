@@ -47,7 +47,18 @@ function useScript(props: QuadraticProps): LessonScript {
     ctaTitle: s.ctaTitle || DEFAULT_SCRIPT.ctaTitle,
     ctaBody: s.ctaBody || DEFAULT_SCRIPT.ctaBody,
     videoPrompt: s.videoPrompt || "",
+    topics: s.topics?.length ? s.topics.slice(0, 5) : undefined,
+    misconception: s.misconception,
+    examTip: s.examTip,
+    sources: s.sources,
   };
+}
+
+// Full-explanation duration: 18s hook (540f) + 10s (300f) per researched
+// topic + CTA is inside the hook. Mirrors make-lesson-videos.ts timing.
+export function lessonDurationFrames(script?: Partial<LessonScript>): number {
+  const n = Math.min(script?.topics?.length ?? 0, 5);
+  return 540 + n * 300;
 }
 
 // ponytail: one helper, inline styles only (no animate-*/transition-* classes).
@@ -57,7 +68,7 @@ function rise(frame: number, start: number, dist = 28) {
   return { opacity, transform: `translateY(${y}px)` };
 }
 
-function ParabolaAccent() {
+export function ParabolaAccent() {
   const frame = useCurrentFrame();
   const rotationY = frame * 0.02; // useCurrentFrame-driven (never useFrame)
   const { width, height } = useVideoConfig();
@@ -121,8 +132,32 @@ function FormulaScene({ script }: { script: LessonScript }) {
   );
 }
 
-function CtaScene({ script }: { script: LessonScript }) {
+function TopicScene({ index, topic }: { index: number; topic: NonNullable<LessonScript["topics"]>[number] }) {
   const frame = useCurrentFrame();
+  return (
+    <AbsoluteFill style={{ background: index % 2 ? BG : LIGHT_BG, padding: 72, justifyContent: "center" }}>
+      <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: "0.18em", color: index % 2 ? "#a5b4fc" : "#4f46e5", ...rise(frame, 4) }}>
+        TOPIC {index + 1} · {topic.heading.toUpperCase().slice(0, 60)}
+      </div>
+      <div style={{ fontSize: 56, fontWeight: 800, color: index % 2 ? "#fff" : "#0f172a", marginTop: 12, ...rise(frame, 12) }}>
+        {topic.heading}
+      </div>
+      <div style={{ fontSize: 27, color: index % 2 ? "#cbd5e1" : "#334155", marginTop: 14, maxWidth: 980, ...rise(frame, 24) }}>
+        {topic.explain}
+      </div>
+      {topic.bullets.slice(0, 3).map((b, i) => (
+        <div key={b} style={{ marginTop: 10, padding: "12px 22px", borderRadius: 14, background: index % 2 ? "rgba(165,180,252,0.12)" : "rgba(255,255,255,0.95)", fontSize: 25, fontWeight: 600, color: index % 2 ? "#e0e7ff" : "#0f172a", ...rise(frame, 40 + i * 30) }}>
+          • {b}
+        </div>
+      ))}
+      <div style={{ fontSize: 24, fontStyle: "italic", color: index % 2 ? "#a5b4fc" : "#4f46e5", marginTop: 16, ...rise(frame, 140) }}>
+        {topic.example}
+      </div>
+    </AbsoluteFill>
+  );
+}
+
+function CtaScene({ script }: { script: LessonScript }) {  const frame = useCurrentFrame();
   return (
     <AbsoluteFill style={{ background: BG, padding: 72, justifyContent: "center" }}>
       <div style={{ fontSize: 20, fontWeight: 700, letterSpacing: "0.18em", color: "#a5b4fc", ...rise(frame, 6) }}>
@@ -141,11 +176,17 @@ function CtaScene({ script }: { script: LessonScript }) {
 
 export function QuadraticExplainer(props: QuadraticProps) {
   const script = useScript(props);
+  const topics = script.topics?.slice(0, 5) ?? [];
   return (
     <AbsoluteFill>
       <Sequence from={0} durationInFrames={180}><TitleScene script={script} /></Sequence>
       <Sequence from={180} durationInFrames={180}><FormulaScene script={script} /></Sequence>
-      <Sequence from={360} durationInFrames={180}><CtaScene script={script} /></Sequence>
+      {topics.map((t, i) => (
+        <Sequence key={t.heading} from={360 + i * 300} durationInFrames={300}>
+          <TopicScene index={i} topic={t} />
+        </Sequence>
+      ))}
+      <Sequence from={360 + topics.length * 300} durationInFrames={180}><CtaScene script={script} /></Sequence>
     </AbsoluteFill>
   );
 }

@@ -3,7 +3,8 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { requireAuthContext } from "@/lib/auth";
 import { PageHeader } from "@/components/shared/page-header";
-import { VIDEO_CATALOG, getClassEntry, getSubjects, resolveScript } from "@/lib/learn/video-catalog";
+import { VIDEO_CATALOG, getClassEntry, getSubjects } from "@/lib/learn/video-catalog";
+import { resolveLessonScript } from "@/lib/learn/lesson-research";
 import { ClassLessonCard } from "@/components/learn/class-lesson-card";
 import { cn } from "@/lib/utils";
 
@@ -11,8 +12,8 @@ export const dynamic = "force-dynamic";
 
 // /app/videos — class-wise 3D animated learning videos (Classes 6–12, every
 // chapter of every core subject). Filter by class, then subject. Every lesson
-// plays on BOTH engines: Remotion 3D in-app preview and the HyperFrames 18s
-// file render at /videos/<slug>/, baked from one script.
+// plays on BOTH engines from one researched full-topic script: Remotion 3D
+// in-app preview and the HyperFrames file render at /videos/<slug>/.
 export default async function VideosPage({
   searchParams,
 }: {
@@ -51,7 +52,7 @@ export default async function VideosPage({
     <div className="space-y-6 pb-24 md:pb-0">
       <PageHeader
         title="Learning Videos"
-        description={`${totalLessons} chapter-wise 3D micro-lessons across Classes 6–12 — Remotion 3D in-app, HyperFrames file renders to share.`}
+        description={`${totalLessons} chapter-wise 3D lessons across Classes 6–12 — quick previews, full topic-wise explainers, and 1-hour voiced one-shots where researched.`}
       />
       <nav aria-label="Filter by class" className="flex flex-wrap gap-2">
         {VIDEO_CATALOG.map((c) => (
@@ -85,7 +86,7 @@ export default async function VideosPage({
           <ClassLessonCard
             key={lessonItem.slug}
             lesson={lessonItem}
-            script={resolveScript(lessonItem)}
+            script={resolveLessonScript(lessonItem)}
             hasNarrated={narrated.has(lessonItem.slug)}
           />
         ))}

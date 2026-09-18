@@ -15,6 +15,10 @@ import type { LessonScript } from "@/lib/ai/video";
 
 export function ClassLessonCard({ lesson, script, hasNarrated }: { lesson: VideoLesson; script: LessonScript; hasNarrated?: boolean }) {
   const [playing, setPlaying] = useState(false);
+  const topics = script.topics?.slice(0, 5) ?? [];
+  const segments = script.segments ?? [];
+  const totalMin = script.totalMinutes ?? segments.reduce((n, s) => n + (Number(s.minutes) || 5), 0);
+  const runtime = segments.length ? `~${totalMin} min` : topics.length ? `0:${18 + topics.length * 10}` : "0:18";
 
   return (
     <article className="grid items-center gap-6 rounded-tt-lg border border-slate-200 bg-white p-6 shadow-soft md:grid-cols-[1.1fr_0.9fr]">
@@ -23,7 +27,17 @@ export function ClassLessonCard({ lesson, script, hasNarrated }: { lesson: Video
           <Badge variant="secondary" className="w-fit">
             Ch {lesson.chapter} · {lesson.subject}
           </Badge>
-          <span className="tt-tnum rounded bg-black/70 px-2 py-0.5 text-xs font-medium text-white">0:18</span>
+          <span className="tt-tnum rounded bg-black/70 px-2 py-0.5 text-xs font-medium text-white">{runtime}</span>
+          {topics.length ? (
+            <span className="rounded bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-800">
+              {topics.length} topics · full explanation
+            </span>
+          ) : null}
+          {segments.length ? (
+            <span className="rounded bg-amber-100 px-2 py-0.5 text-xs font-medium text-amber-800">
+              1-hour lesson · {segments.length} parts + voice
+            </span>
+          ) : null}
         </div>
         {playing ? (
           <RemotionLessonPlayer script={script} />
@@ -65,6 +79,15 @@ export function ClassLessonCard({ lesson, script, hasNarrated }: { lesson: Video
             <FilePlayIcon className="mr-1 size-4" aria-hidden />
             File render
           </Button>
+          {segments.length ? (
+            <Button
+              size="sm"
+              render={<a href={`/videos/${lesson.slug}/full.html`} target="_blank" rel="noreferrer" />}
+            >
+              <PlayIcon className="mr-1 size-4" aria-hidden />
+              1-hour full lesson
+            </Button>
+          ) : null}
           {hasNarrated ? (
             <Button
               size="sm"
@@ -77,8 +100,43 @@ export function ClassLessonCard({ lesson, script, hasNarrated }: { lesson: Video
           ) : null}
         </div>
         <p className="mt-3 text-xs leading-5 text-slate-400">
-          Remotion 3D preview + HyperFrames file — same 18-second story on both engines.
+          Remotion 3D preview + HyperFrames file — same story on both engines.
         </p>
+        {topics.length ? (
+          <details className="mt-3 rounded-tt-md border border-slate-200 bg-slate-50 p-3">
+            <summary className="cursor-pointer text-sm font-semibold text-slate-800">
+              Full explanation · {topics.length} topics
+            </summary>
+            <ol className="mt-2 space-y-3">
+              {topics.map((t, i) => (
+                <li key={t.heading}>
+                  <p className="text-sm font-semibold text-slate-900">
+                    {i + 1}. {t.heading}
+                  </p>
+                  <p className="mt-0.5 text-sm leading-6 text-slate-600">{t.explain}</p>
+                  <ul className="mt-1 list-disc pl-5 text-sm leading-6 text-slate-600">
+                    {t.bullets.map((b) => (
+                      <li key={b}>{b}</li>
+                    ))}
+                  </ul>
+                  <p className="mt-1 text-sm italic text-slate-500">{t.example}</p>
+                </li>
+              ))}
+            </ol>
+            {script.misconception ? (
+              <p className="mt-2 text-sm leading-6 text-slate-600">
+                <span className="font-semibold text-slate-800">Watch out: </span>
+                {script.misconception}
+              </p>
+            ) : null}
+            {script.examTip ? (
+              <p className="mt-1 text-sm leading-6 text-slate-600">
+                <span className="font-semibold text-slate-800">Exam tip: </span>
+                {script.examTip}
+              </p>
+            ) : null}
+          </details>
+        ) : null}
       </div>
     </article>
   );

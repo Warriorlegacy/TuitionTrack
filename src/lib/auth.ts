@@ -120,18 +120,54 @@ export async function getAuthContext(): Promise<AuthContext> {
 
       accessibleStudents = (data as StudentRow[] | null) ?? [];
     } else if (effectiveRole === "parent" && email) {
-      const { data } = await supabase
+      let { data } = await supabase
         .from("students")
         .select("*")
         .ilike("parent_email", email)
         .order("created_at", { ascending: false });
+
+      if (!data || data.length === 0) {
+        try {
+          const { createSupabaseAdminClient } = await import("@/lib/supabase/admin");
+          const admin = createSupabaseAdminClient();
+          const { data: adminData } = await admin
+            .from("students")
+            .select("*")
+            .ilike("parent_email", email)
+            .order("created_at", { ascending: false });
+          if (adminData && adminData.length > 0) {
+            data = adminData;
+          }
+        } catch {
+          // ignore fallback
+        }
+      }
+
       accessibleStudents = (data as StudentRow[] | null) ?? [];
     } else if (effectiveRole === "student" && email) {
-      const { data } = await supabase
+      let { data } = await supabase
         .from("students")
         .select("*")
         .ilike("student_email", email)
         .order("created_at", { ascending: false });
+
+      if (!data || data.length === 0) {
+        try {
+          const { createSupabaseAdminClient } = await import("@/lib/supabase/admin");
+          const admin = createSupabaseAdminClient();
+          const { data: adminData } = await admin
+            .from("students")
+            .select("*")
+            .ilike("student_email", email)
+            .order("created_at", { ascending: false });
+          if (adminData && adminData.length > 0) {
+            data = adminData;
+          }
+        } catch {
+          // ignore fallback
+        }
+      }
+
       accessibleStudents = (data as StudentRow[] | null) ?? [];
     }
 

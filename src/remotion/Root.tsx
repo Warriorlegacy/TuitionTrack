@@ -3,8 +3,11 @@ import { QuadraticExplainer } from "./QuadraticExplainer";
 import { ALL_LESSONS, resolveScript } from "../lib/learn/video-catalog";
 
 // Remotion entry: one composition per catalog lesson (class-wise, Classes
-// 6–12) plus the original QuadraticExplainer. Every composition renders the
-// same LessonScript object that scripts/make-lesson-videos.ts bakes into the
+// 6–12) plus the original QuadraticExplainer. Default props stay on the
+// deterministic hook (bundle-safe: no node:fs in the Studio bundle); the
+// in-app player receives the researched full-topic script as a prop from the
+// server page and sizes itself via lessonDurationFrames, and
+// scripts/make-lesson-videos.ts bakes the same full script into the
 // HyperFrames file render — both engines, one story.
 export function RemotionRoot() {
   return (
