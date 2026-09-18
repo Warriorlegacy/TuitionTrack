@@ -430,6 +430,7 @@ export async function getHomeworkPageData(context: AuthContext) {
   return {
     students: context.accessibleStudents,
     homework: await fetchHomework(context),
+    aiAssignments: await fetchAiAssignments(context),
   };
 }
 
@@ -716,3 +717,135 @@ export async function getAnalyticsPageData(context: AuthContext) {
     recentReportsCount: reports?.length ?? 0,
   };
 }
+
+export type AiAssignmentSummary = {
+  id: string;
+  title: string;
+  class_level: number;
+  subject: string;
+  chapter_slug: string;
+  preset: string;
+  mode: string;
+  submission_mode: string;
+  due_date: string;
+  total_marks: number;
+  ai_grading_enabled: boolean;
+  created_at: string;
+  submissions_count?: number;
+  student_submission?: {
+    id: string;
+    status: string;
+    score: number;
+    total_marks: number;
+    percentage: number;
+    submitted_at: string;
+  } | null;
+};
+
+export async function fetchAiAssignments(context: AuthContext): Promise<AiAssignmentSummary[]> {
+  const supabase = createSupabaseServerClient();
+  try {
+    if (context.canManage) {
+      const { data, error } = await supabase
+        .from("assignments")
+        .select(`
+          id,
+          title,
+          class_level,
+          subject,
+          chapter_slug,
+          preset,
+          mode,
+          submission_mode,
+          due_date,
+          total_marks,
+          ai_grading_enabled,
+          created_at,
+          submissions:assignment_submissions(count)
+        `)
+        .order("created_at", { ascending: false });
+
+      if (error || !data) return [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return data.map((row: any) => ({
+        id: row.id,
+        title: row.title,
+        class_level: row.class_level,
+        subject: row.subject,
+        chapter_slug: row.chapter_slug,
+        preset: row.preset,
+        mode: row.mode,
+        submission_mode: row.submission_mode,
+        due_date: row.due_date,
+        total_marks: Number(row.total_marks || 0),
+        ai_grading_enabled: row.ai_grading_enabled,
+        created_at: row.created_at,
+        submissions_count: row.submissions?.[0]?.count ?? 0,
+      }));
+    } else {
+      const studentId = context.accessibleStudents[0]?.id;
+      const { data, error } = await supabase
+        .from("assignments")
+        .select(`
+          id,
+          title,
+          class_level,
+          subject,
+          chapter_slug,
+          preset,
+          mode,
+          submission_mode,
+          due_date,
+          total_marks,
+          ai_grading_enabled,
+          created_at,
+          submissions:assignment_submissions(
+            id,
+            status,
+            score,
+            total_marks,
+            percentage,
+            submitted_at,
+            student_id
+          )
+        `)
+        .order("created_at", { ascending: false });
+
+      if (error || !data) return [];
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return data.map((row: any) => {
+        const studentSub = studentId
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ? row.submissions?.find((s: any) => s.student_id === studentId)
+          : row.submissions?.[0];
+        return {
+          id: row.id,
+          title: row.title,
+          class_level: row.class_level,
+          subject: row.subject,
+          chapter_slug: row.chapter_slug,
+          preset: row.preset,
+          mode: row.mode,
+          submission_mode: row.submission_mode,
+          due_date: row.due_date,
+          total_marks: Number(row.total_marks || 0),
+          ai_grading_enabled: row.ai_grading_enabled,
+          created_at: row.created_at,
+          student_submission: studentSub
+            ? {
+                id: studentSub.id,
+                status: studentSub.status,
+                score: Number(studentSub.score || 0),
+                total_marks: Number(studentSub.total_marks || 0),
+                percentage: Number(studentSub.percentage || 0),
+                submitted_at: studentSub.submitted_at,
+              }
+            : null,
+        };
+      });
+    }
+  } catch {
+    return [];
+  }
+}
+

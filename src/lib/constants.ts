@@ -14,6 +14,7 @@ export const routeTitles: Record<string, string> = {
   "/app/tutor": "AI Tutor",
   "/app/videos": "Videos",
   "/app/students": "Students",
+  "/app/curriculum": "NCERT & Curriculum",
   "/app/homework": "Homework",
   "/app/attendance": "Attendance",
   "/app/tests": "Tests",
@@ -89,6 +90,12 @@ export const appNav: NavItem[] = [
     label: "Students",
     icon: "users",
     roles: ["teacher", "parent"],
+  },
+  {
+    href: "/app/curriculum",
+    label: "NCERT & Curriculum",
+    icon: "book-open-check",
+    roles: ["teacher", "parent", "student"],
   },
   {
     href: "/app/homework",
