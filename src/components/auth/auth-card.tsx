@@ -47,6 +47,34 @@ type AuthCardProps = {
   mode: "login" | "signup";
 };
 
+// Raw Supabase messages confuse users ("Invalid login credentials") — map
+// the common ones to plain language. Unknown errors pass through untouched.
+function friendlyAuthError(message: string): string {
+  const m = message.toLowerCase();
+  if (m.includes("invalid login credentials")) {
+    return "Email or password is incorrect. Try again or reset your password.";
+  }
+  if (m.includes("email not confirmed")) {
+    return "Please verify your email first — check your inbox for the confirmation link.";
+  }
+  if (m.includes("user already registered") || m.includes("already exists")) {
+    return "This email already has an account. Try logging in instead.";
+  }
+  if (m.includes("password should be at least")) {
+    return "Password must be at least 6 characters.";
+  }
+  if (m.includes("rate limit") || m.includes("too many requests")) {
+    return "Too many attempts. Wait a minute and try again.";
+  }
+  if (m.includes("network") || m.includes("fetch failed") || m.includes("failed to fetch")) {
+    return "Network issue — check your connection and try again.";
+  }
+  if (m.includes("provider is not enabled")) {
+    return "Google login isn't enabled yet. Use email login for now.";
+  }
+  return message;
+}
+
 export function AuthCard({ mode }: AuthCardProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -84,7 +112,7 @@ export function AuthCard({ mode }: AuthCardProps) {
             });
 
       if (result.error) {
-        toast.error(result.error.message);
+        toast.error(friendlyAuthError(result.error.message));
         return;
       }
 
@@ -130,7 +158,7 @@ export function AuthCard({ mode }: AuthCardProps) {
       });
 
       if (error) {
-        toast.error(error.message);
+        toast.error(friendlyAuthError(error.message));
       }
     });
   };
@@ -238,6 +266,9 @@ export function AuthCard({ mode }: AuthCardProps) {
             Supabase keys not detected in production. Check Vercel settings.
           </div>
         )}
+        <p className="text-center text-xs text-slate-400">
+          You stay signed in on this device — no need to log in every time.
+        </p>
       </CardContent>
     </Card>
   );

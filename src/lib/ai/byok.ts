@@ -79,6 +79,19 @@ export async function getBestKeyForTier(
     tier === "deterministic" ? null : prefs?.default_model || null,
   );
 
+  // Touch last_used_at (fire-and-forget) so key usage is visible in the UI.
+  // Key resolution ≈ usage; per-key failures surface via last_error elsewhere.
+  void Promise.resolve(
+    supabase
+      .from("user_ai_keys")
+      .update({ last_used_at: new Date().toISOString() })
+      .eq("id", preferred.id),
+  )
+    .then(({ error }) => {
+      if (error) console.warn("[byok] last_used_at update failed:", error.message);
+    })
+    .catch(() => {});
+
   return { key: plainKey, provider, model };
 }
 

@@ -14,9 +14,15 @@ export function createSupabaseServerClient(): SupabaseClient<Database, "public">
         return cookieStore.getAll();
       },
       setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value, options }) => {
-          cookieStore.set(name, value, options);
-        });
+        try {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options);
+          });
+        } catch {
+          // Called from a Server Component (cookie writes are only allowed in
+          // Server Actions / Route Handlers). Safe to ignore: the middleware
+          // refreshes sessions before RSCs render, so this is a no-op fallback.
+        }
       },
     },
   });

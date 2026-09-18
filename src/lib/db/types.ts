@@ -401,6 +401,13 @@ export interface Database {
       ai_evaluations: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
       audit_logs: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
       consent_records: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      agent_runs: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      automation_rules: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      approvals: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      tasks: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      message_templates: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      message_outbox: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      inbound_messages: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
     };
     Views: Record<string, {
       Row: Record<string, unknown>;

@@ -3,6 +3,8 @@ import { getTestsPageData } from "@/lib/queries";
 import { PageHeader } from "@/components/shared/page-header";
 import { Empty, EmptyDescription, EmptyTitle } from "@/components/ui/empty";
 import { TodayView } from "@/components/today/today-view";
+import { MotionLessonCard } from "@/components/learn/motion-lesson-card";
+import { AiVideoCard } from "@/components/learn/ai-video-card";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +18,8 @@ export default async function TodayPage({
   const students = context.accessibleStudents;
   const wanted = typeof searchParams?.student === "string" ? searchParams.student : undefined;
   const student = students.find((s) => s.id === wanted) ?? students[0] ?? null;
+  const initialConcept =
+    typeof searchParams?.concept === "string" ? searchParams.concept.slice(0, 200) : undefined;
 
   if (!student) {
     return (
@@ -65,6 +69,8 @@ export default async function TodayPage({
         recentTests={recentTests}
         aiRecommendation={aiRecommendation}
       />
+      <MotionLessonCard studentId={student.id} />
+      <AiVideoCard studentId={student.id} initialConcept={initialConcept} />
     </div>
   );
 }

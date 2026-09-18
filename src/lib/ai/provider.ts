@@ -1,7 +1,8 @@
 // Provider abstraction + cost tiers (blueprint #45, #47, #65).
 //
 // Multi-provider BYOK: OpenAI, Anthropic, Google, Groq, Together AI, OpenRouter,
-// HuggingFace, or any OpenAI-compatible endpoint. Free-tier models are prioritized
+// HuggingFace, NVIDIA NIM, DeepSeek, GitHub Models, local Ollama,
+// or any OpenAI-compatible endpoint. Free-tier models are prioritized
 // when user preference allows. Server-side secrets only; client never sees keys.
 //
 // Degradation contract (blueprint #83): with no platform key and no BYOK key,
@@ -21,32 +22,42 @@ const ENDPOINTS: Record<string, { base: string; kind: "openai" | "anthropic" | "
   openrouter:  { base: "https://openrouter.ai/api/v1", kind: "openai" },
   huggingface: { base: "https://router.huggingface.co/v1", kind: "openai" },
   nvidia:      { base: "https://integrate.api.nvidia.com/v1", kind: "openai" },
+  deepseek:    { base: "https://api.deepseek.com/v1", kind: "openai" },
+  github:      { base: "https://models.github.ai/inference", kind: "openai" },
+  ollama:      { base: "http://localhost:11434/v1", kind: "openai" },
   custom:      { base: "", kind: "custom" },
 };
 
 // ── Free-tier-friendly defaults (overridden by AI_MODEL_TIER_* env or user prefs) ──
 // OpenRouter free slugs verified against /api/v1/models on 2026-09-16 — the old
-// google/gemini-2.0-flash-exp:free was retired (404: no endpoints found).
+// google/gemini-2.0-flash-exp:free was retired (404: no endpoints found), and
+// nvidia/nemotron-3.5-lightning:free is a slow REASONING model (burns tokens on
+// a thinking trace — bad for short completions), so A/B default to the fast
+// non-reasoning google/gemma-4-26b-a4b-it:free (1.6s round-trip), tier C to
+// inclusionai/ling-3.0-flash-vl:free (1.25s).
 // Google: gemini-2.0-* retired (404 as of 2026-09); 2.5/3.x are current.
 // NVIDIA NIM: meta/llama-3.1-8b-instruct reached EOL (410); nemotron is current.
 const FREE_MODELS: Record<"A" | "B" | "C", Record<string, string>> = {
   A: {
     openai: "gpt-4o-mini", anthropic: "claude-3-haiku-20240307", google: "gemini-2.5-flash-lite",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-    openrouter: "nvidia/nemotron-3.5-lightning:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
-    nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", custom: "",
+    openrouter: "google/gemma-4-26b-a4b-it:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
+    nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", deepseek: "deepseek-chat",
+    ollama: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
   },
   B: {
     openai: "gpt-4o-mini", anthropic: "claude-3-haiku-20240307", google: "gemini-2.5-flash",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-    openrouter: "nvidia/nemotron-3.5-lightning:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
-    nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", custom: "",
+    openrouter: "google/gemma-4-26b-a4b-it:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
+    nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", deepseek: "deepseek-chat",
+    ollama: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
   },
   C: {
     openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-2.5-pro",
     groq: "openai/gpt-oss-120b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-    openrouter: "nvidia/nemotron-3-ultra-550b-a55b:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
-    nvidia: "nvidia/nemotron-3-super-120b-a12b", custom: "",
+    openrouter: "inclusionai/ling-3.0-flash-vl:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
+    nvidia: "nvidia/nemotron-3-super-120b-a12b", deepseek: "deepseek-chat",
+    ollama: "qwen2.5:14b", github: "openai/gpt-4o", custom: "",
   },
 };
 
@@ -55,19 +66,22 @@ const PAID_MODELS: Record<"A" | "B" | "C", Record<string, string>> = {
     openai: "gpt-4o-mini", anthropic: "claude-3-5-haiku-20241022", google: "gemini-2.5-flash-lite",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     openrouter: "openai/gpt-4o-mini", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
-    nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", custom: "",
+    nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", deepseek: "deepseek-chat",
+    ollama: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
   },
   B: {
     openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-2.5-flash",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     openrouter: "openai/gpt-4o", huggingface: "meta-llama/Llama-3.1-70B-Instruct",
-    nvidia: "nvidia/nemotron-3-super-120b-a12b", custom: "",
+    nvidia: "nvidia/nemotron-3-super-120b-a12b", deepseek: "deepseek-chat",
+    ollama: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
   },
   C: {
     openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-2.5-pro",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     openrouter: "openai/gpt-4o", huggingface: "meta-llama/Llama-3.1-70B-Instruct",
-    nvidia: "nvidia/nemotron-3-super-120b-a12b", custom: "",
+    nvidia: "nvidia/nemotron-3-super-120b-a12b", deepseek: "deepseek-chat",
+    ollama: "qwen2.5:14b", github: "openai/gpt-4o", custom: "",
   },
 };
 
@@ -78,7 +92,7 @@ const ENV_MODELS: Record<"A" | "B" | "C", string | undefined> = {
 };
 
 // ── Provider detection from key prefix ─────────────────────────────
-export type ProviderKind = "openai" | "anthropic" | "google" | "groq" | "together" | "openrouter" | "huggingface" | "nvidia" | "custom";
+export type ProviderKind = "openai" | "anthropic" | "google" | "groq" | "together" | "openrouter" | "huggingface" | "nvidia" | "deepseek" | "ollama" | "github" | "custom";
 
 export interface ResolvedProvider {
   kind: ProviderKind;
@@ -97,7 +111,10 @@ export function detectProviderFromKey(apiKey: string): ProviderKind {
   if (apiKey.startsWith("AIza") || apiKey.startsWith("AQ.")) return "google";
   // NVIDIA NIM (build.nvidia.com) exposes an OpenAI-compatible /v1 API.
   if (apiKey.startsWith("nvapi-")) return "nvidia";
+  if (apiKey.startsWith("ghp_") || apiKey.startsWith("github_pat_")) return "github";
   if (apiKey.startsWith("sk-ant-")) return "anthropic";
+  // NOTE: DeepSeek keys share the sk- prefix with OpenAI — they stay
+  // openai-detected here; explicit provider selection in the UI disambiguates.
   if (apiKey.startsWith("sk-")) return "openai";
   return "custom";
 }
@@ -112,15 +129,16 @@ const PLATFORM_KEYS: { kind: ProviderKind; key: string | undefined }[] = [
   { kind: "nvidia", key: process.env.NVIDIA_NIM_API_KEY },
   { kind: "huggingface", key: process.env.HUGGINGFACE_API_KEY },
   { kind: "openai", key: process.env.OPENAI_API_KEY },
+  // Paid/local last: cheap DeepSeek, then GitHub Models free tier, then local
+  // Ollama. NOTE: GITHUB_MODELS_TOKEN, not GITHUB_TOKEN (Actions reserves that).
+  { kind: "deepseek", key: process.env.DEEPSEEK_API_KEY },
+  { kind: "github", key: process.env.GITHUB_MODELS_TOKEN },
+  { kind: "ollama", key: process.env.OLLAMA_API_KEY },
 ];
 
 /** First configured platform key (free tiers first). Callers then resolve kind via the entry. */
 export function getPlatformKey(): { kind: ProviderKind; key: string } | null {
-  for (const entry of PLATFORM_KEYS) {
-    const k = entry.key?.trim();
-    if (k) return { kind: detectProviderFromKey(k) === "custom" ? entry.kind : detectProviderFromKey(k), key: k };
-  }
-  return null;
+  return getPlatformKeyChain()[0] ?? null;
 }
 
 /** All configured platform keys, free-first — used for automatic fallback on provider errors. */
@@ -131,6 +149,11 @@ export function getPlatformKeyChain(): { kind: ProviderKind; key: string }[] {
     if (!k) continue;
     const detected = detectProviderFromKey(k);
     out.push({ kind: detected === "custom" ? entry.kind : detected, key: k });
+  }
+  // ponytail: local ollama needs no key — a set OLLAMA_BASE_URL alone enables
+  // it with a dummy key (avoids a new branch in requestCompletion).
+  if (process.env.OLLAMA_BASE_URL?.trim() && !out.some((e) => e.kind === "ollama")) {
+    out.push({ kind: "ollama", key: process.env.OLLAMA_API_KEY?.trim() || "ollama" });
   }
   return out;
 }
@@ -185,6 +208,14 @@ const PRICE_PER_1K: Record<string, { in: number; out: number }> = {
   "gemini-2.5-flash-lite": { in: 0.000075, out: 0.0003 },
   "gemini-2.5-flash": { in: 0.00015, out: 0.0006 },
   "gemini-2.5-pro": { in: 0.00125, out: 0.005 },
+  "google/gemma-4-26b-a4b-it:free": { in: 0, out: 0 },
+  "google/gemma-4-31b-it:free": { in: 0, out: 0 },
+  "inclusionai/ling-3.0-flash-vl:free": { in: 0, out: 0 },
+  "nex-agi/nex-n2.5-mini:free": { in: 0, out: 0 },
+  "nex-agi/nex-n2.5-pro:free": { in: 0, out: 0 },
+  "liquid/lfm-2.5-2.6b:free": { in: 0, out: 0 },
+  "z-ai/glm-5.2:free": { in: 0, out: 0 },
+  "nvidia/nemotron-3-super-120b-a12b:free": { in: 0, out: 0 },
   "nvidia/nemotron-3.5-lightning:free": { in: 0, out: 0 },
   "nvidia/nemotron-3-ultra-550b-a55b:free": { in: 0, out: 0 },
   "google/gemini-2.0-flash": { in: 0.000075, out: 0.0003 },
@@ -192,12 +223,22 @@ const PRICE_PER_1K: Record<string, { in: number; out: number }> = {
   "anthropic/claude-3-haiku-20240307": { in: 0.00025, out: 0.00125 },
   "anthropic/claude-3-5-sonnet-20241022": { in: 0.003, out: 0.015 },
   "groq/llama-3.1-8b-instant": { in: 0, out: 0 },
+  "openai/gpt-oss-20b": { in: 0, out: 0 },
+  "openai/gpt-oss-120b": { in: 0, out: 0 },
+  "nvidia/nemotron-3.5-lightning-30b-a3b": { in: 0, out: 0 },
+  "nvidia/nemotron-3-super-120b-a12b": { in: 0, out: 0 },
   "meta-llama/Llama-3.1-8B-Instruct": { in: 0, out: 0 },
   "together_ai": { in: 0.0002, out: 0.0006 },
+  "deepseek-chat": { in: 0.00014, out: 0.00028 },
+  "llama3.1:8b": { in: 0, out: 0 },
+  "qwen2.5:14b": { in: 0, out: 0 },
 };
 const FALLBACK_PRICE = { in: 0.00015, out: 0.0006 };
 
 export function estimateCostUsd(model: string, inTok: number, outTok: number): number {
+  // ponytail: any ":free" slug is $0 by contract — covers future free models
+  // without table maintenance.
+  if (model.endsWith(":free")) return 0;
   const p = PRICE_PER_1K[model] ?? FALLBACK_PRICE;
   return Number((((inTok / 1000) * p.in + (outTok / 1000) * p.out).toFixed(6)));
 }
@@ -254,16 +295,65 @@ function stubResult(started: number): CompleteResult {
   };
 }
 
+// Free-model rate limits (429) are the most common failure on free tiers —
+// when one model's quota is exhausted, another free model on the same provider
+// usually still has headroom. These fallbacks rotate through the tier's free
+// pool, skipping the model that just 429'd. BYOK + platform both benefit.
+const FREE_MODEL_FALLBACKS: Record<"A" | "B" | "C", string[]> = {
+  A: [
+    "google/gemma-4-26b-a4b-it:free", "inclusionai/ling-3.0-flash-vl:free",
+    "nex-agi/nex-n2.5-mini:free", "liquid/lfm-2.5-2.6b:free",
+    "google/gemma-4-31b-it:free", "z-ai/glm-5.2:free",
+  ],
+  B: [
+    "google/gemma-4-26b-a4b-it:free", "inclusionai/ling-3.0-flash-vl:free",
+    "nex-agi/nex-n2.5-mini:free", "liquid/lfm-2.5-2.6b:free",
+    "google/gemma-4-31b-it:free", "z-ai/glm-5.2:free",
+  ],
+  C: [
+    "inclusionai/ling-3.0-flash-vl:free", "google/gemma-4-31b-it:free",
+    "nvidia/nemotron-3-super-120b-a12b:free", "nex-agi/nex-n2.5-pro:free",
+  ],
+};
+
+/** Is this error a provider 429 (rate limit / quota exhausted)? */
+function is429(err: unknown): boolean {
+  return /^provider 429 /.test((err as Error)?.message ?? "");
+}
+
+/** Next free fallback model for this tier after `failedModel`, or null. */
+function nextFreeFallback(tier: "A" | "B" | "C", failedModel: string): string | null {
+  const pool = FREE_MODEL_FALLBACKS[tier];
+  const idx = pool.indexOf(failedModel);
+  // Start after the failed model; if it wasn't from the pool, start at 0.
+  const start = idx >= 0 ? idx + 1 : 0;
+  for (let i = start; i < pool.length; i++) if (pool[i] !== failedModel) return pool[i];
+  return null;
+}
+
 function resolveAttemptProvider(
   args: CompleteArgs,
   entry: { kind: ProviderKind; key: string },
   tier: "A" | "B" | "C",
 ): ResolvedProvider {
-  const provider = resolveProviderFromKind(entry.kind, entry.key, args.baseUrlOverride || process.env.AI_BASE_URL || undefined);
+  const provider = resolveProviderFromKind(entry.kind, entry.key,
+    args.baseUrlOverride || process.env.AI_BASE_URL ||
+    (entry.kind === "ollama" ? process.env.OLLAMA_BASE_URL : undefined) || undefined);
   // Explicit per-call override wins (BYOK user pref flows through here);
   // otherwise fall back to platform env defaults, then the free pool.
   provider.model = args.modelOverride || pickModel(tier, provider.kind, true, ENV_MODELS[tier], null);
   return provider;
+}
+
+// Reasoning models sometimes emit their chain-of-thought inside `content`,
+// either as <think>…</think> blocks or a bare thinking preamble. Strip it so
+// students never see the model's internal monologue.
+export function stripReasoningTrace(text: string): string {
+  let t = text.replace(/<think>[\s\S]*?<\/think>/gi, "");
+  // Unclosed <think> (hit max_tokens mid-thought): treat everything from the
+  // opening tag on as trace.
+  t = t.replace(/<think>[\s\S]*/i, "");
+  return t.trim();
 }
 
 async function requestCompletion(
@@ -296,7 +386,7 @@ async function requestCompletion(
       }),
     });
   }
-  // OpenAI-compatible (openai, groq, together, openrouter, huggingface, nvidia, custom)
+  // OpenAI-compatible (openai, groq, together, openrouter, huggingface, nvidia, deepseek, github, ollama, custom)
   return fetch(`${provider.baseUrl}/chat/completions`, {
     method: "POST", headers: provider.headers, signal: args.signal,
     body: JSON.stringify({
@@ -317,38 +407,54 @@ export async function complete(args: CompleteArgs): Promise<CompleteResult> {
 
   let lastErr: unknown;
   for (const entry of chain) {
-    const provider = resolveAttemptProvider(args, entry, tier);
-    try {
-      const res = await requestCompletion(provider, tier, args, false);
-      if (!res.ok) {
-        const body = (await res.text()).slice(0, 300);
-        throw new Error(`provider ${res.status} (${provider.kind}): ${body}`);
+    let provider = resolveAttemptProvider(args, entry, tier);
+    // Inner loop: rotate free fallback models on 429 before giving this
+    // provider up and moving to the next one in the chain.
+    for (let attempt = 0; ; attempt++) {
+      try {
+        const res = await requestCompletion(provider, tier, args, false);
+        if (!res.ok) {
+          const body = (await res.text()).slice(0, 300);
+          throw new Error(`provider ${res.status} (${provider.kind}): ${body}`);
+        }
+        let text = "";
+        let inTok = approxTokens(args.system + args.user);
+        let outTok = 0;
+        if (provider.kind === "google") {
+          const data = await res.json();
+          text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+          outTok = approxTokens(text);
+        } else if (provider.kind === "anthropic") {
+          const data = await res.json();
+          text = data.content?.[0]?.text ?? "";
+          inTok = data.usage?.input_tokens ?? inTok;
+          outTok = data.usage?.output_tokens ?? approxTokens(text);
+        } else {
+          const data = await res.json();
+          text = asStr(asObj(asObj(data.choices?.[0]).message).content);
+          // Reasoning models (nemotron etc.) sometimes leak the thinking trace
+          // into `content` — separate field in OpenRouter's payload when present.
+          const r = asObj(data.choices?.[0]?.message)?.reasoning;
+          if (typeof r === "string" && r && !text.trim()) text = ""; // empty content + reasoning-only → empty answer
+          text = stripReasoningTrace(text);
+          inTok = data.usage?.prompt_tokens ?? inTok;
+          outTok = data.usage?.completion_tokens ?? approxTokens(text);
+        }
+        return {
+          text, model: provider.model, inputTokens: inTok, outputTokens: outTok,
+          costUsd: estimateCostUsd(provider.model, inTok, outTok),
+          cached: false, stubbed: false, latencyMs: Date.now() - started,
+        };
+      } catch (e) {
+        lastErr = e;
+        // 429 (quota/rate limit) on OpenRouter: the next free model usually
+        // still has headroom — rotate instead of failing the feature.
+        const nextModel = is429(e) && attempt < 3 && provider.kind === "openrouter"
+          ? nextFreeFallback(tier, provider.model)
+          : null;
+        if (!nextModel) break; // next provider in the chain
+        provider = { ...provider, model: nextModel };
       }
-      let text = "";
-      let inTok = approxTokens(args.system + args.user);
-      let outTok = 0;
-      if (provider.kind === "google") {
-        const data = await res.json();
-        text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
-        outTok = approxTokens(text);
-      } else if (provider.kind === "anthropic") {
-        const data = await res.json();
-        text = data.content?.[0]?.text ?? "";
-        inTok = data.usage?.input_tokens ?? inTok;
-        outTok = data.usage?.output_tokens ?? approxTokens(text);
-      } else {
-        const data = await res.json();
-        text = data.choices?.[0]?.message?.content ?? "";
-        inTok = data.usage?.prompt_tokens ?? inTok;
-        outTok = data.usage?.completion_tokens ?? approxTokens(text);
-      }
-      return {
-        text, model: provider.model, inputTokens: inTok, outputTokens: outTok,
-        costUsd: estimateCostUsd(provider.model, inTok, outTok),
-        cached: false, stubbed: false, latencyMs: Date.now() - started,
-      };
-    } catch (e) {
-      lastErr = e; // try the next provider in the chain
     }
   }
   throw new Error(`All AI providers failed — last error: ${(lastErr as Error)?.message ?? "unknown"}`);
@@ -386,7 +492,7 @@ function extractProviderSse(
     if (root.type === "message_delta") return { text: null, outTok: asNum(asObj(root.usage).output_tokens) };
     return { text: null };
   }
-  // OpenAI-compatible (openai, groq, together, openrouter, huggingface, custom)
+  // OpenAI-compatible (openai, groq, together, openrouter, huggingface, nvidia, deepseek, github, ollama, custom)
   const choice = asObj(asArr(root.choices)[0]);
   const text = asStr(asObj(choice.delta).content) || asStr(asObj(choice.message).content) || asStr(choice.text);
   const u = asObj(root.usage);
@@ -424,24 +530,32 @@ export async function streamComplete(
   // caller has already rendered partial text, so retrying would duplicate it.
   let lastErr: unknown;
   for (const entry of chain) {
-    const provider = resolveAttemptProvider(args, entry, tier);
-    let res: Response;
-    try {
-      res = await requestCompletion(provider, tier, args, true);
-    } catch (e) {
-      lastErr = e;
-      continue;
-    }
-    if (!res.ok) {
-      const bodyText = await res.text().catch(() => "");
-      lastErr = new Error(`provider ${res.status} (${provider.kind}): ${bodyText.slice(0, 300)}`);
-      continue;
-    }
-    const body = res.body;
-    if (!body) {
-      lastErr = new Error("Provider returned an empty stream body");
-      continue;
-    }
+    let provider = resolveAttemptProvider(args, entry, tier);
+    // 429 rotation (before any deltas flow): same rationale as complete().
+    for (let attempt = 0; ; attempt++) {
+      let res: Response;
+      try {
+        res = await requestCompletion(provider, tier, args, true);
+      } catch (e) {
+        lastErr = e;
+        break; // connection error → next provider
+      }
+      if (!res.ok) {
+        const bodyText = await res.text().catch(() => "");
+        const err = new Error(`provider ${res.status} (${provider.kind}): ${bodyText.slice(0, 300)}`);
+        lastErr = err;
+        const nextModel = is429(err) && attempt < 3 && provider.kind === "openrouter"
+          ? nextFreeFallback(tier, provider.model)
+          : null;
+        if (!nextModel) break; // next provider in the chain
+        provider = { ...provider, model: nextModel };
+        continue; // retry same provider with the next free model
+      }
+      const body = res.body;
+      if (!body) {
+        lastErr = new Error("Provider returned an empty stream body");
+        break; // give up on this provider, try the next in the chain
+      }
 
     const reader = body.getReader();
     const dec = new TextDecoder();
@@ -489,6 +603,7 @@ export async function streamComplete(
     } finally {
       try { await reader.cancel(); } catch { /* already closed */ }
     }
+    } // — inner 429-rotation loop (every success path returns)
   }
   throw new Error(`All AI providers failed — last error: ${(lastErr as Error)?.message ?? "unknown"}`);
 }

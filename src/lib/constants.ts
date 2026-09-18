@@ -12,6 +12,7 @@ export const routeTitles: Record<string, string> = {
   "/app/progress": "Progress",
   "/app/planner": "Planner",
   "/app/tutor": "AI Tutor",
+  "/app/videos": "Videos",
   "/app/students": "Students",
   "/app/homework": "Homework",
   "/app/attendance": "Attendance",
@@ -27,6 +28,7 @@ export type NavIcon =
   | "layout-dashboard"
   | "home"
   | "sparkles"
+  | "play"
   | "calendar-days"
   | "line-chart"
   | "book-open-check"
@@ -74,6 +76,12 @@ export const appNav: NavItem[] = [
     href: "/app/tutor",
     label: "AI Tutor",
     icon: "sparkles",
+    roles: ["teacher", "parent", "student"],
+  },
+  {
+    href: "/app/videos",
+    label: "Videos",
+    icon: "play",
     roles: ["teacher", "parent", "student"],
   },
   {

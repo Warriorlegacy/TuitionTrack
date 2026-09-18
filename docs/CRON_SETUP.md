@@ -2,6 +2,18 @@
 
 Vercel Cron keeps scheduled tasks running. This document covers the Supabase keepalive jobs and their independent backup scheduler.
 
+## 3-Layer Keep-Alive System
+
+The Supabase free-tier project (`zlkkicrqwoxzhsfehouj`) is kept from pausing by three independent layers. All layers are idempotent read-only pings (`SELECT id FROM users LIMIT 1`), so overlapping fires are safe — no double-write risk.
+
+| Layer | Scheduler | Schedule (UTC) | What it pings |
+|-------|-----------|----------------|---------------|
+| 1. Vercel Cron | `vercel.json` | daily `keep-alive` + weekly `supabase-keepalive` | DB via anon / service key |
+| 2. cron-job.org (external backup) | job IDs `8456998` / `8456999` | daily 03:00 + Mondays 04:00 | `GET /api/cron/keep-alive` + `GET /api/cron/supabase-keepalive` with `Bearer CRON_SECRET` |
+| 3. GitHub Actions triple-ping | `supabase-keepalive.yml` | Mon/Wed/Fri 04:00 (`0 4 * * 1,3,5`) | direct Postgres → Supabase REST → app route |
+
+Any single surviving layer is enough to prevent a pause.
+
 ## What They Do
 
 Two routes keep the Supabase free-tier project (`zlkkicrqwoxzhsfehouj`) from being paused for inactivity:
@@ -129,3 +141,34 @@ curl -s -H "Authorization: Bearer $CRON_SECRET" \
 Failures are visible in cron-job.org → Jobs → history (last status + saved
 response). If both schedulers ever fire in the same minute the routes are
 idempotent read-only pings — no double-write risk.
+
+## GitHub Actions keep-alive (3rd layer — triple-ping)
+
+Independent cron (`supabase-keepalive.yml`): Mon/Wed/Fri 04:00 UTC
+(`0 4 * * 1,3,5`), plus manual fire via Actions → supabase-keepalive →
+Run workflow (`workflow_dispatch`). Up to 3 attempts per run (30s apart).
+Runs zero-dep `scripts/supabase-keepalive.mjs`, which triple-pings in one run:
+
+1. **direct Postgres** — `SELECT id FROM users LIMIT 1` via `DATABASE_URL`
+   (uses `pg` when installed, otherwise skips gracefully; bonus layer, never
+   gates success),
+2. **Supabase REST** — `GET /rest/v1/users?select=id&limit=1`,
+3. **app route** — `GET /api/cron/supabase-keepalive` with `Bearer CRON_SECRET`.
+
+Exit 0 only if REST + app both return 200. No `npm ci` — run finishes in
+<30s when `pg` is absent. Logs show statuses and key lengths only, never values.
+The workflow never commits or pushes — secrets exist only as step env vars.
+
+Required GitHub Secrets (repo → Settings → Secrets → Actions):
+
+| Secret | Value |
+|--------|-------|
+| `SUPABASE_URL` | Supabase project URL |
+| `SUPABASE_SECRET_KEY` | Service-role / secret key |
+| `CRON_SECRET` | Same value as Vercel `CRON_SECRET` |
+| `APP_URL` | `https://tuitiontrack-app.vercel.app` |
+| `DATABASE_URL` | Postgres connection string (direct connection, for layer-1 ping; optional — layer skips without it) |
+
+All three layers (Vercel Cron, cron-job.org, GitHub Actions) are
+idempotent read-only pings (`SELECT id ... LIMIT 1`), so overlapping
+fires are safe — no double-write risk.

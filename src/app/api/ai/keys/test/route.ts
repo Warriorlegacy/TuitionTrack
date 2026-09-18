@@ -14,11 +14,17 @@ export async function POST(request: Request) {
   const provider = body?.provider as string | undefined;
   const baseUrl = body?.base_url as string | undefined;
 
-  if (!apiKey || !provider) {
+  if (!provider || (!apiKey && provider !== "ollama")) {
     return NextResponse.json({ error: "api_key and provider required" }, { status: 400 });
   }
 
-  const kind = (provider as string) === "custom" ? "custom" : detectProviderFromKey(apiKey);
+  // ponytail: local ollama needs no key — dummy key + local base override.
+  const key = apiKey || "ollama";
+  const base = baseUrl || (provider === "ollama"
+    ? process.env.OLLAMA_BASE_URL || "http://localhost:11434/v1"
+    : undefined);
+  const kind = provider === "custom" ? "custom"
+    : provider === "ollama" ? "ollama" : detectProviderFromKey(key);
   // Provider-correct free default (the old hardcoded gpt-4o-mini broke Groq/
   // Together/HuggingFace tests with model_not_found).
   const model = pickModel("A", kind, true, null, null);
@@ -26,8 +32,10 @@ export async function POST(request: Request) {
   try {
     const result = await complete({
       tier: "A", system: "You are a helpful assistant.", user: "Say 'OK' only.",
-      apiKeyOverride: apiKey, providerKind: kind, baseUrlOverride: baseUrl, modelOverride: model,
-      maxTokens: 10,
+      apiKeyOverride: key, providerKind: kind, baseUrlOverride: base, modelOverride: model,
+      // Free models can be reasoning models that spend tokens on a thinking
+      // trace before answering — a tiny budget returns the trace, not the answer.
+      maxTokens: 300,
     });
     return NextResponse.json({ ok: true, model: result.model, latencyMs: result.latencyMs, text: result.text });
   } catch (e) {

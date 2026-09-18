@@ -8,9 +8,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: node scripts/supabase-keepalive.mjs
+      # Secrets are only passed as env to this step — this workflow never
+      # commits, pushes, or echoes secret values (script logs key lengths only).
+      - name: Triple-ping keep-alive (up to 3 attempts)
+        run: |
+          for attempt in 1 2 3; do
+            echo "attempt $attempt/3"
+            if node scripts/supabase-keepalive.mjs; then
+              exit 0
+            fi
+            sleep 30
+          done
+          echo "keep-alive failed after 3 attempts" >&2
+          exit 1
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SECRET_KEY: ${{ secrets.SUPABASE_SECRET_KEY }}
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
           APP_URL: ${{ secrets.APP_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}

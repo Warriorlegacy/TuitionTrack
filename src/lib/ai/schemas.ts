@@ -34,6 +34,12 @@ export const flashcardSchema = z.object({
 });
 export type FlashcardInput = z.infer<typeof flashcardSchema>;
 
+export const videoSchema = z.object({
+  student_id: z.string().uuid(),
+  concept: z.string().min(1).max(200),
+});
+export type VideoInput = z.infer<typeof videoSchema>;
+
 export const documentSchema = z.object({
   student_id: z.string().uuid().optional(),
   title: z.string().min(1).max(200),

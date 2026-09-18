@@ -22,6 +22,8 @@ export async function GET() {
     provider: k.provider,
     label: k.label,
     status: k.status,
+    last_used_at: k.last_used_at,
+    last_error: k.last_error,
     created_at: k.created_at,
     key_preview: `${k.key_fingerprint}••••••••`,
   }));
@@ -29,7 +31,7 @@ export async function GET() {
   return NextResponse.json({
     keys: masked,
     preferences: prefs ?? {
-      default_provider: "openrouter", default_model: "nvidia/nemotron-3.5-lightning:free",
+      default_provider: "openrouter", default_model: "google/gemma-4-26b-a4b-it:free",
       tier_a_model: null, tier_b_model: null, tier_c_model: null,
       allow_free_fallbacks: true, prefer_free_tiers: true,
     },

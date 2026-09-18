@@ -9,6 +9,7 @@ export const RATE_LIMITS: Record<string, { perMin: number; perDay: number }> = {
   "/api/ai/tutor": { perMin: 10, perDay: 100 },
   "/api/ai/quiz": { perMin: 6, perDay: 30 },
   "/api/ai/flashcards": { perMin: 6, perDay: 30 },
+  "/api/ai/video": { perMin: 2, perDay: 10 }, // video renders are slow + quota-hungry
   "/api/documents": { perMin: 6, perDay: 30 },
   "/api/plans/generate": { perMin: 6, perDay: 30 },
   default: { perMin: 10, perDay: 100 },
