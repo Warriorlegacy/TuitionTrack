@@ -51,8 +51,8 @@ export default async function VideosPage({
   return (
     <div className="space-y-6 pb-24 md:pb-0">
       <PageHeader
-        title="Learning Videos"
-        description={`${totalLessons} chapter-wise 3D lessons across Classes 6–12 — quick previews, full topic-wise explainers, and 1-hour voiced one-shots where researched.`}
+        title="Learning Videos & Chapter Notes"
+        description={`${totalLessons} chapter-wise 3D lessons and downloadable PDF revision notes across Classes 6–12 — interactive previews, in-depth topic explainers, formulas, and solved exam problems.`}
       />
       <nav aria-label="Filter by class" className="flex flex-wrap gap-2">
         {VIDEO_CATALOG.map((c) => (

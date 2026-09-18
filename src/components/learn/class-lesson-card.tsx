@@ -6,7 +6,7 @@
 // 30-chapter subject page stays light until the student presses play.
 import { useState } from "react";
 import Link from "next/link";
-import { ClapperboardIcon, FilePlayIcon, PlayIcon } from "lucide-react";
+import { ClapperboardIcon, FilePlayIcon, PlayIcon, FileTextIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { RemotionLessonPlayer } from "./remotion-lesson-player";
@@ -60,6 +60,17 @@ export function ClassLessonCard({ lesson, script, hasNarrated }: { lesson: Video
         <h3 className="tt-display text-lg font-semibold text-slate-950">{script.title}</h3>
         <p className="mt-1 text-sm leading-6 text-slate-600">{script.subtitle}</p>
         <div className="mt-4 flex flex-wrap items-center gap-3">
+          <Button
+            size="sm"
+            variant="outline"
+            className="border-indigo-200 bg-indigo-50/50 text-indigo-700 hover:bg-indigo-100/70"
+            render={
+              <Link href={`/app/notes/${lesson.slug}`} />
+            }
+          >
+            <FileTextIcon className="mr-1 size-4 text-indigo-600" aria-hidden />
+            PDF Notes
+          </Button>
           <Button
             size="sm"
             render={
