@@ -62,7 +62,8 @@ export function JoinPortalCard({ student, currentUser }: JoinPortalCardProps) {
   const handleGoogleAuth = async () => {
     try {
       const supabase = createSupabaseBrowserClient();
-      const redirectTo = `${window.location.origin}/join?studentId=${student.id}&claimRole=${role}`;
+      const nextUrl = `/join?studentId=${student.id}&claimRole=${role}`;
+      const redirectTo = `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextUrl)}`;
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {

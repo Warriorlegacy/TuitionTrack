@@ -88,9 +88,48 @@ export async function getAuthContext(): Promise<AuthContext> {
       .eq("id", user.id)
       .maybeSingle<UserRow>();
 
+    let userProfile = profile;
+    if (!userProfile) {
+      try {
+        const { createSupabaseAdminClient } = await import("@/lib/supabase/admin");
+        const admin = createSupabaseAdminClient();
+        const { data: adminProfile } = await admin
+          .from("users")
+          .select("*")
+          .eq("id", user.id)
+          .maybeSingle<UserRow>();
+        if (adminProfile) {
+          userProfile = adminProfile;
+        } else {
+          // Auto-provision user profile with OAuth or email metadata
+          const metaName =
+            (user.user_metadata?.full_name as string | undefined)?.trim() ||
+            (user.user_metadata?.name as string | undefined)?.trim() ||
+            (user.user_metadata?.preferred_username as string | undefined)?.trim() ||
+            (email ? email.split("@")[0] : "Teacher");
+          const metadataRole = (user.user_metadata?.role as AppRole | undefined) || "teacher";
+          const { data: newProfile } = await admin
+            .from("users")
+            .upsert({
+              id: user.id,
+              email: email || user.email || "",
+              name: metaName,
+              role: metadataRole,
+            })
+            .select("*")
+            .maybeSingle<UserRow>();
+          if (newProfile) {
+            userProfile = newProfile;
+          }
+        }
+      } catch {
+        // ignore fallback error
+      }
+    }
+
     // Use metadata role as fallback if profile record is missing
     const metadataRole = user.user_metadata?.role as AppRole | undefined;
-    const effectiveRole = profile?.role ?? metadataRole ?? "teacher";
+    const effectiveRole = userProfile?.role ?? metadataRole ?? "teacher";
 
     let accessibleStudents: StudentRow[] = [];
 
@@ -181,7 +220,7 @@ export async function getAuthContext(): Promise<AuthContext> {
     return {
       configured: true,
       user,
-      profile: profile ?? null,
+      profile: userProfile ?? null,
       role: effectiveRole,
       email,
       accessibleStudents,
@@ -190,10 +229,22 @@ export async function getAuthContext(): Promise<AuthContext> {
     };
   } catch {
     const metadataRole = (user.user_metadata?.role as AppRole | undefined) ?? "teacher";
+    const metaName =
+      (user.user_metadata?.full_name as string | undefined)?.trim() ||
+      (user.user_metadata?.name as string | undefined)?.trim() ||
+      (email ? email.split("@")[0] : "User");
     return {
       configured: true,
       user,
-      profile: null,
+      profile: {
+        id: user.id,
+        email: email || user.email || "",
+        name: metaName,
+        role: metadataRole,
+        plan: "free",
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      },
       role: metadataRole,
       email,
       accessibleStudents: [],
@@ -214,11 +265,15 @@ export async function requireAuthContext() {
     redirect("/login");
   }
 
-  if (!context.profile && context.role === "teacher") {
-    redirect("/auth/onboarding");
-  }
+  // Check if profile has a name or if OAuth metadata provided one
+  const hasName =
+    Boolean(context.profile?.name?.trim()) ||
+    Boolean(
+      (context.user.user_metadata?.full_name as string | undefined)?.trim() ||
+        (context.user.user_metadata?.name as string | undefined)?.trim()
+    );
 
-  if (context.role === "teacher" && context.profile && !context.profile.name) {
+  if (context.role === "teacher" && !hasName) {
     redirect("/auth/onboarding");
   }
 

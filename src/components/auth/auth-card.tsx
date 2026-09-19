@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Loader2Icon } from "lucide-react";
@@ -84,8 +84,32 @@ export function AuthCard({ mode }: AuthCardProps) {
   const [role, setRole] = useState<"teacher" | "parent" | "student">("teacher");
   const configured = useMemo(() => isSupabaseConfigured(), []);
 
+  // Display toast error if redirected back with error query parameter
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const err = params.get("error");
+      if (err) {
+        toast.error(friendlyAuthError(decodeURIComponent(err)));
+        const cleanUrl = window.location.pathname;
+        window.history.replaceState({}, "", cleanUrl);
+      }
+    }
+  }, []);
+
+  const nextParam =
+    typeof window !== "undefined"
+      ? new URLSearchParams(window.location.search).get("next")
+      : null;
+  const safeNext =
+    nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//")
+      ? nextParam
+      : "/app/dashboard";
+
   const redirectTo =
-    typeof window !== "undefined" ? `${window.location.origin}/auth/callback` : undefined;
+    typeof window !== "undefined"
+      ? `${window.location.origin}/auth/callback?next=${encodeURIComponent(safeNext)}${mode === "signup" ? `&signupRole=${role}` : ""}`
+      : undefined;
 
   const handleEmailAuth = () => {
     startTransition(async () => {
@@ -129,10 +153,10 @@ export function AuthCard({ mode }: AuthCardProps) {
       );
       router.push(
         mode === "login"
-          ? "/app/dashboard"
+          ? safeNext
           : role === "teacher"
             ? "/auth/onboarding"
-            : "/app/dashboard",
+            : safeNext,
       );
       router.refresh();
     });

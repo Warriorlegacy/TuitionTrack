@@ -681,6 +681,7 @@ export async function claimStudentInviteAction(
     email: email,
     name:
       context.profile?.name ||
+      (context.user.user_metadata?.full_name as string | undefined) ||
       (context.user.user_metadata?.name as string | undefined) ||
       (asRole === "parent" ? "Parent" : "Student"),
     role: asRole,
