@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Probability, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 64px 88px; box-sizing: border-box; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; width: fit-content; font-size: 19px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; width: 100%; max-width: 1050px; margin: 12px 0 0; font-size: 64px; line-height: 1.05; font-weight: 800; }
+      .qe-sub { display: block; max-width: 980px; margin: 14px 0 0; font-size: 27px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; width: 100%; margin-top: 18px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 10px; padding: 12px 22px; border-radius: 14px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 26px; font-weight: 600; }
+      .qe-example { display: block; max-width: 980px; margin: 18px 0 0; font-size: 21px; font-style: italic; color: #4f46e5; }
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c10-maths-14-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Real-world Applications and the Concept of Chance -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Real-world Applications and the Concept of Chance</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Probability is the mathematical measure of the likelihood of an event.</div>
+              <div id="qx0-p1" class="qe-bullet">• Real-world uses: Weather forecasting, sports analysis, and medicine.</div>
+              <div id="qx0-p2" class="qe-bullet">• Probability helps quantify uncertainty into precise numerical values.</div>
+              <div id="qx0-p3" class="qe-bullet">• It is the foundation for advanced fields like Statistics and Data Science.</div>
+              <div id="qx0-p4" class="qe-bullet">• We move from intuitive 'guessing' to formal mathematical calculation.</div>
+          </div>
+          <p id="qx0-visual" class="qe-example">🎬 A cinematic montage transitioning from a dark rain cloud to a cricket match toss, then to a digital weather map, and finally to a glowing mathematical grid.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Fundamental Definitions: Experiment, Outcome, Sample Space, and Events -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Fundamental Definitions: Experiment, Outcome, Sample Space, and Events</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Experiment: A process that results in one or more observable results.</div>
+              <div id="qx1-p1" class="qe-bullet">• Outcome: A single possible result of a random experiment.</div>
+              <div id="qx1-p2" class="qe-bullet">• Sample Space (S): The set of all possible outcomes of an experiment.</div>
+              <div id="qx1-p3" class="qe-bullet">• Event (E): A subset of the sample space representing specific outcomes.</div>
+              <div id="qx1-p4" class="qe-bullet">• Impossible Event: An event with no outcomes; Certain Event: All outcomes.</div>
+          </div>
+          <p id="qx1-visual" class="qe-example">🎬 A 3D floating die and coin that transform into mathematical sets and notation as they are mentioned.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Theoretical vs. Experimental Probability: The Classical Approach -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Theoretical vs. Experimental Probability: The Classical Approach</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Experimental Probability: Based on actual observations and recorded data.</div>
+              <div id="qx2-p1" class="qe-bullet">• Theoretical Probability: Based on mathematical reasoning and logic.</div>
+              <div id="qx2-p2" class="qe-bullet">• Formula: P(E) = (Number of favorable outcomes) / (Total number of outcomes).</div>
+              <div id="qx2-p3" class="qe-bullet">• Law of Large Numbers: More trials lead to experimental results matching theory.</div>
+              <div id="qx2-p4" class="qe-bullet">• Classical Approach assumes all outcomes in a sample space are equally likely.</div>
+          </div>
+          <p id="qx2-visual" class="qe-example">🎬 A split-screen 3D animation: Left side shows a hand flipping a coin repeatedly with a tally counter; Right side shows a glowing mathematical formula appearing over a perfectly balanced geometric die.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): The Probability Formula: Calculating P(E) and Understanding Limits -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">The Probability Formula: Calculating P(E) and Understanding Limits</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Formula: P(E) = (Number of favorable outcomes) / (Total number of outcomes)</div>
+              <div id="qx3-p1" class="qe-bullet">• The probability of any event is always between 0 and 1 (inclusive)</div>
+              <div id="qx3-p2" class="qe-bullet">• P(E) = 0 means the event is impossible</div>
+              <div id="qx3-p3" class="qe-bullet">• P(E) = 1 means the event is certain</div>
+              <div id="qx3-p4" class="qe-bullet">• Always express probability as a simplified fraction, decimal, or percentage</div>
+          </div>
+          <p id="qx3-visual" class="qe-example">🎬 A 3D transparent glass jar filled with 5 red and 3 blue spheres, showing the fraction 5/8 forming in mid-air as a sphere is selected.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Complementary Events: The Rule of P(E) + P(not E) = 1 -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Complementary Events: The Rule of P(E) + P(not E) = 1</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• An event E and its opposite 'not E' are called complementary events.</div>
+              <div id="qx4-p1" class="qe-bullet">• The sum of P(E) and P(not E) is always equal to 1.</div>
+              <div id="qx4-p2" class="qe-bullet">• Formula: P(E) + P(not E) = 1.</div>
+              <div id="qx4-p3" class="qe-bullet">• Use the complement rule to simplify complex 'at least' problems.</div>
+              <div id="qx4-p4" class="qe-bullet">• The complement covers all outcomes in the sample space except E.</div>
+          </div>
+          <p id="qx4-visual" class="qe-example">🎬 A 3D split-screen showing a die landing on 6 (labeled P(E)) and a die landing on 1, 2, 3, 4, or 5 (labeled P(not E)), with a large plus sign between them leading to a glowing number 1.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Probability in Tossing Coins: Single, Double, and Triple Toss Scenarios -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Probability in Tossing Coins: Single, Double, and Triple Toss Scenarios</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Single Coin: Sample Space S = {H, T}; Total outcomes = 2</div>
+              <div id="qx5-p1" class="qe-bullet">• Two Coins: Sample Space S = {HH, HT, TH, TT}; Total outcomes = 4</div>
+              <div id="qx5-p2" class="qe-bullet">• Three Coins: Total outcomes = 2 to the power of 3 = 8</div>
+              <div id="qx5-p3" class="qe-bullet">• Key Terms: 'Exactly' means specific count; 'At least' means that number or more</div>
+              <div id="qx5-p4" class="qe-bullet">• Key Terms: 'At most' means that number or fewer</div>
+          </div>
+          <p id="qx5-visual" class="qe-example">🎬 A 3D animation showing a single coin flipping, then two coins, then three coins, with a branching tree diagram expanding next to them to show the growing sample space.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Probability in Rolling Dice: Single Die and Two-Dice Combinations -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Probability in Rolling Dice: Single Die and Two-Dice Combinations</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Single Die Sample Space: S = {1, 2, 3, 4, 5, 6}</div>
+              <div id="qx6-p1" class="qe-bullet">• Probability of a single outcome on one die is 1/6</div>
+              <div id="qx6-p2" class="qe-bullet">• Two Dice Total Outcomes: 6 multiplied by 6 = 36</div>
+              <div id="qx6-p3" class="qe-bullet">• Use a 6x6 grid to list all possible ordered pairs for two dice</div>
+              <div id="qx6-p4" class="qe-bullet">• Probability = (Number of favorable outcomes) / (Total outcomes)</div>
+          </div>
+          <p id="qx6-visual" class="qe-example">🎬 A 3D animation showing a single die rolling, followed by two dice rolling onto a digital grid that populates with 36 coordinate pairs (1,1) through (6,6).</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Probability with Playing Cards: Understanding the Deck, Suits, and Face Cards -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Probability with Playing Cards: Understanding the Deck, Suits, and Face Cards</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Total cards in a standard deck: 52</div>
+              <div id="qx7-p1" class="qe-bullet">• Four suits: Hearts, Diamonds, Spades, Clubs (13 cards each)</div>
+              <div id="qx7-p2" class="qe-bullet">• Colors: 26 Red cards and 26 Black cards</div>
+              <div id="qx7-p3" class="qe-bullet">• Face Cards: King, Queen, and Jack (Total 12)</div>
+              <div id="qx7-p4" class="qe-bullet">• Note: Ace is NOT a face card</div>
+          </div>
+          <p id="qx7-visual" class="qe-example">🎬 A 3D deck of cards fans out in a circle, highlighting the four suits in different colors and then zooming into the King, Queen, and Jack to count them.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Probability with Numbers: Selecting Integers, Primes, and Multiples from Sets -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Probability with Numbers: Selecting Integers, Primes, and Multiples from Sets</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Sample Space: The total set of all possible integer outcomes.</div>
+              <div id="qx8-p1" class="qe-bullet">• Prime Numbers: Natural numbers greater than 1 with only two factors.</div>
+              <div id="qx8-p2" class="qe-bullet">• Multiples: Numbers obtained by multiplying a given integer by another.</div>
+              <div id="qx8-p3" class="qe-bullet">• Composite Numbers: Integers greater than 1 that are not prime.</div>
+              <div id="qx8-p4" class="qe-bullet">• Avoid Double-Counting: Check for numbers that fit two categories.</div>
+          </div>
+          <p id="qx8-visual" class="qe-example">🎬 A 3D digital chalkboard where numbers float into organized groups labeled 'Primes', 'Multiples', and 'Composites' as the teacher speaks.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Complex Word Problems: Combining Multiple Probability Concepts -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Complex Word Problems: Combining Multiple Probability Concepts</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Step 1: Identify the total sample space carefully.</div>
+              <div id="qx9-p1" class="qe-bullet">• Step 2: Break complex conditions into smaller events.</div>
+              <div id="qx9-p2" class="qe-bullet">• Step 3: Watch out for overlapping outcomes (Double Counting).</div>
+              <div id="qx9-p3" class="qe-bullet">• Step 4: Use the Complementary Rule for 'At Least' problems.</div>
+              <div id="qx9-p4" class="qe-bullet">• Step 5: Apply P(A or B) = P(A) + P(B) - P(A and B).</div>
+          </div>
+          <p id="qx9-visual" class="qe-example">🎬 A split-screen 3D animation showing a bag of colored marbles on one side and a mathematical Venn diagram on the other, with numbers flowing from the marbles into the overlapping circles.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Avoiding Calculation Errors and Logical Fallacies -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Avoiding Calculation Errors and Logical Fallacies</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Range Check: Probability must always be between 0 and 1 inclusive.</div>
+              <div id="qx10-p1" class="qe-bullet">• Sample Space: Ensure all outcomes are listed; order matters in coin tosses.</div>
+              <div id="qx10-p2" class="qe-bullet">• Complement Rule: Use '1 minus P(not E)' for 'at least one' problems.</div>
+              <div id="qx10-p3" class="qe-bullet">• Logical Operators: Distinguish between 'and' (multiplication) and 'or' (addition).</div>
+              <div id="qx10-p4" class="qe-bullet">• Precision: Avoid double-counting overlaps and always simplify fractions.</div>
+          </div>
+          <p id="qx10-visual" class="qe-example">🎬 A split-screen 3D animation showing a 'Correct' calculation path with a green checkmark and an 'Incorrect' path with red warning signs highlighting common errors like a probability of 1.5 or a missing coin outcome.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Time Management, Step-Marking, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Time Management, Step-Marking, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Always write the Sample Space (S) and total outcomes (n of S) first.</div>
+              <div id="qx11-p1" class="qe-bullet">• Use the formula: P(E) = n of E / n of S to secure step-marking.</div>
+              <div id="qx11-p2" class="qe-bullet">• Don't get stuck; allocate maximum 7 minutes per probability question.</div>
+              <div id="qx11-p3" class="qe-bullet">• Recap: Probability ranges from 0 (impossible) to 1 (certain).</div>
+              <div id="qx11-p4" class="qe-bullet">• Remember: P(E) + P(not E) = 1 for all complementary events.</div>
+          </div>
+          <p id="qx11-visual" class="qe-example">🎬 A split-screen 3D animation: one side shows a student's paper being graded with green ticks for steps, the other side shows a digital clock ticking efficiently next to a summary mind-map of the chapter.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Probability today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Real-world Applications and the Concept of Chance <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Fundamental Definitions: Experiment, Outcome, Sample Space, and Events <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Theoretical vs. Experimental Probability: The Classical Approach <small>10:00</small></button>
+          <button type="button" data-seek="900">4. The Probability Formula: Calculating P(E) and Understanding Limits <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Complementary Events: The Rule of P(E) + P(not E) = 1 <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Probability in Tossing Coins: Single, Double, and Triple Toss Scenarios <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Probability in Rolling Dice: Single Die and Two-Dice Combinations <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Probability with Playing Cards: Understanding the Deck, Suits, and Face Cards <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Probability with Numbers: Selecting Integers, Primes, and Multiples from Sets <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Complex Word Problems: Combining Multiple Probability Concepts <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Avoiding Calculation Errors and Logical Fallacies <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Time Management, Step-Marking, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey into the fascinating world of Probability. Before we dive into formulas and calculations, let's take a moment to look around us. Have you ever wondered why weather reporters say there is a sixty percent chance of rain today? Or why a cricket commentator says a team has a high probability of winning the toss? This isn't just guesswork; it is mathematics in action. Probability is the branch of mathematics that deals with the likelihood or the chance of an event occurring. In our daily lives, we are constantly making decisions based on uncertainty. When you look at the sky and see dark clouds, you are intuitively calculating the probability of rain. When you play a game of Ludo and wait for a six to move your token, you are engaging with probability. Even in high-stakes fields like insurance, medicine, and space exploration, scientists and experts use probability to predict outcomes and manage risks. For example, doctors use it to understand the effectiveness of a new medicine, and engineers use it to predict the lifespan of a bridge or an airplane engine. In this chapter, we will move from these intuitive feelings to a precise, mathematical way of measuring uncertainty. We will learn how to quantify 'chance' so that we can say exactly how likely something is to happen. We will transition from saying 'it might happen' to saying 'the probability is zero point five'. This chapter is crucial because it provides the foundation for statistics and data science, which are the backbone of modern technology and Artificial Intelligence. As we progress through this series, we will start with the basic building blocks—learning what an experiment is, what an outcome looks like, and how to define a sample space. We will eventually master everything from tossing coins and rolling dice to analyzing complex decks of playing cards. But for today, just remember this: Probability is the language of uncertainty. It is the tool that helps us make sense of a world where we cannot predict everything with absolute certainty. So, let's get ready to turn that uncertainty into mathematical precision. In our next lesson, we will define the fundamental terms that make this entire study possible.","Welcome back! In our previous video, we explored how probability governs the uncertainty of our daily lives. Now, before we dive into complex calculations, we must master the language of probability. To solve any problem, you need to understand four pillars: the Experiment, the Outcome, the Sample Space, and the Event. Let us start with the Experiment. In mathematics, an experiment is any process or action that results in one or more observable results. For example, tossing a coin, rolling a die, or drawing a card from a deck are all mathematical experiments. Notice that the result of these actions is not certain; that is why we call them random experiments. Now, let us look at the second pillar: the Outcome. An outcome is a single possible result of an experiment. If you toss a coin, you might get a Head or you might get a Tail. Each of these individual results—Head or Tail—is called an outcome. If you roll a six-sided die, the number four appearing on the top face is one specific outcome. Moving to the third pillar, we have the Sample Space. This is a very important concept. The Sample Space is the set of all possible outcomes of an experiment. We usually denote the sample space with the letter S. Think of it as the 'universe' of all possibilities. Let us take the example of tossing a single coin. The possible outcomes are Head and Tail. Therefore, the Sample Space S is equal to the set containing Head and Tail. If we roll a die, the possible outcomes are one, two, three, four, five, and six. So, the Sample Space S is the set containing these six numbers. When we deal with two coins tossed together, the sample space becomes larger. The outcomes could be Head-Head, Head-Tail, Tail-Head, or Tail-Tail. Here, the Sample Space S contains four elements. Finally, we come to the fourth pillar: the Event. An Event is a specific outcome or a collection of outcomes that we are interested in. Mathematically, an event is a subset of the Sample Space. Let us use our die example again. Suppose our experiment is rolling a die, and our Sample Space S is one, two, three, four, five, six. Now, let us define an Event E as 'getting an even number'. To find the outcomes for Event E, we look at our Sample Space and pick out the even numbers. So, Event E consists of the outcomes two, four, and six. We write this as E equals the set of two, four, and six. Another example: let the Event F be 'getting a number greater than four'. In our die roll, the numbers greater than four are five and six. So, Event F is the set containing five and six. It is important to remember that an event can be a single outcome, like 'getting a six', or it can be multiple outcomes, like 'getting an odd number'. If an event contains all the outcomes of the sample space, we call it a certain event. If an event contains no outcomes at all, like 'rolling a seven on a standard die', we call it an impossible event. Understanding these four terms—Experiment, Outcome, Sample Space, and Event—is the foundation upon which all probability formulas are built. Once you can identify these, calculating the probability becomes a simple matter of counting.","Welcome back. In our previous session, we defined the building blocks of probability: the experiment, the outcomes, and the sample space. But how do we actually assign a number to the likelihood of an event? This brings us to a crucial distinction in mathematics: the difference between Experimental Probability and Theoretical Probability. Let us start with Experimental Probability, which is also known as Empirical Probability. Imagine you are standing in a playground with a coin. You decide to flip it ten times. You record the results: Heads, Tails, Heads, Heads, Tails, and so on. After ten flips, you find that Heads appeared six times. In this real-world scenario, the experimental probability of getting Heads is six divided by ten, which is zero point six. Experimental probability is based entirely on actual observations and data collected from performing an experiment multiple times. It is what we see happening in reality. However, there is a catch. If you only flip that coin ten times, your result might be skewed by pure luck. What if you flipped it a thousand times? Or a million times? This leads us to the heart of our lesson: The Classical Approach, or Theoretical Probability. Theoretical probability does not require you to actually perform the experiment. Instead, it is based on what we expect to happen based on mathematical reasoning and the assumption that all outcomes in a sample space are equally likely. Let us look at the formula for Theoretical Probability. The probability of an event E, written as P of E, is equal to the number of outcomes favorable to event E, divided by the total number of all possible outcomes in the sample space. For example, let us look at a standard six-sided die. We know the sample space is six, consisting of the numbers one, two, three, four, five, and six. If we want to find the theoretical probability of rolling an even number, we first identify the favorable outcomes. The even numbers are two, four, and six. That is three favorable outcomes. So, the theoretical probability is three divided by six, which simplifies to one divided by two, or zero point five. Now, compare this to the experimental side. If you actually rolled a die twenty times and only got an even number eight times, your experimental probability would be eight divided by twenty, which is zero point four. Why the difference? This brings us to a fundamental principle in statistics known as the Law of Large Numbers. The Law of Large Numbers states that as the number of trials in an experiment increases, the experimental probability tends to get closer and closer to the theoretical probability. In our die example, if you roll the die ten times, your results might be very different from zero point five. But if you roll it ten thousand times, your ratio of even numbers will almost certainly settle very close to zero point five. To summarize the distinction: Experimental probability is 'what actually happened' based on data, while Theoretical probability is 'what should happen' based on logic. In your Class 10 exams, when a question asks you to calculate the probability of an event without mentioning any previous trials or data, you are almost always being asked to use the Classical or Theoretical approach. Always ensure your sample space is clearly defined before applying the formula: P of E equals number of favorable outcomes divided by total number of possible outcomes. Remember, in the theoretical world, we assume the die is perfectly balanced and the coin is not weighted. This assumption is what allows us to use mathematics to predict the future.","Welcome back. In our previous session, we defined what an event is and how to identify the sample space. Now, it is time to move from theory to calculation. How do we actually put a number to the 'chance' of something happening? This brings us to the fundamental formula of classical probability. To find the probability of an event, which we denote as P of E, we use a very specific ratio. The formula is: Probability of event E equals the number of outcomes favorable to event E, divided by the total number of all possible outcomes in the sample space. Let us break this down with a clear example. Imagine you have a bag containing five red marbles and three blue marbles. If I ask you, what is the probability of picking a red marble? First, we identify our sample space. The total number of outcomes is the total number of marbles, which is five plus three, equaling eight. This is our denominator. Next, we look for the favorable outcomes. Since we want a red marble, and there are five red marbles, our number of favorable outcomes is five. So, the probability of picking a red marble is five divided by eight, or five over eight. Now, notice something very important about this fraction. In mathematics, probability is not just any number; it is a value that is strictly bounded. This leads us to the concept of limits. The probability of any event is always a value between zero and one, inclusive. Mathematically, we write this as zero is less than or equal to P of E, which is less than or equal to one. What does zero mean? A probability of zero represents an impossible event. For example, if you roll a standard six-sided die, the probability of getting a number seven is zero, because seven does not exist on the die. What does one mean? A probability of one represents a certain event. If you roll that same die, the probability of getting a number less than seven is one, because every possible outcome satisfies that condition. Between zero and one, we find all our uncertainties. A probability of zero point five, or one half, means the event is just as likely to happen as not to happen. If you calculate a probability and get a negative number, or a number greater than one, like one point five, you must stop and re-check your work immediately. Such a result is mathematically impossible in classical probability. Another key aspect is expressing these values. While fractions are often the most precise way to show probability, you can also express them as decimals or percentages. For instance, five over eight is zero point six two five, which is sixty-two point five percent. However, in your board exams, unless specified otherwise, leaving your answer as a simplified fraction is usually the best practice. Remember, the denominator must always represent the total number of equally likely outcomes in the sample space. If the outcomes are not equally likely, this specific formula requires adjustment, but for our current study of classical probability, we assume every outcome has the same chance. Let us summarize: identify the total outcomes for your denominator, count the specific outcomes you are looking for to get your numerator, and always ensure your final answer sits comfortably between zero and one. Mastering this ratio is the foundation for everything else we will do with coins, dice, and cards in the upcoming lessons.","Welcome back! In our previous session, we learned how to calculate the probability of an event using the classical formula. Now, we are going to explore a very powerful shortcut that will save you a lot of time in your board exams. This concept is known as Complementary Events. In probability, every event has an opposite. If we define an event as E, then the event that E does not occur is called the complement of E. We denote this complement as 'not E' or sometimes by using a small dash over the E. Think about it logically. When you perform an experiment, like tossing a coin, there are only two possibilities: either the coin shows heads, or it does not show heads. There is no third option. This brings us to a fundamental rule: an event either happens, or it does not happen. Because these two outcomes cover every single possibility in our sample space, their probabilities must add up to exactly one. Mathematically, we write this as: Probability of E plus Probability of not E equals one. Let's look at this through a concrete example. Suppose you are playing a game where you need to roll a six on a standard die to win. Let event E be 'rolling a six'. The probability of E, or P of E, is one over six. Now, what is the complement? The complement, or 'not E', would be 'not rolling a six'. This means rolling a one, a two, a three, a four, or a five. If you count those outcomes, there are five successful outcomes for 'not E'. So, the probability of not E is five over six. Now, let's add them together. One over six plus five over six equals six over six, which simplifies to one. It works perfectly! This rule is incredibly useful when calculating the probability of an event is too difficult, but calculating its opposite is very easy. For instance, if a question asks, 'What is the probability of getting at least one head in ten coin tosses?', calculating every single way to get one, two, three, or up to ten heads would take forever. Instead, you can simply find the probability of the opposite event: 'getting zero heads'. Once you find the probability of zero heads, you just subtract that value from one to get your final answer. This is the magic of the complement rule. Always remember, the sum of the probability of an event and its complement is always equal to one. This is a constant truth in probability theory. If you ever calculate both and they don't add up to one, you know you've made a calculation error. Let's keep this rule in our toolkit as we move into specific scenarios like coin tosses and dice rolls in the next video.","Welcome back. In our previous session, we mastered the fundamental formula for probability. Now, let us apply that knowledge to one of the most classic experiments in probability theory: tossing coins. When we toss a coin, we are performing a random experiment where the outcome is uncertain. Let us start with the simplest case: a single coin toss. When you flip one coin, there are only two possible outcomes. Either it lands on Heads, which we denote as H, or it lands on Tails, which we denote as T. Therefore, our Sample Space, or S, is simply H and T. The total number of possible outcomes is two. Now, if I ask you, what is the probability of getting a Head? We use our formula: the number of favorable outcomes divided by the total number of outcomes in the sample space. Since there is only one Head, the probability is one divided by two, or zero point five. Similarly, the probability of getting a Tail is also one divided by two. Now, let us increase the complexity. What happens when we toss two coins simultaneously? This is a very common question in your board exams. When we toss two coins, we cannot just say there are two outcomes. We must consider every possible combination. Let us list them systematically. The first coin can be Head or Tail, and for each of those, the second coin can also be Head or Tail. This gives us four possible outcomes: Head-Head, Head-Tail, Tail-Head, and Tail-Tail. We write this sample space as S equals H-H, H-T, T-H, and T-T. The total number of outcomes is now four. Let us solve a problem. What is the probability of getting exactly one Head? Looking at our list, the outcomes with exactly one Head are Head-Tail and Tail-Head. That is two favorable outcomes. So, the probability is two divided by four, which simplifies to one divided by two. What if we want the probability of getting at least one Head? 'At least one' means we can have one Head or two Heads. The outcomes are H-H, H-T, and T-H. That is three outcomes. So, the probability is three divided by four. Notice how the wording 'exactly' versus 'at least' changes our favorable outcomes. Now, let us step up to the final level for this lesson: tossing three coins at once. This might seem intimidating, but we will use a systematic approach called a tree diagram or a listing method to ensure we don't miss anything. For three coins, each coin has two possibilities. Mathematically, the total number of outcomes is two raised to the power of three, which is two times two times two, equaling eight. Let us list them carefully: H-H-H, H-H-T, H-T-H, H-T-T, T-H-H, T-H-T, T-T-H, and T-T-T. There are our eight outcomes. Let us try a complex question. Find the probability of getting at most two Heads. 'At most two' means we can have zero Heads, one Head, or two Heads. The only outcome we must exclude is the one with three Heads, which is H-H-H. Since there are eight total outcomes and we exclude one, we have seven favorable outcomes. The probability is seven divided by eight. Another example: what is the probability of getting exactly two Tails? Let's look at our list of eight. The outcomes with two Tails are H-T-T, T-H-T, and T-T-H. That is three outcomes. So, the probability is three divided by eight. Remember, as the number of coins increases, the sample space grows exponentially. Always be systematic in your listing to avoid errors. Always write your final answer in the simplest fraction form or as a decimal. Let's review: for one coin, the total is two; for two coins, the total is four; and for three coins, the total is eight. Master these patterns, and you will never struggle with coin problems again.","Welcome back. Now that we have mastered the logic of tossing coins, let us move to another classic tool used to study chance: the die, or dice. In our previous lesson, we explored how to list outcomes for coins; today, we apply those same principles of sample space to rolling dice. Let us start with the simplest case: rolling a single, fair, six-sided die. When you throw this die, what are the possible results? You could get a one, a two, a three, a four, a five, or a six. Therefore, the sample space, which we denote by the letter S, contains exactly six elements. We write this as S equals equal to brace, one, two, three, four, five, six, close brace. Since the die is fair, each of these six outcomes is equally likely. This means the probability of getting any specific number, say a four, is simply one divided by six. If I ask you, what is the probability of getting an even number? First, identify the favorable outcomes. The even numbers on a die are two, four, and six. That is three favorable outcomes. So, the probability is three divided by six, which simplifies to one divided by two. Similarly, the probability of getting a prime number—which would be two, three, and five—is also three divided by six, or one divided by two. Now, let us increase the complexity. This is where many students make mistakes, so pay close attention. What happens when we roll two dice simultaneously? When we roll two dice, we are no longer looking at just six outcomes. We are looking at the combination of outcomes from the first die and the second die. To find the total number of outcomes, we use the fundamental principle of counting. The first die has six possible outcomes, and for every single one of those, the second die also has six possible outcomes. So, we multiply six by six, which gives us a total sample space of thirty-six outcomes. To visualize this, imagine a grid or a table. The rows represent the outcomes of the first die, from one to six, and the columns represent the outcomes of the second die, from one to six. Each cell in this six-by-six grid represents an ordered pair, like one-one, one-two, up to six-six. This grid is your best friend for solving two-dice problems. Let us try an example. What is the probability that the sum of the numbers appearing on the two dice is exactly seven? First, let us find the total number of outcomes, which we already know is thirty-six. Now, let us list the favorable outcomes where the sum is seven. We could have one and six, two and five, three and four, four and three, five and two, or six and one. Counting them up, we have exactly six favorable outcomes. Therefore, the probability is six divided by thirty-six, which simplifies to one divided by six. What if we want the sum to be greater than ten? The sums greater than ten are eleven and twelve. To get an eleven, we can have five-six or six-five. To get a twelve, we can only have six-six. That gives us a total of three favorable outcomes. The probability is three divided by thirty-six, which simplifies to one divided by twelve. Remember, when dealing with two dice, always be careful to distinguish between 'the sum is' and 'the product is', and always treat the dice as distinct, meaning a one-two is a different outcome from a two-one. Mastering this grid method will make even the most complex dice problems feel simple.","Welcome back, students. In our previous lesson, we mastered the logic of coins and dice. Now, we step into a classic scenario used frequently in board exams: the deck of playing cards. To solve probability problems involving cards, you don't need to be a magician, but you must be a master of the deck's structure. Let's break it down. A standard deck consists of fifty-two cards, which we call the total number of possible outcomes in our sample space. These fifty-two cards are divided into two equal groups: red cards and black cards. There are twenty-six red cards and twenty-six black cards. Now, let's look at the suits. The deck is divided into four suits, and each suit contains exactly thirteen cards. The red suits are Hearts and Diamonds. The black suits are Spades and Clubs. If a question asks for the probability of drawing a Heart, you will take the thirteen hearts and divide them by the total fifty-two cards. Similarly, for Spades, Clubs, or Diamonds, the count remains thirteen. Now, pay close attention to the types of cards within these suits. Every suit has numbered cards, starting from Ace, then two, three, and so on, up to ten. But there is a special category called Face Cards. These are the cards with human figures on them: the King, the Queen, and the Jack. Since there are four suits, and each suit has one King, one Queen, and one Jack, we calculate the total number of face cards by multiplying three by four, which gives us twelve face cards in total. It is a common mistake to include the Ace as a face card. Remember, the Ace is a special card, but it does not have a face, so it is not counted among the twelve face cards. Let's practice a mental calculation. If I ask you, what is the probability of drawing a red face card? First, identify the total outcomes, which is fifty-two. Next, identify the favorable outcomes. We know there are twelve face cards in total, and half of them are red—the hearts and the diamonds. So, there are six red face cards. The probability is six divided by fifty-two, which simplifies to three divided by twenty-six. What if the question asks for a card that is either a King or a Spade? Here, we must be careful not to double-count. There are four Kings and thirteen Spades. However, one of those Kings is actually the King of Spades. So, we have four Kings plus twelve other Spades, totaling thirteen favorable outcomes. The probability would be thirteen divided by fifty-two, or one-fourth. Understanding this hierarchy—the deck, the suits, the colors, and the face cards—is the foundation for every card-based probability question you will encounter in your Class 10 exams. Keep these numbers in mind: fifty-two total, four suits of thirteen, twenty-six red, twenty-six black, and twelve face cards.","Welcome back. We have explored coins, dice, and cards, but now we move into a very important area of probability that connects directly to your Number Theory. In many board exam questions, instead of physical objects, you are given a set of numbers and asked to find the probability of selecting a specific type of number. Let us start with the most basic concept: the Sample Space. When we are given a set, say, all integers from one to twenty, our total number of possible outcomes, which we call 'n of S', is simply twenty. Now, the challenge lies in identifying the 'Event'. To do this, you must be very clear with your mathematical definitions. First, let us talk about Prime Numbers. A prime number is a natural number greater than one that has no positive divisors other than one and itself. Remember, the number one is neither prime nor composite. So, if our set is integers from one to ten, our prime numbers are two, three, five, and seven. That gives us four favorable outcomes. The probability of selecting a prime number would be four divided by ten, which simplifies to two-fifths. Next, let us look at Multiples. A multiple of a number is the product of that number and an integer. If the question asks for the probability of selecting a multiple of three from the set of integers from one to fifteen, you must list them carefully: three, six, nine, twelve, and fifteen. Here, the number of favorable outcomes is five, and the total outcomes are fifteen. Thus, the probability is five divided by fifteen, or one-third. Now, let us increase the complexity. Sometimes, the question asks for 'Composite Numbers'. A composite number is a positive integer greater than one that has at least one divisor other than one and itself. In our set of one to ten, the composite numbers are four, six, eight, nine, and ten. Notice that one is excluded because it is neither prime nor composite. A very common exam trap is asking for the probability of selecting an 'Even Number' or an 'Odd Number' from a specific range. Always check if the range is inclusive. If the question says 'integers between five and fifteen', it usually means we do not include five and fifteen themselves. However, if it says 'from five to fifteen', we include both. Let us try a complex example together. Suppose we have a bag containing slips numbered from one to fifty. What is the probability that a number drawn at random is either a multiple of five or a prime number? To solve this, we first find the multiples of five: five, ten, fifteen, twenty, twenty-five, thirty, thirty-five, forty, and forty-five, and fifty. That is ten numbers. Next, we list the primes up to fifty. But wait! We must be careful not to double-count. The number five is both a multiple of five and a prime number. In probability, when we have overlapping events, we use the addition rule. We count the unique numbers that satisfy either condition. We have our ten multiples of five, and then we add the prime numbers that are not already in our multiples list. This systematic approach prevents the most common error in number-based probability: overcounting. Always write down your sample space, list your favorable outcomes clearly, and then apply the formula: Probability of Event E equals the number of outcomes favorable to E divided by the total number of possible outcomes in the sample space. Master these number properties, and you will find these problems much easier than any dice or card problem.","Welcome back, students. We have mastered coins, dice, cards, and number sets. Now, it is time to step into the real challenge: Complex Word Problems. In these problems, the examiners won't just ask you to find the probability of a single event. Instead, they will weave together multiple concepts—like combining a selection from a bag of marbles with a condition about even numbers, or calculating the probability of 'at least one' event occurring. To solve these, you need a strategic approach. First, always identify the 'Total Number of Outcomes' by carefully reading the constraints. Second, break the problem into smaller, manageable parts. Let's look at a classic example. Suppose a bag contains five red balls, three blue balls, and two green balls. A ball is drawn at random. What is the probability that the ball is either red or not green? To solve this, don't panic. First, find the total number of balls, which is five plus three plus two, equaling ten. Now, look at the condition: 'Red or Not Green'. 'Red' means we count the five red balls. 'Not Green' means we count everything that isn't green—which are the five red balls and the three blue balls. Wait, if we just add them, we might double-count the red balls! This is where students often slip up. The correct way is to identify the favorable outcomes: Red balls plus Blue balls. That gives us five plus three, which is eight. So, the probability is eight divided by ten, which simplifies to four-fifths. Another layer of complexity is the 'At Least' and 'At Most' phrasing. When you see 'at least one', it is often much faster to use the Complementary Event rule we learned earlier. For example, if you toss three coins, the probability of getting 'at least one head' is much easier to calculate as one minus the probability of getting 'no heads' at all. Let's try a more advanced scenario. Imagine a box contains numbered cards from one to twenty. You pick one card. What is the probability that the number is a multiple of three OR a prime number? Here, you must list your sets. Multiples of three are three, six, nine, twelve, fifteen, and eighteen. That is six numbers. Prime numbers between one and twenty are two, three, five, seven, eleven, thirteen, seventeen, and nineteen. That is eight numbers. Now, look closely. The number three appears in both lists. In probability, when we use the word 'OR', we must ensure we don't count the same outcome twice. We use the formula: Probability of A or B equals Probability of A plus Probability of B, minus the Probability of both A and B occurring. So, we take six plus eight, which is fourteen, and subtract the one overlapping number, three. That gives us thirteen favorable outcomes. The total outcomes are twenty, so the probability is thirteen divided by twenty. Remember, the key to these complex problems is not just the math, but the translation of English words into mathematical sets. Always check for overlaps, always define your sample space clearly, and always simplify your final fraction. You are now ready to tackle the most intricate questions in your textbook.","Welcome back. We have covered the formulas, the coins, the dice, and the cards. You know how to calculate probability, but knowing the formula is only half the battle. In the examination, many students lose marks not because they don't understand the concept, but because they fall into specific logical traps or make simple calculation errors. Let us identify these pitfalls so you can avoid them. The first and most common error is the 'Range Violation.' Remember, the probability of any event, P of E, must always be between zero and one, inclusive. If you calculate a probability and get a number like one point two or a negative value like negative zero point five, stop immediately. You have made a mistake. Probability cannot be greater than one hundred percent, and it cannot be less than zero. This usually happens when students swap the numerator and the denominator. Always remember: the number of favorable outcomes goes on top, and the total number of possible outcomes goes on the bottom. The second pitfall is the 'Sample Space Oversight.' This is a logical fallacy where students fail to list all possible outcomes. For example, when tossing two coins, many students mistakenly think the sample space is just Head-Head, Tail-Tail, and Head-Tail. They forget Tail-Head! In probability, the order matters. Head-Tail and Tail-Head are two distinct outcomes. If you miss even one outcome in your sample space, your entire calculation will be wrong. This is especially critical in two-dice problems. Always remember that for two dice, there are thirty-six outcomes, not just the sums. Third, let us talk about the 'Complementary Event Trap.' Sometimes, a question asks for the probability of 'at least one' event occurring. Students often try to calculate this by adding up every single successful scenario, which is time-consuming and prone to error. Instead, use the rule of complementary events. The probability of 'at least one' is equal to one minus the probability of 'none.' It is much faster and much safer. Fourth, watch out for 'Misinterpreting the Language.' Words like 'or' and 'and' are very important. In probability, 'or' generally implies addition, while 'and' implies multiplication of probabilities for independent events. If a question asks for the probability of drawing a King or a Red card, you must be careful not to double-count the King of Hearts and the King of Diamonds, because they are both Kings and Red cards. This is called the principle of inclusion-exclusion, and failing to subtract the overlap is a classic mistake. Finally, there is the 'Simplification Error.' In the board exams, always express your final answer in its simplest fractional form. If you get sixteen over sixty-four, do not leave it like that. Simplify it to one over four. Also, if the question provides a decimal, provide a decimal; if it asks for a fraction, provide a fraction. Precision is key. By keeping these five points in mind—checking the range, verifying the sample space, using complements wisely, reading the logical operators, and simplifying your results—you will move from being a student who knows math to a student who masters math. Let's move to our final session, the Exam Masterclass, to wrap up this chapter.","Welcome to the final segment of our Probability series. You have mastered the concepts, from sample spaces to complex card problems, but knowing the math is only half the battle; knowing how to present it in the exam is what secures those full marks. Let's start with our Exam Masterclass. First, let's talk about Step-Marking. In Class 10 Board exams, the examiners look for a logical flow. Never jump directly to the final fraction. Even if the question seems simple, always write down the Sample Space first. For example, if you are tossing two coins, write out S equals H, H, H, T, T, H, T, T. Next, clearly state the number of total outcomes, which we call n of S. Then, identify the number of favorable outcomes, which is n of E. Only after showing these steps should you write the formula: Probability of event E equals n of E divided by n of S. If you make a calculation error but your steps and formula are correct, you will still receive partial marks. This is the secret to scoring even when you are unsure. Second, let's discuss Time Management. Probability questions are often 'scoring' questions, meaning they should be quick. Do not spend more than five to seven minutes on a single probability problem. If you find yourself stuck in a complex dice combination, move on and come back later. A common time-waster is drawing overly large sample space trees. Keep your diagrams neat, compact, and legible. Now, let's do a lightning-fast Full Chapter Recap to solidify your memory. We began by understanding that probability is the measure of the likelihood of an event, ranging from zero, which is an impossible event, to one, which is a certain event. We learned that the Sample Space is the set of all possible outcomes. We mastered the Classical Approach, where Probability of E equals the number of outcomes favorable to E divided by the total number of possible outcomes in the sample space. We explored the concept of Complementary Events, remembering the golden rule: the probability of an event plus the probability of its complement, or not E, must always equal one. We practiced with Coins, where we learned that doubling the coins doubles the exponent in our total outcomes, like two to the power of two for two coins. We tackled Dice, remembering that for two dice, the total outcomes are always thirty-six. We decoded the Playing Cards, identifying the fifty-two cards, the four suits, and the twelve face cards. We worked with Number Sets, identifying primes, multiples, and integers. And finally, we learned to avoid pitfalls like forgetting that 'at least' includes the number itself, or miscounting the total outcomes in a bag of colored marbles. You are now equipped with both the mathematical tools and the exam strategy to ace this chapter. Stay confident, read the questions carefully to identify if they ask for 'not E' or 'at least E', and always show your work. You have worked hard, and it will show in your results. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 8.0);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 12.0);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 16.0);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 20.0);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 24.0);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 30.0);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 308.0);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 312.0);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 316.0);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 320.0);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 324.0);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 330.0);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 608.0);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 612.0);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 616.0);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 620.0);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 624.0);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 630.0);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 908.0);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 912.0);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 916.0);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 920.0);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 924.0);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 930.0);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1208.0);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1212.0);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1216.0);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1220.0);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1224.0);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1230.0);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1508.0);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1512.0);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1516.0);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1520.0);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1524.0);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1530.0);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1808.0);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1812.0);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1816.0);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1820.0);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1824.0);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1830.0);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2108.0);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2112.0);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2116.0);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2120.0);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2124.0);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2130.0);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2408.0);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2412.0);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2416.0);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2420.0);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2424.0);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2430.0);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2708.0);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2712.0);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2716.0);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2720.0);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2724.0);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2730.0);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3008.0);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3012.0);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3016.0);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3020.0);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3024.0);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3030.0);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3308.0);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3312.0);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3316.0);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3320.0);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3324.0);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3330.0);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c10-maths-14-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+    </script>
+  </body>
+</html>
