@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Respiration in Plants, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-biology-12-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Energetics of Life and the Importance of Respiration -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Energetics of Life and the Importance of Respiration</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Respiration converts chemical energy from food into usable A-T-P.</div>
+              <div id="qx0-p1" class="qe-bullet">• A-T-P acts as the universal energy currency for all cellular work.</div>
+              <div id="qx0-p2" class="qe-bullet">• Respiration is a controlled catabolic process, not a simple combustion.</div>
+              <div id="qx0-p3" class="qe-bullet">• Distinction: Gas exchange is physical; respiration is biochemical.</div>
+              <div id="qx0-p4" class="qe-bullet">• The primary goal is the efficient extraction of energy from organic substrates.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":807105382,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a glucose molecule being broken down into smaller pieces, with glowing A-T-P molecules being released and moving toward a cell membrane.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D animation showing a glucose molecule being broken down into smaller pieces, with glowing A-T-P molecules being released and moving toward a cell membrane.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Respiratory Substrates and Aerobic vs. Anaerobic Pathways -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Respiratory Substrates and Aerobic vs. Anaerobic Pathways</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Respiratory substrates include carbohydrates, lipids, and proteins.</div>
+              <div id="qx1-p1" class="qe-bullet">• Aerobic respiration: Complete oxidation in the presence of oxygen.</div>
+              <div id="qx1-p2" class="qe-bullet">• Anaerobic respiration: Incomplete oxidation in the absence of oxygen.</div>
+              <div id="qx1-p3" class="qe-bullet">• Aerobic pathway produces high ATP yield and CO2 + H2O.</div>
+              <div id="qx1-p4" class="qe-bullet">• Anaerobic pathway produces low ATP yield and organic end products.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":6670379,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a glucose molecule fully dissolving into CO2 and H2O on the left, and partially breaking into Ethanol on the right.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation showing a glucose molecule fully dissolving into CO2 and H2O on the left, and partially breaking into Ethanol on the right.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Glycolysis: The Universal Pathway and ATP Yield Calculations -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Glycolysis: The Universal Pathway and ATP Yield Calculations</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Glycolysis occurs in the cytoplasm and is oxygen-independent.</div>
+              <div id="qx2-p1" class="qe-bullet">• Preparatory Phase: Consumes 2 ATP to prime the glucose molecule.</div>
+              <div id="qx2-p2" class="qe-bullet">• Pay-off Phase: Produces 4 ATP and 2 NADH via substrate-level phosphorylation.</div>
+              <div id="qx2-p3" class="qe-bullet">• Net Yield per Glucose: 2 ATP and 2 NADH molecules.</div>
+              <div id="qx2-p4" class="qe-bullet">• Final Product: Two molecules of 3-carbon Pyruvate.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":1158484497,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular animation showing a glucose molecule being phosphorylated and split into two pyruvate molecules within a translucent cellular cytoplasm.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D molecular animation showing a glucose molecule being phosphorylated and split into two pyruvate molecules within a translucent cellular cytoplasm.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): The Link Reaction: Oxidative Decarboxylation of Pyruvate -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">The Link Reaction: Oxidative Decarboxylation of Pyruvate</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Pyruvate moves from cytoplasm to mitochondrial matrix</div>
+              <div id="qx3-p1" class="qe-bullet">• Catalyzed by the Pyruvate Dehydrogenase Complex</div>
+              <div id="qx3-p2" class="qe-bullet">• Decarboxylation: One carbon is released as Carbon Dioxide (CO2)</div>
+              <div id="qx3-p3" class="qe-bullet">• Oxidation: NAD plus is reduced to NADH plus</div>
+              <div id="qx3-p4" class="qe-bullet">• Acetyl group attaches to Coenzyme A to form Acetyl CoA</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2012720149,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular animation showing a 3-carbon pyruvate molecule entering a mitochondrion, losing a CO2 group, transferring electrons to NAD+, and bonding with Coenzyme A to form Acetyl CoA.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D molecular animation showing a 3-carbon pyruvate molecule entering a mitochondrion, losing a CO2 group, transferring electrons to NAD+, and bonding with Coenzyme A to form Acetyl CoA.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): The Krebs Cycle (TCA Cycle): Detailed Mechanism and Carbon Accounting -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">The Krebs Cycle (TCA Cycle): Detailed Mechanism and Carbon Accounting</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Location: Mitochondrial Matrix</div>
+              <div id="qx4-p1" class="qe-bullet">• Starting Reactants: Acetyl Co-A (2C) + Oxaloacetate (4C) = Citrate (6C)</div>
+              <div id="qx4-p2" class="qe-bullet">• Byproducts per turn: 2 CO2, 3 NADH, 1 FADH2, 1 ATP/GTP</div>
+              <div id="qx4-p3" class="qe-bullet">• Total yield per Glucose: 4 CO2, 6 NADH, 2 FADH2, 2 ATP</div>
+              <div id="qx4-p4" class="qe-bullet">• Purpose: Complete oxidation of glucose and loading electron carriers</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":1564434329,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D rotating molecular ring inside a translucent mitochondrion, showing carbon atoms being released as CO2 bubbles and NAD+ turning into NADH.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D rotating molecular ring inside a translucent mitochondrion, showing carbon atoms being released as CO2 bubbles and NAD+ turning into NADH.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Electron Transport System (ETS) and Oxidative Phosphorylation -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Electron Transport System (ETS) and Oxidative Phosphorylation</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• ETS occurs in the inner mitochondrial membrane (cristae).</div>
+              <div id="qx5-p1" class="qe-bullet">• NADH enters at Complex I; FADH two enters at Complex II.</div>
+              <div id="qx5-p2" class="qe-bullet">• Proton pumping creates an electrochemical gradient in the intermembrane space.</div>
+              <div id="qx5-p3" class="qe-bullet">• Oxygen is the final electron acceptor, forming water (H two O).</div>
+              <div id="qx5-p4" class="qe-bullet">• ATP synthase uses proton flow to catalyze ADP plus Pi to ATP.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":2562837289,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cross-section of the inner mitochondrial membrane showing electrons jumping between colored protein complexes, with protons being pumped into the intermembrane space and flowing back through a rotating ATP synthase turbine.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D cross-section of the inner mitochondrial membrane showing electrons jumping between colored protein complexes, with protons being pumped into the intermembrane space and flowing back through a rotating ATP synthase turbine.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Chemiosmotic Hypothesis: Mechanism of ATP Synthesis -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Chemiosmotic Hypothesis: Mechanism of ATP Synthesis</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Proposed by Peter Mitchell to explain ATP synthesis coupling.</div>
+              <div id="qx6-p1" class="qe-bullet">• Electron transport pumps protons from matrix to intermembrane space.</div>
+              <div id="qx6-p2" class="qe-bullet">• Proton Motive Force: The combined chemical and electrical gradient.</div>
+              <div id="qx6-p3" class="qe-bullet">• ATP Synthase (Complex V) acts as a molecular turbine.</div>
+              <div id="qx6-p4" class="qe-bullet">• Proton flow through F zero drives F one to synthesize ATP from ADP and Pi.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":4181613589,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing protons being pumped into the intermembrane space, creating a high concentration, then rushing through the rotating ATP Synthase turbine to produce ATP molecules.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D animation showing protons being pumped into the intermembrane space, creating a high concentration, then rushing through the rotating ATP Synthase turbine to produce ATP molecules.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Anaerobic Respiration: Fermentation Pathways and Lactic Acid Production -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Anaerobic Respiration: Fermentation Pathways and Lactic Acid Production</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Anaerobic respiration occurs in the absence of molecular oxygen.</div>
+              <div id="qx7-p1" class="qe-bullet">• Energy yield is limited to two A-T-P molecules per glucose molecule.</div>
+              <div id="qx7-p2" class="qe-bullet">• Fermentation regenerates N-A-D-plus to keep glycolysis functioning.</div>
+              <div id="qx7-p3" class="qe-bullet">• Alcoholic Fermentation: Pyruvate to Acetaldehyde to Ethanol + CO2.</div>
+              <div id="qx7-p4" class="qe-bullet">• Lactic Acid Fermentation: Pyruvate is directly reduced to Lactic Acid.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":4007418039,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing yeast cells producing bubbles of CO2 and ethanol on the left, and human muscle fibers converting pyruvate to lactate on the right.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A split-screen 3D animation showing yeast cells producing bubbles of CO2 and ethanol on the left, and human muscle fibers converting pyruvate to lactate on the right.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Respiratory Quotient (RQ): Mathematical Derivations and Interpretations -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Respiratory Quotient (RQ): Mathematical Derivations and Interpretations</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• RQ = Volume of CO2 produced / Volume of O2 consumed</div>
+              <div id="qx8-p1" class="qe-bullet">• Carbohydrates: RQ = 1.0 (Balanced O2 and CO2)</div>
+              <div id="qx8-p2" class="qe-bullet">• Lipids: RQ &lt; 1.0 (High oxygen demand due to high hydrogen)</div>
+              <div id="qx8-p3" class="qe-bullet">• Organic Acids: RQ &gt; 1.0 (Low oxygen demand due to high internal oxygen)</div>
+              <div id="qx8-p4" class="qe-bullet">• RQ acts as a metabolic fingerprint for substrate identification</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":239732307,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing the molecular combustion of glucose (1:1 ratio), a fatty acid chain (high O2 intake), and an organic acid (low O2 intake) with real-time floating mathematical ratios.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation showing the molecular combustion of glucose (1:1 ratio), a fatty acid chain (high O2 intake), and an organic acid (low O2 intake) with real-time floating mathematical ratios.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Comparison of Aerobic and Anaerobic Respiration with Common Pitfalls -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Comparison of Aerobic and Anaerobic Respiration with Common Pitfalls</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Aerobic: Complete oxidation with O2 as final electron acceptor</div>
+              <div id="qx9-p1" class="qe-bullet">• Anaerobic: Partial oxidation; yields only 2 ATP per glucose</div>
+              <div id="qx9-p2" class="qe-bullet">• Pitfall: Do not confuse 'incomplete' oxidation with 'failed' respiration</div>
+              <div id="qx9-p3" class="qe-bullet">• Pitfall: Net ATP in fermentation is strictly from glycolysis (2 ATP)</div>
+              <div id="qx9-p4" class="qe-bullet">• Crucial: NAD plus regeneration is mandatory for both pathways</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":264543085,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a glowing glucose molecule fully breaking into CO2 and H2O on the left, and partially breaking into Lactic Acid on the right, with ATP counters appearing above each.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation showing a glowing glucose molecule fully breaking into CO2 and H2O on the left, and partially breaking into Lactic Acid on the right, with ATP counters appearing above each.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Diagrammatic Mastery: Drawing Metabolic Pathways for Exams -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Diagrammatic Mastery: Drawing Metabolic Pathways for Exams</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Use straight, directional arrows to show metabolic flow.</div>
+              <div id="qx10-p1" class="qe-bullet">• Place enzymes directly above the reaction arrows.</div>
+              <div id="qx10-p2" class="qe-bullet">• Clearly show co-enzyme transformations like NAD plus to NADH plus H plus.</div>
+              <div id="qx10-p3" class="qe-bullet">• Represent decarboxylation by drawing CO2 exiting the pathway.</div>
+              <div id="qx10-p4" class="qe-bullet">• Visualize the ETC by drawing the mitochondrial inner membrane and complexes.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":344486835,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a messy, hand-drawn sketch transforming into a polished, professional biological diagram with glowing molecular structures.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D split-screen showing a messy, hand-drawn sketch transforming into a polished, professional biological diagram with glowing molecular structures.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Full Chapter Recap and High-Yield Question Solving -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Full Chapter Recap and High-Yield Question Solving</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Recap: ATP yield from Glycolysis, Krebs Cycle, and ETS</div>
+              <div id="qx11-p1" class="qe-bullet">• RQ Values: Carbohydrates (1.0), Fats (&lt;1.0), Organic Acids (&gt;1.0)</div>
+              <div id="qx11-p2" class="qe-bullet">• Key Concept: Regeneration of Oxaloacetic acid in the TCA Cycle</div>
+              <div id="qx11-p3" class="qe-bullet">• Critical Step: Oxygen as the final electron acceptor in ETS</div>
+              <div id="qx11-p4" class="qe-bullet">• Exam Tip: Always track carbon counts in metabolic pathways</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":4217512529,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a glowing ATP molecule on one side and a complex metabolic flowchart on the other, with key terms highlighting as they are mentioned.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a glowing ATP molecule on one side and a complex metabolic flowchart on the other, with key terms highlighting as they are mentioned.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Respiration in Plants today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Energetics of Life and the Importance of Respiration <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Respiratory Substrates and Aerobic vs. Anaerobic Pathways <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Glycolysis: The Universal Pathway and ATP Yield Calculations <small>10:00</small></button>
+          <button type="button" data-seek="900">4. The Link Reaction: Oxidative Decarboxylation of Pyruvate <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. The Krebs Cycle (TCA Cycle): Detailed Mechanism and Carbon Accounting <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Electron Transport System (ETS) and Oxidative Phosphorylation <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Chemiosmotic Hypothesis: Mechanism of ATP Synthesis <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Anaerobic Respiration: Fermentation Pathways and Lactic Acid Production <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Respiratory Quotient (RQ): Mathematical Derivations and Interpretations <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Comparison of Aerobic and Anaerobic Respiration with Common Pitfalls <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Diagrammatic Mastery: Drawing Metabolic Pathways for Exams <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Full Chapter Recap and High-Yield Question Solving <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone, and welcome to our deep dive into one of the most fundamental processes in the living world: Respiration in Plants. Before we look at complex chemical cycles, we must ask a very basic question: Why do living organisms need to breathe, and why do they need to eat? To understand this, we have to look at the concept of energetics. Every living cell, whether it is a tiny bacterium or a massive banyan tree, is a machine that requires energy to perform work. This work includes everything from moving molecules across membranes to synthesizing complex proteins and growing new cells. In biological terms, we call this energy currency Adenosine Triphosphate, or A-T-P. Now, think of A-T-P as a rechargeable battery. When the cell needs to do something, it breaks a high-energy phosphate bond, releasing energy to power cellular activities. But how does a plant, which cannot move around to find food, get the raw material to recharge these batteries? It uses sunlight to build glucose through photosynthesis. However, glucose itself is just a stored form of chemical energy. It is like having a large gold bar; it is valuable, but you cannot use a gold bar to buy a loaf of bread at a vending machine. You need smaller, more manageable units of currency. Respiration is the metabolic process that breaks down these large molecules, like glucose, to release the energy stored in their chemical bonds and convert it into A-T-P. This is why we call respiration a catabolic process. It is a series of controlled, enzyme-catalyzed oxidative reactions. It is crucial to note that respiration is not just 'breathing' or gas exchange. While gas exchange is a physical process, respiration is a biochemical process occurring at the cellular level. In plants, this happens primarily in the mitochondria, though the initial steps occur in the cytosol. The goal is to extract the maximum amount of energy possible from organic substrates. If the breakdown were uncontrolled, like burning a piece of wood in a fire, all the energy would be lost as heat, and the cell would be destroyed. Instead, respiration is a highly regulated, step-by-step pathway that ensures energy is captured efficiently. Throughout this series, we will explore how different substrates, such as carbohydrates, fats, and proteins, enter these pathways, and how oxygen plays a vital role in maximizing the yield of A-T-P. We will also look at what happens when oxygen is absent. By the end of this chapter, you will not just see respiration as a series of diagrams, but as the very heartbeat of cellular life, driving the thermodynamics of every living organism. Let's get started by looking at the substrates that fuel this incredible engine.","Welcome back to our deep dive into Respiration in Plants. In our last session, we established why cells need energy. Now, we must ask a crucial question: what exactly is being burned to produce this energy? Not everything is glucose. In the biological world, we call these fuels 'respiratory substrates.' While carbohydrates like glucose are the most common, plants and animals also utilize lipids and proteins as fuel sources. When a plant has an abundance of starch, it breaks it down into glucose. When it has fats, it breaks them down into fatty acids and glycerol. Even proteins, through their amino acid components, can enter the respiratory pathway. However, the efficiency of energy extraction depends heavily on the chemical nature of these substrates. Now, let us look at the two primary modes of energy extraction: Aerobic and Anaerobic pathways. Think of these as two different ways to run an engine. The Aerobic pathway is the high-efficiency mode. It occurs in the presence of oxygen. In this pathway, the respiratory substrate is completely oxidized. This means every single carbon atom from the original glucose molecule is eventually released as carbon dioxide, and every high-energy electron is captured to drive the production of a massive amount of ATP. Because oxygen acts as the final electron acceptor, the process is clean, complete, and highly productive. This is why aerobic respiration is the standard for most complex life forms. On the other hand, we have the Anaerobic pathway. This occurs when oxygen is absent or limited, such as in waterlogged soil or during intense metabolic stress. In anaerobic conditions, the substrate undergoes incomplete oxidation. This means the glucose molecule is only partially broken down. Instead of ending up as carbon dioxide and water, the end products are often organic molecules like ethanol or lactic acid. Because the breakdown is incomplete, a significant amount of chemical energy remains trapped within these organic end products. Consequently, the ATP yield in anaerobic respiration is much, much lower than in aerobic respiration. To put it in perspective, while aerobic respiration can yield upwards of thirty-six to thirty-eight ATP molecules per glucose, anaerobic pathways typically yield only two ATP molecules. This difference is fundamental to understanding metabolic efficiency. It is also important to note that the choice between these pathways is not always a conscious 'decision' by the cell, but a consequence of the availability of oxygen and the enzymatic machinery present. As we move forward into Glycolysis in the next segment, keep this distinction in mind: whether a cell follows the aerobic or anaerobic route, the journey always begins with the same universal first step, but the destination and the energy payoff will differ drastically based on that oxygen availability.","Welcome back. In our previous session, we discussed how different substrates like carbohydrates, fats, and proteins enter the respiratory pathway. Now, we dive into the very heart of cellular metabolism: Glycolysis. This process is so fundamental that it is often called the Universal Pathway. Why universal? Because it occurs in the cytoplasm of almost all living cells, whether they are prokaryotic or eukaryotic, and whether they are performing aerobic or anaerobic respiration. This means glycolysis does not require oxygen to function. Let us trace the journey of a single molecule of glucose, which is a six-carbon sugar. The process begins with the 'Preparatory Phase'. Think of this as an investment phase. To get the energy out later, we must first put some energy in. In the first step, glucose is phosphorylated by the enzyme hexokinase to form glucose-six-phosphate. This uses one molecule of ATP. Next, glucose-six-phosphate is isomerized into fructose-six-phosphate. Then, another crucial step occurs: fructose-six-phosphate is phosphorylated by the enzyme phosphofructokinase to become fructose-one,six-bisphosphate. This step consumes a second molecule of ATP. Notice that we have now 'spent' two ATP molecules to prime the glucose molecule for cleavage. In the next step, this six-carbon sugar is split into two three-carbon molecules: glyceraldehyde-three-phosphate and dihydroxyacetone phosphate. The latter is quickly converted into a second molecule of glyceraldehyde-three-phosphate. Now, we enter the 'Pay-off Phase'. From this point forward, every reaction happens twice because we have two three-carbon molecules. In the first step of this phase, each glyceraldehyde-three-phosphate is oxidized, and a phosphate group is attached to form 1,3-bisphosphoglycerate. This oxidation is coupled with the reduction of NAD-plus to NADH plus a hydrogen ion. Since we have two molecules, we produce two molecules of NADH. Next, 1,3-bisphosphoglycerate is converted to 3-phosphoglycerate. This is a key moment where ATP is generated through substrate-level phosphorylation. Each molecule produces one ATP, so two ATP are made here. Following this, 3-phosphoglycerate is converted to 2-phosphoglycerate, and then to phosphoenolpyruvate, or PEP, by the enzyme enolase. In the final step, the enzyme pyruvate kinase facilitates the conversion of PEP into Pyruvate. This step also produces ATP via substrate-level phosphorylation. Again, because we have two molecules, we gain two more ATP. Now, let us perform the crucial ATP yield calculation. This is a favorite topic for examiners. Let's look at the 'Gross Yield' first. During the pay-off phase, we produced four ATP molecules through substrate-level phosphorylation. Now, let's look at the 'Net Yield'. We started by investing two ATP in the preparatory phase and gained four ATP in the pay-off phase. Therefore, the net gain of ATP per molecule of glucose is four minus two, which equals two ATP. Additionally, we have produced two molecules of NADH. In aerobic organisms, these NADH molecules will later go to the Electron Transport System to produce more ATP, but in the context of glycolysis alone, our net energy profit is two ATP and two NADH. Remember, the end product of glycolysis is two molecules of three-carbon pyruvate. These pyruvate molecules still hold a significant amount of chemical energy, which will be extracted in the subsequent steps we will cover in the next video. Keep these steps and the net yield of two ATP in mind, as they are the foundation for everything that follows in cellular respiration.","In our previous lesson, we successfully navigated the steps of Glycolysis, where one molecule of glucose was broken down into two molecules of pyruvate in the cytoplasm. But now, we face a crucial metabolic crossroads. Pyruvate is a three-carbon molecule, and it is currently sitting in the cytosol. However, the next major stage of aerobic respiration, the Krebs Cycle, takes place inside the mitochondrial matrix. So, how does pyruvate get from the cytoplasm into the mitochondria, and how does it prepare itself to enter the cycle? This transition is what we call the Link Reaction, or more formally, the Oxidative Decarboxylation of Pyruvate. Let us look at the chemistry of this transformation. As pyruvate enters the mitochondrial matrix through specific transport proteins, it undergoes a complex enzymatic process. This reaction is catalyzed by a massive multi-enzyme complex known as the Pyruvate Dehydrogenase Complex. This complex is a masterpiece of biological engineering, consisting of three different enzymes working in perfect coordination. The process begins with decarboxylation. This means a carboxyl group is removed from the three-carbon pyruvate molecule and released in the form of a molecule of carbon dioxide. This is the very first instance in aerobic respiration where carbon dioxide is produced as a waste product. After losing one carbon, we are left with a two-carbon acetyl group. But the molecule cannot exist as a free acetyl group; it must be stabilized. This is where the 'oxidative' part of the name comes in. During this process, electrons are removed from the substrate. These electrons, along with a hydrogen ion, are transferred to the electron carrier NAD plus, which is Nicotinamide Adenine Dinucleotide. This reduces NAD plus to NADH plus. This NADH is incredibly important because it will later travel to the Electron Transport System to help generate ATP. Finally, to make the two-carbon acetyl group chemically reactive and ready for the Krebs Cycle, it is attached to a specialized carrier molecule called Coenzyme A. Coenzyme A is derived from Vitamin B five, also known as pantothenic acid. The resulting product is a high-energy molecule called Acetyl Coenzyme A, or simply Acetyl CoA. Let us summarize the stoichiometry of this single step. For every one molecule of glucose that entered glycolysis, we produced two molecules of pyruvate. Therefore, the link reaction happens twice per glucose molecule. This means for every glucose, we produce two molecules of Acetyl Coenzyme A, two molecules of carbon dioxide, and two molecules of NADH plus. It is important to remember that this reaction is irreversible under physiological conditions; once pyruvate is converted to Acetyl CoA, it is committed to the aerobic pathway. This link reaction is the essential bridge that connects the anaerobic-style glycolysis in the cytoplasm to the highly efficient aerobic machinery of the mitochondria. Without this decarboxylation and the attachment of Coenzyme A, the energy stored in the chemical bonds of pyruvate would remain inaccessible for the Krebs Cycle. Now that we have our Acetyl CoA ready, we are perfectly positioned to enter the heart of mitochondrial metabolism.","Welcome back. In our previous lesson, we saw how the Link Reaction transforms pyruvate into Acetyl Coenzyme A. Now, we enter the heart of aerobic respiration: the Krebs Cycle, also known as the Tricarboxylic Acid Cycle or the TCA Cycle. This cycle takes place within the mitochondrial matrix. Think of this cycle as a metabolic furnace that completely oxidizes the remaining carbon atoms from our original glucose molecule. Let us trace the journey step by step. The cycle begins when the two-carbon Acetyl group from Acetyl Coenzyme A combines with a four-carbon acceptor molecule called Oxaloacetate. This fusion creates a six-carbon molecule known as Citrate, or Citric Acid. This is why it is called the Citric Acid Cycle. Once Citrate is formed, the process of oxidation begins. First, Citrate is converted into Isocitrate. This is a structural rearrangement that prepares the molecule for the upcoming decarboxylation steps. In the next step, Isocitrate undergoes oxidative decarboxylation. This means two things happen simultaneously: a carbon atom is removed and released as a molecule of Carbon Dioxide, and a molecule of NAD plus is reduced to NADH plus. This step produces a five-carbon molecule called alpha-ketoglutarate. Now, the cycle repeats this pattern. Alpha-ketoglutarate undergoes another round of oxidative decarboxylation. Again, one carbon is lost as Carbon Dioxide, and another molecule of NAD plus is reduced to NADH plus. This leaves us with a four-carbon compound called Succinyl Coenzyme A. This molecule is high in energy. As Succinyl Coenzyme A is converted into Succinate, the energy released is used to perform substrate-level phosphorylation. In this step, a molecule of GDP is converted to GTP, or in some cells, ADP is converted directly to ATP. Now we are left with a four-carbon Succinate. The cycle continues its journey to regenerate the original starting material. Succinate is oxidized to Fumarate. During this specific step, two hydrogen atoms are transferred to FAD, reducing it to FADH two. Next, Fumarate is hydrated by the addition of a water molecule to form Malate. Finally, in the last step of the cycle, Malate is oxidized to regenerate Oxaloacetate. This final oxidation step reduces one more molecule of NAD plus to NADH plus. Once Oxaloacetate is reformed, it is ready to accept another Acetyl group, and the cycle turns again. Now, let us perform the crucial 'Carbon Accounting' to understand the efficiency of this process. Remember, one glucose molecule produces two molecules of pyruvate through glycolysis. Each pyruvate produces one Acetyl Coenzyme A through the link reaction. Therefore, for every single glucose molecule, the Krebs Cycle must turn twice. Let us count the products for one turn first. In one turn, we release two molecules of Carbon Dioxide, produce three molecules of NADH plus, one molecule of FADH two, and one molecule of ATP or GTP. Since we must double these numbers for one glucose molecule, the total yield from the Krebs Cycle per glucose is: four molecules of Carbon Dioxide, six molecules of NADH plus, two molecules of FADH two, and two molecules of ATP. This accounting is vital for your exams. You must realize that while the cycle only produces two ATP directly, its real power lies in the six NADH plus and two FADH two molecules. These are the high-energy electron carriers that will power the Electron Transport System in our next lesson. Without the Krebs Cycle, we would never extract the maximum energy stored in the chemical bonds of glucose. Let's review the flow: Acetyl Co-A plus Oxaloacetate equals Citrate, then Isocitrate, then Alpha-ketoglutarate, then Succinyl Co-A, then Succinate, then Fumarate, then Malate, and finally back to Oxaloacetate.","Welcome back. We have successfully navigated through Glycolysis, the Link Reaction, and the Krebs Cycle. We have accumulated a wealth of reduced coenzymes, specifically NADH and FADH two. But how do we actually convert the energy stored in these electrons into the universal energy currency, ATP? This happens in the final, most spectacular stage of aerobic respiration: the Electron Transport System, or ETS, and Oxidative Phosphorylation. This process takes place within the inner mitochondrial membrane. Think of this membrane not just as a barrier, but as a highly organized biological circuit board. The inner membrane is folded into cristae to increase surface area, providing ample space for thousands of copies of the electron transport chain. The ETS consists of a series of protein complexes and electron carriers embedded in this membrane. The journey begins with NADH. When NADH donates its electrons to the first complex, known as Complex One or NADH dehydrogenase, it is oxidized back to NAD plus. As these electrons move through the chain, they lose energy. This energy is not wasted; it is used by the complexes to pump protons, or hydrogen ions, from the mitochondrial matrix into the intermembrane space. This creates a significant concentration gradient. Now, let's look at FADH two. FADH two enters the chain at a different point, specifically at Complex Two, also known as Succinate dehydrogenase. Because FADH two enters later in the chain than NADH, it bypasses the first proton-pumping station. This is a crucial detail for your exams: because FADH two contributes to fewer proton pumps, it ultimately yields less ATP than NADH. The electrons travel through a series of carriers, including Ubiquinone, also called Coenzyme Q, and Cytochrome c. As the electrons move from a higher energy state to a lower energy state, they eventually reach the final electron acceptor. In aerobic respiration, this acceptor is molecular oxygen. Oxygen, being highly electronegative, pulls the electrons through the chain. When oxygen accepts these electrons along with protons from the matrix, it is reduced to form water. This is why we breathe oxygen—to act as the ultimate sink for these spent electrons. Now, let's talk about the 'Oxidative Phosphorylation' part of the title. The pumping of protons into the intermembrane space has created a massive electrochemical gradient. The protons want to flow back into the matrix to reach equilibrium, but the inner membrane is impermeable to them. They can only pass through a special enzyme called ATP synthase, often referred to as the F-zero F-one complex. As protons rush through the F-zero channel of ATP synthase, they cause a part of the enzyme to rotate, much like water turning a turbine in a hydroelectric dam. This mechanical rotation provides the energy required for the F-one subunit to catalyze the phosphorylation of ADP. Specifically, it joins an inorganic phosphate group to ADP to create ATP. This process, where the energy from electron transfer is used to create a proton gradient that then drives ATP synthesis, is the essence of oxidative phosphorylation. To summarize the math for your numerical problems: for every NADH oxidized, approximately two and a half to three ATP molecules are produced, while for every FADH two, approximately one and a half to two ATP molecules are generated. This concludes the electron transport phase, setting the stage for our next deep dive into the Chemiosmotic Hypothesis.","In our previous segment, we explored the Electron Transport System, where electrons move through a series of complexes, ultimately reducing oxygen to water. But a crucial question remains: how does the energy released from these electron transfers actually get captured to form ATP? To answer this, we must look at the Chemiosmotic Hypothesis, a concept proposed by Peter Mitchell. This hypothesis explains the coupling of electron transport with the synthesis of ATP through the creation of a proton gradient. Imagine the inner mitochondrial membrane as a barrier. As electrons flow through Complexes I, III, and IV, the energy released is used to actively pump protons, or hydrogen ions, from the mitochondrial matrix into the intermembrane space. This process is not just about movement; it is about creating a massive imbalance. Because protons are being moved into this narrow space, the concentration of protons in the intermembrane space becomes much higher than in the matrix. This creates two types of gradients: a chemical gradient, which is a difference in pH, and an electrical gradient, which is a difference in charge. Together, these form what we call the Proton Motive Force. The intermembrane space becomes highly acidic, having a low pH, while the matrix remains relatively alkaline with a higher pH. Now, these protons are 'trapped' in the intermembrane space, and they naturally want to flow back into the matrix to reach equilibrium, following their electrochemical gradient. However, the inner mitochondrial membrane is impermeable to protons. They cannot simply diffuse back through the lipid bilayer. There is only one specialized pathway available to them: a massive protein complex called ATP Synthase, also known as Complex V. ATP Synthase is a remarkable molecular machine consisting of two main parts: the F zero part, which is embedded in the membrane, and the F one part, which protrudes into the matrix. As protons flow through the F zero channel, they cause the protein to rotate, much like water turning a turbine in a hydroelectric dam. This mechanical rotation induces a conformational change in the F one subunit. This change provides the energy required to catalyze the phosphorylation of Adenosine Diphosphate, or A-D-P, with an inorganic phosphate group, or P-i, to produce Adenosine Triphosphate, or A-T-P. This process is known as oxidative phosphorylation because it is driven by the redox reactions of the electron transport chain. To summarize the mechanism: electron transport drives proton pumping, which establishes a proton motive force across the inner membrane, and the subsequent flow of these protons back through ATP synthase provides the rotational energy needed to synthesize ATP. This elegant coupling of chemical energy, electrochemical gradients, and mechanical rotation is the fundamental way cells power their biological functions.","In our previous session, we explored the complete oxidation of glucose through the Krebs cycle and the Electron Transport System. But what happens when the oxygen supply is interrupted? This is where we enter the fascinating world of anaerobic respiration. Now, remember, anaerobic respiration is a process that occurs in the absence of molecular oxygen. Unlike aerobic respiration, which completely breaks down glucose into carbon dioxide and water, anaerobic respiration is incomplete. It results in the partial oxidation of organic substrates, meaning there is still a significant amount of chemical energy trapped in the end products. Because the breakdown is incomplete, the energy yield is much lower—only two molecules of adenosine triphosphate, or A-T-P, are produced per molecule of glucose, which are generated during the glycolysis stage itself. Since there is no oxygen to act as the final electron acceptor in an electron transport chain, the cell must find another way to keep glycolysis running. This is the role of fermentation. Fermentation is a metabolic process that regenerates the electron carrier, nicotinamide adenine dinucleotide, or N-A-D-H, back into its oxidized form, N-A-D-plus. Without this regeneration, glycolysis would grind to a halt because the cell would run out of N-A-D-plus. There are two primary types of fermentation we need to focus on: Alcoholic fermentation and Lactic acid fermentation. Let us first look at Alcoholic Fermentation. This pathway is commonly seen in yeast and certain microorganisms. It begins with glycolysis, where one molecule of glucose is converted into two molecules of pyruvate. In the absence of oxygen, the pyruvate does not enter the mitochondria. Instead, it undergoes a two-step process in the cytosol. First, an enzyme called pyruvate decarboxylase removes a carboxyl group from pyruvate, releasing one molecule of carbon dioxide. This leaves us with a two-carbon compound called acetaldehyde. Second, the enzyme alcohol dehydrogenase then reduces acetaldehyde to ethanol. During this reduction, N-A-D-H is oxidized back to N-A-D-plus, which allows glycolysis to continue. So, the net equation for alcoholic fermentation is glucose plus organic phosphate equals two ethanol plus two carbon dioxide plus two A-T-P. Now, let us turn our attention to Lactic Acid Fermentation. This occurs in certain bacteria, such as Lactobacillus, and, most importantly, in our own muscle cells during periods of intense physical activity. When you are sprinting or lifting heavy weights, your muscles demand energy faster than your cardiovascular system can deliver oxygen. Under these hypoxic conditions, your muscle cells switch to lactic acid fermentation. In this pathway, the pyruvate produced by glycolysis is directly reduced to lactic acid, also known as lactate. This reaction is catalyzed by the enzyme lactate dehydrogenase. Unlike alcoholic fermentation, there is no release of carbon dioxide here. The key purpose remains the same: the oxidation of N-A-D-H back to N-A-D-plus. The chemical equation is simple: glucose plus organic phosphate equals two lactic acid plus two A-T-P. While this provides a quick burst of energy, the accumulation of lactic acid in the muscle tissues can lead to a drop in pH, causing muscle fatigue and cramps. This is why you feel that burning sensation during heavy exercise. To summarize, both pathways are survival mechanisms that allow cells to extract a small amount of energy when oxygen is scarce, but they differ in their end products—ethanol and carbon dioxide for yeast, and lactic acid for muscles and bacteria. Understanding these pathways is crucial for grasping how life persists in varying environmental conditions.","Welcome back. We have explored the intricate pathways of glycolysis, the Krebs cycle, and the electron transport chain. But how do we, as scientists, actually measure the efficiency and the nature of the substrate being oxidized in a living cell? This brings us to a vital concept in plant physiology: the Respiratory Quotient, or R-Q. The Respiratory Quotient is defined as the ratio of the volume of carbon dioxide produced to the volume of oxygen consumed during respiration. Mathematically, we express this as R-Q equals carbon dioxide evolved divided by oxygen consumed. Now, why is this ratio so significant? It is because the chemical composition of the respiratory substrate—whether it is a carbohydrate, a lipid, or a protein—determines exactly how much oxygen is required to fully oxidize those carbon and hydrogen atoms into carbon dioxide and water. Let us look at the first derivation: Carbohydrates. Consider the oxidation of glucose. The balanced chemical equation for the aerobic respiration of glucose is: six molecules of carbon dioxide plus six molecules of water are produced from one molecule of glucose and six molecules of oxygen. If we look at the stoichiometry, we see that six molecules of oxygen are consumed and six molecules of carbon dioxide are released. When we apply our formula, six divided by six equals one. Therefore, for carbohydrates, the Respiratory Quotient is always exactly one point zero. This is our baseline. Now, let us consider Lipids, such as tripalmitin. Lipids are highly reduced molecules. They contain a much higher proportion of hydrogen and a much lower proportion of oxygen compared to carbohydrates. Because they are hydrogen-rich, they require a significantly larger amount of external oxygen to be fully oxidized. When we perform the stoichiometric calculation for a typical fatty acid like tripalmitin, we find that the volume of oxygen consumed is much greater than the volume of carbon dioxide produced. For most fats, the R-Q value falls between zero point seven and zero point nine. If you see an R-Q value significantly less than one in a lab report, it is a clear indicator that lipids are the primary substrate being metabolized. Next, let us examine Organic Acids. Organic acids, like malic acid or succinic acid, are already partially oxidized. They contain a high amount of oxygen within their own molecular structure. Consequently, they require very little external oxygen to reach the state of carbon dioxide and water. In fact, in some cases, the amount of carbon dioxide released can actually exceed the amount of oxygen consumed. This results in an R-Q value that is greater than one point zero. For many organic acids, the value is approximately one point three or higher. Finally, let us touch upon Proteins. Proteins are complex, but their R-Q value generally hovers around zero point nine to one point zero, depending on the specific amino acid being oxidized. To summarize these findings for your exams: if R-Q equals one, think carbohydrates. If R-Q is less than one, think lipids. If R-Q is greater than one, think organic acids. This ratio is not just a number; it is a metabolic fingerprint that tells us exactly what the cell is 'burning' for energy. Understanding these mathematical relationships allows us to monitor the metabolic state of plants and even understand how they shift their energy sources during different growth stages or under environmental stress.","Welcome back. We have navigated through the intricate cycles of the Krebs cycle and the complex machinery of the Electron Transport System. Now, it is time to bring everything together by comparing aerobic and anaerobic respiration side-by-side, while also identifying the common traps students fall into during examinations. Let us start with the fundamental differences. In aerobic respiration, the presence of molecular oxygen is the defining factor. Oxygen acts as the final electron acceptor at the end of the Electron Transport Chain, combining with protons to form water. This process is highly efficient, leading to the complete oxidation of glucose into carbon dioxide and water. In contrast, anaerobic respiration occurs in the absence of oxygen. Here, the glucose molecule is only partially oxidized. Instead of the massive ATP yield we see in aerobic pathways, anaerobic processes like fermentation yield only a tiny fraction of energy—specifically, just the two ATP molecules produced during glycolysis. This is a crucial distinction for your exams. Let us look at the chemical products. Aerobic respiration results in carbon dioxide and water. Anaerobic respiration, depending on the organism, results in either lactic acid or ethanol and carbon dioxide. Now, let us address the 'Common Pitfalls' section, because this is where most marks are lost in competitive exams. Pitfall number one: The misconception regarding the 'End Product'. Many students assume that because anaerobic respiration produces less energy, it is 'worse' or 'inefficient' for the cell. In reality, it is a vital survival mechanism for organisms in hypoxic conditions. Do not label it as 'failed' respiration; label it as 'incomplete' oxidation. Pitfall number two: The ATP Calculation Trap. When a question asks for the net ATP gain of anaerobic respiration, do not accidentally include the ATP produced in the link reaction or the Krebs cycle. In anaerobic pathways, the cycle stops after glycolysis. The net gain is strictly two ATP per glucose molecule. Pitfall number three: The confusion between Fermentation and Anaerobic Respiration. While often used interchangeably in casual conversation, in strict biological terms, true anaerobic respiration involves an inorganic molecule other than oxygen as the final electron acceptor, whereas fermentation uses an organic molecule. Always read the context of your NCERT textbook carefully. Pitfall number four: The Respiratory Quotient or RQ confusion. Remember, the RQ for aerobic respiration varies depending on the substrate—it is one point zero for carbohydrates, less than one for fats, and greater than one for organic acids. However, for anaerobic fermentation producing ethanol, the calculation changes because the products are different. Do not apply the standard aerobic RQ formulas to anaerobic pathways. Finally, pitfall number five: The role of NAD plus. In aerobic respiration, NAD plus is regenerated by the Electron Transport Chain. In anaerobic respiration, NAD plus must be regenerated through the reduction of pyruvate to either lactate or ethanol. If the cell fails to regenerate NAD plus, glycolysis will stop, and the cell will die. This is why fermentation is a necessity, not just an option. Keep these distinctions clear, focus on the stoichiometry of the reactions, and you will master this chapter.","Welcome back. We have covered the complex chemistry of glycolysis, the Krebs cycle, and the electron transport chain. But knowing the science is only half the battle; in your biology exams, being able to represent this science through clear, accurate diagrams is what secures those top marks. Today, we focus on the art of drawing metabolic pathways. When you see a question asking you to 'illustrate' or 'depict' a pathway, do not just draw a messy flow chart. You must follow a professional biological convention. First, let us talk about the backbone of your diagram: the substrate sequence. Always write your primary molecules—like Glucose, Pyruvate, or Acetyl Coenzyme A—in a clear, linear or circular progression. Use straight arrows to show the direction of the reaction. A common mistake is to draw arrows that loop back aimlessly; remember, metabolic pathways are directional flows of energy. Next, let us address the 'hidden' information: the enzymes and co-factors. In a high-scoring diagram, the enzymes—such as Hexokinase in glycolysis or Isocitrate dehydrogenase in the Krebs cycle—should be written directly above the reaction arrow. Do not just write them to the side. Similarly, the co-enzymes like NAD plus and FAD must be placed carefully. When a substrate is oxidized, show the transformation clearly. For example, write NAD plus on one side of the arrow and NADH plus hydrogen on the other. This shows the examiner you understand the redox nature of the process. Now, let us discuss the 'Carbon Accounting' visualization. This is a high-yield tip for Class 11 exams. When drawing the Krebs cycle, explicitly show the release of Carbon Dioxide. You can do this by drawing a small arrow pointing away from the main cycle labeled Carbon Dioxide. This visually proves you understand decarboxylation. Furthermore, pay close attention to ATP and GTP production. Use a specific symbol or a distinct arrow to show where substrate-level phosphorylation occurs. If you are drawing the Electron Transport System, do not just draw a line. You must represent the mitochondrial inner membrane. Draw two parallel lines to represent the lipid bilayer, and place the protein complexes, labeled as Complex One through Complex Four, within that membrane. This spatial accuracy distinguishes an average student from an expert. Let us also talk about the Chemiosmotic mechanism. When drawing the proton gradient, use a concentration gradient notation. Draw many H plus ions in the intermembrane space and fewer in the matrix. Use a thick, bold arrow to show the flow of protons through the ATP synthase enzyme. This visualizes the 'proton motive force' perfectly. Finally, a word on neatness and labeling. Use a ruler for your framework. Use standard abbreviations like ATP, ADP, Pi, and NADH plus H plus, but ensure they are legible. If you are short on time during an exam, prioritize the main carbon skeleton and the key energy-carrying molecules. A simplified but accurate pathway is always better than a complex, illegible one. Practice drawing the Glycolysis pathway at least three times until you can do it without looking at your textbook. Focus on the transition from Glucose to Pyruvate, ensuring you mark the two stages: the preparatory phase and the payoff phase. Mastering these visual representations will turn your biology paper from a collection of facts into a professional scientific report. Let's get practicing.","Welcome to the final stretch of our journey through Respiration in Plants. We have covered everything from the breaking of glucose in glycolysis to the incredible proton gradient in the chemiosmotic hypothesis. Now, it is time to transition from learning to performing. In this Exam Masterclass, we will consolidate our knowledge and tackle the high-yield questions that frequently appear in board and competitive examinations. Let us begin with a rapid-fire recap of the core logic. Remember, respiration is essentially a series of redox reactions. When we talk about glucose being oxidized, we are talking about the removal of electrons and hydrogen atoms. The most critical concept to master is the ATP yield. In aerobic respiration, one molecule of glucose yields approximately thirty-six to thirty-eight ATP molecules, depending on the shuttle system used. Always remember the breakdown: two ATP from glycolysis, two from the Krebs cycle, and the massive bulk from oxidative phosphorylation. Now, let us look at some high-yield conceptual questions. Question one: Why is the Krebs cycle called a cyclic pathway? The answer lies in the regeneration of Oxaloacetic acid. Without Oxaloacetic acid, Acetyl Co-enzyme A cannot enter the cycle, and the entire process halts. This is a favorite for multiple-choice questions. Question two: What is the significance of the Respiratory Quotient? You must memorize these values. For carbohydrates, the RQ is one point zero, because the ratio of carbon dioxide produced to oxygen consumed is one to one. For fats, the RQ is less than one, typically around zero point seven, because fats are more reduced and require more oxygen for complete oxidation. For organic acids, the RQ can be greater than one. If a question asks you to identify the substrate based on an RQ of zero point nine, you should look for a mixture of carbohydrates and fats. Let us move to a common pitfall: the difference between aerobic and anaerobic respiration. Students often forget that while both start with glycolysis, anaerobic respiration occurs in the cytoplasm and results in much lower energy yield, whereas aerobic respiration moves into the mitochondria for the Krebs cycle and Electron Transport System. Another critical area is the Electron Transport System. Remember the sequence of complexes. Electrons move from NADH and FADH two through a series of carriers like Cytochrome c and eventually to Oxygen, which acts as the final electron acceptor to form water. If oxygen is absent, the entire chain clogs up, and the cell must switch to fermentation to regenerate NAD plus. For your descriptive answers, always practice drawing the flowcharts. Do not just memorize the names; memorize the carbon counts. Pyruvate has three carbons, Acetyl Co-A has two, and Citric acid has six. If you can track the carbons, you can never get lost in the cycle. Finally, let us look at a numerical problem. If a cell undergoes fermentation, how many net ATP are produced? The answer is always two, from the glycolysis stage alone. As you prepare for your exams, focus on the 'why' behind the 'what.' Why does the proton gradient drive ATP synthase? Because of the electrochemical potential created across the inner mitochondrial membrane. Why is the link reaction necessary? To bridge the gap between the cytoplasm and the mitochondrial matrix. Master these connections, and you will master this chapter. Keep practicing those diagrams, stay focused on the stoichiometry, and you will excel. You are now ready to tackle any question on Respiration in Plants. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-biology-12-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

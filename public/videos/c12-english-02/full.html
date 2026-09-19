@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Lost Spring, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-english-02-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Cycle of Poverty and the Loss of Childhood Innocence -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Cycle of Poverty and the Loss of Childhood Innocence</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Metaphorical meaning: Spring represents the blooming period of childhood.</div>
+              <div id="qx0-p1" class="qe-bullet">• The central theme: The stolen childhood caused by systemic poverty.</div>
+              <div id="qx0-p2" class="qe-bullet">• The Cycle of Poverty: A trap of tradition, lack of education, and exploitation.</div>
+              <div id="qx0-p3" class="qe-bullet">• Loss of Innocence: The transition from dreaming to mere survival.</div>
+              <div id="qx0-p4" class="qe-bullet">• Author's Perspective: An investigative look at social and economic injustice.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4245686606,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D time-lapse animation showing a vibrant green spring meadow slowly turning into a grey, industrial wasteland as a child's colorful toy is replaced by a heavy rusted tool.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D time-lapse animation showing a vibrant green spring meadow slowly turning into a grey, industrial wasteland as a child's colorful toy is replaced by a heavy rusted tool.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Part 1: Saheb-e-Alam and the Ragpickers of Seemapuri -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Part 1: Saheb-e-Alam and the Ragpickers of Seemapuri</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Irony of Saheb-e-Alam's name: 'Lord of the Universe' vs. extreme poverty.</div>
+              <div id="qx1-p1" class="qe-bullet">• Seemapuri: A peripheral settlement of Delhi lacking basic amenities.</div>
+              <div id="qx1-p2" class="qe-bullet">• Migrant crisis: Families fleeing storms in Bangladesh for survival.</div>
+              <div id="qx1-p3" class="qe-bullet">• Dual perception of garbage: Survival for adults, 'wonder' for children.</div>
+              <div id="qx1-p4" class="qe-bullet">• The struggle for identity: Living on ration cards without legal status.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":4272703238,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a glittering celestial universe on one side and a dusty, crowded Seemapuri slum on the other.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation showing a glittering celestial universe on one side and a dusty, crowded Seemapuri slum on the other.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Part 2: Symbolism of Garbage and the Struggle for Survival -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Part 2: Symbolism of Garbage and the Struggle for Survival</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Dual meaning of garbage: Survival for adults vs. Wonder for children.</div>
+              <div id="qx2-p1" class="qe-bullet">• Garbage as 'daily bread' and a primary source of livelihood.</div>
+              <div id="qx2-p2" class="qe-bullet">• The 'wrapped in wonder' concept: Finding hope in discarded items.</div>
+              <div id="qx2-p3" class="qe-bullet">• Seemapuri's setting: A marginalized periphery lacking basic amenities.</div>
+              <div id="qx2-p4" class="qe-bullet">• The irony of scavenging: A search for treasure amidst decay.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2956844363,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a grim, grey landscape of trash for adults, the other shows a child's POV where a discarded coin glows like gold.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen 3D animation: one side shows a grim, grey landscape of trash for adults, the other shows a child's POV where a discarded coin glows like gold.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Part 3: Saheb's Transition: From Freedom to Servitude -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Part 3: Saheb's Transition: From Freedom to Servitude</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Transition from ragpicking to working at a tea stall.</div>
+              <div id="qx3-p1" class="qe-bullet">• The symbolic shift from a light plastic bag to a heavy steel canister.</div>
+              <div id="qx3-p2" class="qe-bullet">• The loss of autonomy: Saheb is no longer his own master.</div>
+              <div id="qx3-p3" class="qe-bullet">• Trading childhood freedom for the security of food and wages.</div>
+              <div id="qx3-p4" class="qe-bullet">• The psychological impact of moving from independence to servitude.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4179758916,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on the left, a light, floating plastic bag; on the right, a heavy, metallic canister pulling a boy's shoulder down.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A split-screen 3D animation: on the left, a light, floating plastic bag; on the right, a heavy, metallic canister pulling a boy's shoulder down.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Part 4: Analysis of Themes: Exploitation and Social Injustice -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Part 4: Analysis of Themes: Exploitation and Social Injustice</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Exploitation: The systematic stripping of human dignity and childhood.</div>
+              <div id="qx4-p1" class="qe-bullet">• Institutionalized Exploitation: The predatory web of middlemen and sahukars.</div>
+              <div id="qx4-p2" class="qe-bullet">• Social Injustice: A rigged system of caste, tradition, and lack of agency.</div>
+              <div id="qx4-p3" class="qe-bullet">• The Vicious Circle: How police, bureaucrats, and politicians maintain poverty.</div>
+              <div id="qx4-p4" class="qe-bullet">• Manufactured Poverty: Poverty as a systemic tool rather than an accident of fate.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":767038307,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D conceptual animation showing a heavy, rusted iron gear labeled 'System' crushing small, glowing sparks representing 'Childhood Dreams'.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D conceptual animation showing a heavy, rusted iron gear labeled 'System' crushing small, glowing sparks representing 'Childhood Dreams'.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Part 5: Part 2: Mukesh and the Bangle Makers of Firozabad -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Part 5: Part 2: Mukesh and the Bangle Makers of Firozabad</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Introduction to Mukesh and the glass-blowing industry of Firozabad.</div>
+              <div id="qx5-p1" class="qe-bullet">• The setting: Stinking lanes, crumbling walls, and dingy cells.</div>
+              <div id="qx5-p2" class="qe-bullet">• The grandmother's perspective: Destiny as a god-given lineage.</div>
+              <div id="qx5-p3" class="qe-bullet">• Mukesh's rebellion: The dream of becoming a motor mechanic.</div>
+              <div id="qx5-p4" class="qe-bullet">• The struggle between individual ambition and systemic entrapment.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3509242325,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D transition from the grey, dusty streets of Firozabad to a close-up of a glowing, hot glass furnace.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D transition from the grey, dusty streets of Firozabad to a close-up of a glowing, hot glass furnace.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Part 6: The Vicious Circle of Middlemen, Sahukars, and Police -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Part 6: The Vicious Circle of Middlemen, Sahukars, and Police</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• The 'Vicious Circle' represents a systemic trap of exploitation.</div>
+              <div id="qx6-p1" class="qe-bullet">• Middlemen control the market and suppress fair wages.</div>
+              <div id="qx6-p2" class="qe-bullet">• Sahukars use high-interest debt to keep families in perpetual bondage.</div>
+              <div id="qx6-p3" class="qe-bullet">• The Police act as enforcers to suppress any attempt at organizing.</div>
+              <div id="qx6-p4" class="qe-bullet">• The lack of legal recourse prevents the formation of cooperatives.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":49671278,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D infographic showing a circular chain of gears labeled 'Middlemen', 'Sahukars', and 'Police', crushing a small silhouette of a worker in the center.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D infographic showing a circular chain of gears labeled 'Middlemen', 'Sahukars', and 'Police', crushing a small silhouette of a worker in the center.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Part 7: The Physical and Psychological Toll of Glass Blowing -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Part 7: The Physical and Psychological Toll of Glass Blowing</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Working in dingy, dark cells near high-temperature furnaces.</div>
+              <div id="qx7-p1" class="qe-bullet">• Premature loss of eyesight due to constant strain in dim light.</div>
+              <div id="qx7-p2" class="qe-bullet">• The irony of creating symbols of beauty while losing vision.</div>
+              <div id="qx7-p3" class="qe-bullet">• Psychological 'stifling' caused by a lack of hope and agency.</div>
+              <div id="qx7-p4" class="qe-bullet">• The mental prison created by the cycle of poverty and tradition.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1794825786,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D slow-motion pan through a dark, smoky workshop showing glowing orange furnaces and blurred silhouettes of workers.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D slow-motion pan through a dark, smoky workshop showing glowing orange furnaces and blurred silhouettes of workers.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Part 8: Character Contrast: Saheb's Resignation vs. Mukesh's Ambition -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Part 8: Character Contrast: Saheb's Resignation vs. Mukesh's Ambition</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Saheb: Symbolizes resignation and the loss of individual agency.</div>
+              <div id="qx8-p1" class="qe-bullet">• The Steel Canister vs. Plastic Bag: A metaphor for servitude vs. freedom.</div>
+              <div id="qx8-p2" class="qe-bullet">• Mukesh: Symbolizes ambition, defiance, and the desire for change.</div>
+              <div id="qx8-p3" class="qe-bullet">• Generational Cycles: Saheb accepts them; Mukesh seeks to break them.</div>
+              <div id="qx8-p4" class="qe-bullet">• Thematic Core: The struggle between survival and self-determination.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":1173427496,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: On the left, a boy walking heavily with a metal canister in a grey, muted Seemapuri; on the right, a boy looking intensely at a distant car through the smoke of Firozabad.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation: On the left, a boy walking heavily with a metal canister in a grey, muted Seemapuri; on the right, a boy looking intensely at a distant car through the smoke of Firozabad.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Part 9: Literary Devices: Metaphor, Irony, and Imagery in Anees Jung's Prose -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Part 9: Literary Devices: Metaphor, Irony, and Imagery in Anees Jung's Prose</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Metaphor: 'Lost Spring' symbolizes the stolen innocence of childhood.</div>
+              <div id="qx9-p1" class="qe-bullet">• Metaphor: The 'vicious circle' represents the inescapable trap of poverty.</div>
+              <div id="qx9-p2" class="qe-bullet">• Irony: Saheb-e-Alam's name means 'Lord of the Universe' vs. his reality.</div>
+              <div id="qx9-p3" class="qe-bullet">• Situational Irony: Finding security in a tea stall means losing personal freedom.</div>
+              <div id="qx9-p4" class="qe-bullet">• Imagery: Sensory descriptions of dingy cells and shimmering bangles.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3688018541,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on one side, a blooming spring garden fading into a grey slum; on the other, the name 'Saheb-e-Alam' glowing in gold, dissolving into a pile of trash.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation: on one side, a blooming spring garden fading into a grey slum; on the other, the name 'Saheb-e-Alam' glowing in gold, dissolving into a pile of trash.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Part 10: Critical Vocabulary and Contextual Meanings of Key Terms -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Part 10: Critical Vocabulary and Contextual Meanings of Key Terms</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Perpetual: Not just 'constant,' but an inescapable cycle of poverty.</div>
+              <div id="qx10-p1" class="qe-bullet">• Scrounging: Searching through waste, used ironically to signify survival.</div>
+              <div id="qx10-p2" class="qe-bullet">• Vicious Circle: A predatory system of middlemen, police, and politicians.</div>
+              <div id="qx10-p3" class="qe-bullet">• Stifling: The physical heat of furnaces and the metaphorical death of dreams.</div>
+              <div id="qx10-p4" class="qe-bullet">• Resignation vs. Defiance: Saheb's acceptance versus Mukesh's ambition.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3770952058,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation: on the left, a dark, dusty Seemapuri street with floating keywords; on the right, a glowing but suffocating glass furnace in Firozabad.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D split-screen animation: on the left, a dark, dusty Seemapuri street with floating keywords; on the right, a glowing but suffocating glass furnace in Firozabad.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Part 11: Common Mistakes in Interpretation and Answer Writing -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Part 11: Common Mistakes in Interpretation and Answer Writing</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Avoid simple plot summaries; focus on systemic analysis.</div>
+              <div id="qx11-p1" class="qe-bullet">• Use precise terms like 'loss of autonomy' instead of 'sadness'.</div>
+              <div id="qx11-p2" class="qe-bullet">• Always highlight the irony of Saheb-e-Alam's name.</div>
+              <div id="qx11-p3" class="qe-bullet">• Replace generic words with sophisticated literary vocabulary.</div>
+              <div id="qx11-p4" class="qe-bullet">• Support every claim with specific textual evidence and references.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":268579460,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a 'Weak Answer' (simple text bubbles) transforming into a 'Strong Answer' (structured, glowing architectural blocks).</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a 'Weak Answer' (simple text bubbles) transforming into a 'Strong Answer' (structured, glowing architectural blocks).</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Lost Spring today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Cycle of Poverty and the Loss of Childhood Innocence <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Part 1: Saheb-e-Alam and the Ragpickers of Seemapuri <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Part 2: Symbolism of Garbage and the Struggle for Survival <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Part 3: Saheb's Transition: From Freedom to Servitude <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Part 4: Analysis of Themes: Exploitation and Social Injustice <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Part 5: Part 2: Mukesh and the Bangle Makers of Firozabad <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Part 6: The Vicious Circle of Middlemen, Sahukars, and Police <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Part 7: The Physical and Psychological Toll of Glass Blowing <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Part 8: Character Contrast: Saheb's Resignation vs. Mukesh's Ambition <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Part 9: Literary Devices: Metaphor, Irony, and Imagery in Anees Jung's Prose <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Part 10: Critical Vocabulary and Contextual Meanings of Key Terms <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Part 11: Common Mistakes in Interpretation and Answer Writing <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello, students. Today, we begin our journey into one of the most poignant pieces of literature in your Class 12 syllabus: 'Lost Spring' by Anees Jung. Before we dive into the specific stories of Saheb and Mukesh, we must first understand the profound thematic foundation of this chapter. The title itself, 'Lost Spring', is a powerful metaphor. In literature, spring is the season of bloom, growth, and new beginnings. For a human being, childhood is their 'spring'—a time of play, learning, and carefree existence. But what happens when this season is stolen? Anees Jung uses this title to highlight the stolen childhood of millions of children in India who are forced into labor due to systemic poverty. As we move through this chapter, you will see two distinct stories, but they are bound together by a single, devastating thread: the cycle of poverty. This cycle is not just about a lack of money; it is a socio-economic trap. It is a web woven by tradition, lack of education, and exploitation by those in power. When we talk about the 'loss of innocence,' we are not just talking about children growing up too fast. We are talking about the psychological death of wonder. When a child spends their day scavenging for survival or working in hazardous glass furnaces, they lose the ability to dream. They lose the capacity to see the world as a place of possibility. Instead, they see it as a battlefield for survival. This introduction sets the stage for us to analyze how poverty is not an accident, but a structural reality. We will observe how the environment shapes the individual, and how the individual, often crushed by the weight of their circumstances, struggles to maintain a sense of self. Pay close attention to the tone of the author. Anees Jung does not write with mere pity; she writes with a sense of investigative urgency. She is documenting a social crisis. As we proceed to the first part of the chapter, keep this central idea in mind: the tension between the natural right to a childhood and the harsh reality of economic necessity. We are about to meet Saheb, and through him, we will witness how the struggle for a single meal can strip a person of their very identity. Let us prepare to look beyond the surface of these stories and understand the deep-seated injustices that keep these children trapped in a perpetual winter of despair.","Welcome back. In our previous session, we introduced the overarching theme of 'Lost Spring'—the tragic loss of childhood innocence due to systemic poverty. Today, we dive deep into the first segment of Anees Jung's narrative, focusing on Saheb-e-Alam and the ragpickers of Seemapuri. Let us begin with the encounter. The author meets a young boy named Saheb, who is scavenging through garbage heaps. There is a profound sense of irony in his name. Saheb-e-Alam means 'Lord of the Universe.' It is a cruel joke of fate that a boy with such a grand name lives in extreme deprivation, searching through trash for survival. This irony sets the tone for the entire chapter. Now, let's look at the setting: Seemapuri. It is located on the periphery of Delhi, yet it is miles away from the development and luxury of the capital. Seemapuri is home to over ten thousand ragpickers, mostly migrants from Bangladesh who arrived in the late nineteen seventies. They fled from storms that swept away their homes and fields in their homeland. For these people, survival is the only priority. They live in structures of mud, with roofs of tin and tarpaulin, devoid of sewage, drainage, or running water. To the people living here, survival means finding something in the garbage. This brings us to a crucial distinction made by the author. For the elders, garbage is a means of survival—a way to earn a daily bread. But for the children, garbage is 'wrapped in wonder.' To a child like Saheb, a discarded coin or a torn note found in the heap is a glimmer of hope, a treasure that might appear any moment. This duality shows how poverty alters the perception of reality. The children see magic in the trash, while the adults see only a grim necessity. We must also note the lifestyle of these ragpickers. They are squatters, living without legal identity, possessing only ration cards that allow them to buy grain and vote. Their existence is a constant struggle against the elements and the lack of basic human rights. As we analyze this section, observe how Anees Jung uses the contrast between the 'Lord of the Universe' and the 'ragpicker' to highlight the social inequality that plagues our society. Saheb's life is a cycle of searching, finding, and surviving, a cycle that keeps him trapped in a world where childhood is sacrificed at the altar of hunger. Pay close attention to the description of Seemapuri; it is not just a place, but a symbol of the invisible margins of our urban civilization.","Welcome back. In our previous segment, we met Saheb, a young ragpicker living in the peripheries of Delhi. Now, we must dive deeper into the heart of the text to understand a profound duality presented by Anees Jung. We are looking at Part 2 of our series: the symbolism of garbage and the struggle for survival. In the world of Seemapuri, garbage is not just waste; it carries two completely different meanings depending on who you ask. For the adults, garbage is a means of survival. It is their daily bread, their most precious resource. It is what keeps their families alive, providing a meager income that prevents absolute starvation. When the author observes the ragpickers, she realizes that for them, garbage is a source of livelihood. However, there is a beautiful, albeit heartbreaking, contrast when we look at it through the eyes of the children. For the children, garbage is 'wrapped in wonder.' This is a crucial phrase. To a child like Saheb, a discarded coin, a torn note, or even a piece of candy found amidst the filth represents a glimmer of hope. It is a treasure hunt where every piece of trash holds the possibility of a miracle. This distinction between 'survival' and 'wonder' is the emotional core of this section. Let us analyze the setting of Seemapuri to understand why this symbolism is so heavy. Seemapuri is described as a place on the periphery of Delhi, yet it is metaphorically miles away from the progress of the capital. It is a place devoid of sewage, drainage, or running water. The residents live in structures of mud, with roofs of tin and tarpaulin. This physical environment mirrors their social condition—fragile, unstable, and neglected. The author uses the imagery of 'periphery' to show how these people exist on the edges of society, visible but ignored. Now, let us focus on the concept of 'survival.' For the ragpickers, there is no distinction between the act of scavenging and the act of living. Their existence is a constant, grueling struggle against poverty. Every day is a battle to find enough to eat. This constant pressure strips away the luxury of childhood. While children in the city are playing with toys, the children of Seemapuri are navigating mountains of filth. This brings us to the theme of lost innocence. The 'wonder' they feel is a coping mechanism, a way to find joy in a landscape of decay. But notice the irony: the very thing that provides them with a sense of wonder is also the very thing that defines their poverty. They are searching for gold in a pile of waste. As we move forward, keep this duality in mind: garbage is both a provider and a prison. It provides food, but it also traps them in a cycle of scavenging that offers no escape. The struggle for survival is not just about hunger; it is about the loss of a future. When survival becomes the only goal, dreams become a luxury they cannot afford. We will see how this struggle shapes Saheb's character in the next part. For now, remember this: in Seemapuri, garbage is not just refuse; it is life, it is hope, and it is a harsh reality of existence.","Welcome back. In our previous segment, we looked at the symbolic weight of garbage in Seemapuri. Now, we move to a pivotal and heartbreaking turning point in the story: Saheb's transition from a free-spirited ragpicker to a burdened laborer. This is where the title 'Lost Spring' takes on its most literal and tragic meaning. Let us look at the shift in Saheb's life. Previously, Saheb was a boy who owned nothing, yet he owned his time. He wandered the streets with a sense of curiosity, even if it was driven by hunger. He was his own master. But then, we see a change. Saheb finds a job at a tea stall. He is paid two hundred and fifty rupees and all his meals. On the surface, this looks like an improvement. To a hungry child, two hundred and fifty rupees and food sounds like a step up the social ladder. However, Anees Jung uses this moment to highlight a profound loss. As Saheb walks to the tea stall, he is no longer carrying his own light plastic bag. Instead, he carries a heavy steel canister. This canister belongs to the tea stall owner. This is a crucial symbol. The plastic bag was his; it was light, it was his choice, it was his identity. The steel canister, however, is heavy, it is burdensome, and most importantly, it is not his. The weight of the canister represents the weight of responsibility and the loss of agency. The author tells us quite clearly that Saheb is no longer his own master. This is the essence of servitude. When he was ragpicking, he was a free agent in a world of poverty. Now, he is an employee in a world of structured exploitation. He has traded his freedom for the security of a meal. This transition is a commentary on how poverty often forces children to trade their childhood and their autonomy for mere survival. The 'spring' of his life—his period of growth, play, and freedom—is being crushed under the weight of this canister. We must observe the psychological shift here. There is a visible loss of the spark in his eyes that we saw in the first part of the chapter. He has become a cog in a machine, a small part of a larger economic system that does not care for his dreams, only his labor. As you prepare your answers, remember this distinction: the transition is not just from poverty to employment, but from independence to dependence. He has gained a meal, but he has lost his soul's freedom.","Welcome back. In our previous segment, we saw how Saheb transitioned from the carefree, albeit difficult, life of a ragpicker to the structured, burdened life of a tea stall worker. Now, we must look deeper. We need to move beyond the individual stories of Saheb and Mukesh to understand the systemic rot that Anees Jung is critiquing. This part of our lesson focuses on the core themes of the chapter: Exploitation and Social Injustice. When we talk about exploitation in 'Lost Spring', we aren't just talking about people working hard; we are talking about the systematic stripping of human dignity. Let us first analyze the theme of exploitation. In the context of Seemapuri and Firozabad, exploitation is multi-layered. For the ragpickers, it is the exploitation of their poverty. They are forced into a survivalist mode where their childhood is traded for a few coins. But the more profound exploitation is seen in the second half of the chapter with the bangle makers. Here, exploitation is institutionalized. It is not just a single employer taking advantage of a worker; it is a complex web of power. The children work in dingy, dark cells, surrounded by high temperatures and toxic fumes, losing their eyesight before they even reach adulthood. This is the ultimate form of exploitation—where the very tools of a child's livelihood become the instruments of their physical destruction. Now, let us turn to the second major theme: Social Injustice. Social injustice occurs when the rules of society are rigged against a specific group of people. Anees Jung highlights how these communities are trapped in a 'vicious circle.' This circle is composed of several predatory forces: the sahukars, the middlemen, the policemen, the keepers of law, the bureaucrats, and the politicians. Notice how Jung lists these groups. They represent the entire machinery of the state and the economy. The injustice lies in the fact that these people, who are supposed to protect and uplift the citizens, are actually the ones ensuring that the poor remain poor. The ragpickers have no identity, no voting rights that matter, and no access to basic amenities like sewage or running water. They live on the periphery of society, literally on the margins of Delhi. This is a spatial form of injustice. Similarly, in Firozabad, the injustice is generational. The caste-based occupation dictates their destiny. They are born into the business of bangles, and the social structure is designed to prevent them from ever escaping it. The 'stigma of caste' acts as a psychological barrier, making them believe that they cannot dream of anything else. This leads us to a crucial realization: the poverty in 'Lost Spring' is not an accident of fate; it is a manufactured condition. It is a result of a social system that thrives on the invisibility of the poor. The injustice is not just that they are poor, but that they are denied the agency to change their circumstances. They are denied the right to dream, the right to education, and the right to a healthy childhood. As you prepare your answers for the board exams, remember that when you discuss exploitation, you must mention the 'vicious circle' of middlemen and the 'systemic' nature of their suffering. When you discuss social injustice, focus on the lack of political voice and the crushing weight of tradition and caste. Understanding these themes is the key to unlocking the true depth of Anees Jung's prose.","Welcome back. In our previous session, we explored Saheb's journey from the ragpickers of Seemapuri to his eventual loss of freedom. Now, we shift our focus from the garbage dumps of Delhi to the dusty, glass-blowing furnaces of Firozabad. This is Part 2 of Anees Jung's 'Lost Spring,' and it introduces us to a new protagonist: Mukesh. While Saheb seemed to accept his fate, Mukesh presents us with a flicker of something different—an aspiration. We meet Mukesh in Firozabad, a town that is the center of India's glass-blowing industry. Every other family in this town is involved in making bangles. As we walk through the lanes, the author describes a landscape of extreme poverty. We see stinking lanes choked with garbage, crumbling walls, and hovels with crumbling structures. These are not just houses; they are living spaces where families reside in dark, dingy cells. Let us look closely at the environment. The air is thick with the heat of furnaces. Mukesh belongs to a family of bangle makers. His grandmother, a woman of great resilience, represents the traditional mindset. She believes that their destiny is predetermined. She says, 'Can a god-given lineage ever be broken?' To her, being born into the caste of bangle makers is an inescapable fate. This is a crucial psychological aspect of the story. The tradition is seen as a divine decree, which makes the poverty feel inevitable rather than a social injustice. However, Mukesh is different. He dares to dream. When asked about his future, he doesn't say he will follow his father's footsteps. Instead, he says, 'I will be a motor mechanic.' This one sentence is a revolutionary act in a town governed by tradition. He wants to learn to drive a car. He wants to break the cycle. But the path to this dream is blocked by a massive, invisible web. The author describes the 'vicious circle' that keeps these people trapped. It is not just poverty; it is a complex system of exploitation. On one side, you have the workers, who are crushed by debt and lack of education. On the other side, you have the middlemen, the sahukars, the policemen, the bureaucrats, and the politicians. These forces work together to ensure that the workers can never organize themselves into a cooperative. If they try to form a union, they are met with the brute force of the law. This creates a sense of hopelessness. The bangle makers live in a state of perpetual struggle. They spend their daylight hours in front of flickering oil lamps, welding pieces of colored glass into circles. The work is hazardous. They work in high temperatures, in dingy cells without air or light. This environment leads to the loss of eyesight even before they reach adulthood. As we analyze this section, notice the contrast between the colorful, beautiful bangles they produce and the colorless, bleak lives they lead. The bangles symbolize 'Suhaag' or the auspiciousness of marriage, yet the people making them are denied the very dignity and stability that these symbols represent. Mukesh's ambition is a small light in a very dark room. He is determined to walk to a garage, even if it is far away. He is not looking for a miracle; he is looking for a way out through labor and skill. This part of the chapter sets the stage for our upcoming discussion on the systemic exploitation that keeps this cycle spinning.","Welcome back. In our previous segment, we looked at Mukesh’s dream of becoming a motor mechanic and the harsh reality of the glass-blowing industry in Firozabad. Now, we must address the most critical question: Why can't these workers simply organize themselves? Why can't they form a cooperative to break the shackles of poverty? The answer lies in a complex, suffocating web of exploitation. Anees Jung describes this as a 'vicious circle.' This isn't just a group of people; it is a systemic trap. First, let's look at the players in this web. At the bottom are the bangle makers, working in dark, dingy cells. Above them are the middlemen. These are the agents who control the supply and demand, ensuring that the workers never get a fair price for their labor. Then come the sahukars, or moneylenders. These lenders provide small amounts of credit to the families, but this credit is a trap. It comes with high interest rates that ensure the worker remains in perpetual debt. Once a family is in debt to a sahukar, they are forced to work even harder just to pay off the interest, never actually touching the principal amount. This leads us to the third, and perhaps most oppressive, layer: the police. The author notes that if these workers try to organize or protest, they are met with immediate force. The police, who are supposed to protect the citizens, instead act as the enforcors for the powerful. They intervene to suppress any attempt at collective bargaining. This creates a state of total helplessness. The workers are caught between the greed of the middlemen, the debt of the sahukars, and the brute force of the police. There is no legal recourse for them. Even if they try to form a cooperative, the system is designed to crush them. The law, the administration, and the local economy are all interconnected in a way that preserves the status quo. This is why the 'vicious circle' is so effective. It is not just about money; it is about the total control of the marginalized. They are trapped in a cycle where every attempt to escape only tightens the knot. This systemic injustice is what makes the poverty in Firozabad so much more than just a lack of resources; it is a deliberate, structural suppression of human dignity. As we move forward, keep this circle in mind, because it is the reason why Mukesh's ambition faces such monumental, invisible walls.","Moving forward from the systemic exploitation we discussed, we must now look at the human cost. We have seen the middlemen and the police, but what happens to the actual human body and mind inside those dark furnaces? In this section, we analyze the harrowing conditions of the bangle-making industry in Firozabad. Anees Jung provides a visceral description of the working environment. Imagine, if you will, dingy cells, much like the ones found in half-built shacks, where the air is thick with heat and dust. The children and adults work in 'high temperatures' near flickering oil lamps. This is not just uncomfortable; it is physically destructive. The most significant physical consequence mentioned is the loss of eyesight. Because they work in the dim light of furnaces, often in poorly ventilated, dark rooms, the constant strain on the eyes leads to premature blindness. This is a tragic irony: they spend their entire lives creating beautiful, colorful bangles that symbolize 'suhaag' or marital bliss, yet they lose their own ability to see the world. But the toll is not merely physical. We must also examine the psychological impact. The text suggests a state of 'stifling' existence. The workers are trapped in a cycle that feels inescapable. This creates a sense of hopelessness and a lack of agency. When you work in such cramped, dark, and hot conditions from a very young age, your horizon shrinks. Your world becomes limited to the glass in front of you and the furnace beside you. This leads to a psychological phenomenon where the individual loses the ability to dream or imagine a different life. The 'vicious circle' we talked about earlier isn't just a social structure; it becomes a mental prison. The workers suffer from a loss of dignity. They are treated as mere extensions of the machines and furnaces they operate. There is no room for individuality or personal growth. This 'stifling' atmosphere crushes the spirit of the youth, making them accept their fate as if it were an unchangeable law of nature. As you prepare your answers for the board exams, remember to distinguish between the 'physical'—such as the loss of vision and heat exhaustion—and the 'psychological'—such as the loss of ambition and the crushing weight of hopelessness. This duality is what makes the plight of Firozabad so heartbreakingly profound.","Welcome back. In our previous segment, we explored the grueling physical conditions of the bangle makers in Firozabad. Now, we arrive at the heart of the chapter's thematic depth: the psychological divergence between our two protagonists, Saheb and Mukesh. While they both inhabit the same landscape of extreme poverty, their internal responses to their circumstances are polar opposites. This is a study in resignation versus rebellion. Let us first look at Saheb. Saheb represents the tragic acceptance of fate. When we first met him in Seemapuri, he was a carefree ragpicker, roaming the streets with a sense of ownership over his search. However, when he takes up a job at the tea stall, something fundamental changes. He earns a fixed salary and gets meals, which provides a semblance of security. But, as Anees Jung poignantly observes, the steel canister he carries feels much heavier than the plastic bag he used to carry. Why? Because the canister belongs to his master, whereas the bag belonged to him. The bag was a symbol of his freedom; the canister is a symbol of his servitude. Saheb has surrendered his agency. He has accepted a life of 'being told what to do.' His spirit has been dampened by the necessity of survival, leading to a state of quiet resignation. He no longer dreams; he merely exists within the boundaries set by his poverty. Now, let us turn our gaze to Mukesh. If Saheb is the embodiment of surrender, Mukesh is the embodiment of defiance. Mukesh lives in the same crushing cycle of debt and exploitation in Firozabad, yet his internal compass points in a different direction. When asked about his future, Mukesh does not look toward the traditional path of becoming a bangle maker like his forefathers. Instead, he declares, 'I will be a motor mechanic.' This is a revolutionary statement in the context of his community. To want something different is the first step toward breaking a generational curse. Mukesh possesses what sociologists call 'agency'—the capacity to act independently and make free choices. He is willing to walk a long distance to a garage to learn his trade. He is not looking for a quick fix or a handout; he is looking for a skill that offers an exit strategy from the glass furnaces. However, we must analyze this carefully. Is Mukesh's ambition realistic? The author leaves this somewhat ambiguous. While Saheb's path is a downward spiral into lost identity, Mukesh's path is an upward struggle for self-determination. The contrast is striking: Saheb loses his 'spring'—his childhood and his freedom—to the weight of responsibility, while Mukesh attempts to protect his 'spring' by dreaming of a world beyond the soot and the dark cells. One accepts the destiny written for him by society, while the other attempts to pick up the pen and rewrite it. This contrast serves as a powerful critique of how poverty doesn't just steal food and shelter; it attempts to steal the very ability to dream. Saheb has stopped dreaming to survive, while Mukesh dreams in order to survive. Understanding this distinction is crucial for your long-answer questions, as it highlights the different psychological coping mechanisms used by those living on the margins of society.","Welcome back. In our previous session, we contrasted the resignation of Saheb with the flickering ambition of Mukesh. Now, we are going to look under the hood of Anees Jung's writing. To truly excel in your board exams, you must move beyond 'what' is happening and understand 'how' the author communicates these tragedies. We will focus on three pillars: Metaphor, Irony, and Imagery. Let us start with Metaphor. A metaphor is a figure of speech where a word or phrase is applied to an object or action to which it is not literally applicable, suggesting a resemblance. The most profound metaphor in this chapter is the title itself: 'Lost Spring.' In literature, spring is the season of bloom, growth, and new beginnings. It represents childhood. By calling it 'Lost Spring,' Jung is not talking about a season; she is using a metaphor to describe the stolen childhood of millions of children in India. Their 'spring'—their period of joy and development—is lost to the harsh realities of survival. Another subtle metaphor is the 'vicious circle.' When Jung speaks of the circle of middlemen, sahukars, and police, she isn't just describing a group of people; she is using a metaphor for a trap that has no exit, a system designed to keep the poor in a state of perpetual debt and helplessness. Next, let us discuss Irony. Irony occurs when there is a contrast between expectation and reality. The most striking example is the name of our first protagonist: Saheb-e-Alam. In Hindi, this name translates to 'Lord of the Universe.' Now, think about the irony here. A boy whose name suggests supreme power and ownership of the world is actually a ragpicker, scavenging through garbage heaps just to find a single coin. The gap between his grand name and his pathetic reality is a biting social irony used to highlight the cruelty of fate. There is also situational irony in Saheb's transition. He seeks freedom by scavenging, but when he finally finds 'security' by working at a tea stall, he loses his freedom. He is no longer his own master. Finally, let us explore Imagery. Imagery is the use of vivid and descriptive language to create mental images for the reader. Jung uses sensory imagery to make the reader feel the squalor. Think of the description of Seemapuri. She doesn't just say it is poor; she describes the 'periphery of Delhi, yet miles away from it, metaphorically.' She uses visual imagery of 'shanties with roofs of tin and tarpaulin' to paint a picture of makeshift, unstable lives. In the second part, the imagery becomes even more intense. She describes the 'dingy cells' and the 'high temperatures' of the glass furnaces. This tactile imagery—the feeling of heat and darkness—allows the reader to almost feel the physical oppression of the bangle-making industry. She uses visual imagery of the 'shimmering bangles' to contrast the beauty of the product with the ugliness of the process. This contrast is essential. When you write your long-answer questions, do not just say 'the conditions were bad.' Instead, use these terms. Say, 'Jung employs poignant imagery to depict the dingy cells,' or 'The author uses the irony of Saheb-e-Alam's name to underscore the tragedy of poverty.' This is how you elevate your answers from average to exceptional. Understanding these devices allows you to see that 'Lost Spring' is not just a report on poverty, but a carefully crafted literary critique of a broken social structure.","Welcome back. In our previous session, we analyzed the literary devices used by Anees Jung. Now, to truly master this chapter and score high in your board exams, you must move beyond simple definitions. You need to understand 'contextual meaning.' In literature, a word doesn't just mean what the dictionary says; it means what it represents in the story. Let us dive into the critical vocabulary of 'Lost Spring.' First, let's look at the term 'Perpetual.' The author mentions the 'perpetual state of poverty.' In a dictionary, perpetual means never-ending. But in the context of Seemapuri and Firozabad, it carries a heavy, suffocating weight. It implies a cycle that is not just long, but inescapable—a trap set by social structures. Next, we have the word 'Desolation.' When describing the living conditions, the text evokes a sense of desolation. This isn't just 'emptiness.' Desolation refers to a state of complete emptiness or destruction that feels lonely and hopeless. It captures the emotional landscape of the ragpickers. Now, let's examine the word 'Scrounging.' Saheb and the other children are 'scrounging for gold in the garbage.' To scrounge means to search for or collect something that is discarded. However, Jung uses this word to create a powerful irony. For these children, garbage is not waste; it is a source of survival, a 'gold mine' of sorts. This leads us to the term 'Vicious Circle.' You will see this used regarding the middlemen, the policemen, and the politicians. A vicious circle is a sequence of reciprocal cause and effect in which two or more elements intensify and aggravate each other, leading to a worsening situation. It is not just a 'bad loop'; it is a predatory system designed to keep the poor, poor. Moving to the second part of the chapter, let's look at 'Hovels.' The bangle makers live in 'stinking, crumbling hovels.' A hovel is a small, squalid, and unpleasant dwelling. The word choice here is intentional to contrast the 'glamour' of the bangles they make with the 'misery' of the homes they inhabit. Then, we have the word 'Stifling.' The author describes the atmosphere of the glass-blowing units as 'stifling.' While it literally means making it difficult to breathe due to heat or lack of air, contextually, it represents the suppression of dreams. The heat of the furnace is a metaphor for the social pressure that stifles Mukesh's ambition. We must also understand 'Resignation.' Saheb shows a sense of resignation when he takes the job at the tea stall. Resignation is the acceptance of something undesirable but inevitable. It is the opposite of Mukesh's 'defiance.' Finally, let's look at the word 'Apathy.' This is a crucial term for your long-answer questions. Social apathy refers to a lack of interest, enthusiasm, or concern. The systemic poverty persists because of the apathy of the government and the upper classes. When you write your answers, do not just say 'the people are poor.' Instead, say 'the children are victims of systemic apathy and a vicious circle of exploitation.' Using these precise terms will elevate your writing from basic to sophisticated. Remember, in English Literature, vocabulary is your tool for precision. Master these, and you master the text.","Welcome back. We have analyzed the heartbreaking lives of Saheb and Mukesh, but knowing the story is only half the battle. To score high in your Class 12 Board Exams, you must avoid specific pitfalls in how you interpret the text and how you structure your answers. Let's dive into the most common mistakes students make. First, the mistake of 'Surface-Level Summarization.' Many students treat long-answer questions as a mere retelling of the plot. If a question asks about the 'vicious circle' in Firozabad, do not just say 'people are poor and work in glass factories.' That is a summary, not an analysis. Instead, you must explain the systemic nature of the problem—mention the sahukars, the middlemen, the policemen, and the politicians. You must show how these forces create a web that prevents escape. Second, watch out for 'Character Misinterpretation.' A very common error is describing Saheb as 'unhappy' or 'sad' at the end of the story. While he is indeed burdened, the more accurate interpretation is that he has lost his 'agency' or his 'freedom.' He has traded his carefree identity for the heavy steel canister of a servant. When writing about Saheb, use words like 'subjugation' or 'loss of autonomy' rather than just 'sadness.' This shows the examiner you understand the deeper sociological theme. Third, let's talk about 'Ignoring the Irony.' Anees Jung uses heavy irony, especially with Saheb-e-Alam's name, which means 'Lord of the Universe.' Students often miss the opportunity to mention this. If you are asked about the title or the character's situation, failing to point out this irony is a missed chance for an extra mark. The contrast between his name and his reality of scavenging is the heart of the chapter's irony. Fourth, there is the 'Vague Vocabulary Trap.' Avoid using generic words like 'bad,' 'poor,' or 'hard.' In English Literature, your vocabulary is your tool. Instead of saying 'the work is bad for eyes,' say 'the hazardous working conditions lead to visual impairment.' Instead of 'they are poor,' use 'they are trapped in a cycle of generational poverty.' This elevates your answer from a basic response to a scholarly one. Finally, the most technical mistake is 'Lack of Textual Evidence.' Never make a claim without backing it up. If you say Mukesh is ambitious, don't just stop there. Quote or paraphrase his desire to 'be his own master' and 'become a motor mechanic.' An answer without textual references is just an opinion; an answer with textual references is an analysis. To conclude, remember the formula for a perfect long answer: Start with a strong introduction mentioning the author and the theme, provide a deep analytical body using specific keywords, and end with a concluding thought that connects the individual struggle to the larger social issue. Master these, and you will move from average scores to excellence. See you in the final review."];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-english-02-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

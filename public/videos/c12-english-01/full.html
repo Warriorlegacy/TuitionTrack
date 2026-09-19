@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>The Last Lesson, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-english-01-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Psychology of Procrastination and the Value of Language -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Psychology of Procrastination and the Value of Language</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• The Psychology of Procrastination: The illusion of infinite time.</div>
+              <div id="qx0-p1" class="qe-bullet">• The Tragedy of 'Tomorrow': How delay leads to irreversible loss.</div>
+              <div id="qx0-p2" class="qe-bullet">• Language as Identity: More than just words; it is our cultural soul.</div>
+              <div id="qx0-p3" class="qe-bullet">• Linguistic Colonization: How losing a language impacts freedom.</div>
+              <div id="qx0-p4" class="qe-bullet">• Thematic Preview: The intersection of time, education, and heritage.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2796708083,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D time-lapse of a classroom clock spinning rapidly, transitioning into a montage of diverse cultural symbols and ancient manuscripts dissolving into sand.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D time-lapse of a classroom clock spinning rapidly, transitioning into a montage of diverse cultural symbols and ancient manuscripts dissolving into sand.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Contextual Setting: The Franco-Prussian War and the Impact of Annexation -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Contextual Setting: The Franco-Prussian War and the Impact of Annexation</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Setting: The Franco-Prussian War (1870-1871)</div>
+              <div id="qx1-p1" class="qe-bullet">• The Defeat: France loses to the Prussian-led German Confederation</div>
+              <div id="qx1-p2" class="qe-bullet">• Annexation: Alsace and Lorraine are forcibly taken by Prussia</div>
+              <div id="qx1-p3" class="qe-bullet">• The Berlin Order: Mandating German as the sole language of instruction</div>
+              <div id="qx1-p4" class="qe-bullet">• Cultural Impact: Language as a tool for identity and political control</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":801604232,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animated map of Europe where the regions of Alsace and Lorraine turn from blue to Prussian grey, accompanied by a transition from French flags to Prussian emblems.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D animated map of Europe where the regions of Alsace and Lorraine turn from blue to Prussian grey, accompanied by a transition from French flags to Prussian emblems.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Character Analysis: M. Hamel’s Transformation and Franz’s Internal Conflict -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Character Analysis: M. Hamel’s Transformation and Franz’s Internal Conflict</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Franz: Transition from distraction and dread to regret and sudden awareness.</div>
+              <div id="qx2-p1" class="qe-bullet">• The Symbolism of Books: From 'nuisances' to 'old friends' for Franz.</div>
+              <div id="qx2-p2" class="qe-bullet">• M. Hamel: Evolution from a strict disciplinarian to a dignified patriot.</div>
+              <div id="qx2-p3" class="qe-bullet">• M. Hamel's Attire: The green coat and silk cap as symbols of respect.</div>
+              <div id="qx2-p4" class="qe-bullet">• Shared Guilt: M. Hamel's shift from blaming students to accepting collective responsibility.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1865348475,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: On the left, a young Franz looking regretfully at an open textbook; on the right, an elderly M. Hamel in formal attire, standing tall with a somber, dignified expression.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen 3D animation: On the left, a young Franz looking regretfully at an open textbook; on the right, an elderly M. Hamel in formal attire, standing tall with a somber, dignified expression.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Thematic Exploration: Linguistic Chauvinism and Cultural Identity -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Thematic Exploration: Linguistic Chauvinism and Cultural Identity</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Linguistic Chauvinism: The aggressive imposition of one language over another.</div>
+              <div id="qx3-p1" class="qe-bullet">• Language as a Vessel: How speech carries history, culture, and worldview.</div>
+              <div id="qx3-p2" class="qe-bullet">• Intellectual Colonization: Using language to control the minds of a conquered people.</div>
+              <div id="qx3-p3" class="qe-bullet">• The Key to the Prison: Language as a tool for maintaining spiritual freedom.</div>
+              <div id="qx3-p4" class="qe-bullet">• Resistance through Identity: M. Hamel's final act as a symbol of cultural defiance.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":657808514,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation: one side shows a vibrant, flowing river representing French culture, while the other shows heavy, iron chains attempting to block its path.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D split-screen animation: one side shows a vibrant, flowing river representing French culture, while the other shows heavy, iron chains attempting to block its path.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Literary Devices: Symbolism of the Prussian Soldiers and the School Setting -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Literary Devices: Symbolism of the Prussian Soldiers and the School Setting</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Symbolism: Using objects or settings to represent abstract ideas.</div>
+              <div id="qx4-p1" class="qe-bullet">• Prussian Soldiers: Represent linguistic chauvinism and political annexation.</div>
+              <div id="qx4-p2" class="qe-bullet">• The School Setting: Transforms from a mundane space to a sacred sanctuary.</div>
+              <div id="qx4-p3" class="qe-bullet">• The Silence: Symbolizes the heavy realization of cultural loss.</div>
+              <div id="qx4-p4" class="qe-bullet">• The Classroom: Acts as a metaphor for the 'key to the prison' of identity.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1958488272,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on the left, marching silhouettes of soldiers in shadow; on the right, a sunlit but silent classroom with floating French words.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A split-screen 3D animation: on the left, marching silhouettes of soldiers in shadow; on the right, a sunlit but silent classroom with floating French words.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Detailed Textual Breakdown: Part 1 - The Dread of the Unprepared Student -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Detailed Textual Breakdown: Part 1 - The Dread of the Unprepared Student</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Franz's immediate anxiety: The failure to prepare the lesson on participles.</div>
+              <div id="qx5-p1" class="qe-bullet">• The temptation of escapism: Choosing nature and freedom over school.</div>
+              <div id="qx5-p2" class="qe-bullet">• The Bulletin Board: A symbol of bad news and communal dread.</div>
+              <div id="qx5-p3" class="qe-bullet">• The duality of unpreparedness: Academic failure vs. political ignorance.</div>
+              <div id="qx5-p4" class="qe-bullet">• Foreshadowing: The contrast between expected bustle and coming silence.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":94743274,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing Franz's panicked face on one side and a looming, dark bulletin board on the other.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D split-screen showing Franz's panicked face on one side and a looming, dark bulletin board on the other.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Detailed Textual Breakdown: Part 2 - The Atmosphere of the Silent Classroom -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Detailed Textual Breakdown: Part 2 - The Atmosphere of the Silent Classroom</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• The 'Sunday Morning' silence: A disruption of the natural school rhythm.</div>
+              <div id="qx6-p1" class="qe-bullet">• M. Hamel's gentle tone: Signifies a shift from discipline to communal grief.</div>
+              <div id="qx6-p2" class="qe-bullet">• The presence of villagers: Represents collective guilt and respect for the language.</div>
+              <div id="qx6-p3" class="qe-bullet">• The back benches: Symbolize the community's late realization of their loss.</div>
+              <div id="qx6-p4" class="qe-bullet">• Shift in perception: Books transform from burdens to 'old friends'.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":248277417,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A slow 3D pan across a dimly lit 19th-century classroom, moving from empty desks to the solemn faces of villagers sitting on the back benches.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A slow 3D pan across a dimly lit 19th-century classroom, moving from empty desks to the solemn faces of villagers sitting on the back benches.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Detailed Textual Breakdown: Part 3 - M. Hamel’s Final Lecture and 'Vive La France' -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Detailed Textual Breakdown: Part 3 - M. Hamel’s Final Lecture and 'Vive La France'</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• M. Hamel's description of French as the most beautiful and logical language.</div>
+              <div id="qx7-p1" class="qe-bullet">• The metaphor of language as the 'key to the prison' of enslavement.</div>
+              <div id="qx7-p2" class="qe-bullet">• The shared guilt of procrastination among parents, students, and teachers.</div>
+              <div id="qx7-p3" class="qe-bullet">• The symbolic significance of the Prussian trumpets signaling the end.</div>
+              <div id="qx7-p4" class="qe-bullet">• The climactic act of writing 'Vive La France' on the blackboard.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1770384731,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A cinematic 3D close-up of a trembling hand writing 'Vive La France' in white chalk on a dark blackboard, as sunlight streams through a dusty classroom window.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A cinematic 3D close-up of a trembling hand writing 'Vive La France' in white chalk on a dark blackboard, as sunlight streams through a dusty classroom window.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Vocabulary Workshop: Archaic Terms, Nuances, and Contextual Meanings -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Vocabulary Workshop: Archaic Terms, Nuances, and Contextual Meanings</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Understanding 'Commotion' as political and social disturbance</div>
+              <div id="qx8-p1" class="qe-bullet">• The significance of 'Unison' in representing collective identity</div>
+              <div id="qx8-p2" class="qe-bullet">• Nuance of 'Reproach' vs. simple anger in M. Hamel's tone</div>
+              <div id="qx8-p3" class="qe-bullet">• The irony of 'Nuisance' in Franz's changing perspective</div>
+              <div id="qx8-p4" class="qe-bullet">• Using 'Solemnity' to describe the classroom atmosphere</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2963396288,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D floating dictionary where words like 'Reproach' and 'Solemnity' glow and expand into cinematic scenes from the story as they are mentioned.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D floating dictionary where words like 'Reproach' and 'Solemnity' glow and expand into cinematic scenes from the story as they are mentioned.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Critical Analysis: The Relationship Between Mother Tongue and Freedom -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Critical Analysis: The Relationship Between Mother Tongue and Freedom</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Language as the 'Key to the Prison': A tool for psychological resistance.</div>
+              <div id="qx9-p1" class="qe-bullet">• Linguistic Chauvinism: The imposition of one language to erase another's identity.</div>
+              <div id="qx9-p2" class="qe-bullet">• Language as a Vessel: Carrying history, culture, and collective memory.</div>
+              <div id="qx9-p3" class="qe-bullet">• The Link Between Identity and Speech: Losing language equals losing selfhood.</div>
+              <div id="qx9-p4" class="qe-bullet">• Mental Sovereignty: Maintaining linguistic heritage to resist colonization.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2102684117,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic shot of a heavy iron prison door where the lock is shaped like an open book, with glowing French words flowing out of the pages to dissolve the chains.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D cinematic shot of a heavy iron prison door where the lock is shaped like an open book, with glowing French words flowing out of the pages to dissolve the chains.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Misinterpreting Character Motives and Historical Context -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Misinterpreting Character Motives and Historical Context</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Avoid viewing M. Hamel as a mere victim; recognize his dignity and agency.</div>
+              <div id="qx10-p1" class="qe-bullet">• Franz's guilt is not just academic; it is a loss of cultural identity.</div>
+              <div id="qx10-p2" class="qe-bullet">• The Prussian order is an act of linguistic chauvinism, not just politics.</div>
+              <div id="qx10-p3" class="qe-bullet">• Villagers' presence represents collective remorse and communal penance.</div>
+              <div id="qx10-p4" class="qe-bullet">• Freedom in the story is defined through language as a psychological key.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":238597105,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on one side, a dusty, dark classroom representing loss; on the other, a glowing golden key shaped like the French alphabet, symbolizing the 'key to the prison'.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation: on one side, a dusty, dark classroom representing loss; on the other, a glowing golden key shaped like the French alphabet, symbolizing the 'key to the prison'.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: RTCs, Long Answers, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: RTCs, Long Answers, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• RTC Strategy: Identify Speaker, Context, and Underlying Theme</div>
+              <div id="qx11-p1" class="qe-bullet">• Long Answers: Structure character sketches around transformations</div>
+              <div id="qx11-p2" class="qe-bullet">• Key Theme: Procrastination and the sudden value of heritage</div>
+              <div id="qx11-p3" class="qe-bullet">• Vocabulary for Exams: Use terms like Linguistic Chauvinism and Solemnity</div>
+              <div id="qx11-p4" class="qe-bullet">• Recap: From Franz's dread to M. Hamel's final patriotic stand</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1155215448,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a student writing a structured essay on one side and a cinematic montage of the chapter's key scenes on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A 3D split-screen showing a student writing a structured essay on one side and a cinematic montage of the chapter's key scenes on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix The Last Lesson today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Psychology of Procrastination and the Value of Language <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Contextual Setting: The Franco-Prussian War and the Impact of Annexation <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Character Analysis: M. Hamel’s Transformation and Franz’s Internal Conflict <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Thematic Exploration: Linguistic Chauvinism and Cultural Identity <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Literary Devices: Symbolism of the Prussian Soldiers and the School Setting <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Detailed Textual Breakdown: Part 1 - The Dread of the Unprepared Student <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Detailed Textual Breakdown: Part 2 - The Atmosphere of the Silent Classroom <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Detailed Textual Breakdown: Part 3 - M. Hamel’s Final Lecture and 'Vive La France' <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Vocabulary Workshop: Archaic Terms, Nuances, and Contextual Meanings <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Critical Analysis: The Relationship Between Mother Tongue and Freedom <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Misinterpreting Character Motives and Historical Context <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: RTCs, Long Answers, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone, and welcome to our deep dive into Alphonse Daudet’s poignant short story, 'The Last Lesson.' Before we step into the dusty streets of Alsace and dive into the historical drama, I want us to pause and reflect on a very human experience that we all face: the habit of putting things off. Have you ever told yourself, 'I will study this tomorrow,' or 'I will learn this skill next week,' only to find that 'tomorrow' never quite arrives? This is what psychologists call procrastination. In the context of this story, procrastination isn't just about laziness; it is a tragic human tendency to take our most precious assets—like time and education—for granted. We often live under the illusion that we have an infinite supply of time. We assume that our teachers will always be there, our books will always be open, and our language will always be spoken in our homes. But what happens when that illusion is shattered? What happens when the 'tomorrow' you were counting on is suddenly taken away by the forces of war and politics? This brings us to the second, even more profound pillar of our introduction: the intrinsic value of language. Language is not merely a collection of grammar rules, a set of vocabulary words, or a way to communicate basic needs. It is the very soul of a culture. It is the vessel that carries our history, our traditions, our jokes, and our unique way of seeing the world. When a person speaks their mother tongue, they are not just making sounds; they are asserting their identity. They are saying, 'This is who I am, and this is where I belong.' In 'The Last Lesson,' we see a terrifying scenario where language becomes a battlefield. When a conquering power imposes its own language on a defeated people, it is not just an administrative change; it is an attempt to colonize the mind. By stripping a community of its native tongue, you strip them of their connection to their past and their agency over their future. As we begin this journey with Franz, a young student who prefers the chirping of birds to the rules of participles, we are going to explore how the realization of loss can transform a person's perspective. We will see how the sudden threat of losing one's linguistic heritage turns a mundane school day into a moment of profound realization. So, as we move forward into the historical setting of the Franco-Prussian War, keep these two ideas in your mind: the danger of assuming time is infinite, and the realization that your language is your ultimate sanctuary. Let us begin.","Welcome back. In our previous segment, we touched upon the personal anxiety of Franz. But to truly understand why a simple French lesson feels like a funeral, we must step out of the classroom and into the history books. The story is set against the backdrop of the Franco-Prussian War, which took place between 1870 and 1871. This wasn't just a border skirmish; it was a massive conflict between the Second French Empire, led by Napoleon III, and the North German Confederation, led by Prussia, which was under the leadership of Otto von Bismarck. The outcome of this war was a decisive and crushing victory for the Prussians. As a direct consequence of this defeat, the French territories of Alsace and Lorraine were annexed by Prussia. Now, let's pause on that word: 'annexed.' To annex a territory means to forcibly take control of it and incorporate it into one's own nation. For the people living in Alsace and Lorraine, this wasn't just a change in government or a new set of taxes. It was a fundamental shift in their very identity. When a country is annexed, the conqueror doesn't just want your land; they often want your soul, and in the nineteenth century, the soul of a nation was its language. This brings us to the concept of political dominance through cultural imposition. The Prussian order arrived like a cold shadow over the schoolhouse. The order from Berlin stated that only German would be taught in the schools of Alsace and Lorraine. Think about the weight of that decision. Language is not just a tool for communication; it is the vessel of our history, our songs, our jokes, and our way of seeing the world. By banning French, the Prussian administration was attempting to sever the connection between the people and their heritage. They were implementing a policy of linguistic assimilation. If you change the language a child speaks, you change how that child thinks, how they remember their ancestors, and how they perceive their loyalty. This historical context explains the heavy, somber atmosphere we see in the story. The villagers sitting at the back of the classroom aren't just there to listen; they are there as a silent protest, a collective mourning for a culture that is being legislated out of existence. The war has physically moved the borders, but the annexation is attempting to move the mental borders of every citizen. As we move forward, keep this tension in mind: the clash between the political power of the Prussian state and the cultural resilience of the French people. The classroom is no longer just a place of learning; it has become a battlefield where the weapon is a grammar book and the casualty is a mother tongue.","Welcome back. In our previous segment, we established the heavy atmosphere of the classroom under Prussian rule. Now, we dive into the heart of the story: the psychological shift in our two central figures. Let us begin with Franz. At the start of the chapter, Franz is the archetype of a typical, distracted student. He is more interested in the chirping of birds and the sliding of the Saar than in his grammar lessons. His relationship with learning is one of avoidance. He views school as a burden and M. Hamel as a stern, intimidating figure. However, as the reality of the 'last lesson' sinks in, Franz undergoes a profound internal conflict. This is not just a shift from fear to sadness; it is a shift from ignorance to sudden, painful awareness. The moment he realizes he will no longer have French lessons, his books, which once felt like a nuisance, suddenly become 'old friends.' This is a classic example of the psychological phenomenon where we only realize the value of something once it is being snatched away. Franz experiences a sudden surge of empathy for M. Hamel. The teacher he once feared is now someone he pities. His regret is not just about failing a test, but about the loss of his very identity. Now, let us turn our attention to M. Hamel. M. Hamel is a character who undergoes perhaps the most dramatic transformation in the narrative. Throughout his forty years of service, he is depicted as a strict, perhaps even cranky, disciplinarian. He represents the traditional, rigid structure of the school. But today, the 'strict taskmaster' has vanished. In his place is a man filled with dignity, sorrow, and an overwhelming sense of patriotism. Notice the change in his attire. He is wearing his beautiful green coat, his frilled shirt, and his little black silk cap—clothes he only wore on inspection or prize days. This is a gesture of profound respect for his final lesson and for the French language itself. M. Hamel does not use this moment to scold Franz for his lack of preparation. Instead, he takes the blame upon himself, acknowledging how the parents and even the teachers sent students to school instead of learning. This self-reflection shows a man who has moved beyond mere instruction to deep, philosophical realization. He transforms from a mere instructor of grammar into a guardian of culture. He speaks of the French language as the most beautiful, clearest, and most logical language in the world. This isn't just a teacher praising a subject; it is a patriot defending a soul. The conflict within Franz is the conflict of the youth—the realization of wasted time. The transformation of M. Hamel is the conflict of the elder—the realization of a stolen heritage. Together, these two characters represent the two sides of a nation in mourning: the regret of the new generation and the dignified grief of the old.","Welcome back. In our previous segment, we looked at how the characters reacted to the news of the order from Berlin. Now, we must dive into the very heart of Alphonse Daudet's story. We are going to explore two profound concepts: Linguistic Chauvinism and Cultural Identity. To understand this chapter, you cannot just look at it as a story about a school; you must see it as a story about the soul of a nation. Let us first define our first key term: Linguistic Chauvinism. In simple terms, chauvinism is an exaggerated, aggressive patriotism. When we add 'linguistic' to it, we are talking about the belief that one's own language is superior to all others, and more importantly, the attempt to impose that language on others by force. In the story, the Prussians are not just occupying the land of Alsace and Lorraine; they are attempting to occupy the minds of its people. By banning French and enforcing German, they are practicing linguistic chauvinism. Why is this so dangerous? Because language is not just a collection of words or a tool for communication. It is the vessel of a culture. It carries the history, the songs, the idioms, and the very way a community perceives the world. When the order comes that only German will be taught in the schools, it is an act of intellectual colonization. The Prussians realize that if they can strip the people of their language, they can strip them of their identity. This brings us to our second theme: Cultural Identity. Think about Franz. Throughout the story, his relationship with French changes. Initially, it was a burden, something he wanted to avoid. But the moment he realizes he might lose it, it becomes his most precious possession. This shift represents the realization that our mother tongue is the anchor of our identity. M. Hamel also embodies this. He doesn't just teach grammar; he teaches the dignity of being French. He calls French 'the most beautiful language in the world—the clearest, the most logical.' This isn't just a teacher being biased; it is a man defending the sanctity of his heritage. He tells the class that when a people are enslaved, as long as they hold fast to their language, it is as if they had the key to their prison. This is a powerful metaphor. The 'key to the prison' suggests that while physical bodies can be imprisoned by an occupying army, the spirit remains free as long as the cultural connection through language remains intact. As you prepare for your exams, remember that the conflict in 'The Last Lesson' is not just between France and Prussia. It is a conflict between the imposition of power and the preservation of self. When M. Hamel writes 'Vive La France' on the blackboard at the end, he isn't just writing words; he is performing an act of linguistic resistance. He is asserting that despite the political annexation, the cultural identity of the people remains unbowed. As you read the text again, look for these moments of tension where language becomes a battlefield.","Welcome back. In our previous segment, we explored the emotional weight of M. Hamel’s transformation. Now, we are going to dive deep into the 'how' of the story. How does Alphonse Daudet make us feel the loss of freedom without explicitly writing a war novel? He does this through symbolism. Symbolism is a literary device where an object, person, or setting represents a much larger, abstract idea. In 'The Last Lesson', two major symbols drive the narrative: the Prussian soldiers and the school setting itself. Let us first analyze the Prussian soldiers. Throughout the story, the Prussians are not just soldiers; they represent the encroaching shadow of 'Linguistic Chauvinism'. When the story mentions the order from Berlin, the soldiers become the physical manifestation of an invisible force—the force of annexation. They symbolize the loss of agency. They are the 'outsiders' who enter a private, sacred space to impose a foreign will. Notice how the presence of the soldiers is felt even when they aren't on screen; their influence is felt through the change in language. They represent the cold, mechanical nature of political power, which seeks to standardize and erase individual identity. Now, let us turn our attention to the school setting. In most stories, a school is a place of noise, movement, and future possibilities. But in this chapter, the setting undergoes a symbolic shift. The school, which was once a place of mundane routine and even boredom for Franz, is transformed into a 'sanctuary of lost heritage'. The classroom becomes a sacred space where the French language is being worshipped for the last time. Think about the silence in the classroom. This silence isn't just the absence of noise; it is a heavy, pregnant silence. It symbolizes the sudden realization of what has been lost. The desks, the books, and even the old primer represent the 'anchor' of their cultural identity. When M. Hamel speaks of the French language being the 'key to their prison', the school setting becomes a metaphor for that prison. The classroom is the last bastion of French culture before the walls of Prussian rule close in completely. Even the villagers sitting at the back of the room change the symbolism of the setting. The classroom is no longer just for children; it becomes a communal space for mourning. The presence of the elders symbolizes the collective regret of a whole community. They are there to pay tribute to a language they neglected. So, to summarize our literary analysis: the Prussian soldiers symbolize the external, oppressive force of political dominance, while the school setting symbolizes the internal, fragile sanctuary of cultural and linguistic identity. One represents the 'invader', and the other represents the 'soul' being invaded. Understanding these symbols is crucial for your long-answer questions, as it allows you to move beyond the plot and discuss the deeper philosophical layers of the text.","Welcome back. In our previous segment, we established the heavy historical context of the Franco-Prussian War. Now, let us dive directly into the text to witness the internal world of our protagonist, Franz. We begin at the very start of the story, where the atmosphere is not one of tragedy yet, but of a typical, anxious school morning. Imagine Franz, a young boy, rushing toward school. He is not thinking about the loss of his mother tongue; he is thinking about the immediate, terrifying reality of his French lesson. The text tells us that Franz had not prepared his lesson on participles. For a student, this is a universal feeling—the sudden, cold realization that you are caught off guard. But for Franz, this isn't just a minor academic slip; it is a source of genuine dread. He contemplates several ways to escape. He thinks about running away and spending the day outdoors, wandering through the fields, or looking for birds' eggs. This is a crucial psychological detail. It shows us that Franz views school as a burden, a constraint on his natural freedom. He prefers the sensory, unscripted world of nature over the structured, demanding world of grammar. However, he resists these impulses. He tells himself that he will hurry to school and not worry about the teacher's anger. This internal tug-of-war between the desire for freedom and the fear of authority is our first window into his character. As he moves through the town, the text highlights his distraction. He notices the commotion near the town hall. He sees a crowd gathered in front of the bulletin board. For two years, all bad news—lost battles, the draft, orders from headquarters—had come from there. This is a subtle but powerful piece of foreshadowing. Even before Franz knows that the German orders have changed the fate of his school, the reader is alerted to the fact that the bulletin board is a source of communal trauma. Franz passes the crowd, his mind still preoccupied with his unlearned participles. He is caught in a state of 'unpreparedness' in two ways: academically, regarding his French lesson, and politically, regarding the shifting tides of his nation. This duality is central to the chapter. As he approaches the school, he expects the usual 'bustle'—the opening and closing of desks, the teacher's ruler rapping on the table, the lessons repeated in unison. This is the 'normalcy' he is about to lose forever. The dread he feels is the dread of the 'unprepared student' facing a reprimand. He is bracing himself for M. Hamel's scolding. He is prepared for a bad day, but he is completely unprepared for a life-changing day. We must note the specific mention of 'participles.' Why does Alphonse Daudet choose this specific grammatical term? It represents the rigid, formal structure of the language that Franz has neglected. By focusing on this small, technical failure, the author makes the eventual loss of the entire language feel even more poignant. Franz's struggle is the struggle of a child who takes his world for granted, unaware that the very tools he is failing to master—his language—are about to be stripped away from him.","Welcome back. In our previous segment, we saw Franz’s initial dread of being scolded for not knowing his participles. But as he enters the classroom, the mood shifts from personal anxiety to a heavy, communal solemnity. Let's look closely at the text to understand how Alphonse Daudet uses sensory details to build this atmosphere. First, notice the change in the usual school sounds. Usually, there is a 'bustle'—the opening and closing of desks, lessons repeated in unison, and the teacher's ruler rapping on the table. But today? Today, everything is as quiet as a Sunday morning. This comparison to a Sunday morning is crucial. It signals to the reader that the natural order of life has been suspended. The rhythm of the school has been broken. As Franz walks in, he expects a scolding, but instead, he encounters something far more unsettling: M. Hamel's gentle tone. M. Hamel doesn't shout. He says, 'Go to your place quickly, my little Franz. We were beginning without you.' This kindness is almost more painful than anger because it signals a loss of authority and a transition into grief. Now, let's look at the most striking visual element of this scene: the back benches. In a typical classroom, the back benches are often empty or occupied by restless students. But today, they are filled with the villagers. We see old Hauser, the former mayor, the former postmaster, and several others. They aren't there to learn; they are there to pay their respects. They are sitting there, looking sad. Why is this significant? It represents the collective guilt of the community. They are realizing, too late, that they did not value their education or their language when they had the chance. The presence of these elders transforms the classroom from a place of instruction into a place of mourning. The atmosphere is thick with regret. Even the books, which Franz previously found to be a 'nuisance' and 'too heavy to carry,' suddenly feel like 'old friends' now that they are being treated as sacred objects. The silence isn't just an absence of noise; it is a heavy, pregnant silence. It is the silence of a community realizing they are losing their identity. Every movement in the room is slow, deliberate, and weighed down by the realization that this is the end of an era. As we analyze this, pay attention to the shift in Franz's perspective. He moves from being a boy worried about his own punishment to a witness of a historical tragedy. The classroom has become a sanctuary for a dying culture.","Welcome back. We have moved through the dread of the morning and the heavy silence of the classroom. Now, we reach the emotional heart of Alphonse Daudet's story: M. Hamel’s final lecture. As the church clock strikes twelve, the atmosphere shifts from sorrow to a profound, dignified solemnity. M. Hamel stands up. He does not shout. He does not scold. Instead, he speaks with a voice that carries the weight of forty years of service. He begins by addressing the class, not as a taskmaster, but as a man sharing a final, precious gift. He speaks about the French language. He calls it the most beautiful, the clearest, and the most logical language in the world. This is not just a teacher praising his subject; this is a patriot defending a culture under siege. He tells the villagers and the students that they must guard their language, for when a people are enslaved, as long as they hold fast to their language, it is as if they had the key to their prison. Think about that metaphor. Language is not just words; it is the psychological key to freedom. As the lesson progresses, M. Hamel moves from instruction to reflection. He blames not just the students, but the parents and himself, for the habit of procrastination—the 'putting off until tomorrow' that has robbed them of their identity. The lesson concludes with a moment of overwhelming emotion. The Prussian trumpets sound outside, signaling the end of the era. M. Hamel becomes choked with emotion. He cannot finish his sentence. He turns to the blackboard. With all his might, with a gesture that is both desperate and triumphant, he writes these two words in the largest letters possible: 'Vive La France!' This means, 'Long Live France!' He does not say it with his voice, which has failed him, but with his hands. This final act transforms him from a defeated teacher into a symbol of resistance. He then leans his head against the wall and, without a word, gestures with his hand that the school is dismissed. The silence that follows is not the silence of emptiness, but the silence of a profound, collective realization of loss.","Welcome back. In our previous segment, we explored the emotional weight of M. Hamel's final lecture. Now, we are going to dive deep into the linguistic texture of Alphonse Daudet's prose. To truly appreciate 'The Last Lesson,' you must look beyond the literal definitions of the words. Daudet uses specific vocabulary to evoke a sense of nostalgia, regret, and the heavy atmosphere of a changing era. Let us begin with some terms that might feel slightly archaic or formal to a modern reader. First, consider the word 'commotion.' When Franz mentions the commotion at the town hall, it isn't just noise; it implies a state of confused and noisy disturbance. In the context of the story, this commotion is the physical manifestation of the political upheaval happening in the streets. Next, let's look at the word 'unison.' When the students are described as reciting in unison, it means they are speaking or acting at the exact same time. This is a crucial nuance. It represents the collective identity of the French students, a unity that the Prussian order is attempting to break. Now, let's move to more descriptive, nuanced terms. The word 'reproach' appears when M. Hamel speaks to the students. To reproach someone is to express disapproval or disappointment. This isn't just anger; it is a heavy, soulful disappointment that comes from a teacher who sees potential being wasted due to procrastination. Then we have the term 'nuisance.' Franz initially views his lessons as a nuisance—something annoying or troublesome that gets in the way of his freedom. This word is vital because it highlights the central irony: the very thing Franz found a nuisance is now the thing he realizes he can never have again. Let's examine the word 'solemnity.' The classroom is described with a sense of solemnity. This goes beyond being quiet; it implies a formal, dignified, and serious tone. The atmosphere is heavy because the students and villagers realize they are witnessing the death of their linguistic heritage. We must also look at the word 'chatter.' Franz hears the 'chatter' of the birds and the 'buzzing' of the Prussian soldiers. These words are chosen to contrast the natural, free sounds of life with the mechanical, intrusive presence of the occupiers. Another important word is 'pigeons.' While it seems simple, the question 'Will they make them sing in German, too?' uses the word 'pigeons' to create a metaphor for natural instinct. You cannot force a bird to change its song, just as you cannot force a soul to change its mother tongue. Finally, let's look at the word 'vivacity.' While the story is somber, the memory of Franz's previous lack of vivacity—his lack of liveliness or animation—serves as a foil to the sudden, desperate passion he feels during the final lesson. Understanding these nuances is the difference between reading a story and feeling the history. When you write your answers in the exam, do not just say M. Hamel was 'sad.' Use words like 'melancholic' or 'reproachful.' Do not just say the classroom was 'quiet.' Say it was 'solemn.' This precision in your vocabulary will elevate your literary analysis from basic to brilliant. Let us master these words so we can master the text.","Welcome back. We have explored the events and the characters; now, let us dive into the philosophical heart of Alphonse Daudet's masterpiece. In this segment, we are performing a critical analysis of the profound link between one's mother tongue and the concept of true freedom. When M. Hamel says, 'When a people are enslaved, as long as they hold fast to their language, it is as if they had the key to their prison,' he is not just being poetic. He is making a profound political and psychological statement. Think about this deeply. What is a language? To a linguist, it is a system of grammar and syntax. But to a nation, a language is the very soul of its identity. It is the vessel that carries history, folklore, traditions, and the collective memory of a people. When the Prussians issued the order to teach only German in the schools of Alsace and Lorraine, they weren't just changing a curriculum; they were attempting a form of psychological warfare. This is what we call linguistic chauvinism—the belief that one's own language is superior and should be imposed on others to erase their identity. By stripping away the French language, the conquerors aimed to strip away the sense of being French. If you cannot think in your own language, you begin to lose your connection to your ancestors and your culture. You become a stranger in your own land. This is why M. Hamel calls the language the 'key to their prison.' Even if your body is physically confined by an occupying army, your mind remains free as long as you possess your linguistic heritage. Your language allows you to preserve your thoughts, your resistance, and your dignity. It provides a shared space of understanding that the oppressor cannot easily penetrate. In the story, we see this transition from the casual indifference of Franz to a sudden, painful realization of the value of his language. The loss of the language is experienced as a loss of liberty itself. This relationship is symbiotic: language defines the boundaries of a culture, and a culture provides the strength to defend its language. As students, when you analyze this for your exams, do not just say 'language is important.' Instead, argue that language is a tool of resistance. It is a psychological fortress. The imposition of German was an attempt to colonize the minds of the students, to make them forget who they were. Therefore, the struggle in 'The Last Lesson' is not just a struggle over territory or borders; it is a struggle for the sovereignty of the human spirit. To lose one's language is to lose the ability to define one's own reality. As we conclude this analysis, remember that freedom is not merely the absence of physical chains; it is the presence of cultural and intellectual autonomy, anchored firmly in the words we speak and the stories we tell in our mother tongue.","Welcome back. As we approach the end of our deep dive into 'The Last Lesson', it is time to sharpen your analytical lens. In high-stakes board exams, students often lose marks not because they didn't read the text, but because they misinterpreted the 'why' behind the actions. Let us address the most common pitfalls. First, let's talk about M. Hamel. A very common mistake is to view him purely as a victim or a tragic figure who is simply sad about leaving. While he is indeed grieving, interpreting him only as a victim misses his agency. M. Hamel is not just a man losing a job; he is a man witnessing the systematic erasure of his identity. His sudden transition from a 'cranky' teacher to a dignified, patriotic figure is not a change in personality, but a revelation of his true character under pressure. Do not describe him as 'suddenly kind'; describe him as 'revelatory in his patriotism.' Second, let's look at Franz. Many students misinterpret Franz’s initial dread as mere laziness. While he was indeed procrastinating, his character arc is more complex. His 'guilt' is not just about not knowing participles; it is a sudden, painful awakening to the realization that his procrastination has robbed him of his heritage. When you write about Franz, avoid saying 'he felt bad for not studying.' Instead, use 'he experienced a profound sense of loss regarding his linguistic identity.' Third, we must address the historical context of the Franco-Prussian War. A major pitfall is treating the Prussian order as a simple administrative change. It was not just a change of government; it was an act of linguistic chauvinism. The order to teach only German was a psychological tool used to colonize the minds of the people. If you treat the setting as just 'a war happening in the background,' you miss the central theme. The war is the catalyst for the emotional weight of the story. Fourth, there is a misconception regarding the villagers sitting in the back of the classroom. Some students interpret their presence as mere curiosity or respect for the old teacher. This is too shallow. Their presence is an act of collective remorse. They are there to pay tribute to a language they neglected and to a teacher who served them for forty years. It is a communal penance. Finally, be careful with the concept of 'freedom' in the story. Do not mistake the story for a simple political commentary on borders. The freedom M. Hamel speaks of is internal. He says that as long as a people hold fast to their language, it is as if they had the key to their prison. This means linguistic identity is a psychological fortress. If you interpret the story as just being about 'losing a territory,' you will miss the philosophical depth. Always connect the political event—the annexation—to the psychological impact—the loss of self. Keep these nuances in mind, and your answers will move from being descriptive to being truly analytical.","Welcome to our final session on 'The Last Lesson'. We have journeyed through the emotional landscape of Alsace, but now, it is time to transition from understanding to scoring. This is your Exam Masterclass. We will begin with Reference to Context questions, or RTCs. In an RTC, you are given a specific extract from the text. The secret to mastering these is not just knowing what happened, but knowing who said it and why. For example, if you see the line, 'Will they make them sing in German, even the pigeons?', do not just identify the speaker as Franz. Analyze the underlying sentiment. This is a critique of linguistic chauvinism. It suggests that while man can impose laws, he cannot control the natural instinct of a soul to speak its own language. When answering RTCs, always link the quote to the broader theme of cultural identity to secure full marks. Moving on to Long Answer Questions. These are the high-value questions, usually worth five or six marks. The most common question is the character sketch of M. Hamel. Do not simply list his traits. Instead, structure your answer around his transformation. Contrast the 'cranky' teacher Franz first encountered with the dignified, heartbroken patriot we see at the end. Use keywords like 'reproachful', 'solemn', and 'patriotic'. Another frequent long answer focuses on the theme of procrastination. You must explain how the villagers' regret serves as a cautionary tale. They realized the value of their language only when it was being snatched away. Use the phrase 'linguistic identity as a key to the prison of enslavement' to impress the examiner. Now, let us do a rapid-fire Full Chapter Recap to cement your memory. We started with Franz, a young boy dreading a grammar lesson, representing the innocence of a generation about to lose its heritage. We moved to the setting of the Franco-Prussian war, where the order from Berlin changed everything. We witnessed M. Hamel’s metamorphosis from a strict taskmaster to a man embodying the spirit of France. We explored the heavy, silent atmosphere of the classroom, which acted as a metaphor for the stifled voice of a conquered people. We concluded with the powerful symbolism of the Prussian soldiers and the final, heart-wrenching command, 'Vive La France'. To avoid common pitfalls, remember: M. Hamel is not a villain for being strict; he is a victim of circumstance. And Franz is not just a lazy student; he is a symbol of lost opportunity. As you head into your exams, remember that 'The Last Lesson' is not just a story about a school; it is a story about the sanctity of one's roots. Keep your answers structured, use textual evidence, and always connect the character's emotions to the historical context. You are now fully prepared. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-english-01-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

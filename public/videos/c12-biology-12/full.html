@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Ecosystem, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-biology-12-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Vitality of Ecosystems &amp; Why They Matter -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Vitality of Ecosystems &amp; Why They Matter</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Ecosystem: A functional unit of nature</div>
+              <div id="qx0-p1" class="qe-bullet">• Interaction between Biotic and Abiotic components</div>
+              <div id="qx0-p2" class="qe-bullet">• Scale: From a single drop of water to the entire biosphere</div>
+              <div id="qx0-p3" class="qe-bullet">• Dynamic balance of energy flow and nutrient cycling</div>
+              <div id="qx0-p4" class="qe-bullet">• Concept introduced by A.G. Tansley</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2619922295,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A seamless 3D transition starting from a single microscopic water droplet to a wide-angle view of a vibrant tropical rainforest, highlighting the connections between sunlight, soil, plants, and animals.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A seamless 3D transition starting from a single microscopic water droplet to a wide-angle view of a vibrant tropical rainforest, highlighting the connections between sunlight, soil, plants, and animals.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Ecosystem Structure: Components, Producers, Consumers, and Decomposers -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Ecosystem Structure: Components, Producers, Consumers, and Decomposers</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Ecosystem components: Abiotic (non-living) and Biotic (living)</div>
+              <div id="qx1-p1" class="qe-bullet">• Producers (Autotrophs): Convert solar energy into organic food</div>
+              <div id="qx1-p2" class="qe-bullet">• Consumers (Heterotrophs): Primary (herbivores), Secondary, and Tertiary</div>
+              <div id="qx1-p3" class="qe-bullet">• Decomposers (Saprotrophs): Break down dead organic matter</div>
+              <div id="qx1-p4" class="qe-bullet">• Nutrient recycling: Decomposers return inorganic nutrients to the environment</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3310093068,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a lush forest on one side and a pond on the other, with glowing icons representing sunlight (abiotic), green plants (producers), a deer (primary consumer), a wolf (secondary consumer), and microscopic fungi (decomposers) appearing as they are mentioned.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D split-screen showing a lush forest on one side and a pond on the other, with glowing icons representing sunlight (abiotic), green plants (producers), a deer (primary consumer), a wolf (secondary consumer), and microscopic fungi (decomposers) appearing as they are mentioned.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Ecosystem Functions I: Productivity (Primary, Secondary, and Net) -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Ecosystem Functions I: Productivity (Primary, Secondary, and Net)</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Productivity: The rate of biomass production in an ecosystem.</div>
+              <div id="qx2-p1" class="qe-bullet">• Gross Primary Productivity (GPP): Total organic matter produced by autotrophs.</div>
+              <div id="qx2-p2" class="qe-bullet">• Net Primary Productivity (NPP): NPP = GPP minus Respiration (R).</div>
+              <div id="qx2-p3" class="qe-bullet">• NPP is the actual biomass available to consumers.</div>
+              <div id="qx2-p4" class="qe-bullet">• Secondary Productivity: Rate of biomass formation by consumers/heterotrophs.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2562680694,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows a plant absorbing sunlight (GPP), a small portion of energy escaping as heat (R), and the remaining energy building a fruit (NPP); Right side shows a herbivore eating the fruit and converting it into body mass (Secondary Productivity).</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen 3D animation: Left side shows a plant absorbing sunlight (GPP), a small portion of energy escaping as heat (R), and the remaining energy building a fruit (NPP); Right side shows a herbivore eating the fruit and converting it into body mass (Secondary Productivity).</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Ecosystem Functions II: Decomposition (Steps, Factors, and Rate) -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Ecosystem Functions II: Decomposition (Steps, Factors, and Rate)</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Decomposition: Breakdown of complex organic matter into simple inorganic substances</div>
+              <div id="qx3-p1" class="qe-bullet">• Steps: Fragmentation, Leaching, Catabolism, Humification, and Mineralization</div>
+              <div id="qx3-p2" class="qe-bullet">• Humus: Dark, nutrient-rich, and resistant substance formed during decomposition</div>
+              <div id="qx3-p3" class="qe-bullet">• Factors: Detritus quality (Nitrogen vs Lignin/Chitin) and Physicochemical conditions</div>
+              <div id="qx3-p4" class="qe-bullet">• Rate: Increased by warmth, moisture, and high nitrogen content</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2381112701,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D time-lapse animation showing a fallen leaf transforming into soil particles, with glowing icons representing nitrogen and moisture moving through the layers.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D time-lapse animation showing a fallen leaf transforming into soil particles, with glowing icons representing nitrogen and moisture moving through the layers.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Ecosystem Functions III: Energy Flow and Trophic Levels -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Ecosystem Functions III: Energy Flow and Trophic Levels</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Energy flow is unidirectional: Sunlight to Producers to Consumers</div>
+              <div id="qx4-p1" class="qe-bullet">• First Law of Thermodynamics: Energy transformation occurs</div>
+              <div id="qx4-p2" class="qe-bullet">• Second Law of Thermodynamics: Energy is lost as heat at each step</div>
+              <div id="qx4-p3" class="qe-bullet">• The Ten Percent Law: Only ten percent of energy transfers to the next level</div>
+              <div id="qx4-p4" class="qe-bullet">• Energy limitation restricts the number of trophic levels in a food chain</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":2055566658,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">A 3D diagram showing a sun radiating light to green plants, with glowing energy arrows shrinking in size as they move from plants to a deer, and then to a lion, while red heat waves dissipate from each animal.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D diagram showing a sun radiating light to green plants, with glowing energy arrows shrinking in size as they move from plants to a deer, and then to a lion, while red heat waves dissipate from each animal.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Ecosystem Functions IV: Ecological Pyramids (Number, Biomass, and Energy) -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Ecosystem Functions IV: Ecological Pyramids (Number, Biomass, and Energy)</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Ecological Pyramids: Graphical representation of trophic level relationships.</div>
+              <div id="qx5-p1" class="qe-bullet">• Pyramid of Number: Can be upright (grassland) or inverted (parasitic food chain).</div>
+              <div id="qx5-p2" class="qe-bullet">• Pyramid of Biomass: Upright in terrestrial; inverted in aquatic ecosystems.</div>
+              <div id="qx5-p3" class="qe-bullet">• Pyramid of Energy: Always upright due to energy loss at each level.</div>
+              <div id="qx5-p4" class="qe-bullet">• Key Concept: Energy transfer follows the 10 percent law.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":507543616,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animated sequence showing a grassland transitioning into a pond, with translucent pyramids overlaying them to demonstrate upright vs. inverted shapes.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D animated sequence showing a grassland transitioning into a pond, with translucent pyramids overlaying them to demonstrate upright vs. inverted shapes.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Food Chains and Food Webs: Dynamics and Stability -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Food Chains and Food Webs: Dynamics and Stability</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Grazing Food Chain (GFC): Starts with living producers and solar energy.</div>
+              <div id="qx6-p1" class="qe-bullet">• Detritus Food Chain (DFC): Starts with dead organic matter and decomposers.</div>
+              <div id="qx6-p2" class="qe-bullet">• Food Web: A complex network of interconnected food chains.</div>
+              <div id="qx6-p3" class="qe-bullet">• Stability: Complexity in food webs provides ecosystem resilience.</div>
+              <div id="qx6-p4" class="qe-bullet">• Redundancy: Alternative prey options prevent ecosystem collapse.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":2264026089,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D transition from a single straight line of icons (Grass -&gt; Grasshopper -&gt; Frog) to a dense, glowing web of interconnected organism icons.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D transition from a single straight line of icons (Grass -&gt; Grasshopper -&gt; Frog) to a dense, glowing web of interconnected organism icons.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Ecological Succession I: Primary and Secondary Succession -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Ecological Succession I: Primary and Secondary Succession</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Ecological Succession: Gradual change in species composition over time.</div>
+              <div id="qx7-p1" class="qe-bullet">• Primary Succession: Starts on bare substrates with no pre-existing soil.</div>
+              <div id="qx7-p2" class="qe-bullet">• Pioneer Species in Primary Succession: Lichens and mosses that build soil.</div>
+              <div id="qx7-p3" class="qe-bullet">• Secondary Succession: Occurs in disturbed areas where soil is already present.</div>
+              <div id="qx7-p4" class="qe-bullet">• Rate of Change: Secondary succession is significantly faster than primary.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":370586814,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows lava cooling into bare rock with lichens slowly spreading; Right side shows a burnt forest floor with green sprouts rapidly emerging from dark soil.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A split-screen 3D animation: Left side shows lava cooling into bare rock with lichens slowly spreading; Right side shows a burnt forest floor with green sprouts rapidly emerging from dark soil.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Ecological Succession II: Sere, Climax Community, and Detailed Processes -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Ecological Succession II: Sere, Climax Community, and Detailed Processes</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Sere: The entire sequence of ecological communities in an area.</div>
+              <div id="qx8-p1" class="qe-bullet">• Seral Stage: Each individual community during the succession process.</div>
+              <div id="qx8-p2" class="qe-bullet">• Pioneer Community: The first hardy species to colonize a bare area.</div>
+              <div id="qx8-p3" class="qe-bullet">• Facilitation: Process where one community modifies the environment for the next.</div>
+              <div id="qx8-p4" class="qe-bullet">• Climax Community: The stable, self-sustaining final stage determined by climate.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1304690324,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A time-lapse 3D animation showing bare rock transforming into lichens, then grasses, shrubs, and finally a dense, stable forest.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A time-lapse 3D animation showing bare rock transforming into lichens, then grasses, shrubs, and finally a dense, stable forest.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Nutrient Cycling I: The Phosphorus Cycle -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Nutrient Cycling I: The Phosphorus Cycle</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Phosphorus is a sedimentary cycle with no significant gaseous phase.</div>
+              <div id="qx9-p1" class="qe-bullet">• Essential components: DNA, RNA, ATP, and Phospholipids.</div>
+              <div id="qx9-p2" class="qe-bullet">• Primary reservoir: Earth's crust and phosphate-bearing rocks.</div>
+              <div id="qx9-p3" class="qe-bullet">• Process: Weathering -&gt; Plant Uptake -&gt; Consumption -&gt; Decomposition.</div>
+              <div id="qx9-p4" class="qe-bullet">• Long-term storage: Ocean sediments and geological uplift.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1870760289,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cross-section of an ecosystem showing a mountain weathering into soil, plants absorbing ions, animals eating, and phosphorus particles washing into a deep ocean trench to form rock layers.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D cross-section of an ecosystem showing a mountain weathering into soil, plants absorbing ions, animals eating, and phosphorus particles washing into a deep ocean trench to form rock layers.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Nutrient Cycling II: The Nitrogen Cycle (Fixation to Denitrification) -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Nutrient Cycling II: The Nitrogen Cycle (Fixation to Denitrification)</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Nitrogen makes up 78% of the atmosphere but is unusable in its N-two gas form.</div>
+              <div id="qx10-p1" class="qe-bullet">• Nitrogen Fixation: Converting N-two into ammonia via bacteria or lightning.</div>
+              <div id="qx10-p2" class="qe-bullet">• Nitrification: Two-step process converting ammonia to nitrites then nitrates.</div>
+              <div id="qx10-p3" class="qe-bullet">• Assimilation: Plants absorbing nitrates to build proteins and nucleic acids.</div>
+              <div id="qx10-p4" class="qe-bullet">• Denitrification: Bacteria converting nitrates back into N-two gas to complete the cycle.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2022704329,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A continuous 3D circular flow animation showing nitrogen moving from the sky to soil bacteria, into plant roots, through an animal, and back to the atmosphere via specialized soil microbes.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A continuous 3D circular flow animation showing nitrogen moving from the sky to soil bacteria, into plant roots, through an animal, and back to the atmosphere via specialized soil microbes.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Full Recap, Diagram Practice, and PYQs -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Full Recap, Diagram Practice, and PYQs</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Recap: Productivity, Decomposition, Energy Flow, and Nutrient Cycles</div>
+              <div id="qx11-p1" class="qe-bullet">• Diagram Mastery: Nitrogen Cycle and Ecological Pyramids</div>
+              <div id="qx11-p2" class="qe-bullet">• Key Distinction: Primary vs. Secondary Succession</div>
+              <div id="qx11-p3" class="qe-bullet">• Comparison: Gaseous vs. Sedimentary Nutrient Cycles</div>
+              <div id="qx11-p4" class="qe-bullet">• Exam Strategy: Using NCERT diagrams and flowcharts for high scores</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3931164580,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a flowing Nitrogen Cycle on the left and an upright Energy Pyramid on the right, with glowing labels appearing as the teacher speaks.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a flowing Nitrogen Cycle on the left and an upright Energy Pyramid on the right, with glowing labels appearing as the teacher speaks.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Ecosystem today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Vitality of Ecosystems &amp; Why They Matter <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Ecosystem Structure: Components, Producers, Consumers, and Decomposers <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Ecosystem Functions I: Productivity (Primary, Secondary, and Net) <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Ecosystem Functions II: Decomposition (Steps, Factors, and Rate) <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Ecosystem Functions III: Energy Flow and Trophic Levels <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Ecosystem Functions IV: Ecological Pyramids (Number, Biomass, and Energy) <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Food Chains and Food Webs: Dynamics and Stability <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Ecological Succession I: Primary and Secondary Succession <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Ecological Succession II: Sere, Climax Community, and Detailed Processes <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Nutrient Cycling I: The Phosphorus Cycle <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Nutrient Cycling II: The Nitrogen Cycle (Fixation to Denitrification) <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Full Recap, Diagram Practice, and PYQs <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone, and welcome to our comprehensive series on Ecosystems. Today, we begin our journey into one of the most fundamental concepts in Biology. Before we dive into the complex cycles and energy flows, we must first understand what an ecosystem actually is and why it is the very foundation of life on Earth. Imagine you are standing in a lush green forest. You see the towering trees, the sunlight filtering through the leaves, the moisture in the soil, the insects crawling on the bark, and the birds flying above. Now, think about this: none of these elements exist in isolation. The trees need the sunlight and the soil; the insects need the trees for food and shelter; the soil is enriched by decaying leaves. This intricate, interconnected web of living organisms interacting with their non-living environment is what we call an ecosystem. In biological terms, an ecosystem is a functional unit of nature where living organisms, which we call biotic components, interact among themselves and with the surrounding physicochemical factors, which we call abiotic components. This interaction is not just a coincidence; it is a dynamic process. An ecosystem can be as small as a single drop of water in a pond, containing microscopic bacteria and algae, or it can be as vast as a massive ocean or a whole biosphere. The term 'ecosystem' was first coined by A.G. Tansley, and it shifted our perspective from looking at individual species to looking at the entire system of interactions. Why is this concept so vital? Because it teaches us that life is a balance of energy and matter. In an ecosystem, energy enters from the sun, is captured by plants, and then moves through various living beings. Simultaneously, nutrients like carbon, nitrogen, and phosphorus are constantly being recycled. If any part of this system is disturbed—say, if we pollute the water or cut down too many trees—the entire balance shifts, affecting everything from the smallest microbe to human beings. Understanding ecosystems is not just about passing an exam; it is about understanding the survival mechanism of our planet. In this chapter, we will break down how these systems are structured, how energy flows through them, how nutrients are recycled, and how ecosystems change over time through succession. But for now, remember this core definition: an ecosystem is the functional unit of nature where biotic and abiotic components interact to maintain life. Let's prepare ourselves to explore these magnificent, self-sustaining systems in detail. In our next lesson, we will dive deep into the specific components that make up these structures, starting with producers, consumers, and decomposers.","Welcome back to our series on Ecosystems. In our previous video, we discussed why ecosystems are the fundamental units of nature. Now, let us dive into the actual architecture of an ecosystem. If you look at an ecosystem, it is not just a random collection of plants and animals; it is a highly organized structure. This structure is defined by two main types of components: Abiotic and Biotic. Think of the abiotic components as the stage and the biotic components as the actors performing on it. The abiotic components include non-living physical and chemical factors like sunlight, temperature, rainfall, soil nutrients, and even the pH of the water. These factors determine which kind of life can exist in a particular area. For example, a cactus thrives in a desert because of its specific abiotic conditions, whereas a lotus needs aquatic abiotic conditions. Now, let us focus on the actors—the Biotic components. These are the living organisms, and they are categorized based on how they obtain their energy. The first group is the Producers, also known as Autotrophs. These are the foundation of every ecosystem. They use solar energy to convert inorganic substances like carbon dioxide and water into complex organic food through the process of photosynthesis. In most terrestrial ecosystems, green plants are the primary producers. In aquatic ecosystems, it is often microscopic algae and phytoplankton. Without producers, the energy flow in an ecosystem would stop immediately. Next, we move to the Consumers, or Heterotrophs. These organisms cannot make their own food; they must rely on producers or other organisms for energy. We classify consumers into different levels based on their feeding habits. First, we have the Primary Consumers, which are the herbivores. These are organisms like deer, rabbits, or grasshoppers that eat plants directly. Then, we have the Secondary Consumers, which are the carnivores that eat the herbivores. For instance, a frog that eats a grasshopper is a secondary consumer. Following them are the Tertiary Consumers, which are larger carnivores that prey on other carnivores, such as a snake eating a frog, or a lion eating a zebra. In some complex ecosystems, we even see Quaternary Consumers, which sit at the very top of the food chain. Now, there is a special group of organisms that plays a role just as vital as the producers. These are the Decomposers, also known as Saprotrophs. While producers build organic matter, decomposers break it down. They consist mainly of microorganisms like bacteria and fungi. Their job is to break down dead organic matter—the detritus—from plants and animals into simple inorganic substances. This process is crucial because it recycles nutrients back into the soil or water, making them available again for the producers to use. This creates a continuous loop of life. To summarize the structure: the abiotic factors set the stage, the producers capture the energy, the consumers transfer that energy through various levels, and the decomposers ensure that nothing goes to waste by recycling the nutrients. Understanding this structural arrangement is essential because it sets the stage for how energy flows and how nutrients cycle, which we will explore in our upcoming lessons on productivity and decomposition. Let's ensure you remember this hierarchy: Producers create, Consumers consume, and Decomposers recycle.","Welcome back. In our previous lesson, we looked at the structure of an ecosystem—the producers, consumers, and decomposers. Now, we move into the engine room of the ecosystem: its functions. Specifically, we are going to talk about Productivity. In ecology, productivity refers to the rate of biomass production. It is not just about how much life exists, but how fast that life is being created. Let us start with the most fundamental concept: Primary Productivity. This is the rate at which solar energy is captured and converted into organic substances by autotrophs, like green plants and algae, through the process of photosynthesis. Now, to understand this deeply, we must distinguish between two types: Gross Primary Productivity and Net Primary Productivity. Think of Gross Primary Productivity, or G-P-P, as the total amount of energy or organic matter that a plant produces in a given time. It is the total 'salary' the plant earns from the sun. However, plants are living organisms; they need to breathe. They use a portion of that produced organic matter for their own own respiration, which we call R. This energy is lost as heat. What remains after the plant has met its own metabolic needs is the Net Primary Productivity, or N-P-P. The formula is very simple: Net Primary Productivity equals Gross Primary Productivity minus Respiration. Mathematically, we write it as N-P-P equals G-P-P minus R. N-P-P is the actual biomass that is available to the next trophic level—the herbivores. If you want to know how much food is available for the entire ecosystem, you look at the N-P-P. Now, let us shift our focus from plants to animals. This brings us to Secondary Productivity. Secondary productivity is the rate of formation of new organic matter by consumers. Remember, animals cannot perform photosynthesis. They must consume existing organic matter to build their own bodies. Therefore, secondary productivity is always significantly lower than primary productivity. It is the rate at which the energy stored in the food consumed by heterotrophs is converted into their own new biomass. To summarize the relationship: Primary productivity is the foundation, driven by sunlight, while secondary productivity is the subsequent buildup of biomass in the consumer levels. The efficiency of this transfer is crucial for the stability of the ecosystem. If N-P-P is high, the ecosystem can support a vast array of consumers. If it is low, the ecosystem remains sparse. Keep this distinction in mind: G-P-P is the total production, R is the cost of living, and N-P-P is the actual profit available to the rest of the world.","Welcome back. In our previous session, we explored how energy is captured through productivity. But what happens to the organic matter once it dies? This brings us to one of the most critical recycling processes in nature: Decomposition. Decomposition is the process of breaking down complex organic matter, like dead plants and animals, into simple inorganic substances. Think of it as nature's ultimate recycling program. It is not a single event, but a series of sequential steps. Let's break these steps down. The first step is Fragmentation. Here, detritivores, like earthworms, physically break down the detritus into smaller particles. This increases the surface area for further action. The second step is Leaching. As water moves through the soil, some of the water-soluble inorganic nutrients from the detritus are washed down into the soil layers. Third is Catabolism. This is where the real chemical work happens. Enzymes produced by microbes, like bacteria and fungi, break down the complex organic compounds into even simpler inorganic molecules. Fourth is Humification. As decomposition progresses, the detritus is transformed into a dark-colored, amorphous substance called humus. Humus is highly resistant to microbial action and is very rich in nutrients, making it vital for soil fertility. Finally, we have Mineralization. This is the process where the organic components of the humus are further broken down into inorganic nutrients like nitrogen, phosphorus, and potassium, which are then made available to the producers again. Now, why does decomposition happen faster in some places than others? This brings us to the factors affecting the rate of decomposition. The first major factor is the quality of the detritus. If the detritus is rich in nitrogen and easy to break down, decomposition will be rapid. However, if it is high in lignin and chitin, which are tough, complex substances, the process slows down significantly. The second factor is the physicochemical factors of the environment. Temperature and moisture play a massive role. Decomposition is generally faster in warm and moist environments because microbes thrive in these conditions. In contrast, extreme cold or extreme dryness will inhibit microbial activity. Finally, the presence of detritivores and decomposers themselves is crucial. The more diverse and active the microbial population, the faster the breakdown. To summarize the rate: high nitrogen, high temperature, and high moisture lead to a high rate of decomposition, whereas high lignin, low temperature, and low moisture lead to a slow rate. Understanding this cycle is essential because without efficient decomposition, nutrients would remain locked in dead matter, and life as we know it would eventually cease to function.","Welcome back. In our previous sessions, we explored how nutrients decompose and how productivity fuels an ecosystem. Now, we move to the very heartbeat of any ecosystem: Energy Flow. Unlike nutrients, which cycle through the system, energy flows in a one-way direction. It enters as sunlight, is captured by producers, and eventually leaves the system as heat. This unidirectional flow is a fundamental law of ecology. Let us look at how this energy moves. At the base of every ecosystem, we have the first trophic level, occupied by autotrophs or producers. These organisms, like green plants, convert solar energy into chemical energy through photosynthesis. When a herbivore eats a plant, that energy moves to the second trophic level. When a carnivore eats that herbivore, it moves to the third level, and so on. These sequential steps of energy transfer are what we call trophic levels. Now, why does energy flow in only one direction? This is governed by the laws of thermodynamics. The First Law of Thermodynamics tells us that energy can neither be created nor destroyed, only transformed. In an ecosystem, light energy is transformed into chemical energy. The Second Law of Thermodynamics is even more crucial here. It states that during every energy transfer, some energy is lost as heat due to metabolic activities. This means that as we move from one trophic level to the next, the amount of available energy decreases significantly. This brings us to a critical concept: the efficiency of energy transfer. On average, only about ten percent of the energy available at one trophic level is transferred to the next level. This is often referred to as the Ten Percent Law. For example, if the producers in a forest capture one thousand joules of energy, the herbivores will only receive approximately one hundred joules, and the secondary consumers will receive only ten joules. This massive loss of energy at each step explains why food chains are rarely longer than four or five trophic levels. There simply isn't enough energy left at the top to support another level of predators. This energy loss is not just a number; it is a biological reality caused by respiration, movement, growth, and the production of waste. Because energy is constantly being lost as heat, it cannot be recycled back to the sun or the producers. This is why ecosystems require a continuous input of solar energy to survive. To summarize, energy flow is unidirectional, follows the laws of thermodynamics, decreases at each successive trophic level, and is the driving force that maintains the structure of all living communities. In our next video, we will visualize this energy loss through the concept of Ecological Pyramids.","Welcome back. In our previous session, we explored how energy flows through trophic levels. Now, we are going to visualize this flow and the structure of ecosystems using a powerful tool called the Ecological Pyramid. Introduced by Charles Elton, these pyramids are graphical representations designed to show the relationship between different organisms occupying different trophic levels in an ecosystem. There are three distinct types of pyramids you must master for your exams: Pyramids of Number, Pyramids of Biomass, and Pyramids of Energy. Let us start with the Pyramid of Number. This pyramid represents the total number of individual organisms at each trophic level. In a very simple ecosystem, like a single tree supporting many herbivorous insects, which in turn support many birds, we see an upright pyramid. This means the number of producers is high, and the number of consumers decreases as we move up. However, nature is not always so linear. Consider a parasitic food chain. Imagine a single large tree acting as the producer. This one tree supports hundreds of birds, and those birds support thousands of tiny parasites like lice or mites. In this specific case, the pyramid of number becomes inverted, because a single producer supports a vast number of consumers at higher levels. Next, let us move to the Pyramid of Biomass. Biomass refers to the total dry weight of living organic matter at a specific trophic level. In most terrestrial ecosystems, such as a grassland or a forest, the pyramid of biomass is upright. This is because the total mass of the grasses or trees is significantly greater than the total mass of the herbivores, which is in turn greater than the mass of the carnivores. But, pay close attention to aquatic ecosystems, as this is a favorite topic for examiners. In a pond or an ocean, the pyramid of biomass is often inverted. Why? Because the producers here are microscopic phytoplankton. While they have a very small standing crop or biomass at any single moment, they reproduce incredibly fast and support a much larger biomass of zooplankton and fish. So, the biomass of the consumers actually exceeds the biomass of the producers at a given time. Finally, we come to the most fundamental concept: the Pyramid of Energy. This pyramid represents the total amount of energy available at each trophic level. Unlike the pyramids of number or biomass, the Pyramid of Energy is ALWAYS upright. It can never be inverted. This is due to the fundamental laws of thermodynamics and the ten percent law we discussed earlier. As energy moves from the sun to producers, and then from producers to various levels of consumers, a massive amount of energy is lost as heat during respiration and metabolic processes. Only about ten percent of the energy is transferred to the next level. Therefore, the energy available at the producer level is always the highest, and it progressively diminishes as we move toward top carnivores. Because energy is lost at every step, the pyramid must always narrow toward the top. Remember these three rules: Pyramids of number and biomass can be upright or inverted depending on the ecosystem, but the pyramid of energy is always upright. Keep these distinctions clear for your board exams.","Welcome back. In our previous lesson, we explored the concept of energy flow through trophic levels and ecological pyramids. Now, we are going to look at how these energy pathways actually connect in the real world through Food Chains and Food Webs. Let us start with the simplest concept: the Food Chain. A food chain is a linear sequence of organisms where each organism eats the one below it, transferring energy from one trophic level to the next. We generally categorize these into two types. First, we have the Grazing Food Chain, or GFC. This starts with living green plants, or producers, which are eaten by herbivores, which are then eaten by carnivores. For example, in a grassland, grass is eaten by a grasshopper, the grasshopper is eaten by a frog, and the frog is eaten by a snake. This chain is driven by solar energy. Second, we have the Detritus Food Chain, or DFC. This is a very important concept. Unlike the grazing chain, the detritus chain begins with dead organic matter, known as detritus. Decomposers, like fungi and bacteria, break down this dead matter, and these decomposers are then consumed by detritivores, such as earthworms, which might eventually be eaten by larger animals. In many terrestrial ecosystems, the detritus food chain actually carries more energy than the grazing food chain. Now, you might ask, does nature really work in straight lines? The answer is no. In a real ecosystem, organisms do not just belong to one single chain. A single organism can be part of multiple food chains. When we connect several food chains together, we create a complex, web-like network called a Food Web. Think of it this way: a grasshopper doesn't just eat grass; it might be eaten by a bird, a spider, or a lizard. Similarly, a bird might eat insects, fruits, or even small mice. This interconnectedness is what we call a Food Web. Why is this web so important? It brings us to the concept of Ecosystem Stability and Dynamics. A food web provides stability to an ecosystem through redundancy. If one species in a food web disappears or its population declines, the predators that eat it can switch to an alternative prey. This prevents the entire system from collapsing. In a simple, linear food chain, the loss of one link can cause a domino effect, leading to the extinction of higher trophic levels. However, in a complex food web, the energy pathways are diversified. This diversity acts as a buffer against environmental fluctuations. The stability of an ecosystem is directly related to the complexity of its food web. A highly complex web with many interconnected species is generally more stable and resilient to disturbances than a simple one. As we move forward, remember that while energy flows in one direction—from producers to top carnivores—the food web ensures that this flow is maintained even when individual species populations fluctuate. This complexity is the secret to the survival of life on Earth.","Welcome back. We have explored how energy flows and nutrients cycle through an ecosystem, but have you ever wondered how an ecosystem actually begins? Or how a forest regrows after a devastating fire? This process of gradual and predictable change in the species composition of a given area is what we call Ecological Succession. It is not a random occurrence; it is a structured progression. To understand this, we must first distinguish between the two fundamental types of succession: Primary and Secondary. Imagine a brand new landscape, perhaps a newly cooled lava flow from a volcano or a piece of bare rock exposed after a glacier retreats. In these areas, there is no pre-existing soil, no organic matter, and no life. This is the starting point for Primary Succession. Because there is no soil, the process is incredibly slow. It begins with the arrival of pioneer species. These are hardy organisms, like lichens or certain mosses, that can survive on bare rock. Lichens are fascinating because they secrete acids that chemically weather the rock, breaking it down into tiny particles. As these pioneers live and die, their decaying organic matter mixes with the weathered rock particles to form the very first thin layer of soil. Only once this soil exists can more complex plants, like grasses and shrubs, begin to take root. Now, let us contrast this with Secondary Succession. Imagine a forest that has been cleared by a forest fire, or a field that was abandoned after farming. Unlike primary succession, the life here is starting from a place where soil already exists. The soil is rich in nutrients and often contains a 'seed bank'—dormant seeds and spores waiting for the right conditions. Because the foundation of soil is already present, secondary succession happens much faster than primary succession. The pioneer species here might be fast-growing weeds or grasses, which quickly stabilize the soil and pave the way for shrubs and eventually trees. To summarize the difference: Primary succession starts from scratch on lifeless substrates like bare rock, whereas secondary succession occurs in areas where a community previously existed but was disturbed, leaving the soil intact. One key takeaway for your exams is that the presence or absence of soil is the deciding factor that determines the speed and the starting point of the successional process. In our next segment, we will dive deeper into the specific stages of this journey, looking at the Sere and the final Climax Community.","Welcome back. In our previous session, we distinguished between primary and secondary succession. Now, we are going to dive deep into the actual mechanism of how an ecosystem evolves over time. Think of succession not as a single jump, but as a series of steps, much like climbing a ladder. This entire sequence of communities that replace one another in a given area is known as a Sere. A sere is not random; it is a predictable progression. Each individual community that appears during this process is called a Seral Stage or a Seral Community. Let us look at how these stages transition. The process begins with the Pioneer Community. These are the first organisms to colonize a bare area. If we are talking about bare rock, these might be lichens. If we are talking about a water body, these might be phytoplankton. The pioneer community has specific traits: they are hardy, can survive extreme conditions, and most importantly, they modify their own environment. As these pioneers live, die, and decay, they add organic matter to the substrate. This changes the soil chemistry and texture, making it more hospitable for more complex organisms. This brings us to the concept of Facilitation. This is a crucial process where one community modifies the environment in a way that makes it suitable for the next, more advanced community, but often less suitable for itself. As the soil deepens and nutrient levels rise, we move through various intermediate seral stages. We might see grasses, then shrubs, then small trees. Each stage is more complex and has higher biomass than the previous one. This leads us to the final, most stable stage: the Climax Community. The climax community is the ultimate goal of ecological succession. Unlike the transient seral stages, the climax community is in a state of equilibrium with the local climate. It is self-sustaining and remains relatively unchanged unless a major disturbance occurs. The characteristics of a climax community include high species diversity, complex food webs, and efficient nutrient cycling. It is important to note that the climax community is determined by the regional climate. For example, in a region with heavy rainfall, the climax community might be a tropical rainforest, whereas in a dry region, it might be a grassland. Now, let us look at the detailed processes that drive this change. One key driver is Competition. As the environment becomes more crowded and resources like light, space, and nutrients become limited, species compete intensely. The species that are better adapted to the changing conditions will outcompete the previous inhabitants. Another driver is Modification of the Environment. This is a feedback loop. The organisms change the physical and chemical properties of the habitat, which in turn changes the selection pressures on the organisms living there. This is why succession is a directional process. We also see a shift in life-history strategies. Pioneer species are often r-strategists—they grow fast, reproduce quickly, and disperse widely. As we move toward the climax community, the species tend to become K-strategists—they are larger, live longer, have slower growth rates, and are highly competitive in stable environments. To summarize the progression: we start with the Pioneer Community, move through several Seral Stages via the process of Facilitation and Competition, and finally arrive at the stable Climax Community. Understanding this progression is vital because it explains how nature heals itself and how complex life forms eventually dominate the landscape.","Welcome back. In our previous lessons, we explored how energy flows through an ecosystem, always in one direction. But today, we shift our focus to something different: the cycling of matter. Unlike energy, which is lost as heat, nutrients are recycled. We have already touched upon the concept of biogeochemical cycles, and today, we dive deep into a crucial sedimentary cycle—the Phosphorus Cycle. Now, pay close attention, because the phosphorus cycle is fundamentally different from the nitrogen or carbon cycles. Why? Because it does not have a significant gaseous phase. You won't find phosphorus floating in the atmosphere in any meaningful amount. This makes it a sedimentary cycle, meaning its primary reservoir is the Earth's crust. So, where does it all begin? It begins with rocks. Phosphorus is a key component of many biological molecules: it is essential for the formation of DNA and RNA, it is a vital part of ATP, which is the energy currency of the cell, and it forms the structural backbone of phospholipids in cell membranes. Without phosphorus, life as we know it would simply cease to exist. Let's trace the journey. The cycle starts with the weathering of rocks. Over long periods, physical and chemical weathering—caused by rain, wind, and temperature changes—breaks down phosphate-bearing rocks. This process releases inorganic phosphates into the soil and water. Once in the soil, these phosphates are taken up by plants through their roots. This is the first step of biological incorporation. Plants use this phosphorus to build their organic molecules. Then, the cycle moves up the trophic levels. Herbivores eat the plants, and carnivores eat the herbivores, transferring the phosphorus through the food chain. But what happens when these organisms die? Or when they produce waste? This is where the decomposers, like bacteria and fungi, come into play. They break down the organic matter, converting the organic phosphorus back into inorganic forms. This process, known as mineralization, returns the phosphate to the soil, making it available for plants to use once again. This creates a continuous loop. However, there is a major 'leak' in this cycle. Not all phosphorus stays in the local ecosystem. Much of the phosphate washed away by rain or runoff eventually reaches rivers, which then carry it into the oceans. Once in the ocean, these phosphates may settle at the bottom, becoming part of the deep-sea sediments. Over geological timescales—think millions of years—these sediments undergo lithification, turning back into solid rock. Eventually, through tectonic uplift and geological processes, these rocks are pushed back to the surface, where weathering can start the whole cycle all over again. To summarize the key takeaway for your exams: remember that the phosphorus cycle is a sedimentary cycle, it lacks a gaseous phase, and its main reservoirs are rocks and ocean sediments. Understanding this slow but steady movement is essential to understanding how life sustains itself over geological time. In our next lesson, we will move from the sedimentary cycles to the gaseous cycles, starting with the complex and fascinating Nitrogen Cycle. See you there.","Welcome back. We have just explored how phosphorus moves through the lithosphere and biosphere. Now, we move to perhaps the most critical biogeochemical cycle in all of biology: The Nitrogen Cycle. Nitrogen is a fundamental component of amino acids, proteins, nucleic acids like DNA and RNA, and even ATP. While our atmosphere is composed of approximately seventy-eight percent nitrogen gas, or N-two, most organisms cannot use it in this gaseous form. It is chemically inert due to the strong triple bond between the nitrogen atoms. To make nitrogen usable, it must undergo a series of complex transformations. The first step is Nitrogen Fixation. This is the process of converting atmospheric nitrogen into ammonia or related nitrogenous compounds. This happens in three ways. First, we have Biological Nitrogen Fixation, where certain bacteria like Rhizobium, living symbiotically in the root nodules of legumes, or free-living bacteria like Azotobacter, convert N-two into ammonia. Second, there is Atmospheric Fixation, where high-energy events like lightning break the triple bonds, allowing nitrogen to combine with oxygen to form nitrogen oxides, which then dissolve in rain to form nitrates. Third, we have Industrial Fixation, known as the Haber process, used to create chemical fertilizers. Once nitrogen is fixed, we enter the stage of Ammonification. When plants and animals die, or when animals excrete waste, organic nitrogen is present in the form of complex molecules. Decomposers like bacteria and fungi break these down, converting organic nitrogen back into inorganic ammonia. Now, the cycle moves into Nitrification. This is a two-step aerobic process. First, bacteria such as Nitrosomonas convert ammonia into nitrites, or NO-two-minus. Then, bacteria like Nitrobacter convert these nitrites into nitrates, or NO-three-minus. Nitrates are the most readily available form of nitrogen for plants to absorb through their roots. This absorption is called Assimilation. During assimilation, plants incorporate these nitrates into organic molecules like proteins and nucleic acids, which then move up the food chain as herbivores eat the plants. However, for the cycle to be complete, nitrogen must return to the atmosphere. This brings us to the final two steps: Ammonification and Denitrification. While ammonification returns nitrogen to the soil, Denitrification is what completes the loop. In waterlogged or anaerobic soils, where oxygen is scarce, certain bacteria like Pseudomonas and Thiobacillus perform denitrification. They take the nitrates from the soil and reduce them back into gaseous nitrogen, or N-two, and sometimes nitrous oxide, which then escapes back into the atmosphere. So, to recap the flow: we start with atmospheric nitrogen, move through fixation to ammonia, then nitrification to nitrites and finally nitrates, followed by assimilation into living tissue, and finally, denitrification returns it to the air. Understanding this cycle is crucial because any imbalance—such as excessive fertilizer use leading to nitrate leaching—can disrupt entire ecosystems. Let's look at the flow chart to solidify this sequence.","Welcome to the final stretch of our journey through the Ecosystem chapter. We have covered everything from the structural components to the complex intricacies of nutrient cycling. Now, it is time to transition from learning to mastering. To ace your Class 12 Board exams, you don't just need to know the facts; you need to know how to present them. Let's start with our rapid-fire recap. Remember, an ecosystem is the functional unit of nature where biotic and abiotic components interact. We discussed Productivity, where Net Primary Productivity is equal to Gross Primary Productivity minus Respiration losses. We delved into Decomposition, remembering the five critical steps: fragmentation, leaching, catabolism, humification, and mineralization. We traced the flow of energy, always remembering the ten percent law, and analyzed the three types of ecological pyramids: Number, Biomass, and Energy. Crucially, remember that the pyramid of energy is always upright. We also explored the stability of food webs and the predictable stages of ecological succession, from pioneer species to the stable climax community. Now, let's talk about Diagram Practice. In Biology, a diagram is worth a thousand words. For this chapter, you must be able to draw the Nitrogen Cycle with precision. Practice labeling the specific bacteria involved: Rhizobium for nitrogen fixation, Nitrosomonas for nitrification, and Pseudomonas for denitrification. Do not just draw circles; draw the arrows clearly to show the direction of flow. Next, practice the Ecological Pyramids. When drawing the Pyramid of Biomass, remember it can be inverted in aquatic ecosystems, like in a pond where the biomass of fishes exceeds that of phytoplankton. For the Pyramid of Numbers, practice the inverted shape found in a single large tree supporting many herbivorous birds. Now, let's tackle the Previous Year Questions, or PYQs, which are the backbone of your preparation. A very common question asks to differentiate between Primary and Secondary Succession. Your answer must highlight that primary succession starts in a barren area with no life, like bare rock, whereas secondary succession occurs in areas where a community was destroyed, like a burnt forest, and thus proceeds much faster due to existing soil. Another high-frequency question asks about the factors affecting decomposition. You must mention temperature, moisture, and the quality of detritus. If the detritus is rich in lignin and chitin, the rate of decomposition slows down. Another favorite is the comparison between the Phosphorus and Nitrogen cycles. Remember, the Nitrogen cycle is a gaseous cycle, while the Phosphorus cycle is a sedimentary cycle. Finally, let's look at a multi-concept question: 'Explain how energy flow maintains the structure of an ecosystem.' Here, you must link trophic levels, the loss of energy at each step, and how this limits the number of trophic levels in a food chain. As you prepare, keep your NCERT textbook as your bible. Every diagram, every table, and every bolded term is a potential question. Use flowcharts for processes like the Nitrogen cycle to save time during the exam. You have worked hard through all twelve parts of this series. Trust your preparation, practice your diagrams, and approach your exam with confidence. You are now ready to master the Ecosystem chapter. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-biology-12-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>The Necklace, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c10-english-26-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Psychology of Greed and Social Status -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Psychology of Greed and Social Status</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Understanding the setting: 19th-century French social hierarchy.</div>
+              <div id="qx0-p1" class="qe-bullet">• The concept of Relative Deprivation: Comparing oneself to others.</div>
+              <div id="qx0-p2" class="qe-bullet">• Psychology of Greed: The hunger for status over substance.</div>
+              <div id="qx0-p3" class="qe-bullet">• Materialism as a tool for social validation.</div>
+              <div id="qx0-p4" class="qe-bullet">• The conflict between perceived entitlement and actual reality.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3151626397,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a dimly lit, modest dining room, the other a shimmering, golden ballroom, with a ghostly silhouette of a woman reaching toward the light.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A split-screen 3D animation: one side shows a dimly lit, modest dining room, the other a shimmering, golden ballroom, with a ghostly silhouette of a woman reaching toward the light.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Character Analysis: Mathilde Loisel's Aspirations vs. Reality -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Character Analysis: Mathilde Loisel's Aspirations vs. Reality</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Mathilde's Reality: A modest, middle-class life with a clerk husband.</div>
+              <div id="qx1-p1" class="qe-bullet">• Mathilde's Aspirations: A life of luxury, high status, and material splendor.</div>
+              <div id="qx1-p2" class="qe-bullet">• The Core Conflict: The psychological gap between 'what is' and 'what should be'.</div>
+              <div id="qx1-p3" class="qe-bullet">• Character Trait: Deep-seated dissatisfaction and a sense of entitlement.</div>
+              <div id="qx1-p4" class="qe-bullet">• Theme Connection: The struggle between internal identity and external appearance.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4269200573,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows a dim, modest room with plain wooden furniture; Right side shows a glowing, golden ballroom with silk drapes and sparkling chandeliers.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation: Left side shows a dim, modest room with plain wooden furniture; Right side shows a glowing, golden ballroom with silk drapes and sparkling chandeliers.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Setting and Atmosphere: The Contrast of Poverty and Luxury -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Setting and Atmosphere: The Contrast of Poverty and Luxury</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• The setting acts as a psychological force driving Mathilde's discontent.</div>
+              <div id="qx2-p1" class="qe-bullet">• Reality: Shabby walls, worn chairs, and a sense of mundane stagnation.</div>
+              <div id="qx2-p2" class="qe-bullet">• Fantasy: Silken fabrics, glittering jewels, and sensory richness.</div>
+              <div id="qx2-p3" class="qe-bullet">• Visual Contrast: Muted, dull tones versus bright, luminous luxury.</div>
+              <div id="qx2-p4" class="qe-bullet">• Atmospheric Tension: The gap between social reality and social aspiration.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3236306745,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows a dim, grey-toned room with worn furniture; Right side shows a glowing, golden ballroom with shimmering chandeliers.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen 3D animation: Left side shows a dim, grey-toned room with worn furniture; Right side shows a glowing, golden ballroom with shimmering chandeliers.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Plot Breakdown Part I: The Invitation and the Conflict -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Plot Breakdown Part I: The Invitation and the Conflict</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• The Invitation: A moment of triumph for Loisel, but despair for Mathilde.</div>
+              <div id="qx3-p1" class="qe-bullet">• The Internal Conflict: The gap between social opportunity and material lack.</div>
+              <div id="qx3-p2" class="qe-bullet">• The Husband's Sacrifice: Giving up 400 francs intended for a hunting gun.</div>
+              <div id="qx3-p3" class="qe-bullet">• The Second Conflict: The psychological need for jewelry to mask poverty.</div>
+              <div id="qx3-p4" class="qe-bullet">• The Catalyst: Borrowing the diamond necklace from Madame Forestier.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":729279830,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on one side, Loisel's glowing face holding the envelope; on the other, Mathilde's tearful face in a dimly lit room.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A split-screen 3D animation: on one side, Loisel's glowing face holding the envelope; on the other, Mathilde's tearful face in a dimly lit room.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Plot Breakdown Part II: The Loss and the Desperate Decision -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Plot Breakdown Part II: The Loss and the Desperate Decision</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• The Climax: The sudden realization of the loss at midnight.</div>
+              <div id="qx4-p1" class="qe-bullet">• Monsieur Loisel's reaction: Logical search vs. Mathilde's hysteria.</div>
+              <div id="qx4-p2" class="qe-bullet">• The Financial Burden: The 36,000 franc replacement cost.</div>
+              <div id="qx4-p3" class="qe-bullet">• The Fatal Choice: Choosing deception over honesty with Madame Forestier.</div>
+              <div id="qx4-p4" class="qe-bullet">• Thematic Link: How pride and social status drive the desperate decision.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3175849145,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing Mathilde's panicked face in the dark street versus the cold, glittering diamond necklace in a jeweler's velvet box.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A split-screen 3D animation showing Mathilde's panicked face in the dark street versus the cold, glittering diamond necklace in a jeweler's velvet box.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Plot Breakdown Part III: The Decade of Hardship and Sacrifice -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Plot Breakdown Part III: The Decade of Hardship and Sacrifice</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Shift from middle-class comfort to extreme poverty and attic living</div>
+              <div id="qx5-p1" class="qe-bullet">• Monsieur Loisel's grueling extra work to repay the massive debt</div>
+              <div id="qx5-p2" class="qe-bullet">• Mathilde's physical transformation: from delicate beauty to coarse laborer</div>
+              <div id="qx5-p3" class="qe-bullet">• The daily struggle of domestic chores and haggling for every cent</div>
+              <div id="qx5-p4" class="qe-bullet">• The psychological shift from entitlement to hardened resignation</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3690504489,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing Mathilde in her elegant ball gown on one side, transitioning into a weathered, tired version of herself scrubbing a floor on the other.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A split-screen 3D animation showing Mathilde in her elegant ball gown on one side, transitioning into a weathered, tired version of herself scrubbing a floor on the other.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): The Twist Ending: Irony and the Cruel Paradox -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">The Twist Ending: Irony and the Cruel Paradox</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• The Climactic Reveal: The necklace was a fake, worth only 500 francs.</div>
+              <div id="qx6-p1" class="qe-bullet">• Situational Irony: Hard work to replace a 'treasure' resulted in total ruin.</div>
+              <div id="qx6-p2" class="qe-bullet">• Dramatic Irony: The reader and Mathilde both believed the necklace was real.</div>
+              <div id="qx6-p3" class="qe-bullet">• The Cruel Paradox: Sacrificing a real life for a fake object.</div>
+              <div id="qx6-p4" class="qe-bullet">• Thematic Connection: The emptiness of chasing social status and appearances.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1096060803,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on the left, a glowing, sparkling diamond necklace; on the right, the same necklace turning into dull, grey glass as Mathilde's face ages from beauty to exhaustion.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A split-screen 3D animation: on the left, a glowing, sparkling diamond necklace; on the right, the same necklace turning into dull, grey glass as Mathilde's face ages from beauty to exhaustion.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Thematic Deep Dive: Appearance vs. Reality and Materialism -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Thematic Deep Dive: Appearance vs. Reality and Materialism</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Appearance vs. Reality: The gap between social image and true circumstances.</div>
+              <div id="qx7-p1" class="qe-bullet">• The Necklace as a Metaphor: A sparkling illusion masking a cheap reality.</div>
+              <div id="qx7-p2" class="qe-bullet">• Materialism: The false belief that happiness is found in physical possessions.</div>
+              <div id="qx7-p3" class="qe-bullet">• The Cost of Illusion: Sacrificing real life to pay for a perceived status.</div>
+              <div id="qx7-p4" class="qe-bullet">• Social Pressure: How societal standards drive the desire for outward luxury.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3345846717,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on the left, a glowing, sparkling diamond necklace; on the right, the same necklace crumbling into cheap, dull glass shards.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A split-screen 3D animation: on the left, a glowing, sparkling diamond necklace; on the right, the same necklace crumbling into cheap, dull glass shards.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Literary Devices: Irony, Symbolism, and Foreshadowing -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Literary Devices: Irony, Symbolism, and Foreshadowing</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Situational Irony: The gap between Mathilde's sacrifice and the necklace's true value</div>
+              <div id="qx8-p1" class="qe-bullet">• Symbolism: The necklace represents the deceptive illusion of wealth and status</div>
+              <div id="qx8-p2" class="qe-bullet">• Symbolism: The contrast between luxury and poverty reflects Mathilde's inner conflict</div>
+              <div id="qx8-p3" class="qe-bullet">• Foreshadowing: Subtle hints regarding the deceptive nature of the borrowed jewelry</div>
+              <div id="qx8-p4" class="qe-bullet">• Literary Tools: How irony, symbolism, and foreshadowing create a cohesive narrative</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2451825369,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation: on the left, a sparkling diamond necklace glows under a spotlight; on the right, the same necklace turns into dull, cracked glass as a clock spins rapidly in the background.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D split-screen animation: on the left, a sparkling diamond necklace glows under a spotlight; on the right, the same necklace turns into dull, cracked glass as a clock spins rapidly in the background.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Vocabulary Mastery: Contextual Meanings and Nuanced Expressions -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Vocabulary Mastery: Contextual Meanings and Nuanced Expressions</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Distinction: Social hierarchy and prestige vs. mere difference.</div>
+              <div id="qx9-p1" class="qe-bullet">• Exquisite: Refined, delicate luxury and high craftsmanship.</div>
+              <div id="qx9-p2" class="qe-bullet">• Disconsolate: Deep, inconsolable despair and hopelessness.</div>
+              <div id="qx9-p3" class="qe-bullet">• Privation: The severe lack of basic human necessities.</div>
+              <div id="qx9-p4" class="qe-bullet">• Nuance: Using precise vocabulary to elevate exam answers.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1441828858,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on the left, shimmering, 'exquisite' golden jewelry; on the right, a worn, 'shabby' wooden table in a dimly lit room.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation: on the left, shimmering, 'exquisite' golden jewelry; on the right, a worn, 'shabby' wooden table in a dimly lit room.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Mistakes: Misinterpreting Character Motives and Themes -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Mistakes: Misinterpreting Character Motives and Themes</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Avoid labeling Mathilde as 'evil'; focus on her psychological social inadequacy.</div>
+              <div id="qx10-p1" class="qe-bullet">• Contrast Mathilde's restlessness with Monsieur Loisel's contentment.</div>
+              <div id="qx10-p2" class="qe-bullet">• Interpret the necklace as a symbol of illusion, not just wealth.</div>
+              <div id="qx10-p3" class="qe-bullet">• Analyze the downfall as a result of choice and dishonesty, not just bad luck.</div>
+              <div id="qx10-p4" class="qe-bullet">• Connect the ironic ending to the theme of appearance versus reality.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4248191391,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on one side, a shimmering, glowing diamond necklace; on the other, a dull, grey, cracked imitation, slowly dissolving into dust.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation: on one side, a shimmering, glowing diamond necklace; on the other, a dull, grey, cracked imitation, slowly dissolving into dust.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Answer Writing, RTCs, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Answer Writing, RTCs, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Use the PEEL method: Point, Evidence, Explanation, and Link for long answers.</div>
+              <div id="qx11-p1" class="qe-bullet">• In RTCs, always identify the speaker, context, and the significance of the quote.</div>
+              <div id="qx11-p2" class="qe-bullet">• Focus on 'Situational Irony' as the core literary device for high marks.</div>
+              <div id="qx11-p3" class="qe-bullet">• Key Themes: Appearance vs. Reality and the dangers of excessive materialism.</div>
+              <div id="qx11-p4" class="qe-bullet">• Recap: Mathilde's greed leads to a decade of hardship due to a fake necklace.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1516326306,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on the left, a glowing, sparkling diamond necklace; on the right, a weathered, hardworking Mathilde holding a heavy bucket of water.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation: on the left, a glowing, sparkling diamond necklace; on the right, a weathered, hardworking Mathilde holding a heavy bucket of water.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix The Necklace today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Psychology of Greed and Social Status <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Character Analysis: Mathilde Loisel's Aspirations vs. Reality <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Setting and Atmosphere: The Contrast of Poverty and Luxury <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Plot Breakdown Part I: The Invitation and the Conflict <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Plot Breakdown Part II: The Loss and the Desperate Decision <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Plot Breakdown Part III: The Decade of Hardship and Sacrifice <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. The Twist Ending: Irony and the Cruel Paradox <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Thematic Deep Dive: Appearance vs. Reality and Materialism <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Literary Devices: Irony, Symbolism, and Foreshadowing <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Vocabulary Mastery: Contextual Meanings and Nuanced Expressions <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Mistakes: Misinterpreting Character Motives and Themes <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Answer Writing, RTCs, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello, students! Welcome to our deep dive into one of the most poignant stories in your Class 10 English curriculum: 'The Necklace' by Guy de Maupassant. Before we even meet our protagonist, Mathilde Loisel, we need to understand the invisible forces that drive her actions. Today, we are exploring the psychological foundation of this story: the complex relationship between greed, social status, and human dissatisfaction. Have you ever looked at someone else's life—perhaps through a social media screen—and felt that your own life was somehow lacking? That feeling is the starting point of this narrative. In the late nineteenth-century French society depicted by Maupassant, social hierarchy was rigid. One's worth was often measured by the quality of one's clothes, the elegance of one's home, and the prestige of one's social circle. This creates a psychological phenomenon called 'relative deprivation.' This isn't just about being poor; it is the feeling of being deprived because you are comparing yourself to those who are perceived as better off. Mathilde Loisel is a character defined by this comparison. She is not starving; she has a home and a husband who cares for her. However, her mind is a battlefield of 'what ifs' and 'if onlys.' She suffers from a constant sense of entitlement, believing she was born for a life of luxury that she simply hasn't been granted yet. This brings us to the psychology of greed. Now, greed is often misunderstood as simply wanting more money. In this context, greed is a hunger for status—a desire to possess the symbols of wealth to validate one's existence. For Mathilde, objects like silk draperies, silver plates, and sparkling jewels are not just items; they are the keys to a social identity she craves. This hunger is dangerous because it is bottomless. The more one acquires to satisfy the ego, the more one realizes that material objects provide only temporary satisfaction. This leads to a cycle of perpetual discontent. As we begin our journey through this chapter, I want you to keep this question in mind: Is Mathilde a victim of her circumstances, or is she a victim of her own perceptions? We will see how her inability to distinguish between 'need' and 'want' sets a tragic chain of events in motion. This isn't just a story about a lost piece of jewelry; it is a study of how the pursuit of an illusion can destroy a reality. As we move forward into our character analysis, remember that the conflict in 'The Necklace' is not just between Mathilde and society, but between Mathilde and her own restless soul. Let's prepare to see how these psychological triggers transform a simple invitation into a life-altering catastrophe.","Welcome back. In our last segment, we touched upon the psychological roots of greed. Now, let us dive deep into the heart of Guy de Maupassant's story: the protagonist, Mathilde Loisel. To understand the tragedy that unfolds, we must first understand the profound disconnect between who Mathilde is and who she believes she ought to be. This is the core conflict of her character: her aspirations versus her reality. Let us begin with her reality. Mathilde is described as a beautiful and charming woman, but she lives a life that she perceives as a personal insult. She is married to a minor clerk in the Ministry of Public Instruction. Her home is modest, her furniture is simple, and her lifestyle is middle-class. In the social hierarchy of 19th-century France, she is not starving; she is merely not wealthy. However, for Mathilde, 'not wealthy' is equivalent to 'miserable.' She feels she was born for all the delicacies and all the luxuries of life. This is her first major character trait: a sense of entitlement. She believes her beauty and grace entitle her to a life of silk curtains, silver plates, and high-society gatherings. Now, let us look at her aspirations. Mathilde does not just want comfort; she craves status. Her dreams are filled with oriental tapestries, exquisite perfumes, and the admiration of the elite. She lives in a constant state of mental escapism. When she sits in her plain dining room, she doesn't see the walls; she imagines herself in a grand palace. This tells us that Mathilde is a character driven by dissatisfaction. She is unable to find contentment in what she has because her eyes are always fixed on what she lacks. This brings us to a crucial analytical point: is Mathilde a villain, or is she a victim of her own perception? Some readers see her as vain and shallow, someone who values objects over people. Indeed, her obsession with material possessions blinds her to the kindness of her husband, who works hard to please her. Yet, we can also see her as a tragic figure. She is a woman trapped by a social structure that equates a woman's worth with her outward appearance and her ability to display wealth. Her suffering is psychological. The gap between her reality—the 'shabby' walls and 'worn' chairs—and her aspirations—the 'shining' jewels and 'glittering' parties—creates a tension that drives the entire plot. This tension is what makes her decision to borrow the necklace so believable. She isn't just borrowing a piece of jewelry; she is attempting to bridge the gap between her actual life and her imagined life. She wants to wear a mask of wealth to hide the reality of her existence. As we analyze her, keep this duality in mind: the Mathilde who is a loving, albeit neglected, wife, and the Mathilde who is a restless, dissatisfied dreamer. This internal struggle is the engine of the story. In the next segment, we will see how the physical setting of the story mirrors this internal conflict between poverty and luxury.","Welcome back. In our previous segment, we looked at Mathilde’s internal psychology. Now, let us step outside her mind and look at the world she inhabits. In Guy de Maupassant’s 'The Necklace', the setting is not just a background; it is a character in itself. It acts as a constant, silent pressure on Mathilde’s soul. To understand her suffering, we must understand the sharp, almost violent contrast between the two worlds she occupies: the world of her reality and the world of her dreams. Let us first examine her actual living conditions. The story describes her home with a sense of drabness and weariness. We see 'shabby walls,' 'worn chairs,' and 'ugly curtains.' Notice the choice of adjectives here. These are not just old items; they are symbols of stagnation. The atmosphere of her home is one of mediocrity. It is a place where nothing sparkles, nothing shines, and nothing inspires. This environment represents the middle-class reality of the late nineteenth century—a life of comfort, perhaps, but certainly lacking in the 'glamour' Mathilde craves. Now, let us pivot to the second setting: the world of luxury. This is the world Mathilde visits in her imagination and, briefly, at the Ministry ball. This setting is defined by sensory overload. It is a world of 'silken fabrics,' 'shining silver,' 'exquisite perfumes,' and 'glittering jewels.' While her real home is characterized by muted tones and worn textures, the world of luxury is defined by light and shine. This is a crucial literary distinction. In literature, light often symbolizes status and divinity, while shadows or dullness symbolize the mundane. Mathilde feels trapped in the shadows of her modest apartment, constantly looking toward the light of the high-society salons. This contrast creates a sense of 'atmospheric tension.' Every time Mathilde looks at her plain dinner table, the reader is meant to feel her claustrophobia. The 'tastelessness' of her surroundings acts as a psychological weight. Think of it this way: if her life were a painting, her reality would be painted in dull greys, browns, and faded ochre. Her dreams, however, are painted in gold, deep velvet blues, and bright diamond whites. This visual dichotomy serves a specific purpose in the narrative. It heightens the reader's empathy for her longing, while simultaneously setting the stage for the irony we will discuss later. The setting establishes the 'status anxiety' that drives the entire plot. Without this crushing sense of poverty—even if it is only relative poverty—her decision to borrow the necklace would not make sense. She isn't starving; she is simply 'uninspired' by her surroundings. Therefore, the atmosphere of the story is one of constant dissatisfaction. The setting tells us that for Mathilde, a house is not a home unless it is a palace. As we move forward, keep this duality in mind: the dullness of the present versus the brilliance of the imagined. This tension is the engine that drives Mathilde toward her eventual downfall.","Welcome back. In our previous segment, we explored Mathilde Loisel's internal struggle—the gap between her middle-class reality and her aristocratic dreams. Now, let us step into the actual narrative. The story truly begins to move when Monsieur Loisel, her husband, comes home one evening with a look of triumph on his face. He holds a large envelope, and he tells her that he has secured an invitation to a grand ball at the Ministry of Education. Now, in a normal circumstance, this would be a moment of pure joy. But for Mathilde, this invitation is not a gift; it is a source of intense psychological conflict. Instead of being delighted, she throws the invitation onto the table and weeps. Why? Because the invitation highlights exactly what she lacks: the attire, the jewelry, and the social grace to belong in such a high-society setting. This is the first major conflict of the story: the clash between the opportunity for social mobility and the physical limitations of her poverty. Monsieur Loisel, being a kind and selfless man, tries to soothe her. He tells her to make herself beautiful and suggests she wear something she already owns. But Mathilde is adamant. She tells him quite bluntly, 'I have nothing to wear.' This brings us to the first turning point. Monsieur Loisel makes a significant sacrifice. He tells her to take four hundred francs—money he had been saving to buy a gun for a hunting trip with friends—and use it to buy a beautiful dress. This shows us his character; he prioritizes her happiness over his own leisure. However, even with a new dress, the conflict is not resolved. Mathilde remains unsatisfied. She looks in the mirror and feels incomplete. She feels that without fine jewelry, she will look like a pauper among the wealthy. This brings us to the second conflict: the need for external validation through material objects. She specifically mentions that she cannot go there without jewels. This is where the plot shifts from a simple social dilemma to a quest for status. Monsieur Loisel, sensing her distress, suggests she visit her rich friend, Madame Forestier, to borrow some jewelry. This decision is the catalyst for everything that follows. As Mathilde visits Madame Forestier, we see the tension building. She is searching for something that will mask her true identity. She finally finds a magnificent diamond necklace in a black satin box. The moment she puts it on, the conflict of her identity is temporarily resolved. She feels beautiful, she feels powerful, and most importantly, she feels like she belongs. But as we will see in the next part, this temporary triumph is built on a foundation of deception. This part of the plot is crucial because it establishes the 'inciting incident.' The invitation creates the desire, the lack of dress creates the sacrifice, and the lack of jewelry creates the deception. We see the interplay between Mathilde's vanity and her husband's devotion, setting the stage for the tragedy that is about to unfold.","Welcome back. In our previous segment, we saw Mathilde Loisel finally living her dream for one glorious night at the Ministry ball. She was the most beautiful woman in the room, intoxicated by the admiration of men and the sparkle of her borrowed jewels. But as the clock strikes midnight, the dream shatters. Let us analyze the turning point of the story. The transition from triumph to tragedy begins the moment they leave the party. As Mathilde wraps herself in her modest wraps—which she feels look too 'common' compared to the elegant guests—she feels a sudden, chilling realization. She reaches for her neck, and there is nothing. The necklace is gone. This is the inciting incident that shifts the genre from a social drama to a tragedy of errors. Think about the panic that must have set in. Mathilde is paralyzed by fear, not just because of the lost object, but because of the social shame she fears. She tells her husband, Monsieur Loisel, that she has nothing. He doesn't panic immediately; instead, he shows a calm, logical approach that contrasts sharply with her hysteria. He retraces their steps, walks the entire route they took, and visits the police and the cab companies. But the necklace is nowhere to be found. Now, pay close enough attention to the psychological state of the characters here. Mathilde is consumed by the fear of being branded a thief or a liar. She is terrified of the social consequences of losing something so valuable. This leads us to the 'Desperate Decision.' Instead of being honest with Madame Forestier, they decide to replace the necklace. This decision is the crux of the entire plot. They visit a jeweler, and there, they find a diamond necklace that looks exactly like the lost one. But there is a catch: the price. The necklace is priced at thirty-six thousand francs. Let's break that number down. For Monsieur Loisel, who only earns eighteen thousand francs a year, this is an astronomical, life-altering sum. He has to use his entire inheritance from his father and take out massive loans from usurers and moneylenders at ruinous interest rates. This is where the theme of 'Appearance vs. Reality' takes a dark turn. They are working to maintain the 'appearance' of being able to replace a luxury item, but in doing so, they are destroying their actual reality. They decide to lie to Madame Forestier, telling her that the clasp is being repaired. This lie is the catalyst for the next ten years of their lives. They choose a path of deception to protect their pride, unaware that this very pride will become their undoing. The decision to replace the necklace instead of confessing is not just a financial choice; it is a moral one. It shows that Mathilde and her husband value social standing and the avoidance of embarrassment more than the truth. As we move forward, remember that this moment of panic and the subsequent lie are the engines that drive the rest of the narrative. The debt they incur here is not just monetary; it is a debt of character that will cost them their youth, their beauty, and their comfort.","Welcome back. In our previous segment, we saw the moment of pure panic—the realization that the diamond necklace was gone. But today, we move from the momentary shock of a single night to the crushing weight of ten long years. This is the most transformative part of Guy de Maupassant’s story. It is where Mathilde Loisel, the woman who once dreamed of silken curtains and silver plates, is forced to confront the brutal reality of the life she actually leads. Let us break down this decade of hardship into three distinct layers: the physical struggle, the loss of identity, and the psychological toll. First, let's look at the immediate change in their lifestyle. To pay back the massive debt of thirty-six thousand francs, the Loisels had to change everything. They didn't just lose a necklace; they lost their social standing and their comfort. They moved from their modest apartment to a tiny, cramped attic room. Imagine the shift: from a life of quiet middle-class stability to a life of survival. Monsieur Loisel, who was once a comfortable clerk, had to work extra jobs in the evenings and late into the night. He took on additional bookkeeping work, sometimes even working on Sundays. The money he earned was barely enough to cover the interest on their loans and the basic cost of living. Now, let's focus on Mathilde. This is where the character study becomes truly intense. The author describes a metamorphosis. The beautiful, charming, and delicate Mathilde we met at the beginning of the story disappears. In her place is a woman of 'heavy, coarse looks.' Her hair is untended, her skirts are awry, and her hands are red from scrubbing. She becomes a woman of the people—not by choice, but by necessity. She learns the hard, unglamorous labor of a common housewife. She washes the dishes, scrubs the greasy pots, carries the water up the stairs, and haggles with the grocer, the butcher, and the milkmaid to save every single sou. This is a crucial point for your exams: Mathilde’s physical appearance becomes a direct reflection of her social and economic reality. She is no longer dreaming of luxury; she is fighting for bread. But there is a deeper, psychological layer here. While the hardship is immense, there is a strange sense of resignation. Mathilde accepts her fate. She doesn't complain or weep about her lost beauty; she simply does the work. This shows a shift from her earlier character, who was filled with entitlement and dissatisfaction, to a woman who has been hardened by reality. She has learned the true meaning of 'work.' The sacrifice is not just financial; it is the sacrifice of her youth, her beauty, and her dreams. For ten years, their lives are a repetitive cycle of labor and debt repayment. Every cent earned is a cent gone. This period of the story serves as a bridge between the fantasy of the ball and the devastating irony of the ending. It sets the stage by showing us exactly how much they have paid—not just in money, but in the very essence of who they were. As we move forward, keep this image of the 'hardened Mathilde' in your mind, because the contrast between this woman and the woman she once was is central to the story's impact.","Welcome back. We have traveled through ten long, grueling years of Mathilde Loisel's life. We have seen her lose her youth, her beauty, and her comfort to pay for a replacement necklace. But now, we reach the moment that makes Guy de Maupassant's story a masterpiece of world literature. This is the moment of the twist. Imagine the scene: Mathilde is walking in the Champs-Élysées. She is no longer the elegant woman she once was; she is a hardened, coarse woman of the working class. Suddenly, she sees Madame Forestier. Mathilde decides to finally tell her the truth. She wants to be proud of her sacrifice. She approaches her friend and confesses that she lost the original diamond necklace and has spent the last decade working herself to the bone to pay for a replacement. Now, listen very carefully to Madame Forestier's response, because this is where the floor drops out from under the reader. Madame Forestier, deeply moved, takes Mathilde's hands and tells her the devastating truth: 'Oh, my poor Mathilde! But mine was imitation. It was worth at most five hundred francs!' Stop and let that sink in. The entire decade of misery, the loss of her home, the heavy lifting, the poverty, the aging—it was all for a lie. This is the ultimate cruel paradox. Let's break down the layers of irony here. First, we have Situational Irony. This occurs when the outcome is the exact opposite of what was intended or expected. Mathilde worked incredibly hard to maintain her honor and replace what she lost, believing she was rectifying a theft of something precious. However, the very act of trying to be 'honest' and 'noble' by replacing the necklace is what destroyed her life, because the object itself had no real value. Second, we have Dramatic Irony. For ten years, the reader and Mathilde are both operating under the false assumption that the necklace was real. We feel the weight of her struggle because we believe in the value of the diamonds. When the truth is revealed, the reader feels a sense of shock and even a bit of horror, just as Mathilde does. This is the 'gut punch' of the story. Third, let's look at the Paradox. A paradox is a seemingly self-contradictory statement or situation. The paradox here is that Mathilde's pursuit of 'real' luxury and 'real' status through a 'real' diamond necklace led her to a life of 'unreal' poverty and 'fake' hardship. She sacrificed her real life for a fake object. This twist transforms the story from a simple tale of a mistake into a profound commentary on human vanity. It suggests that the things we value most—social status, expensive jewelry, the appearance of wealth—are often as hollow and fake as the paste diamonds worn by Madame Forestier. Mathilde's tragedy isn't just that she lost a necklace; it's that she lived a lie to protect a lie. As you prepare for your exams, remember that this ending isn't just a surprise; it is the thematic climax that ties the entire concept of 'Appearance versus Reality' together. The necklace was a symbol of everything Mathilde wanted, but it turned out to be a symbol of the emptiness of those very desires.","Welcome back. Now that we have navigated the heartbreaking twist of Guy de Maupassant's story, it is time to look beneath the surface. In this segment, we are diving into the core philosophical heart of 'The Necklace': the tension between Appearance versus Reality and the destructive nature of Materialism. Let us begin with the concept of Appearance versus Reality. Throughout the story, Mathilde Loisel is obsessed with how things look to the outside world. To her, a person's worth is not measured by their character, their kindness, or their intellect, but by the shimmer of their silk dresses and the sparkle of their jewelry. This is the 'Appearance.' The 'Reality,' however, is far more grounded and, ultimately, more painful. The reality is that Mathilde is a woman of modest means living a comfortable, middle-class life. She isn't starving; she is simply dissatisfied. The tragedy lies in the gap between these two states. Think about the necklace itself. It was the ultimate symbol of appearance. It looked like a fortune, it looked like high society, and it looked like success. But the reality? It was a fake. It was paste and glass. This is a profound metaphor for Mathilde's entire life. She spent ten years of her actual, physical life—suffering through real poverty, real exhaustion, and real hardship—to pay for an illusion. She sacrificed her beauty and her youth to replace a lie with a truth that was far more expensive than it should have been. Now, let us turn our attention to the second major theme: Materialism. Materialism is the tendency to consider material possessions and physical comfort as more important than spiritual or emotional values. Mathilde is a victim of her own materialistic desires. She suffers from a psychological condition where she believes that happiness is a commodity that can be purchased. She believes that if she only had the right objects, she would finally be 'happy.' But Maupassant is teaching us a harsh lesson here. Materialism creates a cycle of perpetual dissatisfaction. Even when she had her moment of glory at the ball, it was fleeting. The moment the lights went down and she returned to her humble home, the hunger for more returned. This obsession blinded her to the value of what she actually had. She failed to see the value in her husband's devotion, his contentment with simple things, and the stability of their home. Her pursuit of 'more' led her to 'nothing.' We see a secondary layer of materialism in the social hierarchy of the time. The characters are trapped in a system where social status is tied to outward displays of wealth. This societal pressure acts as the catalyst for Mathilde's downfall. She wasn't just fighting her own greed; she was fighting a social standard that demanded luxury to prove existence. In conclusion, the theme of Appearance versus Reality serves as a warning. When we live our lives solely to maintain an image, we lose touch with the truth of our existence. And the theme of Materialism warns us that chasing shadows of wealth often leads to the loss of the very substance of life. As you prepare for your exams, remember: when asked about these themes, always link the 'fake necklace' to the 'fake life' Mathilde tried to lead. That connection is the key to a high-scoring answer.","Welcome back. In our previous segment, we explored the heavy themes of appearance versus reality. Now, we are going to look at the 'tools' Guy de Maupassant uses to build this masterpiece. To understand why this story stays with us, we must master three specific literary devices: Irony, Symbolism, and Foreshadowing. Let us start with Irony. Irony occurs when there is a gap between expectation and reality. In this story, we primarily see Situational Irony. This is the most powerful device used here. Think about the central conflict: Mathilde Loisel spends ten years of her life in grinding poverty, working multiple jobs, losing her beauty, and sacrificing her youth to pay back a debt for a diamond necklace. The expectation is that this sacrifice will restore her honor or settle a mistake. But the reality is a crushing paradox. The necklace she worked so hard to replace was actually a fake. The very object that caused her downfall was worthless. This is the ultimate situational irony: her struggle to replace a 'valuable' item was based on a lie. Now, let us move to Symbolism. A symbol is a physical object that represents a larger, abstract idea. The necklace itself is the most significant symbol in the text. On one level, it symbolizes the deceptive nature of the upper class. It looks brilliant, expensive, and high-status, but underneath, it is just glass and imitation. It represents the 'illusion' of wealth that Mathilde so desperately craves. It also symbolizes Mathilde’s own vanity. She believed that a piece of jewelry could define her worth. When the necklace is lost, the symbol of her false identity is lost, forcing her into a reality she cannot escape. Furthermore, the contrast between the 'shabby walls' of her apartment and the 'glittering lights' of the ball symbolizes the divide between her true social standing and her perceived desires. Finally, let us discuss Foreshadowing. Foreshadowing is when an author drops subtle hints about what is to come later in the plot. Maupassant is very clever here. He doesn't tell us the necklace is fake immediately, but he provides clues. Notice how Mathilde borrows the necklace from Madame Forestier. The ease with which she acquires such a grand piece of jewelry from a friend, without much scrutiny, hints that the item might not be as precious as it appears. Also, the description of Mathilde's constant dissatisfaction and her obsession with things that are 'not real' or 'not hers' foreshadows the fact that the object she values most is, in fact, not real. These devices work together to create a sense of inevitability. The irony provides the shock, the symbolism provides the depth, and the foreshadowing provides the structural foundation. Understanding these will help you move beyond just knowing 'what' happened to explaining 'how' the story works in your long-answer questions. Keep these terms in mind: Situational Irony, the Symbolism of the Fake Necklace, and the Foreshadowing of Deception. In our next segment, we will tackle the vocabulary to ensure your writing is as sophisticated as these literary concepts.","Welcome back. In our previous segment, we explored the literary devices that make Guy de Maupassant's story so powerful. Now, it is time to sharpen your linguistic tools. To score high in your Class 10 board exams, you must move beyond simple definitions. You need to understand how words function within the specific context of Mathilde Loisel's world. Let us begin with the word 'distinction'. In common usage, it means being different, but in the context of this story, it refers to social hierarchy and class status. When Mathilde dreams of 'distinction', she isn't just dreaming of being unique; she is dreaming of the prestige and high social standing that separates the elite from the middle class. Next, let us look at the word 'exquisite'. We often use this to mean beautiful, but in the text, it describes the 'exquisite' jewelry and gowns. Here, it carries a nuance of extreme refinement and delicate craftsmanship—the kind of luxury that Mathilde feels she was born for, yet cannot afford. Now, pay close attention to the word 'disconsolate'. As the story progresses, especially after the loss of the necklace, the mood shifts. Mathilde becomes 'disconsolate'. This is much stronger than being 'sad'. It implies a state of being inconsolable, or being so deeply unhappy that no amount of comfort can help. This word perfectly captures her transition from mere dissatisfaction to absolute despair. Let us also examine the verb 'to vex'. The text mentions how she was 'vexed' by her surroundings. To vex does not just mean to annoy; it means to cause frustration or worry through persistent irritation. Her modest life wasn't just boring; it was a constant, nagging source of mental distress. Moving on to the word 'privation'. This is a crucial term for understanding the second half of the story. After the loss, the Loisels descend into a life of 'privation'. This doesn't just mean being poor. Privation refers to the lack of basic necessities like food, warmth, and shelter. It highlights the severity of their sacrifice. Finally, let us discuss the word 'shabby'. When we describe the furniture or the walls of their apartment as 'shabby', we are looking at more than just old items. 'Shabby' implies something that has become worn out and neglected due to poverty. It serves as a visual contrast to the 'exquisite' life she once imagined. When you write your answers, do not just say Mathilde was 'unhappy'. Instead, use terms like 'disconsolate' or 'vexed' to show the examiner you have a deep grasp of the text's nuance. Similarly, instead of saying they 'lived poorly', use 'a life of privation'. This level of precision in your vocabulary will elevate your writing from average to exceptional. Remember, in English literature, the choice of a single word can change the entire emotional weight of a sentence. Master these nuances, and you master the story.","Welcome back. As we approach the end of our deep dive into Guy de Maupassant’s 'The Necklace', it is time to prepare you for the most critical part of your examination: avoiding the traps that many students fall into when writing long-form answers. In the exam, examiners aren't just looking for a summary; they are looking for analytical depth. Let us address the first major mistake: viewing Mathilde Loisel as a purely 'evil' or 'villainous' character. Many students write that she was greedy and therefore deserved her fate. This is a superficial reading. While Mathilde is certainly materialistic, her motive is not malice; it is a profound sense of social inadequacy and a psychological longing for a life she believes she was born for. She is a victim of her own perceptions and the rigid class structures of 19th-century France. If you label her simply as 'bad', you miss the tragedy of her character. Instead, describe her as 'driven by an insatiable desire for social validation'. Now, let us look at the second mistake: misinterpreting Monsieur Loisel’s role. A common error is to portray him as a passive or weak character. In reality, he is the foil to Mathilde. He is content with his life, his 'pot-au-feu', and his modest comforts. His mistake is not weakness, but his misplaced devotion; he sacrifices his entire future and his savings to protect his wife's pride. When writing about him, use terms like 'selfless' and 'contented' to contrast with Mathilde’s 'restlessness'. The third mistake involves the theme of the necklace itself. Do not just say the necklace represents wealth. That is too simple. The necklace is a symbol of 'illusion' and 'the deceptive nature of appearances'. It represents the false reality that Mathilde chases. The tragedy is that she spent ten years of real, grueling, physical labor to pay for a fake object. This is the ultimate irony. Fourthly, students often struggle with the theme of 'Fate versus Choice'. Some argue that Mathilde was simply unlucky. However, a high-scoring answer will argue that her downfall was a result of her choices—specifically, her choice to hide the loss rather than being honest with Madame Forestier. The lack of honesty is the catalyst for the decade of suffering, not just the loss of the jewelry. Finally, avoid the mistake of ignoring the 'Irony of the Ending'. Do not just state that the necklace was fake. Explain why this matters. It highlights the 'cruel paradox' that her pursuit of a high-status appearance led to her losing the very dignity and comfort she so desperately craved. To score maximum marks, always connect the character's internal flaws to the external consequences. Don't just tell the story; analyze the 'why' behind the 'what'. Remember, in literature, every action is a symptom of a deeper psychological or social cause. Master these nuances, and you will move from a basic understanding to an expert analysis.","Welcome to our final session on Guy de Maupassant's 'The Necklace'. We have journeyed through Mathilde's life, from her glittering dreams to her decade of crushing poverty. Now, it is time to transform this understanding into high-scoring exam answers. Let's start with the Exam Masterclass. When you face long-answer questions, do not just retell the story. Instead, use the 'PEEL' method: Point, Evidence, Explanation, and Link. For example, if asked about the theme of irony, your Point is that the necklace was a fake. Your Evidence is the final revelation by Madame Forestier. Your Explanation is how this irony highlights the futility of Mathilde's struggle. And your Link connects it back to the theme of appearance versus reality. Next, let's tackle Reference to Context questions, or RTCs. These are short extracts from the text. When you see an RTC, always identify the speaker and the context immediately. If the extract is about the lost necklace, mention the moment of panic. If it is about the debt, mention the ten years of toil. Never skip the 'significance' part of an RTC; explain why that specific moment is a turning point in the plot. Now, let's move to our Full Chapter Recap to ensure everything is etched in your memory. We began with Mathilde Loisel, a woman whose dissatisfaction stemmed from a gap between her perceived social status and her actual reality. The catalyst was the invitation to the Ministry ball. This led to the central conflict: the desire to look wealthy, which resulted in borrowing the diamond necklace. The climax was the devastating loss of the necklace, which forced the Loisels into a life of extreme poverty to repay the debt. We saw Mathilde transform from a delicate, dreaming woman into a hardened, strong, yet weary laborer. The resolution is the ultimate situational irony: the realization that the original necklace was merely paste, worth almost nothing. This twist underscores the story's critique of materialism. Remember, the necklace is not just jewelry; it is a symbol of the deceptive nature of social facades. As you prepare for your exams, keep these three pillars in mind: Characterization, Irony, and Theme. If you can weave these three together, your answers will stand out to any examiner. Focus on using keywords like 'materialistic aspirations', 'situational irony', 'social pretension', and 'unforeseen consequences'. You have mastered the narrative; now, master the presentation. Good luck with your preparations!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c10-english-26-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

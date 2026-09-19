@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>The Making of a Scientist, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c10-english-25-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Essence of Curiosity and the Hook -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Essence of Curiosity and the Hook</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• The core theme: How curiosity transforms into scientific discovery.</div>
+              <div id="qx0-p1" class="qe-bullet">• The three essential ingredients: First-rate mind, curiosity, and the will to win.</div>
+              <div id="qx0-p2" class="qe-bullet">• Distinguishing between winning for fame versus winning for the sake of truth.</div>
+              <div id="qx0-p3" class="qe-bullet">• The transition from a simple hobby to complex biological research.</div>
+              <div id="qx0-p4" class="qe-bullet">• Setting the stage for Richard Ebright's journey from childhood to breakthrough.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":2585414354,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic zoom-in starting from a wide view of a lush meadow, moving rapidly toward a single Monarch butterfly resting on a leaf, with glowing mathematical equations and DNA strands subtly swirling in the air around it.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D cinematic zoom-in starting from a wide view of a lush meadow, moving rapidly toward a single Monarch butterfly resting on a leaf, with glowing mathematical equations and DNA strands subtly swirling in the air around it.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Early Childhood: Richard Ebright's Childhood and the Role of his Mother -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Early Childhood: Richard Ebright's Childhood and the Role of his Mother</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Ebright grew up in Reading, Pennsylvania, as an only child.</div>
+              <div id="qx1-p1" class="qe-bullet">• His early interests included collecting rocks, fossils, coins, and butterflies.</div>
+              <div id="qx1-p2" class="qe-bullet">• His mother was his primary companion, teacher, and greatest supporter.</div>
+              <div id="qx1-p3" class="qe-bullet">• She provided 'learning tasks' and scientific tools like microscopes and cameras.</div>
+              <div id="qx1-p4" class="qe-bullet">• Her role was to nurture his curiosity and keep his mind constantly engaged.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1964889554,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a young Richard observing a butterfly on one side, and his mother handing him a microscope on the other.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D split-screen showing a young Richard observing a butterfly on one side, and his mother handing him a microscope on the other.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): The Turning Point: The Butterfly Collection and the Science Fair Experience -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">The Turning Point: The Butterfly Collection and the Science Fair Experience</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Richard's massive collection: 25 butterfly species and various caterpillars.</div>
+              <div id="qx2-p1" class="qe-bullet">• The Seventh Grade failure: Losing the County Science Fair with a specimen display.</div>
+              <div id="qx2-p2" class="qe-bullet">• The Great Realization: Science is about experiments, not just neat displays.</div>
+              <div id="qx2-p3" class="qe-bullet">• Shift in approach: Moving from passive collection to active investigation.</div>
+              <div id="qx2-p4" class="qe-bullet">• The birth of a scientific temperament: Asking 'why' and 'how' through testing.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3281293130,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on the left, a colorful, static butterfly collection; on the right, a glowing microscope lens transitioning into a dynamic laboratory experiment.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen 3D animation: on the left, a colorful, static butterfly collection; on the right, a glowing microscope lens transitioning into a dynamic laboratory experiment.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Scientific Methodology: From Observation to Hypothesis Building -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Scientific Methodology: From Observation to Hypothesis Building</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Observation: Using senses to gather detailed data and patterns.</div>
+              <div id="qx3-p1" class="qe-bullet">• The Question: Moving from 'what' to 'why' something occurs.</div>
+              <div id="qx3-p2" class="qe-bullet">• Hypothesis: Formulating an educated, testable explanation.</div>
+              <div id="qx3-p3" class="qe-bullet">• Experimentation: Designing controlled tests to validate or refute ideas.</div>
+              <div id="qx3-p4" class="qe-bullet">• The Scientific Loop: A continuous cycle of testing and refining results.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2308343916,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D flowing flowchart animation showing a butterfly morphing into a series of interconnected nodes: Observation -&gt; Question -&gt; Hypothesis -&gt; Experiment -&gt; Theory.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D flowing flowchart animation showing a butterfly morphing into a series of interconnected nodes: Observation -&gt; Question -&gt; Hypothesis -&gt; Experiment -&gt; Theory.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): The Gold Spots Experiment: Detailed Analysis of the Monarch Butterfly Study -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">The Gold Spots Experiment: Detailed Analysis of the Monarch Butterfly Study</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• The Mystery: Are the gold spots on Monarch pupae just decorative?</div>
+              <div id="qx4-p1" class="qe-bullet">• The Hypothesis: The gold spots serve a vital biological function.</div>
+              <div id="qx4-p2" class="qe-bullet">• The Experiment: Removing gold spots from some pupae to observe growth.</div>
+              <div id="qx4-p3" class="qe-bullet">• The Discovery: Gold spots produce a hormone essential for development.</div>
+              <div id="qx4-p4" class="qe-bullet">• The Impact: This study bridged entomology and cell biology research.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":92271343,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing a healthy Monarch pupa with gold spots versus a stunted pupa with spots removed, highlighting the hormone flow in bright amber light.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D split-screen animation showing a healthy Monarch pupa with gold spots versus a stunted pupa with spots removed, highlighting the hormone flow in bright amber light.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Cell Biology and DNA: Understanding Ebright's Breakthrough Discoveries -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Cell Biology and DNA: Understanding Ebright's Breakthrough Discoveries</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Transition from hormone research to molecular biology</div>
+              <div id="qx5-p1" class="qe-bullet">• The central question: How do cells know what to do?</div>
+              <div id="qx5-p2" class="qe-bullet">• The role of the nucleus as the cell's control center</div>
+              <div id="qx5-p3" class="qe-bullet">• DNA: The blueprint of life and hereditary information</div>
+              <div id="qx5-p4" class="qe-bullet">• How DNA controls cell growth, function, and replication</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":2779555351,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic zoom starting from a Monarch butterfly, moving through its cells, into the nucleus, and finally revealing a glowing, rotating double-helix DNA molecule.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D cinematic zoom starting from a Monarch butterfly, moving through its cells, into the nucleus, and finally revealing a glowing, rotating double-helix DNA molecule.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): The Anatomy of a Scientist: Key Traits and Character Sketch of Richard Ebright -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">The Anatomy of a Scientist: Key Traits and Character Sketch of Richard Ebright</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Core Pillar 1: Intense and active curiosity about the natural world.</div>
+              <div id="qx6-p1" class="qe-bullet">• Core Pillar 2: Competitive spirit driven by excellence, not just trophies.</div>
+              <div id="qx6-p2" class="qe-bullet">• Core Pillar 3: A first-rate mind capable of complex hypothesis building.</div>
+              <div id="qx6-p3" class="qe-bullet">• Core Pillar 4: A well-rounded personality: debater, photographer, and scholar.</div>
+              <div id="qx6-p4" class="qe-bullet">• The Scientific Temper: The habit of questioning and logical reasoning.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1045779737,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D translucent human silhouette of Ebright, with glowing nodes appearing in the brain and heart area as each personality trait is discussed.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D translucent human silhouette of Ebright, with glowing nodes appearing in the brain and heart area as each personality trait is discussed.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Vocabulary and Literary Devices: Mastering Language and Contextual Meanings -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Vocabulary and Literary Devices: Mastering Language and Contextual Meanings</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Mastering scientific terms: Hypothesis, Viceroy, and Monarch</div>
+              <div id="qx7-p1" class="qe-bullet">• Understanding descriptive adjectives: Ornate, Iridescent, and Relentless</div>
+              <div id="qx7-p2" class="qe-bullet">• Identifying Imagery: Using visual details to build scientific scenes</div>
+              <div id="qx7-p3" class="qe-bullet">• Recognizing Metaphors and Similes in biographical prose</div>
+              <div id="qx7-p4" class="qe-bullet">• Using Context Clues to decode difficult vocabulary in exams</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3642018215,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D floating dictionary where words like 'Hypothesis' and 'Iridescent' glow and transform into scientific diagrams and shimmering butterfly wings.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D floating dictionary where words like 'Hypothesis' and 'Iridescent' glow and transform into scientific diagrams and shimmering butterfly wings.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Textual Analysis: Detailed Question-Answer Session and Theme Exploration -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Textual Analysis: Detailed Question-Answer Session and Theme Exploration</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Key Question: Role of Ebright's mother in his scientific growth</div>
+              <div id="qx8-p1" class="qe-bullet">• The Science Fair: Transition from display to real experimentation</div>
+              <div id="qx8-p2" class="qe-bullet">• Character Traits: Curiosity, competition, and the drive for excellence</div>
+              <div id="qx8-p3" class="qe-bullet">• Theme 1: The transformative power of scientific curiosity</div>
+              <div id="qx8-p4" class="qe-bullet">• Theme 2: The vital role of mentorship and environmental support</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":3622654353,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing Ebright's childhood butterfly collection on one side and a complex DNA double-helix structure on the other, connected by a glowing path of light.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation showing Ebright's childhood butterfly collection on one side and a complex DNA double-helix structure on the other, connected by a glowing path of light.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Critical Thinking: Comparative Analysis of Scientific Temperament and Activities -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Critical Thinking: Comparative Analysis of Scientific Temperament and Activities</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Distinction: Hobbyist (Collection) vs. Scientist (Investigation)</div>
+              <div id="qx9-p1" class="qe-bullet">• The Shift: Moving from simple Observation to controlled Experimentation</div>
+              <div id="qx9-p2" class="qe-bullet">• Redefining Failure: Using setbacks as diagnostic data for growth</div>
+              <div id="qx9-p3" class="qe-bullet">• The Duo: Why Curiosity needs Perseverance to achieve breakthroughs</div>
+              <div id="qx9-p4" class="qe-bullet">• Context: The synergy between individual brilliance and guided inquiry</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3846744433,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a child looking at a butterfly (Observation) vs. a laboratory setup with a microscope and data charts (Experimentation).</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation showing a child looking at a butterfly (Observation) vs. a laboratory setup with a microscope and data charts (Experimentation).</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Avoiding Mistakes in Character Analysis and Long Answers -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Avoiding Mistakes in Character Analysis and Long Answers</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Avoid the 'One-Dimensional Character' trap: Show multi-faceted traits.</div>
+              <div id="qx10-p1" class="qe-bullet">• Shift from 'Plot Summary' to 'Critical Analysis' in long answers.</div>
+              <div id="qx10-p2" class="qe-bullet">• Replace vague adjectives like 'good' with precise academic vocabulary.</div>
+              <div id="qx10-p3" class="qe-bullet">• Always link your response to the specific keywords in the question.</div>
+              <div id="qx10-p4" class="qe-bullet">• Use a structured format: Introduction, Evidence-based Body, and Conclusion.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":4001404569,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a 'Weak Answer' (a messy pile of loose papers) transforming into a 'Strong Answer' (a neatly organized, glowing architectural structure).</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a 'Weak Answer' (a messy pile of loose papers) transforming into a 'Strong Answer' (a neatly organized, glowing architectural structure).</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Answer Writing Techniques, Full Recap, and Previous Year Questions -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Answer Writing Techniques, Full Recap, and Previous Year Questions</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Structure Long Answers: Introduction, Body, and Conclusion</div>
+              <div id="qx11-p1" class="qe-bullet">• Analysis over Summary: Explain the 'Why' and 'How', not just the 'What'</div>
+              <div id="qx11-p2" class="qe-bullet">• Key Traits: First-rate mind, curiosity, and the will to win</div>
+              <div id="qx11-p3" class="qe-bullet">• Comparative Analysis: Mother's support vs. Mr. Weiherer's guidance</div>
+              <div id="qx11-p4" class="qe-bullet">• Exam Tip: Use precise vocabulary and avoid vague descriptions</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":1427884522,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a student's handwritten exam paper on one side and a glowing mind-map of the chapter's key themes on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A 3D split-screen showing a student's handwritten exam paper on one side and a glowing mind-map of the chapter's key themes on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix The Making of a Scientist today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Essence of Curiosity and the Hook <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Early Childhood: Richard Ebright's Childhood and the Role of his Mother <small>5:00</small></button>
+          <button type="button" data-seek="600">3. The Turning Point: The Butterfly Collection and the Science Fair Experience <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Scientific Methodology: From Observation to Hypothesis Building <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. The Gold Spots Experiment: Detailed Analysis of the Monarch Butterfly Study <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Cell Biology and DNA: Understanding Ebright's Breakthrough Discoveries <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. The Anatomy of a Scientist: Key Traits and Character Sketch of Richard Ebright <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Vocabulary and Literary Devices: Mastering Language and Contextual Meanings <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Textual Analysis: Detailed Question-Answer Session and Theme Exploration <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Critical Thinking: Comparative Analysis of Scientific Temperament and Activities <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Avoiding Mistakes in Character Analysis and Long Answers <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Answer Writing Techniques, Full Recap, and Previous Year Questions <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello, students! Welcome to our deep-dive series on the Class 10 English chapter, 'The Making of a Scientist.' Before we open our textbooks and look at the biography of Richard Ebright, I want you to pause and think about a single word: Curiosity. What is it? It is that restless, nagging feeling in your mind when you see something unusual. It is the 'why' and the 'how' that refuses to go away. Today, we are starting a journey that isn't just about a man named Richard Ebright, but about the very spark that turns a curious child into a world-changing scientist. Imagine a young boy, sitting in a field, not just looking at butterflies, but wondering about the very patterns on their wings. Most people see a beautiful insect and move on. A scientist sees a beautiful insect and asks, 'Why is that pattern there? What is its purpose? How does it survive?' This chapter explores this exact transition. We are going to look at how a hobby—collecting butterflies—evolved into a sophisticated scientific pursuit that eventually led to breakthroughs in how we understand DNA and the blueprint of life itself. But how does this happen? Is it just intelligence? No. As we will see throughout this series, intelligence is only one piece of the puzzle. The real formula for a scientist, as presented in this text, is a combination of three specific ingredients. First, a first-rate mind. Second, intense curiosity. And third, the will to win for the right reasons. Think about that third point carefully. Most people want to win to be famous or to get a trophy. But a scientist wants to win because they want to find the truth. They want to solve the mystery. In this first part of our lesson, we are setting the stage. We are establishing the 'Hook.' The hook is the central question of the chapter: What makes a scientist? Is it something you are born with, or is it something that is nurtured through observation and persistence? As we move forward, we will trace Richard Ebright's path from a lonely collector of butterflies in Pennsylvania to a researcher whose work helps us understand the very essence of life at a molecular level. We will see how his mother acted as his primary catalyst, providing him with the tools and the encouragement to turn his curiosity into a disciplined study. So, as you listen to the story unfold, I want you to keep these three ingredients in mind: Intelligence, Curiosity, and the Will to Win. We aren't just reading a biography; we are studying a blueprint for excellence. Let's get ready to dive into the life of Richard Ebright and discover how a simple fascination with nature can change the course of human knowledge.","Welcome back to our journey through 'The Making of a Scientist.' In our previous segment, we introduced the essence of curiosity. Now, let us dive into the very roots of Richard Ebright’s scientific temperament by looking at his early childhood and the most influential person in his life: his mother. Richard Ebright grew up in Reading, Pennsylvania. As a child, he was an only child, which meant he didn't have siblings to play with. While this might sound lonely, it actually provided him with the perfect environment to develop his intense focus and independent thinking. Instead of playing with other children, Ebright spent his time observing the world around him. He was a collector. He collected rocks, fossils, coins, and most importantly, butterflies. This wasn't just a hobby; it was the beginning of a systematic way of looking at nature. But how did a young boy in Pennsylvania develop such a deep passion for collecting? The answer lies in the extraordinary role played by his mother. Ebright’s mother was not just a parent; she was his primary companion, his teacher, and his greatest supporter. Since his father was not around, she dedicated her entire life to nurturing his interest in learning. She understood that for a bright child like Richard, the key to growth was constant stimulation. She didn't just sit by and watch him; she actively participated in his intellectual journey. She would find 'learning tasks' for him. These weren't typical school assignments, but rather engaging activities that fueled his curiosity. She bought him telescopes, microscopes, cameras, and mounting materials. She turned his home into a laboratory of discovery. Think about the impact of this. Most children are given toys like cars or dolls, but Ebright was given tools of science. This distinction is crucial. Her goal was to keep his mind busy and his curiosity alive. She would take him on trips and introduce him to new concepts, always ensuring that his hunger for knowledge was never satiated. She was his 'only companion,' and she channeled his energy into productive, scientific pursuits. It is important to note that she didn't do the work for him; she provided the resources and the environment for him to do the work himself. This is a subtle but vital distinction in the text. She was the catalyst, the facilitator of his genius. By the time he was a young boy, his collection of butterflies had become quite significant. This foundation, built on a bedrock of parental support and endless curiosity, set the stage for everything that was to come. Without her constant encouragement and the tools she provided, the scientist we know today might never have emerged. So, as we reflect on this part of his life, remember two key elements: the solitary nature of his childhood which fostered focus, and the proactive, nurturing role of his mother which provided the direction. This combination created the perfect storm for scientific inquiry.","Welcome back, students. In our previous session, we saw how Richard Ebright’s mother nurtured his curiosity by providing him with books and tools. But today, we reach the most critical juncture in his journey—the moment his hobby transformed into a scientific pursuit. This is the turning point. It all started with a simple, almost overwhelming collection. By the time Richard was in second grade, he had collected all twenty-five species of butterflies found in his hometown. Think about that level of dedication! He wasn't just looking at them; he was cataloging them. He had slides of butterflies, also mounted on insect pins, and even a collection of caterpillar species. This wasn't just a pastime; it was his first step into systematic observation. However, a major realization hit him when he entered the County Science Fair. He realized that science wasn't just about making a neat display or showing what you have collected. In seventh grade, he entered the fair with a simple display of frog tissues under a microscope. He thought that showing a specimen was enough to win. But he didn't win anything. This was a moment of profound disappointment, but more importantly, it was a moment of profound learning. He realized that science is not about a 'neat display.' It is about conducting actual experiments. It is about asking 'why' and 'how' rather than just 'what.' This realization is what separates a hobbyist from a scientist. He understood that to truly do science, one must perform an experiment—a test to find out the truth. This shift in mindset is the essence of the scientific method. Instead of just collecting butterflies to show their beauty, he began to wonder about their life cycles and the reasons behind their behaviors. This failure at the science fair was actually his greatest success, because it redirected his energy from mere collection to active investigation. He moved from being a collector to being a researcher. This transition is what eventually led him to his groundbreaking work in cell biology. So, remember this lesson: failure is often the catalyst for a change in direction. For Ebright, losing the science fair was the spark that ignited his scientific temperament.","Welcome back. In our previous segment, we saw how Richard Ebright’s failure at the science fair acted as a wake-up call. He realized that science isn't just about making a neat display or showing a collection of things; it is about doing real science. This brings us to the core of our lesson today: Scientific Methodology. What exactly separates a hobbyist from a scientist? It is the transition from simple observation to the rigorous building of a hypothesis. Let’s break this down using Ebright’s journey as our roadmap. The first step in the scientific method is Observation. For Ebright, this started with his fascination with Monarch butterflies. He wasn't just looking at them; he was noticing patterns, behaviors, and physical traits. Observation is the act of using your senses to gather data about the world. However, observation alone is just the beginning. A scientist asks the question: 'Why is this happening?' This leads us to the second step: The Question. After observing the butterflies, Ebright began to wonder about specific details—like why certain markings existed or how they behaved during migration. Once you have a question, you move to the third and most critical stage: Forming a Hypothesis. Now, what is a hypothesis? In simple terms, a hypothesis is a 'proposed explanation' or an 'educated guess' that can be tested. It is not a random guess; it is a logical prediction based on what you have already observed. For example, if Ebright observed that Monarch butterflies had gold spots on their wings, he didn't just say, 'Those look pretty.' Instead, he formulated a hypothesis. He might have thought, 'Perhaps these gold spots serve a specific biological purpose, like attracting mates or signaling something to other butterflies.' This is the bridge between seeing and knowing. Once a hypothesis is formed, the fourth step begins: Experimentation. This is where the real work happens. A scientist designs a controlled experiment to test whether their hypothesis is true or false. In Ebright’s case, this meant setting up rigorous tests to see if those gold spots actually produced a hormone necessary for the butterfly's growth. If the experiment shows the hypothesis is correct, it becomes a theory. If the experiment proves the hypothesis wrong, the scientist doesn't fail; they simply discard that idea and form a new, better hypothesis based on the new data. This is the beauty of the scientific method—it is a continuous loop of observing, questioning, hypothesizing, testing, and refining. It is a self-correcting process. Ebright’s success wasn't just due to his intelligence, but his commitment to this disciplined cycle. He didn't stop at the first answer; he used every result to ask a deeper question. As we move forward in this chapter, keep this cycle in mind. Every discovery Ebright made, from the gold spots to the secrets of DNA, followed this exact path of logical inquiry. Understanding this methodology is key to understanding how a curious child transforms into a world-class scientist.","Welcome back. In our previous segment, we saw how Richard Ebright transitioned from a mere collector to a serious researcher through his science fair experiences. Now, we dive into the heart of his scientific journey: The Gold Spots Experiment. This is where Ebright moved from asking 'what' to asking 'why' and 'how'. Let's look at the specific problem he tackled. While most people thought the tiny gold spots on a Monarch pupa were just decorative or purely ornamental, Ebright had a different hypothesis. He wondered if these spots served a biological purpose. To test this, he and a friend conducted a rigorous experiment. They took Monarch pupae and carefully removed some of the gold spots, while leaving others intact. This was a controlled experiment. The group with the spots removed was compared against the group where the spots remained. The results were groundbreaking. They discovered that the pupae without the gold spots failed to develop properly. In fact, they didn't develop into healthy butterflies at all. This proved that those tiny, seemingly useless gold spots were actually producing a hormone. This hormone was essential for the butterfly's growth and development. Think about the scientific logic here: Ebright didn't just observe; he manipulated a variable to see the effect. This is the essence of the scientific method. He identified a pattern, formed a hypothesis—that the spots were functional—and then designed a test to prove or disprove it. This discovery was significant because it wasn't just about butterflies; it was about understanding the chemical signals that govern life. This experiment was the bridge that led him from entomology, the study of insects, to the much deeper world of cell biology. He realized that if a tiny spot on a pupa could control growth through a hormone, then there must be a complex chemical blueprint directing how cells grow and communicate. This realization is what eventually led him to his massive breakthrough regarding DNA. So, remember this sequence: Observation of the gold spots, the hypothesis of functionality, the controlled experiment of removal, and the conclusive proof of hormone production. This wasn't just a school project; it was the moment Ebright began to decode the very instructions of life.","Now that we have understood how Richard Ebright used the gold spots on a Monarch pupa to prove that hormones play a vital role in butterfly development, let us step into the most profound part of his scientific journey. We are moving from the world of insects to the very blueprint of life itself: Cell Biology and DNA. After his success with the hormone discovery, Ebright didn't stop there. He began to ask a much deeper, more fundamental question: How do cells know what to do? Think about it. Every cell in your body has a specific job. A skin cell acts differently from a nerve cell, even though they contain the same genetic information. Ebright wanted to understand the mechanism behind this specialization. This curiosity led him to study the chemical structure of the cell itself. He focused on how the cell's nucleus, which acts like the control center, directs all cellular activities. Through his intense research, Ebright arrived at a groundbreaking theory regarding DNA, or Deoxyribonucleic Acid. To understand this, imagine a massive library containing the instruction manuals for building and operating a human being. DNA is that manual. Ebright's research helped explain how the information in the DNA molecule controls the cell. He realized that DNA is not just a passive storage unit; it is the blueprint that tells the cell how to grow, how to function, and how to replicate itself. Specifically, he worked on how the hereditary information is encoded within the chemical structure of the DNA molecule. This discovery was a massive leap forward in molecular biology. It explained how a single cell, when fertilized, can eventually develop into a complex organism with trillions of specialized cells. Ebright's work bridged the gap between observing a physical phenomenon—like the gold spots on a butterfly—and understanding the microscopic, molecular instructions that dictate life. This transition from macro-observation to micro-analysis is what defines a true scientist. He moved from asking 'What is happening?' to 'How is this happening at a molecular level?' By decoding the role of DNA, Ebright contributed to our fundamental understanding of how life is programmed. This breakthrough wasn't just about butterflies anymore; it was about the very essence of all living organisms on Earth. As you prepare for your exams, remember that Ebright's journey is a perfect example of how one small observation in nature can lead to a monumental discovery in the field of genetics and cell biology.","Now that we have explored the incredible experiments Richard Ebright conducted, it is time to look deeper into the person behind the discoveries. We often ask, what makes a scientist? Is it just high intelligence, or is there something more? In this section, we will perform a character sketch of Richard Ebright to understand the 'anatomy' of his success. If we were to dissect his personality, we would find four essential pillars. The first and most important pillar is an intense, burning curiosity. Ebright wasn't just interested in butterflies; he was interested in the 'why' and 'how' of everything. This curiosity wasn't passive; it was active. He didn't just look at a butterfly; he wanted to know how it lived, how it grew, and why it had specific markings. The second pillar is the will to win for the right reasons. This is a crucial distinction. Ebright did not want to win just for the sake of a trophy or fame. He wanted to win because he wanted to do the best job possible. This intrinsic motivation is what separates a true scientist from someone who is merely competitive. The third pillar is a first-rate mind. While intelligence is important, Ebright’s mind was characterized by its ability to connect dots. He could take a simple observation about gold spots on a monarch pupa and turn it into a complex theory about cell life. Finally, the fourth pillar is the combination of all these traits. A scientist needs the curiosity to ask the question, the intelligence to design the experiment, and the competitive spirit to see the research through to the end. Beyond his scientific traits, we see a well-rounded individual. Ebright was not a 'bookworm' who lived only in a laboratory. He was a champion debater, a public speaker, and an expert photographer. This tells us that a scientific temperament is not isolated from other life skills. His ability to communicate his findings and observe the world through a camera lens actually complemented his scientific work. He possessed a 'scientific temper'—a term we use to describe a person's habit of questioning, observing, and reasoning rather than blindly accepting facts. To summarize his character sketch for your exams, remember these keywords: inquisitive, competitive in a healthy way, multi-faceted, and driven by a desire for excellence rather than mere recognition. When you write your long-form answers, don't just say he was smart; say he possessed a 'relentless pursuit of truth' fueled by 'unyielding curiosity.' This is the anatomy of a true scientist.","Welcome back. We have explored the incredible journey of Richard Ebright, but to truly master this chapter for your board exams, we must look closely at the language the author uses. In English literature, words are not just tools for communication; they are tools for creating imagery and setting a tone. Let us begin with the high-level vocabulary that defines Ebright's world. First, consider the word 'curiosity'. While we use it daily, in this context, it represents a driving, scientific force. Then we have 'monarch', which refers to the specific butterfly, but also carries a sense of majesty. Pay close attention to words like 'viceroy', which is a specific type of butterfly that mimics the monarch to avoid predators. This is a crucial biological term used in the text. Another important word is 'ornate', used to describe the patterns on wings. It means highly detailed or decorated. When the text mentions Ebright's 'determination', it isn't just about being stubborn; it is about a purposeful, scientific persistence. We also encounter the word 'hypothesis'. In common speech, people might use 'guess', but in a scientific text, a hypothesis is a proposed explanation made on the basis of limited evidence as a starting point for further investigation. Understanding this distinction is vital for your long-answer questions. Now, let us shift our focus to literary devices. The author uses several techniques to make Ebright's story engaging. One prominent device is Imagery. When the text describes the 'bright, gold spots' on a monarch pupa, the author is using visual imagery. This helps you, the reader, see exactly what Ebright saw under the microscope. This isn't just decoration; it sets the stage for the scientific discovery. Next, we look at Alliteration. This is the repetition of consonant sounds at the beginning of words in close proximity. While the text is primarily biographical, you might notice rhythmic patterns in descriptions that make the prose flow smoothly. We also see the use of Metaphor. A metaphor compares two unlike things directly. When the author implies that Ebright's curiosity was a 'driving force', he is using a metaphor to show that curiosity acts like an engine, pushing him forward through his research. We also see Similes, which compare things using 'like' or 'as'. If the text describes a process as being 'as precise as a clockwork mechanism', that is a simile. Why does this matter for your exam? Because when you write your answers, you shouldn't just say 'Ebright was interested'. Instead, use the sophisticated vocabulary from the text. Instead of saying 'he worked hard', say 'he demonstrated relentless determination'. This elevates your writing from a basic level to an academic level. Furthermore, pay attention to the 'Contextual Meaning'. A word can change meaning based on the sentence. For example, the word 'species' in a general sense means a type of animal, but in the context of Ebright's work, it refers to the specific biological classification he is studying. When you encounter a difficult word in the exam, do not panic. Read the entire sentence. The words surrounding the difficult term will often act as clues to its meaning. This is called using context clues. For instance, if a sentence says, 'The butterfly's wings were iridescent, shimmering in the sunlight,' even if you don't know 'iridescent', the word 'shimmering' tells you it means shiny or glowing. Mastering these linguistic nuances will allow you to decode complex passages and write answers that impress the examiners. Let's practice this mindset as we move into the detailed textual analysis in the next segment.","Welcome back. Now that we have understood the scientific journey of Richard Ebright, it is time to dive deep into the textual analysis. This is where we prepare you for the actual examination by dissecting the most important questions and exploring the underlying themes of the chapter. Let us start with the short-answer questions. A very common question is: 'How did Ebright’s mother help him in his scientific journey?' When answering this, do not just say she bought him books. You must mention that she was his sole companion and encouraged his curiosity by providing him with tools, telescopes, microscopes, and most importantly, the book 'The Travels of Monarch X'. This book opened the world of science to him. Next, consider the question: 'What was the significance of the science fair in Ebright's life?' Remember, the science fair was his first lesson in real science. He realized that science is not just about a neat display, but about conducting actual experiments to find answers to real questions. This realization shifted his focus from mere collection to true investigation. Now, let us move to the long-answer questions, which often carry more marks. One frequent topic is the character sketch of Richard Ebright. To write a high-scoring answer, you must highlight three specific traits: his intense curiosity, his competitive spirit, and his will to win for the right reasons. He wasn't competitive just to beat others, but to do the best job possible. Another important long question asks about the role of his hobby, butterfly collecting, in his scientific career. You should explain how this hobby acted as a gateway. It started as a simple collection but evolved into a deep study of monarch butterflies, eventually leading to his groundbreaking discovery about cell life and DNA. Now, let us transition to the thematic exploration. Every great story has a soul, and the soul of 'The Making of a Scientist' lies in two major themes. The first theme is 'The Power of Curiosity'. The chapter teaches us that a scientific mind is not born with complex equipment, but with a simple, relentless desire to ask 'why' and 'how'. Ebright's journey shows that curiosity, when channeled through hard work, leads to discovery. The second theme is 'The Importance of Mentorship and Support'. No scientist works in a vacuum. Ebright needed his mother's encouragement, his teacher Mr. Weiherer's guidance, and the scientific community's resources. This theme emphasizes that success is a collaborative process. As you prepare your answers, always try to link the events of the story to these themes. For instance, if a question asks about his gold spots experiment, link it to the theme of curiosity. If it asks about his mother, link it to the theme of support. By doing this, you demonstrate a deep understanding of the text rather than just rote memorization. Keep these connections in mind as we move toward our critical thinking session.","Welcome back. We have journeyed through Richard Ebright's life, from a curious boy collecting butterflies to a world-renowned molecular biologist. Now, it is time to elevate our thinking. In this section, we aren't just looking at what Ebright did, but how his mindset differs from a casual observer or a mere hobbyist. This is the core of critical thinking: Comparative Analysis. Let us begin by comparing 'Interest' versus 'Scientific Temperament'. Many students believe that simply being interested in a subject makes one a scientist. But look at the difference. An interested person might collect butterflies because they are beautiful; this is a hobby. A person with a scientific temperament, like Ebright, asks 'Why?' and 'How?'. He didn't just want to own the butterflies; he wanted to understand the purpose of the gold spots on a Monarch pupa. One is about collection; the other is about investigation. Next, let us compare 'Observation' versus 'Experimentation'. Observation is the first step—seeing that a butterfly has spots. But observation alone does not lead to a breakthrough. Ebright moved from observation to experimentation. He didn't just see the spots; he formulated a hypothesis that the spots produced a hormone. He then designed a controlled experiment to test this. This transition from 'seeing' to 'testing' is the hallmark of the scientific method. Now, let us analyze the 'Nature of Failure'. In many academic settings, failure is seen as a dead end. However, in the context of scientific activity, failure is data. Remember Ebright's early science fair experience? He lost because he only showed 'neat displays' rather than 'real experiments'. A casual student might have felt discouraged and quit. But Ebright used that failure as a diagnostic tool. He realized that science is not about presentation; it is about the process of discovery. This brings us to a very important comparison: 'Curiosity' versus 'Perseverance'. Curiosity is the spark—it is the initial drive that makes a child ask questions. But curiosity alone is fleeting. Without perseverance, the spark dies when the experiment fails or the results are inconclusive. Ebright’s journey shows us that while curiosity opened the door, it was his relentless perseverance—his ability to work through complex DNA structures and cellular biology—that allowed him to walk through it. Finally, let us compare 'Individual Genius' versus 'Guided Inquiry'. While Ebright was undoubtedly brilliant, we must analyze the role of his environment. He wasn't a lone wolf working in a vacuum. His mother provided the tools, his teachers provided the direction, and his mentors provided the platform. A true scientific temperament involves knowing how to use the resources and guidance available to push the boundaries of human knowledge. As you prepare your long-form answers for the exam, do not just describe Ebright's achievements. Instead, use these comparative frameworks. Instead of saying 'Ebright was hardworking,' say 'Ebright demonstrated a scientific temperament by transitioning from mere observation to rigorous experimentation.' This level of analysis is what will move your answers from average to excellent. Think about these distinctions: Hobbyist versus Scientist, Observer versus Experimenter, and Curiosity versus Perseverance. Mastering these comparisons will help you tackle any analytical question the board might throw at you.","Welcome back. We have analyzed Richard Ebright’s journey from a butterfly collector to a world-class scientist. But knowing the story is one thing; scoring marks in the exam is another. Today, we address the most common mistakes students make in character analysis and long-form answers. Let us start with the first pitfall: The 'One-Dimensional Character' trap. When asked to write a character sketch of Richard Ebright, many students simply write, 'He was a hardworking scientist who loved butterflies.' This is too shallow. To score high, you must present him as a multi-faceted individual. You need to connect his curiosity, his competitive spirit, and his scientific rigor. Don't just say he was curious; explain that his curiosity was driven by a need to find the 'why' behind natural phenomena, like the purpose of the gold spots on a Monarch pupa. Another major mistake is 'Plot Summary instead of Analysis.' In long answers, especially five-mark questions, students often spend eighty percent of their time retelling the story. The examiner already knows the story. They want to see your interpretation. If the question asks about the role of his mother, do not just list the books she bought him. Instead, analyze how her role acted as a catalyst for his intellectual growth. Use analytical phrases like, 'Her constant encouragement served as a foundation for his independent research,' rather than just saying, 'She helped him a lot.' The third pitfall is 'Vague Generalizations.' Avoid words like 'good,' 'nice,' or 'great.' These words carry no academic weight. Instead of saying 'Ebright was a great student,' use precise descriptors like 'meticulous researcher,' 'persevering spirit,' or 'analytical thinker.' This shows the examiner that you have a command over the English language and a deep understanding of the text. Fourthly, let's talk about 'Ignoring the Context of the Question.' Sometimes, a question asks about the 'scientific temperament' shown by Ebright. If you respond by talking only about his childhood hobbies without linking them to the scientific method—like observation, hypothesis, and experimentation—you will lose marks. Every answer must be anchored to the specific keywords used in the question prompt. Finally, the most common error in long answers is 'Lack of Structural Cohesion.' A long answer should not be one giant, intimidating paragraph. It should follow a logical flow: an introduction that rephrases the question, a body consisting of two or three well-developed points supported by evidence from the text, and a concluding sentence that summarizes your stance. For example, if you are discussing the theme of perseverance, your conclusion should tie his early failures at the science fair to his ultimate success in DNA research. Remember, a high-scoring answer is a bridge between the facts of the chapter and your own logical reasoning. Avoid these traps, and you will transform your answers from simple descriptions into sophisticated academic responses. Let's prepare to put these techniques into practice in our final Masterclass.","Welcome to the final segment of our journey through 'The Making of a Scientist'. We have explored Richard Ebright's life, from his butterfly collections to his groundbreaking DNA research. Now, it is time to transition from learning to performing. How do you translate this knowledge into high-scoring answers in your Board Exams? Let's start with the golden rules of answer writing. For short answer questions, usually two or three marks, do not wander. Be precise. If the question asks about Ebright's mother, focus on her role as a facilitator and her contribution of the book 'The Travels of Monarch X'. For long answer questions, which are five or more marks, you must follow the structure of Introduction, Body, and Conclusion. Start with a brief context of the chapter, move into the core analysis, and end with a thematic summary. A common mistake students make is providing a mere summary instead of an analysis. Do not just tell me what Ebright did; tell me why it matters. For example, instead of saying 'He studied gold spots', say 'His observation of the gold spots led to the hypothesis that they produced a hormone, demonstrating his scientific temperament.' Now, let's do a quick recap of the entire chapter to solidify your memory. Remember the sequence: Ebrent's childhood curiosity, the influence of his mother, the failure at the science fair which taught him that real science requires experiments, not just neat displays, the discovery of the hormone in Monarch pupae, and finally, his work on how cells read DNA. This timeline is your roadmap for any chronological question. Let's look at some Previous Year Questions to sharpen your edge. Question one: 'How did a single book change the course of Richard Ebright's life?' To answer this, mention 'The Travels of Monarch X', explain how it opened the world of science to him, and connect it to his lifelong interest in butterflies. Question two: 'What are the essential qualities of a scientist according to the chapter?' Here, you must list and explain three key traits: a first-rate mind, intense curiosity, and the will to win for the right reasons. Do not just list them; provide evidence from the text. Question three: 'Compare the role of Ebright's mother and his teacher, Mr. Weiherer.' This is a high-order thinking question. Highlight how his mother provided the resources and encouragement at home, while Mr. Weiherer provided the social guidance and channeled his competitive spirit into healthy academic pursuits. Finally, watch out for common pitfalls. Avoid vague adjectives like 'good' or 'nice'. Instead, use vocabulary from the text like 'curiosity-driven', 'persevering', or 'meticulous'. Avoid repeating the question in your opening sentence; jump straight into the answer. Ensure your handwriting is legible and use headings for long answers to make it easy for the examiner to find your key points. You have the knowledge; now use these techniques to present it with clarity and confidence. You are now ready to conquer this chapter in your exams. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c10-english-25-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Biodiversity and Conservation, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-biology-13-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Web of Life, Importance of Biodiversity, and Real-world Significance -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Web of Life, Importance of Biodiversity, and Real-world Significance</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Biodiversity: Variety and variability of life on Earth</div>
+              <div id="qx0-p1" class="qe-bullet">• Three Levels: Genetic, Species, and Ecological Diversity</div>
+              <div id="qx0-p2" class="qe-bullet">• Ecosystem Services: Climate regulation and nutrient cycling</div>
+              <div id="qx0-p3" class="qe-bullet">• Productive Services: Food, medicine, and raw materials</div>
+              <div id="qx0-p4" class="qe-bullet">• Ethical Value: Every species has an intrinsic right to exist</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3226891019,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D glowing web of interconnected lines representing species, transitioning into a split-screen showing genetic variations in rice, diverse species in the Western Ghats, and various ecosystems like rainforests and deserts.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D glowing web of interconnected lines representing species, transitioning into a split-screen showing genetic variations in rice, diverse species in the Western Ghats, and various ecosystems like rainforests and deserts.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Patterns of Biodiversity: Species Richness, Latitudinal Gradients, and Meridional Gradient -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Patterns of Biodiversity: Species Richness, Latitudinal Gradients, and Meridional Gradient</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Species Richness: The number of species in a specific area.</div>
+              <div id="qx1-p1" class="qe-bullet">• Latitudinal Gradient: Biodiversity increases from poles to the Equator.</div>
+              <div id="qx1-p2" class="qe-bullet">• Tropical Stability: Constant climate allows for higher specialization.</div>
+              <div id="qx1-p3" class="qe-bullet">• Solar Energy: High energy input drives high primary productivity.</div>
+              <div id="qx1-p4" class="qe-bullet">• Evolutionary Time: Tropical regions have had more time for speciation.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":2924452316,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D rotating Earth showing a heat map where the Equator glows bright red with dense icons representing species, fading to blue at the poles.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D rotating Earth showing a heat map where the Equator glows bright red with dense icons representing species, fading to blue at the poles.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): The Biodiversity Hotspots: Criteria, Identification, and Global Distribution -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">The Biodiversity Hotspots: Criteria, Identification, and Global Distribution</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Concept introduced by Norman Myers</div>
+              <div id="qx2-p1" class="qe-bullet">• Criterion 1: At least 1,500 endemic vascular plant species</div>
+              <div id="qx2-p2" class="qe-bullet">• Criterion 2: Must have lost 70% of original vegetation</div>
+              <div id="qx2-p3" class="qe-bullet">• Hotspots are priority areas for global conservation</div>
+              <div id="qx2-p4" class="qe-bullet">• Examples: Western Ghats, Indo-Burma, and Tropical Andes</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1190325009,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D rotating Earth highlighting specific glowing red zones representing hotspots, zooming into the Western Ghats to show unique plant species appearing.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D rotating Earth highlighting specific glowing red zones representing hotspots, zooming into the Western Ghats to show unique plant species appearing.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Species Endemism and the Threat of Extinction: Patterns and Causes -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Species Endemism and the Threat of Extinction: Patterns and Causes</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Endemism: Species restricted to a specific geographical location.</div>
+              <div id="qx3-p1" class="qe-bullet">• High Risk: Endemic species lack backup populations elsewhere.</div>
+              <div id="qx3-p2" class="qe-bullet">• Niche Specialization: Specialists are more vulnerable to environmental shifts.</div>
+              <div id="qx3-p3" class="qe-bullet">• Extinction Patterns: Higher risks in islands and tropical ecosystems.</div>
+              <div id="qx3-p4" class="qe-bullet">• Extinction Vortex: The downward spiral of low genetic diversity and small populations.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":2691177579,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D map showing a glowing, isolated island ecosystem that slowly shrinks and fades as the surrounding habitat changes color from green to grey.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D map showing a glowing, isolated island ecosystem that slowly shrinks and fades as the surrounding habitat changes color from green to grey.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): The Evil Quartet: The Four Major Causes of Biodiversity Loss -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">The Evil Quartet: The Four Major Causes of Biodiversity Loss</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• The Evil Quartet: Four major drivers of rapid biodiversity loss</div>
+              <div id="qx4-p1" class="qe-bullet">• Habitat Loss and Fragmentation: Reducing area and creating edge effects</div>
+              <div id="qx4-p2" class="qe-bullet">• Over-exploitation: Harvesting species faster than natural recovery</div>
+              <div id="qx4-p3" class="qe-bullet">• Alien Species Invasion: Invasive species outcompeting native biota</div>
+              <div id="qx4-p4" class="qe-bullet">• Co-extinctions: The domino effect of losing interdependent species</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1711656572,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing a lush forest being fragmented by roads, a fishing net pulling up an empty sea, an invasive vine choking a native tree, and a flower wilting as its specific pollinator disappears.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D split-screen animation showing a lush forest being fragmented by roads, a fishing net pulling up an empty sea, an invasive vine choking a native tree, and a flower wilting as its specific pollinator disappears.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Habitat Loss and Fragmentation: Mechanisms, Consequences, and Case Studies -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Habitat Loss and Fragmentation: Mechanisms, Consequences, and Case Studies</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Habitat Loss: Conversion of natural ecosystems into human-dominated landscapes.</div>
+              <div id="qx5-p1" class="qe-bullet">• Habitat Fragmentation: Breaking large habitats into smaller, isolated patches.</div>
+              <div id="qx5-p2" class="qe-bullet">• The Edge Effect: Increased exposure to light, wind, and temperature at boundaries.</div>
+              <div id="qx5-p3" class="qe-bullet">• Genetic Isolation: Reduced gene flow and increased inbreeding in small populations.</div>
+              <div id="qx5-p4" class="qe-bullet">• Case Studies: Amazon deforestation and tiger corridor fragmentation in India.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":322920293,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D time-lapse showing a lush, continuous green forest being sliced by grey roads and brown agricultural patches, highlighting the shrinking 'core' area in red.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D time-lapse showing a lush, continuous green forest being sliced by grey roads and brown agricultural patches, highlighting the shrinking 'core' area in red.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Over-exploitation, Alien Species Invasion, and Co-extinctions: Detailed Analysis -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Over-exploitation, Alien Species Invasion, and Co-extinctions: Detailed Analysis</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Over-exploitation: Harvesting species faster than they can replenish.</div>
+              <div id="qx6-p1" class="qe-bullet">• Steller's sea cow: A historical example of extinction via over-exploitation.</div>
+              <div id="qx6-p2" class="qe-bullet">• Alien Species: Exotic species that outcompete native species in new habitats.</div>
+              <div id="qx6-p3" class="qe-bullet">• Nile Perch in Lake Victoria: Caused mass extinction of endemic Cichlid fish.</div>
+              <div id="qx6-p4" class="qe-bullet">• Co-extinction: The loss of species that depend on a host species for survival.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":2677585367,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing a shrinking population of sea cows, an invasive plant spreading over native flowers, and a domino effect representing co-extinction.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D split-screen animation showing a shrinking population of sea cows, an invasive plant spreading over native flowers, and a domino effect representing co-extinction.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): In-situ Conservation: National Parks, Sanctuaries, Biosphere Reserves, and Sacred Groves -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">In-situ Conservation: National Parks, Sanctuaries, Biosphere Reserves, and Sacred Groves</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• In-situ Conservation: Protecting species within their natural habitats.</div>
+              <div id="qx7-p1" class="qe-bullet">• Wildlife Sanctuaries: Focused protection with limited human activity allowed.</div>
+              <div id="qx7-p2" class="qe-bullet">• National Parks: Strict protection of entire ecosystems and historical sites.</div>
+              <div id="qx7-p3" class="qe-bullet">• Biosphere Reserves: Large areas with Core, Buffer, and Transition zones.</div>
+              <div id="qx7-p4" class="qe-bullet">• Sacred Groves: Community-protected forest patches based on religious beliefs.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2975618605,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D layered map transitioning from a single protected animal in a sanctuary to a massive, multi-zoned Biosphere Reserve with a glowing core.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D layered map transitioning from a single protected animal in a sanctuary to a massive, multi-zoned Biosphere Reserve with a glowing core.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Ex-situ Conservation: Zoological Parks, Botanical Gardens, Seed Banks, and Cryopreservation -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Ex-situ Conservation: Zoological Parks, Botanical Gardens, Seed Banks, and Cryopreservation</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Ex-situ conservation: Protecting species outside their natural habitats.</div>
+              <div id="qx8-p1" class="qe-bullet">• Zoological Parks: Captive breeding and education for wild animals.</div>
+              <div id="qx8-p2" class="qe-bullet">• Botanical Gardens: Living collections for plant research and conservation.</div>
+              <div id="qx8-p3" class="qe-bullet">• Seed Banks: Storing dried seeds at low temperatures for long-term viability.</div>
+              <div id="qx8-p4" class="qe-bullet">• Cryopreservation: Storing cells and embryos in liquid nitrogen at minus one hundred ninety-six degrees Celsius.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":3985629501,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a lush forest transitioning into a high-tech laboratory with glowing liquid nitrogen tanks and organized seed storage vials.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation showing a lush forest transitioning into a high-tech laboratory with glowing liquid nitrogen tanks and organized seed storage vials.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Biodiversity Assessment and Monitoring: Quantitative Methods and Importance -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Biodiversity Assessment and Monitoring: Quantitative Methods and Importance</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Species Richness: The total count of different species in a specific area.</div>
+              <div id="qx9-p1" class="qe-bullet">• Shannon-Wiener Index: Measures both species richness and evenness using logarithms.</div>
+              <div id="qx9-p2" class="qe-bullet">• Simpson's Index: Measures diversity based on the probability of species dominance.</div>
+              <div id="qx9-p3" class="qe-bullet">• Monitoring: Continuous observation to detect ecosystem changes and early warnings.</div>
+              <div id="qx9-p4" class="qe-bullet">• Data-Driven Conservation: Using sampling and remote sensing to guide protection.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3144728907,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a mathematical formula transforming into a lush, diverse forest on one side and a declining, single-species grassland on the other.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation showing a mathematical formula transforming into a lush, diverse forest on one side and a declining, single-species grassland on the other.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Mistakes, Terminology Pitfalls, and Diagrammatic Representations -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Mistakes, Terminology Pitfalls, and Diagrammatic Representations</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Species Richness (count) vs. Species Evenness (distribution)</div>
+              <div id="qx10-p1" class="qe-bullet">• In-situ (natural habitat) vs. Ex-situ (man-made facility)</div>
+              <div id="qx10-p2" class="qe-bullet">• Hotspot Criteria: High Endemism + High Threat</div>
+              <div id="qx10-p3" class="qe-bullet">• Edge Effect: The impact of habitat fragmentation boundaries</div>
+              <div id="qx10-p4" class="qe-bullet">• Co-extinction: Interdependent species loss</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":4211859845,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a balanced ecosystem (evenness), the other shows a skewed population (richness only), while a central diagram illustrates the 'Edge Effect' in a fragmented forest.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation: one side shows a balanced ecosystem (evenness), the other shows a skewed population (richness only), while a central diagram illustrates the 'Edge Effect' in a fragmented forest.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: PYQs, Answer Writing Techniques, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: PYQs, Answer Writing Techniques, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Master the 'Evil Quartet' using specific examples for full marks</div>
+              <div id="qx11-p1" class="qe-bullet">• Use comparative tables for In-situ vs Ex-situ conservation questions</div>
+              <div id="qx11-p2" class="qe-bullet">• Always mention Endemism and Species Richness for Hotspot questions</div>
+              <div id="qx11-p3" class="qe-bullet">• Differentiate clearly between Endemism and Extinction in MCQs</div>
+              <div id="qx11-p4" class="qe-bullet">• Structure long answers with headings, definitions, and flow charts</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3326581817,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a student's handwritten exam paper transforming into a structured, high-scoring digital template with highlighted keywords.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a student's handwritten exam paper transforming into a structured, high-scoring digital template with highlighted keywords.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Biodiversity and Conservation today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Web of Life, Importance of Biodiversity, and Real-world Significance <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Patterns of Biodiversity: Species Richness, Latitudinal Gradients, and Meridional Gradient <small>5:00</small></button>
+          <button type="button" data-seek="600">3. The Biodiversity Hotspots: Criteria, Identification, and Global Distribution <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Species Endemism and the Threat of Extinction: Patterns and Causes <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. The Evil Quartet: The Four Major Causes of Biodiversity Loss <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Habitat Loss and Fragmentation: Mechanisms, Consequences, and Case Studies <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Over-exploitation, Alien Species Invasion, and Co-extinctions: Detailed Analysis <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. In-situ Conservation: National Parks, Sanctuaries, Biosphere Reserves, and Sacred Groves <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Ex-situ Conservation: Zoological Parks, Botanical Gardens, Seed Banks, and Cryopreservation <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Biodiversity Assessment and Monitoring: Quantitative Methods and Importance <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Mistakes, Terminology Pitfalls, and Diagrammatic Representations <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: PYQs, Answer Writing Techniques, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our comprehensive series on Biodiversity and Conservation. Today, we begin our journey into one of the most vital topics in Biology. Imagine a massive, intricate web where every single thread represents a living organism. If you pull one thread, the entire structure vibrates; if you snap a thread, the web weakens. This is exactly how nature works. This interconnectedness is what we call the 'Web of Life.' In this first part, we will explore what biodiversity truly means and why its preservation is not just a biological necessity, but a requirement for human survival. Let us start with the definition. Biodiversity, or biological diversity, refers to the variety and variability of life forms on Earth. It is not just a count of how many animals or plants exist. It encompasses three distinct hierarchical levels: Genetic diversity, Species diversity, and Ecological diversity. First, let's look at Genetic diversity. This refers to the variations in the genes within a single species. For example, think of the thousands of varieties of rice found in India, or the different breeds of dogs. Even though they are the same species, their genetic makeup differs, allowing them to adapt to different environments. Second, we have Species diversity. This is the variety of species within a particular region. A classic example from your NCERT textbook is the Western Ghats. You will notice that the amphibian species diversity is much greater in the Western Ghats than in the Eastern Ghats. This shows that biodiversity isn't spread evenly; it varies by location. Third, we have Ecological diversity. This refers to the variety of ecosystems, such as deserts, rainforests, mangroves, and coral reefs. Each ecosystem provides a unique habitat and a unique set of interactions. Now, why is this diversity so important? Why should we care if a tiny insect goes extinct? We can categorize the importance of biodiversity into four major types: Ecosystem services, Productive services, Social and cultural services, and Ethical values. Let's break these down. Ecosystem services are the most fundamental. Nature provides us with 'regulating services' like climate regulation, water purification, and soil formation. It provides 'supporting services' like nutrient cycling and oxygen production through photosynthesis. Without these, life on Earth would simply cease to exist. Next are Productive services. Humans derive almost everything we need from biodiversity. Our food, our medicines, our timber, and our fibers all come from the biological world. Did you know that a huge percentage of modern medicines are derived from wild plants? For instance, the bark of the Cinchona tree gives us quinine to treat malaria. Then, we have Social and Cultural services. Many cultures and religions around the world have deep spiritual connections with specific plants or animals. Biodiversity provides aesthetic beauty, which fuels tourism and provides mental well-being. Finally, there is the Ethical value. This is the idea that every species has an intrinsic right to exist. Whether a species is 'useful' to humans or not, it has evolved over millions of years and holds a place in the history of life. As we move forward in this chapter, we will see how this beautiful web is being threatened. But for now, remember this: Biodiversity is the foundation of the life-support system that maintains the planetary environment. Understanding its patterns and its value is the first step toward its conservation. In our next session, we will dive deeper into the patterns of biodiversity, looking at how species richness changes across different latitudes. Let's get started!","Welcome back. In our last session, we explored why biodiversity matters to our survival. Now, we move into the core scientific patterns of life on Earth. If you look at a map of the world, you will notice that life is not distributed equally. Some areas are teeming with millions of species, while others are relatively sparse. This brings us to our first major concept: Species Richness. Species richness refers to the number of species present in a given ecosystem or geographical area. However, richness alone doesn't tell the whole story. To truly understand biodiversity, we must look at how these species are distributed across the globe. The most prominent pattern we observe is the Latitudinal Gradient. If you travel from the North Pole toward the Equator, you will notice a massive increase in the number of species. This is known as the Latitudinal Gradient. In simpler terms, biodiversity is highest at the tropics and decreases as we move toward the poles. Why does this happen? There are several scientific reasons. First, the tropical regions have a more constant climate. Unlike the temperate or polar regions, the tropics do not face extreme seasonal fluctuations. This stability allows species to specialize and thrive. Second, the tropics have higher solar energy input. More sunlight means more primary productivity, which forms the foundation of complex food webs. Third, the tropics are older. Evolutionary history suggests that tropical ecosystems have had more time to undergo speciation without the massive disruptions caused by ice ages that wiped out species in higher latitudes. Now, let's look at a specific example of this pattern. Consider the distribution of birds or mammals. You will find that the variety of species in a tropical rainforest is significantly higher than in a temperate forest. But there is another layer to this distribution called the Meridional Gradient. While latitudinal gradients focus on North-South changes, meridional gradients look at the distribution across longitudes or East-West variations, often influenced by continental masses and ocean currents. However, in the context of your NCERT syllabus, the focus remains heavily on the Latitudinal Gradient as the primary driver of global species patterns. It is important to note that this gradient is not just about the number of species, but also about the diversity of niches. In the tropics, niches are more specialized, meaning species have evolved to occupy very specific roles, which reduces competition and allows more species to coexist. As we move toward the poles, niches become broader, and the environment becomes more challenging, leading to lower species richness. Remember, when you are answering exam questions, always link the increase in species richness to the stability of the tropical climate and the high solar energy available. This connection is the key to understanding why the Equator is the biological heart of our planet.","Welcome back. In our previous session, we explored the fascinating patterns of species richness and why biodiversity tends to increase as we move from the poles toward the equator. Now, we step into one of the most critical concepts in conservation biology: Biodiversity Hotspots. Not all regions with high biodiversity are treated equally in conservation planning. To prioritize where our limited resources should go, scientists use a specific concept called 'Biodiversity Hotspots.' This term was popularized by Norman Myers. But what makes a region a 'hotspot'? It isn't just about having many species; it is about vulnerability and uniqueness. To qualify as a biodiversity hotspot, a region must meet two very strict, non-negotiable criteria. The first criterion is Endemism. A region must contain at least one thousand five hundred species of vascular plants as endemics. Now, remember, 'endemic' means these species are found nowhere else on Earth. If they disappear from this specific hotspot, they are gone from the planet forever. The second criterion is Threat Level. The region must have lost at least seventy percent of its original primary vegetation. In simple terms, a hotspot is a place that is both incredibly rich in unique life and under extreme threat of destruction. Think of it as a biological treasure chest that is currently being broken into. When we look at the global distribution of these hotspots, we see they are not spread evenly. They are often located in tropical and subtropical regions, particularly near mountain ranges and islands. These areas act as refugia, or safe havens, for species. For example, the Western Ghats in India is a major hotspot. It hosts a massive variety of flora and fauna that are unique to the Indian peninsula. Another famous one is the Indo-Burma region. Globally, we see hotspots in the Mediterranean Basin, the Tropical Andes, and the Philippines. Why does this matter for your exams? Because understanding hotspots helps us understand the 'priority areas' for conservation. If we protect a hotspot, we are essentially protecting a disproportionately large number of species with a single conservation action. However, there is a catch. Because hotspots are often located in areas with high human population density, the pressure from habitat loss, agriculture, and urban expansion is immense. This makes the management of these areas a complex challenge of balancing human needs with biological preservation. As we move forward, keep this definition in mind: High Endemism plus High Threat equals a Biodiversity Hotspot. This formula is the foundation for modern conservation strategy.","Welcome back. We have already explored the vast patterns of biodiversity and the critical importance of hotspots. Now, we move into a more sensitive area of our study: why some species are uniquely vulnerable and why they are disappearing. Let us first define a crucial term: Endemism. A species is said to be endemic when it is found only in a specific geographical area and nowhere else on Earth. Think of the Kangaroo in Australia or the Lion-tailed Macaque in the Western Ghats of India. These species are 'specialists' of their habitat. While endemism is a sign of high biological uniqueness, it also represents a massive biological risk. Why? Because endemic species have very restricted distributions. If a specific forest in a specific valley is destroyed, the entire species might vanish forever. They do not have 'backup' populations in other parts of the world. This brings us to the patterns of extinction. Extinction is not a random event; it follows certain biological and geographical patterns. One major pattern is that species with small population sizes and highly specialized niches are at the highest risk. If a species can only eat one specific type of fruit or live in one specific temperature range, any slight change in the environment becomes a death sentence. We also observe that extinction rates are not uniform across the globe. We see higher extinction risks in tropical regions where the complexity of interactions is high, and in island ecosystems where species have evolved in isolation. Now, let us look at the causes. Why is this happening? While we will dive deep into the 'Evil Quartet' in our next session, it is important to understand the underlying logic here. The threat of extinction is driven by a mismatch between the rate of environmental change and the rate of evolutionary adaptation. Evolution takes thousands or millions of years, but human-induced changes are happening in decades. This creates a 'biological debt.' We also see that fragmentation—the breaking up of large habitats into small patches—creates 'edge effects.' This changes the microclimate at the boundaries of a forest, making it unsuitable for endemic species that require deep, stable forest interiors. Furthermore, when a species becomes rare, it often falls into an 'extinction vortex.' This is a downward spiral where low population leads to inbreeding, which leads to lower genetic diversity, which leads to even lower survival rates, eventually pulling the species toward zero. So, to summarize this section: Endemism provides uniqueness but creates vulnerability due to restricted ranges. Extinction patterns show that specialists and island dwellers are most at risk. And the fundamental cause is the unprecedented speed of environmental change compared to the slow pace of natural evolution. In the next part, we will break down the four specific drivers of this crisis, known as the Evil Quartet.","Welcome back. In our previous session, we discussed how species endemism makes certain regions particularly vulnerable to extinction. Today, we dive into the heart of the crisis. Why is biodiversity declining so rapidly? Biologists have identified four major causes of biodiversity loss, and they have given them a very dramatic name: The Evil Quartet. Think of these as four distinct, yet interconnected, forces that are systematically dismantling the web of life. The first member of this quartet is Habitat Loss and Fragmentation. This is arguably the most significant cause. As human populations expand, we convert vast, continuous natural habitats into smaller, isolated patches. For example, a massive tropical rainforest might be cleared for agriculture or urban development. This doesn't just reduce the total area available; it breaks the habitat into fragments. These fragments are often too small to support large animals with large home ranges, like tigers or elephants. Furthermore, fragmentation creates 'edge effects,' where the boundaries of a habitat are exposed to different microclimates, making them unsuitable for deep-forest species. The second cause is Over-exploitation. This occurs when humans harvest species from the wild at a rate faster than they can naturally replenish themselves. We see this in overfishing of oceans, where entire fish populations are depleted, or in the illegal poaching of animals for skin, tusks, or medicinal purposes. When we take more than nature can give back, we push species toward the brink of extinction. The third member is Alien Species Invasion. When humans move species from their native habitats to new geographic areas—either intentionally or accidentally—these 'alien species' can become invasive. Because they often enter environments without their natural predators or competitors, they undergo rapid population growth. They then outcompete, prey upon, or bring diseases to the native species. A classic example is the introduction of Nile Perch into Lake Victoria, which led to the extinction of hundreds of native cichlid fish species. Finally, we have the fourth member: Co-extinctions. This is a domino effect. Many species have evolved such close, specialized relationships with one another that they cannot survive alone. For instance, a specific pollinator might be the only insect capable of fertilizing a particular plant, or a parasite might rely solely on one host species. If the host species goes extinct due to the first three causes, the dependent species will inevitably follow. This creates a chain reaction of loss. So, to recap our Evil Quartet: Habitat loss and fragmentation, Over-exploitation, Alien species invasion, and Co-extinctions. Understanding these four drivers is crucial because it allows us to design targeted conservation strategies to combat them.","Welcome back. In our previous segment, we introduced 'The Evil Quartet,' the four major drivers of biodiversity loss. Today, we dive deep into the most significant and devastating member of that quartet: Habitat Loss and Fragmentation. Think of a habitat as a biological home. When we talk about habitat loss, we aren't just talking about a species losing a single tree; we are talking about the destruction of the entire ecosystem that provides food, shelter, and breeding grounds. The primary mechanism here is anthropogenic, or human-induced, land-use change. As human populations expand, we convert vast tracts of forests, grasslands, and wetlands into agricultural lands, urban settlements, and industrial zones. This process is often irreversible. But there is a more subtle and dangerous process happening simultaneously: Habitat Fragmentation. Fragmentation occurs when a large, continuous expanse of habitat is broken into smaller, isolated patches. Imagine a massive, unbroken forest. Now, imagine a highway cutting straight through the middle of it. The forest is still there, but it is no longer one single unit; it is now two smaller, disconnected islands of greenery. This brings us to the critical consequences. First, we see the 'Edge Effect.' When a habitat is fragmented, the amount of 'edge' increases relative to the 'core' area. The edges of a forest are different from the interior; they are hotter, windier, and more exposed to sunlight. Species that require the deep, stable, and humid conditions of the forest core—often called interior species—suddenly find their living space shrinking. They are pushed into smaller areas where competition for resources becomes intense. Second, fragmentation leads to the isolation of populations. When animals cannot move between patches due to roads, fences, or farms, they become trapped in small groups. This prevents gene flow. Without the ability to mate with individuals from other patches, inbreeding occurs, leading to reduced genetic diversity and making the population more vulnerable to diseases or environmental changes. Now, let's look at some real-world case studies to ground these concepts. Consider the tropical rainforests of the Amazon. Massive deforestation for cattle ranching and soy farming has turned a continuous canopy into a jigsaw puzzle of small forest fragments. This has led to a massive decline in specialized bird and primate species that cannot cross open pastures. Another striking example is the fragmentation of tiger habitats in India. As roads and railway lines cut through tiger corridors, large carnivores are isolated into small pockets of forest. This not only increases human-wildlife conflict but also leads to genetic bottlenecks, where the tigers become too closely related, weakening their survival instincts. In summary, habitat loss reduces the total area available, while fragmentation degrades the quality of the remaining area by increasing edges and isolating populations. Understanding this distinction is vital for designing effective conservation corridors that reconnect these broken pieces of the natural world.","Welcome back. In our previous session, we discussed how habitat loss and fragmentation act as the primary drivers of biodiversity decline. Now, we move deeper into the 'Evil Quartet' to analyze the remaining three major threats: Over-exploitation, Alien Species Invasion, and Co-extinctions. Let us start with Over-exploitation. This occurs when humans harvest a species from the wild at a rate faster than the species can naturally replenish its population. It is important to remember that exploitation is not always bad; it becomes a threat when it is excessive. Historically, many species have been driven to the brink of extinction or even total extinction because of human greed or demand. For example, the Steller's sea cow was hunted to extinction in the eighteenth century. Similarly, many large mammals like elephants and rhinos are targeted for their tusks, and various fish species are over-harvested for food. When we take too much from the ecosystem, we disrupt the delicate balance of the food web. Moving to our second threat: Alien Species Invasion. This is a very dynamic and dangerous process. When humans move species from their original habitats to new geographical areas—either intentionally or accidentally—these species are called 'alien species' or 'exotic species.' In their new home, these invaders often find no natural predators, enemies, or diseases to keep their population in check. Consequently, they multiply rapidly and outcompete the native species for food, space, and resources. This leads to the displacement or even the extinction of local flora and fauna. A classic and tragic example we must remember is the introduction of the Nile Perch into Lake Victoria in Africa. This single introduction led to the extinction of hundreds of species of Cichlid fish that were endemic to that lake. Another example is the introduction of Lantana, an invasive weed, which has caused massive damage to local vegetation in many parts of the world. Finally, let us discuss Co-extinctions. This is perhaps the most subtle but devastating consequence of biodiversity loss. In nature, species do not exist in isolation; they exist in complex, interdependent relationships. Many species are specialized to live with one specific host or partner. For instance, certain plants rely on a specific insect for pollination, or a specific fungus for nutrient uptake. If a host species goes extinct due to habitat loss or over-exploitation, the species that depend entirely on it—the specialists—will also face extinction. This creates a domino effect or a chain reaction of loss. When one link in the biological chain breaks, it doesn't just affect that one organism; it triggers a downward spiral for many others. So, to summarize this detailed analysis: Over-exploitation is about taking too much; Alien Species Invasion is about the disruption caused by newcomers; and Co-extinction is about the tragic loss of dependent species. Understanding these three mechanisms is crucial for grasping why biodiversity loss is not just a loss of individual species, but a collapse of entire biological systems.","Now that we have understood the various threats to our planet's biological wealth, we must ask ourselves: how do we protect it? In our previous section, we discussed why biodiversity is under threat. Now, we move to the most effective strategy for conservation: In-situ conservation. In-situ, or 'on-site' conservation, means protecting an endangered species within its natural habitat. Instead of moving an animal to a zoo, we protect the entire ecosystem where that animal lives. This is often called 'in-situ' because the species is allowed to continue its evolutionary processes in its original home. There are four major types of in-situ conservation methods we need to master for your exams: Wildlife Sanctuaries, National Parks, Biosphere Reserves, and Sacred Groves. Let us start with Wildlife Sanctuaries. A sanctuary is a protected area meant for the conservation of particular species. In a sanctuary, the focus is often on a specific animal or plant group. While the area is protected, some human activities like harvesting of timber or collecting minor forest products are allowed, provided they do not interfere with the survival of the wildlife. Next, we have National Parks. These are much more strictly protected than sanctuaries. In a National Park, the entire ecosystem—including the flora, fauna, landscape, and historical objects—is protected. Here, human activities like grazing, cultivation, or forestry are strictly prohibited. Think of a National Park as a complete, untouched biological unit. Now, let's look at the largest scale of protection: Biosphere Reserves. A Biosphere Reserve is a large, multi-purpose protected area. Unlike a sanctuary which might focus on one species, a Biosphere Reserve aims to conserve the entire biological diversity of a region, including the traditional lifestyles of the local people. A Biosphere Reserve is unique because it is divided into three distinct zones. The first is the Core Zone, which is the innermost area. This zone is strictly protected and no human activity is permitted here. The second is the Buffer Zone, which surrounds the core. In this zone, limited research and educational activities are allowed. Finally, there is the Transition Zone, the outermost part, where sustainable human activities like agriculture and settlement can occur in harmony with nature. Lastly, we must discuss a very traditional and culturally significant method: Sacred Groves. These are patches of forest or parts of a forest that are dedicated to local deities or ancestral spirits. In many parts of India, communities protect these groves due to religious beliefs. Because they are considered sacred, no one is allowed to cut trees or hunt animals within these areas. This traditional method has been incredibly successful in preserving rare and endemic species that might otherwise have been lost to urbanization. To summarize, while Sanctuaries and National Parks provide focused protection for wildlife, Biosphere Reserves offer a holistic approach to landscape conservation, and Sacred Groves show us how cultural values can serve as a powerful tool for environmental preservation. Remember, in-situ conservation is about protecting the 'home' so that the 'inhabitants' can thrive naturally.","Welcome back. In our previous session, we explored In-situ conservation, where we protect species within their natural habitats. But what happens when a species is so critically endangered that its natural environment can no longer sustain it? Or when a habitat is being destroyed so rapidly that we need a safety net? This is where Ex-situ conservation comes into play. 'Ex-situ' literally means 'off-site.' Here, we move the organisms away from their natural surroundings to a specially designed, controlled environment to ensure their survival and eventual reintroduction. Let's look at our first tool: Zoological Parks. These are man-made habitats where wild animals are kept in captivity for public exhibition, education, and most importantly, captive breeding. By managing their diet, health, and breeding cycles, we can prevent the extinction of species that are vanishing in the wild. Next, we have Botanical Gardens. Just like zoological parks, these are managed collections of living plants. They serve as vital repositories for rare and endangered plant species. Beyond just display, they are centers for botanical research, plant identification, and the study of plant morphology and taxonomy. Now, let's move from living plants to their genetic blueprints: Seed Banks. Seed banks are a highly efficient method of conservation. We collect seeds from various plant species, often focusing on those that are rare or economically important. These seeds are cleaned, dried, and then stored at very low temperatures. This process significantly slows down the metabolic activities of the seed, allowing it to remain viable for many years, sometimes even decades or centuries. This acts as a biological insurance policy against total species loss. However, there is an even more advanced technique called Cryopreservation. This is the pinnacle of Ex-situ technology. In cryopreservation, we don't just store seeds; we store much more delicate biological materials like pollen, embryos, ovules, or even sperm and eggs. These materials are preserved in liquid nitrogen at a temperature of minus one hundred and ninety-six degrees Celsius. At this extreme temperature, all biological activities almost completely cease, preventing any degradation of the genetic material. This allows scientists to maintain the genetic integrity of a species for an incredibly long time. To summarize, while In-situ conservation focuses on protecting the ecosystem, Ex-situ conservation provides a highly controlled, intensive intervention. Through Zoological Parks, Botanical Gardens, Seed Banks, and the advanced technology of Cryopreservation, we create a human-managed refuge that can safeguard the very essence of life until the natural world is stable enough for these species to return.","Welcome back. We have explored how biodiversity is lost and how we protect it through in-situ and ex-situ methods. But how do scientists actually measure how much biodiversity is left, or how much it is changing? We cannot protect what we cannot measure. This brings us to our tenth topic: Biodiversity Assessment and Monitoring. To manage nature, we need numbers. We need quantitative methods to assess species richness, evenness, and the health of an ecosystem. The first major method is the Species Richness Index. This is the simplest form of assessment, where we simply count the total number of different species present in a defined area. However, richness alone can be misleading. Imagine two forests. Forest A has one hundred trees, but they are all of the same species. Forest B has one hundred trees, but they belong to fifty different species. Forest B is much more biodiverse. This is why we use the Shannon-Wiener Index, also known as the Shannon Index. This is a mathematical way to measure both richness and evenness. The formula for the Shannon Index is expressed as H equals the sum from i equals one to S of, P sub i multiplied by the natural log of P sub i. In this formula, S represents the total number of species, and P sub i is the proportion of individuals belonging to the i-th species. A higher value of H indicates higher diversity and greater evenness. Another crucial tool is the Simpson's Index of Diversity. This focuses on the probability that two individuals randomly selected from a sample will belong to different species. It is a measure of dominance. If one species dominates the entire landscape, the Simpson's Index will tell us that the diversity is low. Beyond just counting species, we must perform Biodiversity Monitoring. Monitoring is the continuous or periodic observation of biological variables over time. Why is this important? First, it acts as an early warning system. If we notice a sudden drop in the population of a specific pollinator, like a certain bee species, it signals a breakdown in the ecosystem before the entire system collapses. Second, monitoring helps us evaluate the success of conservation efforts. If we establish a National Park, we monitor it for years to see if species populations are increasing or if invasive species are moving in. Third, it helps in tracking climate change impacts. We can observe shifts in phenology, which is the timing of biological events, such as flowers blooming earlier in the spring due to rising temperatures. We also monitor range shifts, where species move toward the poles or higher altitudes to find cooler climates. To collect this data, ecologists use various sampling techniques. Quadrant sampling is used for plants and slow-moving animals, where we use square frames to count organisms in a specific area. Transect sampling involves walking along a predetermined line and recording every organism encountered. We also use remote sensing, using satellites to monitor habitat fragmentation and vegetation cover from space. By combining these quantitative indices with long-term monitoring, we move from guesswork to precise, data-driven conservation science. Understanding these numbers is the only way to ensure that our biological heritage survives for future generations.","Welcome back. We have covered the vast landscape of biodiversity, from the Evil Quartet to conservation strategies. Now, before we move to our final exam masterclass, we need to sharpen your precision. In Biology, especially in competitive exams like NEET, the difference between a correct answer and a wrong one often lies in a single word. Let's start with the most common terminology pitfall: the confusion between 'Species Richness' and 'Species Evenness'. Many students think they are the same. They are not. Species richness is simply the total number of different species present in a given area. If Area A has ten species and Area B has five, Area A is richer. However, species evenness refers to how close in numbers each species in an environment is. If Area A has nine species of one type and one of another, it is rich but not even. If Area B has five species with equal populations, it is more even. Do not mix these up in your descriptive answers. Next, let's look at the 'In-situ' versus 'Ex-situ' distinction. A common mistake is classifying Botanical Gardens or Zoos as In-situ conservation. Remember, In-situ means 'on-site'—the organism stays in its natural habitat, like a National Park. Ex-situ means 'off-site'—the organism is moved to a man-made environment, like a Seed Bank or a Cryopreservation facility. Another tricky area is the 'Biodiversity Hotspot' criteria. Students often forget that a hotspot must meet two specific conditions: it must contain high levels of endemism and it must be under significant threat. If an area has high species richness but very low endemism, it is not a hotspot. Now, let's talk about diagrammatic representations. When you draw a diagram for 'Habitat Fragmentation', do not just draw a broken forest. You must show the 'Edge Effect'. This is the change in population or community structures that occurs at the boundary of two or more habitats. In your diagrams, represent the 'core area' shrinking and the 'edge area' increasing. This visual distinction is crucial for scoring high marks. When representing the 'Evil Quartet', do not treat the four causes as isolated events. Use a flow chart showing how Habitat Loss leads to Fragmentation, which then facilitates Alien Species Invasion. This shows the examiner you understand the interconnectedness of ecological degradation. Lastly, be careful with the term 'Co-extinction'. It is not just 'extinction'. Co-extinction is a specific phenomenon where the extinction of one species leads to the extinction of another that is dependent on it, such as a specific pollinator and its host plant. If you write 'extinction' instead of 'co-extinction' in this context, you lose the technical accuracy required for Class 12 standards. Pay close attention to these nuances. Precision in terminology is the hallmark of a true biologist.","Welcome to the final segment of our journey through Biodiversity and Conservation. We have covered everything from the intricate web of life to the cutting-edge technology of cryopreservation. Now, it is time to transition from learning to scoring. In your Board Exams, this chapter is a high-yield area. Let's start with a quick recap. Remember, biodiversity is not just a count of species; it is the variety at genetic, species, and ecosystem levels. We discussed how latitudinal gradients show higher richness near the equator, and how the 'Evil Quartet'—habitat loss, over-exploitation, alien species invasion, and co-extinction—drives the current extinction crisis. We also contrasted in-situ methods like National Parks with ex-situ methods like Seed Banks. Now, let's talk about how to write answers that impress the examiner. When a question asks about the 'Evil Quartet', do not just list them. Use a heading for each, provide a one-sentence definition, and give a specific example. For instance, for 'Alien Species Invasion', mention the Nile Perch in Lake Victoria or Lantana in India. This specificity earns you the full marks. If you get a question on 'In-situ vs Ex-situ conservation', always present your answer in a comparative table. This shows clarity of thought. For a five-mark question on 'Biodiversity Hotspots', ensure you mention the two specific criteria: high species richness and high degree of endemism. Use a flow chart to show the hierarchy of conservation, starting from species level up to ecosystem level. Let's look at some Previous Year Questions, or PYQs. A common three-mark question is: 'Explain how habitat fragmentation leads to loss of biodiversity.' To answer this, don't just say habitats get smaller. Explain that fragmentation creates small, isolated patches, which reduces the area available for large animals and disrupts migration patterns. Another frequent question is about 'Co-extinction'. Remember to explain that when a host species goes extinct, the species dependent on it, like specific pollinators or parasites, also face extinction. This is a biological chain reaction. For multiple-choice questions, be very careful with terminology. Do not confuse 'Endemism' with 'Extinction'. Endemism means a species is unique to a specific area, while extinction means it is gone forever. Also, pay close attention to the distinction between 'Sanctuaries' and 'National Parks'. Sanctuaries allow limited human activity, whereas National Parks are more strictly protected. When drawing diagrams, such as the pyramid of biomass or a simple flow chart of conservation methods, use a sharp pencil and label everything clearly on the right-hand side. A neat diagram can often compensate for a slightly weak explanation. To wrap up this entire chapter, remember the core theme: Biodiversity is the foundation of ecosystem services. From oxygen production to nutrient cycling, we depend on it. As you revise, focus on the keywords: Endemism, Hotspots, Fragmentation, In-situ, and Ex-situ. If you master these terms and practice writing them in structured paragraphs, you will find this chapter to be one of your strongest assets in the exam. You have worked hard through all twelve parts of this series. Take a moment to review your notes, solve the NCERT back-exercise questions, and most importantly, practice writing your answers under a timer. You are now fully prepared to tackle any question on Biodiversity and Conservation. Good luck with your preparations!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-biology-13-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>
