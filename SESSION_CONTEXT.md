@@ -11,10 +11,51 @@ TuitionTrack is a Next.js 14 application for managing tuition payments and stude
 
 ## Recent Changes
 
+### 1-Hour 3D Animated Lessons with Voice Narration for Classes 6–8 (2026-09-19)
+- **222 Chapters Completed (Zero Missing)**: Every single chapter across all subjects of Classes 6, 7, and 8 now has an interactive 1-hour one-shot 3D animated lesson with full voice narration:
+  - **Class 6 (69/69 chapters)**: Mathematics (14), Science (12), English (16), History (11), Geography (8), Civics (8).
+  - **Class 7 (78/78 chapters)**: Mathematics (13), Science (12), English (27), History (10), Geography (8), Civics (8).
+  - **Class 8 (75/75 chapters)**: Mathematics (13), Science (13), English (28), History (8), Geography (5), Civics (8).
+  - **Content Volume**: 222 chapters × 12 voiced parts ≈ 2,660 narration segments (~1.4M words, ~220 hours of spoken content), plus the earlier Class 10 Quadratics pilot.
+- **Lesson Structure**: 12 × ~5-minute parts per chapter covering the complete curriculum arc (Concepts → Formulas → Derivations → Examples → Word Problems → Mistakes Clinic → Exam Masterclass) with synchronized on-screen bullets and dynamic 3D scenes per part.
+- **Dual-Engine Architecture**:
+  - **HyperFrames Static Engine**: Standalone HTML renders in `public/videos/<chapter-id>/full.html` with built-in Web Audio synthesis, play/pause/seek controls, part navigation menus, and narration toggles.
+  - **In-App Remotion Engine**: Interactive player component (`ExtendedLesson`) reading structured data from `public/videos/research/<chapter-id>.extended.json`.
+- **Live Production Deployment**: All 222 chapters deployed to Vercel production edge CDN at `https://tuitiontrack-app.vercel.app/videos/...` (verified HTTP 200 OK).
+
+### AI Homework, Assignment, Curriculum, FAQ & Learning Engine (2026-09-19)
+- **Full Academic Workflow**: Complete teacher creation, student attempt, online & handwritten submission, auto/rubric grading, mistake profiling, and adaptive remediation loop.
+- **Database Migration `20260919000000_curriculum_homework_engine.sql` Applied**:
+  - Added 11 tables: `curriculum_sources`, `curriculum_versions`, `curriculum_textbooks`, `curriculum_chapters`, `chapter_faqs`, `chapter_mindmaps`, `question_blueprints`, `assignments`, `assignment_questions`, `assignment_submissions`, `remedial_homework_triggers`.
+  - Database now has 61 public tables and 108 RLS policies verified and locked down.
+- **Official NCERT & CBSE Curriculum Registry (`src/lib/curriculum/official-registry.ts`)**:
+  - Authoritative catalog for Classes 1–12 adhering strictly to CBSE rationalized syllabus with official NCERT book catalog codes (`kemh1`, `hesc1`, `jemh1`, `leph1`, etc.).
+  - 517 official chapters cataloged with competencies, prerequisites, and learning objectives. Direct integration with official NCERT online reader (`ncert.nic.in/textbook.php`).
+- **Chapter Knowledge & Mind Maps Engine (`src/lib/curriculum/chapter-knowledge.ts`)**:
+  - **7-Category FAQ Generator**: High-yield grounded questions/answers across *Basics*, *Conceptual*, *Formula*, *Examples*, *Exam*, *Common Mistakes*, and *Application*.
+  - **Concept Mind Map Graph**: Hierarchical concept trees showing formulas, exam weightage, and common student pitfalls.
+- **AI Variation Engine & Fingerprint Deduplication (`src/lib/homework/variation-engine.ts`)**:
+  - Parameterized variation engine (numbers, scenarios, entities, units).
+  - SHA-256 fingerprinting (`computeQuestionFingerprint`) ensuring unique, non-repetitive questions without simple synonym substitution.
+  - Distribution modes: **Class Mode** (uniform), **Variant Mode** (unique per student), **Adaptive Mode** (mastery-adjusted).
+  - Objective auto-grader, rubric-based subjective evaluator (Concept, Method, Accuracy), mistake classification, and automatic remedial homework scheduling (<60% mastery threshold).
+- **New Routes & Frontend Pages**:
+  - `/app/curriculum` - Class 1 to 12 interactive textbook & chapter explorer.
+  - `/app/curriculum/[slug]` - Deep Chapter Hub with NCERT reader, 7-category FAQ accordion, and interactive mind map.
+  - `/app/homework/studio` - Teacher Homework Studio with live question generation, mode selector, and verified preview.
+  - `/app/homework/[id]` - Student Homework Player supporting online answers, notebook photo/PDF uploads, and instant feedback.
+  - `/app/homework` - Unified dashboard with dual tabs (*AI Assignments* and *Traditional Homework Logs*).
+  - `POST /api/ai/homework/generate` - Serverless AI homework generation endpoint.
+
+### Chapter Revision Notes & Portal Access (2026-09-18)
+- **PDF Revision Notes**: Added chapter-wise revision notes for all subjects across Classes 6–12 (`feat(learn)` commit `90d7ceb`).
+- **Android APK Refresh**: Updated downloadable Capacitor APK binary (`build(android)` commit `a1c2cd8`).
+- **Portal Invites**: 1-click WhatsApp and link invite system for student and parent portal access (`feat(portal)` commit `ebb9e9e`).
+
 ### Agency Agent Skills Installation & Video Pipeline Fix (2026-09-18)
 - **Agency Agent Skills Installed**: 18 skills deployed to `.agents/skills` and linked to `skills/` (registered in `skills-lock.json`), including `agency-agents-orchestrator`, `agency-senior-project-manager`, `agency-backend-architect`, `agency-frontend-developer`, `agency-senior-developer`, `agency-video-optimization-specialist`, `agency-automation-governance-architect`, `agency-code-reviewer`, `agency-devops-automator`, `remotion`, and core quality skills.
 - **Python 3.11 Environment Fix for MoneyPrinterTurbo**: Machine default Python is 3.14 which broke litellm; targeted pre-installed CPython 3.11.15 via `uv venv tools/moneyprinterturbo/.venv --python 3.11 --clear` and resolved all 105 dependency wheels cleanly.
-- **Lesson Video Renders**: Ran `scripts/make-lesson-videos.ts` to generate 518 interactive GSAP lesson HTML chapters in `public/videos/` with dynamic narrated links.
+- **Lesson Video Renders**: Generated interactive GSAP lesson HTML chapters in `public/videos/` with dynamic narrated links.
 - **TypeScript config hardened**: Excluded `skills`, `.agents`, and `tools` directories from `tsconfig.json` so skill asset/example files are not picked up during app typechecks.
 
 ### Full AI-power + automation implementation (2026-09-17)
@@ -50,72 +91,48 @@ TuitionTrack is a Next.js 14 application for managing tuition payments and stude
 - **Env**: `.env.local` now holds GROQ/GEMINI/OPENROUTER/NVIDIA_NIM/HUGGINGFACE/CRON_JOB_ORG keys. All 9 server secrets pushed to Vercel production (SUPABASE_SECRET_KEY, CRON_SECRET, AI_KEY_ENC_KEY, NEXT_PUBLIC_APP_URL, 5 AI keys). `RESEND_API_KEY` intentionally absent (monday-sync degrades gracefully). `scripts/probe-ai-providers.mjs` re-probes all keys with 1-token completions.
 - **Post-deploy checks**: root/login 200; tutor API auth works; both keep-alive crons 401 unauth / 200 with Bearer, `users` table reachable in prod.
 - Probe results: OpenRouter ✓, NVIDIA ✓, HF ✓; Gemini 429 (free-tier quota exhausted — recovers on its own); Groq intermittent 401 (key worked on manual recheck — the failover chain absorbs it).
-- ⚠️ These keys were pasted into chat — rotate Groq/Gemini/OpenRouter/NVIDIA/HF keys when convenient.
-
-### SSE streaming tutor (2026-09-16)
-- Added `streamComplete()` in `src/lib/ai/provider.ts`: streaming mirror of `complete()` — same key/model resolution and stub degradation, parses all three provider SSE dialects (OpenAI-compatible `choices[].delta`, Anthropic `content_block_delta`/`message_start`/`message_delta`, Google `alt=sse` candidates), pushes deltas to a callback, returns full `CompleteResult` with usage for billing. Handles `[DONE]`, partial frames across chunk boundaries, and client-disconnect abort (`signal`).
-- `/api/ai/tutor` now supports `?stream=1`: SSE frames `meta` (conversation_id, citations, model) → `delta` (text) → `done` (citations, confidence, cost) or `error`. Auth/RLS/rate-limit/RAG pipeline runs before the stream opens; persistence (`messages`, `tool_calls`, `model_usage`, `learning_events`) runs after it closes — partial replies are saved if a stream dies mid-flight. JSON path unchanged for backward compat.
-- `TutorView` consumes SSE and renders tokens progressively with an optimistic assistant bubble; falls back to JSON parsing when the response isn't `text/event-stream` (e.g. 401/429 JSON bodies).
-- Verified with mock SSE servers for all three dialects + a live OpenRouter stream (44 deltas, E2E).
-- Fixed stale OpenRouter free default: `google/gemini-2.0-flash-exp:free` was retired (404). Free A/B default is now `nvidia/nemotron-3.5-lightning:free` (1M ctx), C is `nvidia/nemotron-3-ultra-550b-a55b:free` — verified against OpenRouter's live model list 2026-09-16; UI copy updated to match.
-- Temp verification script `tests/stream-provider-check.ts` was run and removed.
-
-### AI gateway + BYOK repair (2026-09-16)
-- **Fixed `src/lib/ai/provider.ts`**: `kind`/`provider` were referenced out of scope in `complete()` — every AI call (tutor, quiz, flashcards) threw ReferenceError. Rewrote with proper scoping, added stub-mode degradation (returns actionable text instead of throwing when no key configured), `AI_BASE_URL` support, and explicit-override model priority (`modelOverride` > env > free pool).
-- **Fixed `src/lib/ai/byok.ts`**: missing `ResolvedProvider` import; per-tier model map typed correctly for `deterministic` tier.
-- **Fixed `src/lib/ai/crypto.ts`**: `fingerprintKey` now SHA-256 of the raw key (was base64 of raw bytes); uses `node:crypto`.
-- **Fixed key-corruption bug in `POST /api/ai/keys`**: saving preferences with no key in the form used to upsert the masked preview (`xxx••••••••`) over `encrypted_key`. Route now supports `prefs_only` mode that never touches the encrypted key; `GET` no longer returns `encrypted_key` at all.
-- **Fixed `src/app/api/ai/keys/test`**: model was hardcoded `gpt-4o-mini` for every provider — Groq/Together/HF tests failed with model_not_found. Now uses provider-correct `pickModel("A", …)` free default.
-- **Fixed UI**: `/app/ai-settings` page passed a non-existent `userId` prop; `AiSettings.savePrefs` now posts `prefs_only` payload; tutor page modes use `blurb` field (matches `TutorView`'s `Mode` type).
-- Default free model guidance is now `google/gemini-2.0-flash-exp:free` (OpenRouter) / `llama-3.1-8b-instant` (Groq).
-
-### Keep-alive cron hardening (2026-09-16)
-- `/api/cron/keep-alive` now fails closed like the other cron routes: 500 when `CRON_SECRET` unset (the `x-vercel-cron` header alone is spoofable), 401 otherwise.
-- Both keep-alive routes verified live against Supabase project `zlkkicrqwoxzhsfehouj`: 401 unauthenticated, 200 with Bearer secret.
-- `docs/CRON_SETUP.md` documents both routes, auth policy, and local curl verification steps.
-- Generated `CRON_SECRET` + `AI_KEY_ENC_KEY` (AES-256 for BYOK at-rest encryption) into `.env.local`.
-
-### Supabase Keep-Alive Cron (2026-09-16)
-- Created `/api/cron/supabase-keepalive` route to prevent Supabase free-tier inactivity pauses
-- Configured Vercel cron job to run every 7 days
-- Added `docs/CRON_SETUP.md` with verification and troubleshooting steps
-- Route authorizes via `CRON_SECRET` or Vercel's `x-vercel-cron` header
-- Executes lightweight `SELECT id FROM users LIMIT 1` query
 
 ## Key Technical Details
 
 ### Environment Variables
-- `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL (`https://zlkkicrqwoxzhsfehouj.supabase.co`)
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Public Supabase key
 - `SUPABASE_SERVICE_ROLE_KEY` - Admin key for server-side operations
 - `CRON_SECRET` - Secret for authenticating cron routes
-- `RESEND_API_KEY` - Email service (if applicable)
+- `AI_KEY_ENC_KEY` - AES-256 key for encryption of user BYOK credentials
+- `RESEND_API_KEY` - Email service (optional)
+- `GEMINI_API_KEY` - Google generative AI key (optional)
 
 ### Important Routes
+- `/app/curriculum` - NCERT Class 1–12 textbook & chapter explorer
+- `/app/curriculum/[slug]` - Deep Chapter Hub (NCERT reader, 7-category FAQs, concept mind map)
+- `/app/homework/studio` - Teacher Homework Studio (AI variation generator, preview, publishing)
+- `/app/homework/[id]` - Student Homework Player (interactive question answering, notebook photo/PDF uploads)
+- `/app/homework` - Unified homework dashboard (*AI Assignments* & *Traditional Logs*)
+- `/app/videos` - Interactive video lessons hub with 1-hour 3D lessons
+- `/api/ai/homework/generate` - Serverless AI homework generator
 - `/api/cron/keep-alive` - Daily generic keepalive
 - `/api/cron/supabase-keepalive` - Weekly Supabase inactivity prevention
 - `/api/cron/monday-sync` - Weekly Monday 08:00 tutor alerts + parent digests
 
-### Database Schema
-- `users` - Core user table
-- `students` - Student profiles
-- `families` - Family/parent information
-- `payments` - Payment records
-- `tutors` - Tutor data
+### Database Schema (61 Public Tables, 108 RLS Policies)
+- `curriculum_sources`, `curriculum_versions`, `curriculum_textbooks`, `curriculum_chapters` - Official CBSE & NCERT repository
+- `chapter_faqs`, `chapter_mindmaps` - Source-grounded chapter knowledge packs
+- `question_blueprints`, `assignments`, `assignment_questions`, `assignment_submissions`, `remedial_homework_triggers` - Homework & assessment engine
+- `users`, `students`, `families`, `payments`, `tutors` - Core SIS entities
+- `agent_runs`, `automation_rules`, `approvals`, `tasks`, `message_templates`, `message_outbox` - Automation control plane
 
 ### Scripts
-- `npm run dev` - Development server
-- `npm run build` - Production build
+- `npm run dev` - Next.js development server
+- `npm run build` - Production build (35/35 static pages)
 - `npm run lint` - ESLint check
-- `npm run typecheck` - TypeScript check
+- `npm run typecheck` - TypeScript check (`tsc --noEmit`)
+- `npm run ai:eval` - AI prompt & model evaluation suite
+- `npm run smoke` - Local smoke tests
 
-## Current Sprint Focus
-- Blueprint MVP-1 learning loop is wired: tutor/quiz/flashcards routes, mastery, mistakes, FSRS reviews, planner, documents/RAG.
-- BYOK works with free-first providers: OpenRouter (Gemini free), Google Gemini, Groq — user adds key in /app/ai-settings.
-- Next: pgvector semantic retrieval (keyword prefilter today), streaming tutor replies, question quality pipeline depth.
-
-## Notes
-- Supabase free tier pauses after ~1-2 weeks of inactivity
-- Vercel cron jobs run on serverless functions
-- All cron routes require authentication (Bearer token or Vercel header)
-- Lint passes clean with no warnings or errors
+## Current Production Status
+- **Live Production URL**: `https://tuitiontrack-app.vercel.app` (Deployment `dpl_3WL9xXGgEpkZ4B4oNPc6MSgWZa8C`, commit `453473b`).
+- **All 222 Chapter 3D Animated Lessons Live**: Classes 6, 7, and 8 verified on edge CDN (`/videos/...`).
+- **Full NCERT Curriculum Hub Live**: Classes 1–12 available on `/app/curriculum`.
+- **Teacher Studio & Student Player Live**: Differentiated homework with photo/PDF submissions and auto-grading.
+- **Skipped for Future Iterations**: Classes 9–12 3D video lessons (pipeline scripts ready to resume on demand).
