@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Electricity, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c10-science-11-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Power of Electricity and Real-World Applications -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Power of Electricity and Real-World Applications</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Electricity: A fundamental form of energy driven by moving charges.</div>
+              <div id="qx0-p1" class="qe-bullet">• Static Electricity: Charges at rest (e.g., rubbing a comb on hair).</div>
+              <div id="qx0-p2" class="qe-bullet">• Current Electricity: The continuous flow of charge through a conductor.</div>
+              <div id="qx0-p3" class="qe-bullet">• Real-world impact: Powering everything from lights to complex computers.</div>
+              <div id="qx0-p4" class="qe-bullet">• Chapter Roadmap: From electric charge to complex circuit analysis.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1341356326,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A high-quality 3D transition starting from a dark room that slowly illuminates as various household appliances—a lamp, a laptop, and a fan—power on one by one, connected by glowing blue energy lines.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A high-quality 3D transition starting from a dark room that slowly illuminates as various household appliances—a lamp, a laptop, and a fan—power on one by one, connected by glowing blue energy lines.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Electric Charge, Coulomb's Law, and the Concept of Current -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Electric Charge, Coulomb's Law, and the Concept of Current</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Electric charge comes in two types: Positive and Negative.</div>
+              <div id="qx1-p1" class="qe-bullet">• Like charges repel; unlike charges attract.</div>
+              <div id="qx1-p2" class="qe-bullet">• Coulomb's Law: Force is proportional to product of charges and inversely to distance squared.</div>
+              <div id="qx1-p3" class="qe-bullet">• Electric Current (I) is the rate of flow of charge (I = Q / t).</div>
+              <div id="qx1-p4" class="qe-bullet">• The SI unit of charge is Coulomb (C) and current is Ampere (A).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3820250918,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing two spheres with '+' signs pushing apart and a '+' and '-' sphere pulling together, transitioning into a stream of glowing blue electrons flowing through a copper wire.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D animation showing two spheres with '+' signs pushing apart and a '+' and '-' sphere pulling together, transitioning into a stream of glowing blue electrons flowing through a copper wire.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Electric Potential and Potential Difference: Definitions and Units -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Electric Potential and Potential Difference: Definitions and Units</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Electric Potential: Work done per unit charge to bring it from infinity.</div>
+              <div id="qx2-p1" class="qe-bullet">• Formula: V = W / Q (Potential = Work done / Charge).</div>
+              <div id="qx2-p2" class="qe-bullet">• Potential Difference: Work done to move a unit charge between two points.</div>
+              <div id="qx2-p3" class="qe-bullet">• SI Unit: The Volt (V), where 1 Volt = 1 Joule / 1 Coulomb.</div>
+              <div id="qx2-p4" class="qe-bullet">• A potential difference is essential to drive the flow of electric current.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1086527160,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing two water tanks at different heights connected by a pipe, transitioning into a circuit diagram where a battery creates a voltage difference between two points.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D animation showing two water tanks at different heights connected by a pipe, transitioning into a circuit diagram where a battery creates a voltage difference between two points.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Circuit Diagrams, Symbols, and the Flow of Electrons -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Circuit Diagrams, Symbols, and the Flow of Electrons</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Standardized symbols allow universal communication in electrical engineering.</div>
+              <div id="qx3-p1" class="qe-bullet">• Cell: Long line is positive (+), short thick line is negative (-).</div>
+              <div id="qx3-p2" class="qe-bullet">• Closed circuit allows current flow; open circuit breaks the path.</div>
+              <div id="qx3-p3" class="qe-bullet">• Conventional Current flows from Positive to Negative terminals.</div>
+              <div id="qx3-p4" class="qe-bullet">• Actual Electron Flow moves from Negative to Positive terminals.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3078393728,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a circuit transforming from a realistic photo into a clean schematic diagram, followed by a zoom-in on a wire showing blue electrons moving left-to-right while red arrows of conventional current move right-to-left.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D animation showing a circuit transforming from a realistic photo into a clean schematic diagram, followed by a zoom-in on a wire showing blue electrons moving left-to-right while red arrows of conventional current move right-to-left.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Ohm's Law: Mathematical Relationship and Graphical Representation -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Ohm's Law: Mathematical Relationship and Graphical Representation</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Ohm's Law: Current (I) is directly proportional to Potential Difference (V)</div>
+              <div id="qx4-p1" class="qe-bullet">• Mathematical Formula: V = I × R</div>
+              <div id="qx4-p2" class="qe-bullet">• Resistance (R) is the constant of proportionality measured in Ohms (Ω)</div>
+              <div id="qx4-p3" class="qe-bullet">• V-I Graph: A straight line passing through the origin indicates Ohm's Law</div>
+              <div id="qx4-p4" class="qe-bullet">• The slope of a V-I graph represents the Resistance (R)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":376863924,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a mathematical equation transforming into a glowing straight-line graph on a coordinate plane.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D split-screen showing a mathematical equation transforming into a glowing straight-line graph on a coordinate plane.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Resistance and Resistivity: Factors Affecting Electrical Resistance -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Resistance and Resistivity: Factors Affecting Electrical Resistance</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Resistance (R) is the opposition to the flow of electric current.</div>
+              <div id="qx5-p1" class="qe-bullet">• SI unit of Resistance is the Ohm (Ω).</div>
+              <div id="qx5-p2" class="qe-bullet">• Resistance is directly proportional to length (L) and inversely to area (A).</div>
+              <div id="qx5-p3" class="qe-bullet">• Resistivity (ρ) is a material-specific property independent of shape.</div>
+              <div id="qx5-p4" class="qe-bullet">• Formula: Resistance (R) = Resistivity (ρ) × Length (L) / Area (A).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2739405213,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing electrons struggling to pass through a long, thin wire versus a short, thick wire, transitioning into a mathematical formula overlay.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D animation showing electrons struggling to pass through a long, thin wire versus a short, thick wire, transitioning into a mathematical formula overlay.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Series Combinations of Resistors: Derivations and Circuit Analysis -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Series Combinations of Resistors: Derivations and Circuit Analysis</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• In series, the current (I) remains constant through all resistors.</div>
+              <div id="qx6-p1" class="qe-bullet">• Total Voltage (V) is the sum of individual voltages: V = V1 + V2 + V3.</div>
+              <div id="qx6-p2" class="qe-bullet">• Derivation: Rs = R1 + R2 + R3.</div>
+              <div id="qx6-p3" class="qe-bullet">• Equivalent resistance is always greater than the largest individual resistor.</div>
+              <div id="qx6-p4" class="qe-bullet">• If one component fails in series, the entire circuit breaks.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3390952065,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a single wire path with three glowing resistors, demonstrating identical electron flow speed through each while showing voltage drops as color intensity changes.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D animation showing a single wire path with three glowing resistors, demonstrating identical electron flow speed through each while showing voltage drops as color intensity changes.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Parallel Combinations of Resistors: Derivations and Circuit Analysis -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Parallel Combinations of Resistors: Derivations and Circuit Analysis</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• In parallel, the potential difference (V) remains constant across all resistors.</div>
+              <div id="qx7-p1" class="qe-bullet">• Total current (I) is the sum of individual branch currents: I = I1 + I2 + I3.</div>
+              <div id="qx7-p2" class="qe-bullet">• Formula: 1/Rp = 1/R1 + 1/R2 + 1/R3.</div>
+              <div id="qx7-p3" class="qe-bullet">• Equivalent resistance (Rp) is always less than the smallest individual resistance.</div>
+              <div id="qx7-p4" class="qe-bullet">• Parallel circuits allow independent operation of electrical appliances.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3668532574,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D circuit diagram showing a battery connected to three resistors in parallel, with glowing blue particles (electrons) splitting into different paths at each junction.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D circuit diagram showing a battery connected to three resistors in parallel, with glowing blue particles (electrons) splitting into different paths at each junction.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Heating Effect of Electric Current and Joule's Law of Heating -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Heating Effect of Electric Current and Joule's Law of Heating</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Electric current produces heat due to collisions between electrons and atoms.</div>
+              <div id="qx8-p1" class="qe-bullet">• Joule's Law: Heat is proportional to the square of current (I squared).</div>
+              <div id="qx8-p2" class="qe-bullet">• Joule's Law: Heat is proportional to resistance (R) and time (t).</div>
+              <div id="qx8-p3" class="qe-bullet">• Mathematical Formula: H = I squared times R times t.</div>
+              <div id="qx8-p4" class="qe-bullet">• Applications: Electric heaters, irons, and light bulb filaments.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":755139278,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing electrons colliding with vibrating ions in a wire, transitioning into a mathematical derivation of H = I^2Rt.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D animation showing electrons colliding with vibrating ions in a wire, transitioning into a mathematical derivation of H = I^2Rt.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Electric Power: Formulas, Units, and Commercial Unit of Energy -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Electric Power: Formulas, Units, and Commercial Unit of Energy</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Electric Power (P) = Rate of doing electrical work = Energy (E) / Time (t)</div>
+              <div id="qx9-p1" class="qe-bullet">• SI Unit of Power: Watt (W). 1 Watt = 1 Joule / 1 second</div>
+              <div id="qx9-p2" class="qe-bullet">• Three Formulas: P = V × I, P = I² × R, and P = V² / R</div>
+              <div id="qx9-p3" class="qe-bullet">• Commercial Unit: Kilowatt-hour (kWh). 1 kWh = 3.6 × 10^6 Joules</div>
+              <div id="qx9-p4" class="qe-bullet">• Energy (kWh) = Power (in kW) × Time (in hours)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3177354466,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a glowing lightbulb on one side and a digital electricity meter spinning rapidly on the other, with mathematical formulas floating in the center.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D split-screen showing a glowing lightbulb on one side and a digital electricity meter spinning rapidly on the other, with mathematical formulas floating in the center.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Complex Circuit Solving: Mixed Combinations and Word Problems -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Complex Circuit Solving: Mixed Combinations and Word Problems</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Use the 'Reduction Method' to simplify complex circuits step-by-step.</div>
+              <div id="qx10-p1" class="qe-bullet">• Identify small sub-circuits (series or parallel) and replace them with one value.</div>
+              <div id="qx10-p2" class="qe-bullet">• Convert word problems into circuit diagrams by identifying key phrases.</div>
+              <div id="qx10-p3" class="qe-bullet">• In parallel branches, Voltage remains constant; in series, Current remains constant.</div>
+              <div id="qx10-p4" class="qe-bullet">• Always find the total equivalent resistance before calculating total current.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3222238111,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D circuit diagram where resistors glow and merge into single blocks as they are simplified.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D circuit diagram where resistors glow and merge into single blocks as they are simplified.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Common Mistakes, Numerical Shortcuts, and Full Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Common Mistakes, Numerical Shortcuts, and Full Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Common Error: Forgetting units like Ohms, Volts, or Joules</div>
+              <div id="qx11-p1" class="qe-bullet">• Resistivity is a material property; Resistance depends on dimensions</div>
+              <div id="qx11-p2" class="qe-bullet">• Shortcut: Use Product-over-Sum for two resistors in parallel</div>
+              <div id="qx11-p3" class="qe-bullet">• Direct Power Formulas: P equals V squared over R or P equals I squared times R</div>
+              <div id="qx11-p4" class="qe-bullet">• Quick Recap: Charge, Current, Ohm's Law, Series, Parallel, and Power</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":944950766,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a student's incorrect calculation on one side versus a streamlined, shortcut-based calculation on the other, transitioning into a glowing summary map of the chapter.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a student's incorrect calculation on one side versus a streamlined, shortcut-based calculation on the other, transitioning into a glowing summary map of the chapter.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Electricity today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Power of Electricity and Real-World Applications <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Electric Charge, Coulomb's Law, and the Concept of Current <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Electric Potential and Potential Difference: Definitions and Units <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Circuit Diagrams, Symbols, and the Flow of Electrons <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Ohm's Law: Mathematical Relationship and Graphical Representation <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Resistance and Resistivity: Factors Affecting Electrical Resistance <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Series Combinations of Resistors: Derivations and Circuit Analysis <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Parallel Combinations of Resistors: Derivations and Circuit Analysis <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Heating Effect of Electric Current and Joule's Law of Heating <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Electric Power: Formulas, Units, and Commercial Unit of Energy <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Complex Circuit Solving: Mixed Combinations and Word Problems <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Common Mistakes, Numerical Shortcuts, and Full Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello, students! Welcome to our journey into the fascinating world of Physics. Today, we are starting a brand new and incredibly important chapter: Electricity. Before we dive into the complex formulas and mathematical derivations, I want you to take a moment and look around you. Think about your morning routine. You wake up to the sound of an electric alarm clock. You turn on a light bulb to brighten your room. You use an electric kettle to boil water, a toaster to make breakfast, and perhaps a computer or a smartphone to connect with the world. Even the fans spinning above you and the refrigerator keeping your food fresh—all of these are powered by one fundamental force: Electricity. But have you ever stopped to wonder, what exactly is this 'electricity' that we take for granted? Why does a wire carry energy? How does a simple switch control a massive motor? Electricity is not just a utility; it is a form of energy resulting from the existence of charged particles, such as electrons or protons. In our daily lives, we interact with electricity in two main ways: static electricity and current electricity. You might have experienced static electricity when you rub a plastic comb against your hair and then hold it near tiny bits of paper. The paper jumps to the comb! This is electricity at rest. However, the electricity we use to power our homes and gadgets is 'current electricity'—the continuous flow of electric charge through a conductor. This flow is what does the work for us. Think of electricity like water flowing through a pipe. Just as water flows from a higher level to a lower level due to pressure, electric charges flow through a circuit due to a difference in electric potential. In this chapter, we are going to explore this 'flow' in great detail. We will learn about the tiny particles called electrons that act as the carriers of charge. We will study how much work is required to move these charges, which we call Electric Potential. We will understand the rules that govern this flow, known as Ohm's Law, and discover why some materials allow electricity to pass easily while others, like the rubber coating on a wire, block it entirely. We will also learn how to build and analyze complex circuits using resistors, and how we can calculate the exact amount of energy consumed by our appliances, which helps us understand our monthly electricity bills. By the end of this series, you won't just be solving numerical problems; you will truly understand the invisible force that drives modern civilization. So, grab your notebooks, sharpen your pencils, and let's prepare to turn on the lights of knowledge. Let's begin our exploration of Electricity!","Welcome back to our journey through the world of electricity. In our last session, we saw how electricity powers our modern lives. Now, it is time to look under the hood and understand the fundamental building blocks that make this possible. Everything starts with a property called electric charge. Imagine you are looking at an atom. You have protons in the nucleus with a positive charge, and electrons orbiting around them with a negative charge. Charge is a fundamental property of matter, much like mass. Just as mass causes objects to experience gravitational pull, electric charge causes objects to experience electrical forces. There are two types of charges: positive and negative. The most important rule to remember is the law of electrostatics: like charges repel each other, while unlike or opposite charges attract each other. If you bring two positive charges together, they will push away; if you bring a positive and a negative together, they will pull toward each other. Now, how do we measure this charge? The SI unit of electric charge is the Coulomb, denoted by the letter Q. A single electron has a tiny negative charge, but when billions of them gather, they create a measurable Coulomb of charge. This brings us to a crucial law: Coulomb's Law. This law tells us exactly how strong the force is between two stationary charges. It states that the force of attraction or repulsion between two point charges is directly proportional to the product of the magnitudes of the charges and inversely proportional to the square of the distance between them. In mathematical terms, we say Force equals k times the absolute value of charge one times charge two, all divided by the distance squared. Here, k is a constant known as Coulomb's constant. This means if you double the distance between two charges, the force doesn't just halve; it drops to one-fourth because of that square term! Now, let's move from static charges to moving charges. When charges are stationary, we call it electrostatics. But when charges start to flow, we enter the realm of current electricity. Think of a river. A river is a flow of water molecules. Similarly, electric current is the rate of flow of electric charge through a conductor. If a large amount of charge passes through a cross-section of a wire in a short amount of time, we have a high current. If the charge moves slowly, the current is low. To express this mathematically, we say Current equals Charge divided by Time. The symbol for current is I, and its SI unit is the Ampere, named after André-Marie Ampère. One Ampere is defined as the flow of one Coulomb of charge passing through a point in one second. So, if you see a device rated at two Amperes, it means two Coulombs of charge are passing through that point every single second. It is important to note that in metals, it is the electrons—the negative charges—that are actually moving to create this current. Even though we often talk about current flowing from positive to negative, in reality, it is the negative electrons drifting from the negative terminal to the positive terminal. This distinction is vital for understanding how circuits work. Let's recap: charge comes in two types, like charges repel, and unlike charges attract. Coulomb's law governs the force between them, and the continuous flow of these charges is what we call electric current. In our next lesson, we will explore the 'pressure' that pushes these charges along, known as electric potential.","Welcome back. In our previous lesson, we discussed how electric charge flows to create a current. But have you ever wondered what actually pushes these charges through a wire? Why do they move in a specific direction? To understand this, we need to move from the concept of charge to the concept of energy and work. Imagine you have two water tanks connected by a pipe. If both tanks are at the same level, water won't flow. But if you raise the height of one tank, the difference in height creates pressure, forcing the water to flow from the higher tank to the lower one. Electricity works in a very similar way. To make charges move, we need a difference in 'electrical pressure.' This brings us to our core topic: Electric Potential and Potential Difference. Let's start with Electric Potential. Imagine a single positive charge placed in an electric field. To bring another positive charge from an infinite distance towards this charge, you have to do work against the repulsive force of the existing charge. The amount of work done per unit charge in bringing a charge from infinity to a specific point in an electric field is called the Electric Potential at that point. Mathematically, we say, Electric Potential equals Work done divided by the Charge. If we write this as a formula, it is V equals W divided by Q. Here, V represents the potential, W is the work done in Joules, and Q is the charge in Coulombs. Now, in practical circuits, we rarely care about the potential at a single point relative to infinity. Instead, we care about the difference in potential between two points. This is what we call Potential Difference. If point A has a higher potential than point B, a positive charge will naturally move from A to B. The work done to move a unit charge from point B to point A is defined as the potential difference between these two points. So, the formula remains the same: V equals W divided by Q, but here, V is the potential difference. Think of it as the electrical energy supplied to each unit of charge to move it through the circuit. Now, let's talk about the units. Since work is measured in Joules and charge is measured in Coulombs, the unit of Electric Potential and Potential Difference is Joules per Coulomb. This unit is given a special name in honor of the French physicist Alessandro Volta. We call it the Volt, denoted by the symbol V. So, one Volt is defined as the potential difference between two points when one Joule of work is done to move one Coulomb of charge from one point to the other. To put it simply, one Volt equals one Joule divided by one Coulomb. In your laboratory experiments, you will often use a device called a voltmeter to measure this difference. A voltmeter is always connected in parallel across the points where you want to measure the potential difference. Remember, without a potential difference, there is no current flow. It is the 'push' provided by the battery or cell that overcomes the resistance of the wires and allows electricity to power our homes. As we move forward, keep this relationship between work, charge, and voltage at the center of your understanding, as it is the foundation for Ohm's Law which we will cover next.","Welcome back. In our previous lesson, we explored the concept of potential difference. Now, it is time to see how we actually represent these invisible forces in a way that engineers and scientists can communicate globally. Imagine trying to explain a complex electrical setup using only words. It would be chaotic and confusing. This is why we use circuit diagrams. A circuit diagram is a simplified, pictorial representation of an electrical circuit using standardized symbols. Instead of drawing a realistic battery or a messy bulb, we use specific geometric shapes. Let us start with the most fundamental component: the cell. A single cell is represented by two parallel lines, one long and thin, and one short and thick. The long line represents the positive terminal, and the short, thicker line represents the negative terminal. When we connect multiple cells together, we form a battery. In a diagram, a battery is shown by drawing several cell symbols in a row. Now, let us look at the conductor. We represent wires or connecting paths as straight lines. To connect components, we use these lines to create a closed loop. A closed loop allows electricity to flow, whereas an open loop, or a broken line, means the circuit is interrupted and no current will flow. Next, we have the switch. A switch is a device that can either complete or break the circuit. When the switch is closed, the circuit is complete, and the current flows. When the switch is open, there is a gap, and the current stops. Now, let us introduce the load. The load is the component that consumes electrical energy, such as a bulb or a resistor. A resistor is typically represented by a zigzag line, symbolizing the obstruction it provides to the flow of charge. A bulb is often drawn as a circle with a loop or a filament inside it. Now, here is a crucial concept that often confuses students: the direction of current versus the flow of electrons. In our previous lessons, we learned that electric current is the rate of flow of charge. But which way does it flow? Historically, scientists like Benjamin Franklin assumed that electricity flowed from a positive terminal to a negative terminal. Because of this early convention, we still use 'Conventional Current' to describe the flow from positive to negative. However, we now know the physical reality of what is happening inside the wire. Electricity is actually the movement of electrons. Electrons are negatively charged particles. Since like charges repel and opposite charges attract, electrons are pushed away from the negative terminal and pulled toward the positive terminal. Therefore, the actual flow of electrons is from the negative terminal to the positive terminal. This is known as the 'Electronic Current' or the direction of electron flow. In your exams, if a question asks for the direction of current without specifying, always assume the conventional direction: from positive to negative. To summarize, a circuit diagram is a map. The symbols are your landmarks. The current is the traveler. Remember, the conventional current moves from positive to negative, while the actual electrons move from negative to positive. Understanding this distinction is vital for solving complex circuit problems in the upcoming lessons.","Welcome back. In our previous lesson, we explored how potential difference acts as the driving force that pushes charges through a conductor. But how exactly do the amount of potential difference and the resulting current relate to one another? This is the fundamental question addressed by Ohm's Law. In 1827, a German physicist named Georg Simon Ohm conducted meticulous experiments and discovered a very specific relationship. He observed that for a conductor kept at a constant temperature, the current flowing through it is directly proportional to the potential difference applied across its ends. Let us write this mathematically. If we let 'I' represent the current flowing through the conductor and 'V' represent the potential difference applied across it, Ohm's Law states that I is directly proportional to V. In mathematical terms, this is written as I is proportional to V. To convert this proportionality into an equation, we introduce a constant of proportionality, which we call 'R'. So, the equation becomes V equals I times R. This constant 'R' is what we call the Resistance of the conductor. Resistance is essentially the property of a material to oppose the flow of electric current. Think of it like friction in a mechanical system; just as friction opposes motion, resistance opposes the movement of electrons. The unit of resistance is the Ohm, represented by the Greek symbol Omega. Now, let us look at this from a graphical perspective, which is very important for your board exams. If we conduct an experiment where we gradually increase the voltage across a fixed resistor and measure the corresponding current, what kind of graph will we get? Since current is directly proportional to voltage, if you plot a graph with Potential Difference on the Y-axis and Current on the X-axis, you will obtain a straight line passing through the origin. This straight line is the visual proof of Ohm's Law. The slope of this V-I graph is a crucial piece of information. In a graph where V is on the vertical axis and I is on the horizontal axis, the slope, which is the change in V divided by the change in I, gives us the value of the resistance, R. A steeper slope indicates a higher resistance, meaning the material is a poor conductor, while a flatter slope indicates a lower resistance, meaning the material is a good conductor. It is vital to remember the condition mentioned earlier: this relationship holds true only if physical conditions, like temperature, remain constant. If the temperature rises, the atoms in the conductor vibrate more vigorously, causing more collisions with the flowing electrons, which increases the resistance and breaks the direct proportionality. So, to summarize: Ohm's Law tells us that V equals I times R, the resistance R is the constant of proportionality, and the V-I graph for an ohmic conductor is always a straight line passing through the origin. Understanding this relationship is the key to solving almost every numerical problem in the electricity chapter.","Welcome back. In our previous lesson, we explored Ohm's Law, which tells us that the current flowing through a conductor is directly proportional to the potential difference across its ends, provided physical conditions remain constant. But have you ever wondered why some wires get hot quickly, or why certain appliances use thicker cables than others? This brings us to the concept of Resistance. Resistance is the property of a conductor to resist the flow of electric current through it. If current is the flow, resistance is the opposition to that flow. We denote the symbol for resistance with the letter R, and its SI unit is the Ohm, represented by the Greek symbol Omega. Now, let us dive into the core of today's lesson: what actually determines the value of this resistance? There are four critical factors. First, let's look at the length of the conductor. Imagine a long, narrow hallway filled with people. The longer the hallway, the harder it is to walk from one end to the other because you encounter more obstacles. Similarly, resistance is directly proportional to the length of the conductor. If you double the length of a wire, you double its resistance. Mathematically, we say R is proportional to L. Second, let's consider the area of cross-section. Think of a wide highway versus a narrow lane. On a wide highway, cars can move freely with less congestion. In a wire, a larger cross-sectional area means more space for electrons to flow, which reduces the opposition. Therefore, resistance is inversely proportional to the area of cross-section. Mathematically, R is proportional to one divided by A. Third, we must consider the nature of the material. Every material is made of different atoms. Some materials, like copper or silver, have many free electrons and offer very little resistance; we call these conductors. Others, like rubber or glass, offer massive resistance; we call these insulators. Finally, there is the effect of temperature. For most metallic conductors, as the temperature increases, the atoms vibrate more vigorously. These vibrations interfere with the path of the electrons, making it harder for them to flow, thus increasing the resistance. Now, let us combine these three mathematical relationships into a single formula. Since R is proportional to L divided by A, we can write R equals rho, L, divided by A. This Greek letter rho, pronounced as 'row', is a very important constant called the Resistivity or Specific Resistance of the material. Unlike resistance, which changes if you stretch or cut a wire, resistivity is a characteristic property of the material itself. It does not depend on the length or the thickness of the wire. It only depends on the nature of the material and the temperature. For example, the resistivity of copper will always be the same regardless of whether you have a one-meter wire or a ten-meter wire, as long as the temperature is constant. This is why engineers choose specific materials based on their resistivity for different tasks. To summarize, resistance depends on length, area, material, and temperature, while resistivity is the intrinsic property of the material that defines how much it resists current per unit length and unit area. Let's look at a quick numerical example to solidify this. If a wire has a resistance of ten ohms, and we stretch it to double its length while keeping the volume constant, the resistance actually increases fourfold because the area also decreases. Understanding this relationship is crucial before we move on to how we can connect these resistors in series and parallel in our next video.","Welcome back. In our previous lesson, we explored how resistance depends on the material and dimensions of a conductor. Today, we move from single resistors to complex circuits by studying what happens when we connect multiple resistors in a single line. This is known as a Series Combination. Imagine a single path for the electric current to flow. In a series circuit, the resistors are connected end-to-end such that the same current flows through every single resistor in the chain. This is a fundamental rule: in series, the current, denoted by the letter I, remains constant throughout the circuit. However, because each resistor offers a different amount of opposition to the flow of charge, the potential difference, or voltage, will be different across each resistor. Let us denote our resistors as R-one, R-two, and R-three. When we apply a total voltage, V, to this circuit, this voltage is distributed across the resistors. According to the principle of conservation of energy, the sum of the individual potential differences across each resistor must equal the total applied voltage. So, V equals V-one plus V-two, plus V-three. Now, let us use Ohm’s Law to find a mathematical relationship for the total resistance. We know from Ohm’s Law that voltage equals current multiplied by resistance. Therefore, V-one equals I times R-one, V-two equals I times R-two, and V-three equals I times R-three. Let us substitute these values into our voltage equation. We get V equals I times R-one, plus I times R-two, plus I times R-three. Notice that the current, I, is a common factor in all these terms. We can factor out the I, which gives us V equals I times the quantity R-one plus R-two plus R-three. In a series circuit, we define the total or equivalent resistance as R-s. According to Ohm’s Law for the entire circuit, V equals I times R-s. By comparing our two equations, V equals I times R-s and V equals I times the quantity R-one plus R-two plus R-three, we can clearly see that R-s equals R-one plus R-two, plus R-three. This is our derivation for series combination. The key takeaway here is that the equivalent resistance in a series circuit is always greater than the individual resistance of any single resistor in the combination. This happens because the total length of the resistive path has increased. Let’s look at a practical example. Suppose we have three resistors of 2 ohms, 4 ohms, and 6 ohms connected in series to a 12-volt battery. To find the total resistance, we simply add them: 2 plus 4 plus 6 equals 12 ohms. To find the current flowing through the circuit, we use I equals V divided by R-s. So, 12 volts divided by 12 ohms equals 1 ampere. This 1 ampere of current will flow through every single resistor in that chain. One critical thing to remember for your exams: if one component in a series circuit fails or a wire breaks, the entire circuit is broken, and the current stops flowing everywhere. This is why old decorative fairy lights often go completely dark if just one tiny bulb burns out. In the next lesson, we will look at the opposite arrangement: the parallel combination, where the rules of current and voltage change entirely.","Welcome back. In our previous lesson, we explored how resistors behave when connected one after another in a series. But what happens when we want to provide multiple paths for the current to flow? This brings us to our topic for today: Parallel Combinations of Resistors. Think about the wiring in your own home. If you turn off the light in your bedroom, does the fan in the living room stop working? No, it doesn't. This is because household appliances are connected in parallel, not in series. In a parallel circuit, the ends of all the resistors are connected to the same two points. This means that the potential difference, or voltage, across each resistor is exactly the same. Let's call this common voltage V. Now, because there are multiple paths, the total current entering the circuit, which we call I, splits up among the different branches. If we have three resistors, R sub one, R sub two, and R sub three, the total current I will be the sum of the individual currents flowing through them. So, I equals I sub one plus I sub two plus I sub three. This is known as Kirchhoff's First Law, or the law of conservation of charge. Now, let's use Ohm's Law to derive the formula for equivalent resistance. We know from Ohm's Law that current equals voltage divided by resistance. So, for the first resistor, I sub one equals V divided by R sub one. For the second, I sub two equals V divided by R sub two, and for the third, I sub three equals V divided by R sub three. Now, let's substitute these expressions into our total current equation. We get I equals V divided by R sub one plus V divided by R sub two plus V divided by R sub three. Since V is common to all terms, we can factor it out. This gives us I equals V times the quantity one divided by R sub one plus one divided by R sub two plus one divided by R sub three. But we also know that the total current I is equal to the total voltage V divided by the equivalent resistance, which we call R sub p. So, V divided by R sub p equals V times the quantity one divided by R sub one plus one divided by R sub two plus one divided by R sub three. If we divide both sides by V, the V's cancel out, leaving us with a very important formula: one divided by R sub p equals one divided by R sub one plus one divided by R sub two, and so on. This is the reciprocal formula for parallel resistance. There is a very important observation to make here. Notice that as we add more resistors in parallel, the value of the denominator on the right side increases, which means the total equivalent resistance R sub p actually decreases. In fact, the equivalent resistance in a parallel combination is always smaller than the smallest individual resistance in that combination. This is why parallel circuits are so useful. If one component fails or a bulb blows out, the circuit is not broken for the others because they still have their own independent paths to the voltage source. Let's look at a quick numerical example. Suppose we have two resistors, R sub one equals six ohms and R sub two equals three ohms, connected in parallel. Using our formula, one divided by R sub p equals one divided by six plus one divided by three. To add these, we find a common denominator, which is six. So, one divided by six plus two divided by six equals three divided by six. This simplifies to one divided by R sub p equals one divided by two. Therefore, R sub p equals two ohms. Notice how two ohms is smaller than our smallest resistor, which was three ohms. This confirms our theory. Remember, in parallel, voltage is constant, current divides, and total resistance decreases. Keep these three pillars in mind, and you will master any parallel circuit problem.","Welcome back. In our previous lessons, we explored how resistance and combinations of resistors affect the flow of current. But have you ever wondered why your mobile charger gets warm after use, or why an electric iron or a toaster produces heat? This brings us to a very important phenomenon in physics: the Heating Effect of Electric Current. When an electric current flows through a conductor, the conductor tends to get hot. This happens because the moving electrons collide with the atoms and ions of the conductor. These collisions transfer some of the kinetic energy of the electrons to the atoms, causing them to vibrate more vigorously, which we perceive as an increase in temperature. This conversion of electrical energy into heat energy is what we call the heating effect. Now, let's look at the mathematical foundation of this effect, known as Joule's Law of Heating. Named after the physicist James Prescott Joule, this law tells us exactly how much heat is produced. According to Joule's Law, the heat produced in a resistor is directly proportional to three specific factors. First, the heat produced is directly proportional to the square of the current flowing through the resistor. If you double the current, the heat produced becomes four times greater. Mathematically, we write this as H is proportional to I squared. Second, the heat produced is directly proportional to the resistance of the resistor. A higher resistance means more collisions and thus more heat. Mathematically, H is proportional to R. Third, the heat produced is directly proportional to the time for which the current flows. The longer the current flows, the more heat is generated. So, H is proportional to t. When we combine these three proportionalities, we get the famous formula for Joule's Law of Heating: H equals I squared times R times t. Here, H represents the heat produced in Joules, I is the current in Amperes, R is the resistance in Ohms, and t is the time in seconds. Let's take a quick example to see this in action. Suppose a resistor of five Ohms is connected to a twelve Volt battery and a current of two Amperes flows through it for ten seconds. To find the heat, we use our formula: two squared is four, four times five is twenty, and twenty times ten is two hundred. So, two hundred Joules of heat is produced. This law is not just a theoretical concept; it is the working principle behind many everyday appliances. In devices like electric heaters, geysers, and even the filament of an old incandescent bulb, we use high-resistance wires like Nichrome. These materials are chosen because they can withstand high temperatures without melting and produce significant heat. In a light bulb, the heat is so intense that the filament actually glows, producing light. This is why we call it an incandescent bulb. So, to summarize: current flowing through a conductor produces heat due to molecular collisions, and the amount of heat is governed by Joule's Law, where heat equals current squared times resistance times time. Understanding this will be crucial as we move into the next part, where we discuss Electric Power.","Welcome back. In our previous lesson, we explored Joule's Law of Heating and how electrical energy transforms into heat. Now, we move to a crucial concept that defines how much work an electrical device can do in a given time: Electric Power. Think about the appliances in your home. Why is a heater rated at two thousand watts, while an LED bulb is only rated at nine watts? The answer lies in power. By definition, electric power is the rate at which electrical energy is consumed or dissipated in an electric circuit. In mathematical terms, power is equal to the energy consumed divided by the time taken. If we denote power as P, energy as E, and time as t, we get the formula P equals E divided by t. The SI unit of power is the Watt, named after James Watt. One Watt is defined as the consumption of one Joule of energy in one second. So, one Watt equals one Joule per second. Now, because we know the relationship between potential difference, current, and resistance, we can derive three different formulas for power. First, since energy is the product of potential difference and charge, and charge is current times time, we can derive that Power equals Voltage multiplied by Current. This is our most fundamental formula: P equals V times I. Second, if we substitute Ohm's Law, where Voltage equals Current multiplied by Resistance, into our first formula, we get Power equals I squared times R. This is particularly useful when discussing the heating effect. Third, if we substitute Current equals Voltage divided by Resistance, we get Power equals Voltage squared divided by Resistance. These three formulas—P equals V times I, P equals I squared times R, and P equals V squared divided by R—are your primary tools for solving numerical problems. Choosing the right one depends on what values are given in the question. Next, let's talk about how we measure energy in the real world. While the Joule is the SI unit for energy, it is a very small unit for household consumption. If you look at your electricity bill, you won't see Joules; you will see 'units'. This brings us to the Commercial Unit of Electrical Energy. The commercial unit is the kilowatt-hour, written as kWh. One kilowatt-hour is the amount of electrical energy consumed by an electrical appliance of power one kilowatt when it is used for one hour. To convert this into the standard SI unit, Joules, we perform a simple calculation. One kilowatt is one thousand Watts. One hour is thirty-six hundred seconds. Therefore, one kilowatt-hour equals one thousand Watts multiplied by three thousand six hundred seconds, which equals thirty-six lakh Joules, or three point six times ten to the power of six Joules. This is a very large amount of energy! In your exams, always remember to convert your power from Watts to kilowatts and your time from seconds or minutes into hours before calculating the energy in kilowatt-hours. For example, if a bulb of one hundred Watts is used for ten hours, the energy consumed is zero point one kilowatts multiplied by ten hours, which equals one kilowatt-hour. Mastering these conversions is the key to scoring full marks in this section.","Welcome back. We have already mastered how resistors behave in series and how they behave in parallel. But in the real world, electrical circuits are rarely that simple. They are almost always a mix of both. Today, we are going to learn how to tackle these complex, mixed combinations and how to approach word problems without getting overwhelmed. Let us start with the strategy. When you see a complex circuit, do not try to solve it all at once. The secret is to break it down into smaller, manageable chunks. Look for the smallest sub-circuits first. Find a group of resistors that are clearly in series or clearly in parallel. Replace that entire group with a single 'equivalent resistor'. This is called the reduction method. Imagine you have three resistors. Resistor A and Resistor B are in parallel, and this entire parallel group is then connected in series with Resistor C. Your first step is to calculate the equivalent resistance of A and B using the formula: one divided by R-parallel equals one divided by R-one plus one divided by R-two. Once you have that single value, call it R-parallel, you now have a much simpler circuit where R-parallel and Resistor C are just in series. Now, you simply add them together: R-total equals R-parallel plus R-C. Repeat this process of 'collapse and simplify' until you are left with just one single resistance value. Now, let us talk about word problems. Word problems often hide the circuit diagram behind text. To solve them, you must become a detective. First, identify the given values. Look for keywords like 'total current', 'potential difference across a resistor', or 'battery voltage'. Write these down with their symbols, like V, I, or R. Second, draw the circuit diagram based on the description. If the problem says 'two resistors are connected across the same terminals', that is a huge hint that they are in parallel. If it says 'the current flows through one and then through the next', they are in series. Third, choose your formula. Most problems in this chapter are solved using Ohm's Law, which is Voltage equals Current times Resistance, or V equals I times R. A common type of problem asks you to find the current flowing through a specific branch in a parallel circuit. Remember, in a parallel circuit, the voltage across each branch is the same, but the current divides. Use the voltage to find the current in that specific branch using I equals V divided by R. Another common trap is when a problem gives you the total resistance and the total voltage and asks for the total current. Always find the total current first using I equals V divided by R-total, and then use that information to find individual components. Let us practice a mental walkthrough. Suppose a problem says: A battery of ten volts is connected to a circuit where a five-ohm resistor is in series with a parallel combination of two ten-ohm resistors. To solve this, first, find the parallel part. One divided by R-p equals one divided by ten plus one divided by ten, which equals two divided by ten, so R-p is five ohms. Now, add the series resistor: five ohms plus the new five ohms equals ten ohms total resistance. Finally, use Ohm's Law to find the total current: ten volts divided by ten ohms equals one ampere. By breaking the problem into steps—identify, draw, reduce, and calculate—you can solve even the most intimidating circuits. Keep practicing these reduction steps, and you will find that complex circuits are just a collection of simple ones.","Welcome to the final stretch of our journey through Electricity. We have covered everything from the tiny movement of electrons to the massive power grids that light up our cities. But knowing the concepts is only half the battle; the other half is performing flawlessly in your exams. Let's start with the most common mistakes students make. First, the unit trap. Many students calculate the resistance and forget to write Ohms, or they calculate power and write Watts when the question asks for energy in kilowatt-hours. Always double-check your units. Second, the distinction between Resistance and Resistivity. Remember, resistance depends on the length and area of the wire, but resistivity is a property of the material itself. If you change the length, the resistance changes, but the resistivity stays the same. Third, the direction of current. While electrons flow from negative to positive, remember that conventional current is always drawn from positive to negative. Don't mix these up in your circuit diagrams. Now, let's talk about some numerical shortcuts to save you time during the exam. When dealing with series circuits, instead of calculating every single resistor, remember that the total resistance is simply the sum of all individual resistances. In parallel circuits, if you have two resistors, use the product-over-sum rule: multiply the two resistances and divide by their sum. It is much faster than the reciprocal method. For power calculations, if you know the voltage and the resistance, don't always go through current first. Use the direct formula: Power equals Voltage squared divided by Resistance. This saves you an entire step of calculation. If you are given the current and resistance, use Power equals Current squared multiplied by Resistance. Let's do a quick lightning recap of the entire chapter. We began with Electric Charge, measured in Coulombs, and Current, which is the rate of flow of charge, measured in Amperes. We moved to Potential Difference, the work done to move a unit charge, measured in Volts. We mastered Ohm's Law, which tells us that Voltage equals Current multiplied by Resistance, a relationship that shows as a straight line on a V-I graph. We explored how Resistance is affected by length, area, and material, and how we can combine resistors in series to increase resistance or in parallel to decrease it. We studied Joule's Law of Heating, where heat produced is proportional to the square of the current, the resistance, and the time. Finally, we looked at Electric Power and the commercial unit of energy, the kilowatt-hour, which is one thousand Watts used for one hour. As you head into your exams, remember: draw your circuit diagrams neatly with a ruler, show every step of your mathematical working, and always state your final answer with the correct unit. You have worked hard, you understand the logic, and now it is time to apply it. Good luck, and keep shining!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c10-science-11-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

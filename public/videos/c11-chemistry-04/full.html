@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Chemical Bonding and Molecular Structure, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-chemistry-04-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Significance of Chemical Bonding, Octet Rule, and its Limitations -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Significance of Chemical Bonding, Octet Rule, and its Limitations</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Chemical bonds are attractive forces that stabilize atoms in molecules.</div>
+              <div id="qx0-p1" class="qe-bullet">• Atoms bond to achieve minimum energy and maximum stability.</div>
+              <div id="qx0-p2" class="qe-bullet">• The Octet Rule: Atoms seek eight valence electrons like noble gases.</div>
+              <div id="qx0-p3" class="qe-bullet">• Limitations: Incomplete octets (Boron) and expanded octets (Sulfur).</div>
+              <div id="qx0-p4" class="qe-bullet">• Limitations: Odd-electron molecules (Nitric Oxide) and resonance.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2260421199,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a high-energy lone atom transitioning into a stable molecule as it releases energy, followed by a side-by-side comparison of a Neon atom versus a Chlorine atom gaining an electron.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D animation showing a high-energy lone atom transitioning into a stable molecule as it releases energy, followed by a side-by-side comparison of a Neon atom versus a Chlorine atom gaining an electron.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Ionic Bonding: Lattice Enthalpy, Born-Haber Cycle, and Fajan's Rules -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Ionic Bonding: Lattice Enthalpy, Born-Haber Cycle, and Fajan's Rules</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Ionic Bond: Electrostatic attraction between oppositely charged ions</div>
+              <div id="qx1-p1" class="qe-bullet">• Lattice Enthalpy: Energy to separate one mole of solid into gaseous ions</div>
+              <div id="qx1-p2" class="qe-bullet">• Born-Haber Cycle: Indirect method to calculate lattice enthalpy using Hess's Law</div>
+              <div id="qx1-p3" class="qe-bullet">• Fajan's Rules: Factors increasing covalent character in ionic bonds</div>
+              <div id="qx1-p4" class="qe-bullet">• Covalent Character increases with: Small cation, Large anion, and High charge</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2110939633,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cyclic flow diagram showing the Born-Haber steps transitioning into a crystal lattice of Na+ and Cl- ions.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D cyclic flow diagram showing the Born-Haber steps transitioning into a crystal lattice of Na+ and Cl- ions.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Covalent Bonding: Lewis Dot Structures, Formal Charge, and Resonance Structures -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Covalent Bonding: Lewis Dot Structures, Formal Charge, and Resonance Structures</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Covalent bonding involves the sharing of electron pairs between atoms.</div>
+              <div id="qx2-p1" class="qe-bullet">• Lewis Dot Structures use dots to represent valence electrons.</div>
+              <div id="qx2-p2" class="qe-bullet">• Formal Charge = Valence electrons - (Lone pair electrons + 1/2 Bonding electrons).</div>
+              <div id="qx2-p3" class="qe-bullet">• The best Lewis structure minimizes formal charges and places negative charges on electronegative atoms.</div>
+              <div id="qx2-p4" class="qe-bullet">• Resonance structures are multiple valid drawings representing a single hybrid molecule.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":1464076208,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a Carbon Dioxide molecule transitioning from individual Lewis dots to a stable structure with double bonds, followed by an Ozone molecule showing the delocalized electron cloud through resonance.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D animation showing a Carbon Dioxide molecule transitioning from individual Lewis dots to a stable structure with double bonds, followed by an Ozone molecule showing the delocalized electron cloud through resonance.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): VSEPR Theory: Predicting Molecular Geometry, Bond Angles, and Lone Pair Effects -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">VSEPR Theory: Predicting Molecular Geometry, Bond Angles, and Lone Pair Effects</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Electron pairs repel each other to minimize electrostatic repulsion.</div>
+              <div id="qx3-p1" class="qe-bullet">• Repulsion order: Lone Pair-Lone Pair &gt; Lone Pair-Bonding Pair &gt; Bonding Pair-Bonding Pair.</div>
+              <div id="qx3-p2" class="qe-bullet">• Steric Number = Number of bonded atoms + Number of lone pairs.</div>
+              <div id="qx3-p3" class="qe-bullet">• Lone pairs occupy more space and distort ideal bond angles.</div>
+              <div id="qx3-p4" class="qe-bullet">• Molecular geometry is determined by the position of atoms only.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2563395195,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a central atom with electron clouds expanding and contracting to illustrate repulsion forces, transitioning from a perfect tetrahedron to a distorted water molecule.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D animation showing a central atom with electron clouds expanding and contracting to illustrate repulsion forces, transitioning from a perfect tetrahedron to a distorted water molecule.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Valence Bond Theory (VBT): Orbital Overlap, Sigma and Pi Bonds, and Directional Nature -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Valence Bond Theory (VBT): Orbital Overlap, Sigma and Pi Bonds, and Directional Nature</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Covalent bond forms via the overlap of half-filled atomic orbitals.</div>
+              <div id="qx4-p1" class="qe-bullet">• Overlap requires electrons with opposite spins.</div>
+              <div id="qx4-p2" class="qe-bullet">• Sigma bond: Head-on overlap along the internuclear axis (Stronger).</div>
+              <div id="qx4-p3" class="qe-bullet">• Pi bond: Sideways overlap of parallel p-orbitals (Weaker).</div>
+              <div id="qx4-p4" class="qe-bullet">• Directional nature of bonds is determined by orbital orientation.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":4288706642,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing two hydrogen s-orbitals merging head-on into a sigma bond, followed by two parallel p-orbitals overlapping sideways to form a pi bond.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D animation showing two hydrogen s-orbitals merging head-on into a sigma bond, followed by two parallel p-orbitals overlapping sideways to form a pi bond.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Hybridization Part I: sp, sp2, and sp3 Hybridization with Geometric Derivations -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Hybridization Part I: sp, sp2, and sp3 Hybridization with Geometric Derivations</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Hybridization: Intermixing of atomic orbitals to form equivalent hybrid orbitals.</div>
+              <div id="qx5-p1" class="qe-bullet">• sp Hybridization: 1s + 1p orbital; Linear geometry; 180 degree bond angle.</div>
+              <div id="qx5-p2" class="qe-bullet">• sp2 Hybridization: 1s + 2p orbitals; Trigonal planar; 120 degree bond angle.</div>
+              <div id="qx5-p3" class="qe-bullet">• sp3 Hybridization: 1s + 3p orbitals; Tetrahedral; 109.5 degree bond angle.</div>
+              <div id="qx5-p4" class="qe-bullet">• Number of hybrid orbitals created always equals the number of atomic orbitals mixed.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2417440943,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a carbon atom's s and p orbitals morphing and merging into sp, sp2, and sp3 hybrid lobes, then arranging into linear, trigonal planar, and tetrahedral shapes.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D animation showing a carbon atom's s and p orbitals morphing and merging into sp, sp2, and sp3 hybrid lobes, then arranging into linear, trigonal planar, and tetrahedral shapes.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Hybridization Part II: sp3d, sp3d2, and d2sp3 Hybridization in Complex Geometries -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Hybridization Part II: sp3d, sp3d2, and d2sp3 Hybridization in Complex Geometries</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• sp3d hybridization: 1s, 3p, 1d orbitals forming Trigonal Bipyramidal geometry</div>
+              <div id="qx6-p1" class="qe-bullet">• sp3d2 hybridization: 1s, 3p, 2d orbitals forming Octahedral geometry</div>
+              <div id="qx6-p2" class="qe-bullet">• d2sp3 hybridization: Inner d-orbitals used for Octahedral complex geometry</div>
+              <div id="qx6-p3" class="qe-bullet">• Trigonal Bipyramidal bond angles: 120 degrees (equatorial) and 90 degrees (axial)</div>
+              <div id="qx6-p4" class="qe-bullet">• Octahedral bond angles: All adjacent bond angles are 90 degrees</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":1510449275,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D transition showing a central atom morphing from Trigonal Bipyramidal to Octahedral shapes with labeled orbital overlaps.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D transition showing a central atom morphing from Trigonal Bipyramidal to Octahedral shapes with labeled orbital overlaps.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Molecular Orbital Theory (MOT) Part I: LCAO Method, Bonding and Antibonding Orbitals -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Molecular Orbital Theory (MOT) Part I: LCAO Method, Bonding and Antibonding Orbitals</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• MOT treats electrons as being delocalized over the entire molecule.</div>
+              <div id="qx7-p1" class="qe-bullet">• LCAO: Linear Combination of Atomic Orbitals mathematical method.</div>
+              <div id="qx7-p2" class="qe-bullet">• Constructive interference forms low-energy Bonding Molecular Orbitals.</div>
+              <div id="qx7-p3" class="qe-bullet">• Destructive interference forms high-energy Antibonding Molecular Orbitals.</div>
+              <div id="qx7-p4" class="qe-bullet">• Bonding orbitals increase electron density between nuclei; Antibonding orbitals create nodes.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":79816817,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing two spherical 1s atomic orbitals merging into a single cloud between nuclei (bonding) and a split cloud with a gap in the middle (antibonding).</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D animation showing two spherical 1s atomic orbitals merging into a single cloud between nuclei (bonding) and a split cloud with a gap in the middle (antibonding).</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Molecular Orbital Theory (MOT) Part II: Bond Order, Magnetic Properties, and MO Diagrams -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Molecular Orbital Theory (MOT) Part II: Bond Order, Magnetic Properties, and MO Diagrams</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Bond Order = 1/2 (Bonding electrons - Antibonding electrons)</div>
+              <div id="qx8-p1" class="qe-bullet">• Higher Bond Order = Higher Stability and Shorter Bond Length</div>
+              <div id="qx8-p2" class="qe-bullet">• Diamagnetic: All electrons are paired; repelled by magnets</div>
+              <div id="qx8-p3" class="qe-bullet">• Paramagnetic: Unpaired electrons present; attracted to magnets</div>
+              <div id="qx8-p4" class="qe-bullet">• Follow Aufbau, Pauli, and Hund's rules to fill MO diagrams</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2520508993,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen showing a mathematical calculation of bond order on the left and a 3D rotating Oxygen molecule with spinning electrons on the right.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen showing a mathematical calculation of bond order on the left and a 3D rotating Oxygen molecule with spinning electrons on the right.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Dipole Moment and Polarity: Electronegativity, Vector Addition, and Molecular Symmetry -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Dipole Moment and Polarity: Electronegativity, Vector Addition, and Molecular Symmetry</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Electronegativity causes unequal electron distribution in covalent bonds.</div>
+              <div id="qx9-p1" class="qe-bullet">• Dipole moment (mu) = charge (q) multiplied by distance (r).</div>
+              <div id="qx9-p2" class="qe-bullet">• Molecular dipole moment is the vector sum of all bond dipoles.</div>
+              <div id="qx9-p3" class="qe-bullet">• Symmetrical molecules like CCl4 and CO2 have a net dipole moment of zero.</div>
+              <div id="qx9-p4" class="qe-bullet">• Asymmetrical shapes like H2O result in a net molecular dipole moment.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":525493605,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing CCl4 with four red arrows (dipoles) canceling out at the center, transitioning to H2O where two arrows combine into one large resultant vector.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D animation showing CCl4 with four red arrows (dipoles) canceling out at the center, transitioning to H2O where two arrows combine into one large resultant vector.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Hydrogen Bonding: Types, Strength, and Impact on Physical Properties -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Hydrogen Bonding: Types, Strength, and Impact on Physical Properties</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Hydrogen bond: Electrostatic attraction involving H bonded to F, O, or N</div>
+              <div id="qx10-p1" class="qe-bullet">• Intermolecular: Occurs between separate molecules (e.g., Water, Ethanol)</div>
+              <div id="qx10-p2" class="qe-bullet">• Intramolecular: Occurs within a single molecule (e.g., o-nitrophenol)</div>
+              <div id="qx10-p3" class="qe-bullet">• Impact: Significantly increases boiling points and solubility</div>
+              <div id="qx10-p4" class="qe-bullet">• Ice structure: Hydrogen bonds create an open lattice, making ice less dense</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":839249680,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular animation showing water molecules forming a shifting network of dashed lines representing hydrogen bonds, transitioning into a rigid hexagonal crystal lattice for ice.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D molecular animation showing water molecules forming a shifting network of dashed lines representing hydrogen bonds, transitioning into a rigid hexagonal crystal lattice for ice.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Problem-Solving Strategies, Common Pitfalls, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Problem-Solving Strategies, Common Pitfalls, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Systematic approach: Valence electrons -&gt; Steric number -&gt; Geometry</div>
+              <div id="qx11-p1" class="qe-bullet">• Distinguish between Electron Geometry and Molecular Shape</div>
+              <div id="qx11-p2" class="qe-bullet">• Check d-orbital availability before assigning higher hybridization</div>
+              <div id="qx11-p3" class="qe-bullet">• MOT: Always count total electrons before drawing MO diagrams</div>
+              <div id="qx11-p4" class="qe-bullet">• Dipole Moment: Use vector addition and consider molecular symmetry</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3171552774,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen showing a step-by-step flowchart on the left and a 3D rotating water molecule transitioning from tetrahedral electron geometry to bent molecular geometry on the right.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen showing a step-by-step flowchart on the left and a 3D rotating water molecule transitioning from tetrahedral electron geometry to bent molecular geometry on the right.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Chemical Bonding and Molecular Structure today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Significance of Chemical Bonding, Octet Rule, and its Limitations <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Ionic Bonding: Lattice Enthalpy, Born-Haber Cycle, and Fajan's Rules <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Covalent Bonding: Lewis Dot Structures, Formal Charge, and Resonance Structures <small>10:00</small></button>
+          <button type="button" data-seek="900">4. VSEPR Theory: Predicting Molecular Geometry, Bond Angles, and Lone Pair Effects <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Valence Bond Theory (VBT): Orbital Overlap, Sigma and Pi Bonds, and Directional Nature <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Hybridization Part I: sp, sp2, and sp3 Hybridization with Geometric Derivations <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Hybridization Part II: sp3d, sp3d2, and d2sp3 Hybridization in Complex Geometries <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Molecular Orbital Theory (MOT) Part I: LCAO Method, Bonding and Antibonding Orbitals <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Molecular Orbital Theory (MOT) Part II: Bond Order, Magnetic Properties, and MO Diagrams <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Dipole Moment and Polarity: Electronegativity, Vector Addition, and Molecular Symmetry <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Hydrogen Bonding: Types, Strength, and Impact on Physical Properties <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Problem-Solving Strategies, Common Pitfalls, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey into the heart of chemistry. Have you ever wondered why atoms don't just exist as lonely, single particles? Why does oxygen exist as O-two, or why does sodium always seek out chlorine? The answer lies in the concept of chemical bonding. A chemical bond is essentially the attractive force that holds various atoms together in a molecule or a crystal lattice. But why do they bother bonding at all? The primary reason is stability. Most atoms in their isolated state are in a high-energy, unstable configuration. By forming bonds, atoms can redistribute their electrons to reach a lower, more stable energy state. Think of it like a ball rolling down a hill; it wants to reach the bottom where it is most at rest. In chemistry, that 'bottom' is a state of minimum energy. Now, let's look at the driving force behind this: the Octet Rule. Proposed by Gilbert N. Lewis, this rule states that atoms tend to gain, lose, or share electrons so that they achieve a stable electronic configuration similar to the nearest noble gas. For most elements, this means having eight electrons in their outermost, or valence, shell. For example, if you look at Neon, it has a full outer shell of eight electrons, making it incredibly stable and chemically inert. Chlorine, with seven valence electrons, is just one electron away from this magic number, so it is highly reactive, seeking to grab an electron from another atom to complete its octet. However, as we dive deeper into chemistry, we realize that while the Octet Rule is a fantastic starting field, it is not a universal law. It has significant limitations. First, we encounter 'incomplete octet' molecules. Some elements, like Lithium, Beryllium, or Boron, are stable in compounds even when they have fewer than eight electrons in their valence shell. For instance, in Boron Trifluoride, Boron is surrounded by only six electrons, yet the molecule is stable. Second, we see 'expanded octet' phenomena. This happens in elements from the third period and onwards, such as Phosphorus or Sulfur. Because these elements have access to d-orbitals, they can accommodate more than eight electrons. Take Sulfur Hexafluoride, or S-F-six, as an example; here, Sulfur is surrounded by twelve electrons. Third, there is the issue of odd-electron molecules. Some molecules, like Nitric Oxide, or N-O, have an odd number of total valence electrons, making it impossible for every single atom to satisfy the octet rule simultaneously. Finally, we must consider the concept of formal charge and resonance, which shows that the octet rule alone cannot always explain the true distribution of electrons in complex molecules. So, while the Octet Rule gives us a great starting point for predicting how atoms interact, we must prepare to use more advanced theories to understand the true complexity of molecular structures. In our next session, we will dive into the specifics of Ionic Bonding. Let's get started!","Welcome back. In our previous session, we explored how atoms achieve stability through the octet rule. Now, let us dive deep into the second major type of bond: the Ionic Bond. An ionic bond is formed by the complete transfer of one or more electrons from one atom to another, resulting in the formation of oppositely charged ions. But how much energy is actually involved in this process? It is not as simple as just moving an electron. To understand the energetics of ionic compounds, we must first talk about Lattice Enthalpy. Lattice enthalpy is the energy required to completely separate one mole of a solid ionic compound into its constituent gaseous ions. Think of it as the 'strength' of the crystal lattice. The greater the electrostatic attraction between the cation and the anion, the higher the lattice enthalpy. This attraction depends on two things: the charge on the ions and the size of the ions. Higher charges mean stronger attraction, and smaller ions can get closer together, also increasing the energy. Because measuring lattice enthalpy directly is extremely difficult, scientists use a clever indirect method called the Born-Haber Cycle. This is an application of Hess's Law, which states that the total enthalpy change of a reaction is the same regardless of the pathway taken. In the Born-Haber cycle, we break down the formation of an ionic solid into several steps. Step one: Sublimation of the metal to turn it into a gas. Step two: Ionization enthalpy to remove an electron from the metal atom. Step three: Dissociation enthalpy to break the bond of the non-metal molecule, like chlorine gas, into individual atoms. Step four: Electron gain enthalpy, which is the energy released when a non-metal atom gains an electron. Finally, step five: The lattice enthalpy, where the gaseous ions combine to form the solid crystal. By adding and subtracting these individual steps, we can calculate the total enthalpy of formation. Now, here is a crucial concept: no bond is 100 percent ionic. There is always some degree of electron sharing. This is what we call 'Covalent Character in Ionic Bonds.' To predict how much covalent character an ionic bond has, we use Fajan's Rules. Fajan's Rules tell us that covalent character increases when the electron cloud of an anion is distorted or 'polarized' by a cation. There are three main factors here. First, the size of the cation. A smaller cation has a higher charge density, meaning it can pull the anion's electrons closer, increasing covalent character. Second, the size of the anion. A larger anion is more 'squishy' or easily polarized, meaning its electron cloud is more easily distorted, leading to more covalent character. Third, the charge on the ions. As the charge on either the cation or the anion increases, the polarization increases, and thus, the covalent character increases. So, to summarize: high lattice enthalpy means a very stable ionic crystal, the Born-Haber cycle helps us calculate the energy of formation, and Fajan's rules help us understand why some 'ionic' compounds behave a bit like covalent ones. Let's move on to how we actually draw these structures.","Welcome back. In our previous session, we explored how ionic bonds form through electron transfer. Now, we move to a different way atoms achieve stability: Covalent Bonding. Unlike ionic bonding, covalent bonding involves the sharing of electrons between atoms. This typically occurs between non-metals with similar electronegativities. To visualize this sharing, we use a tool called Lewis Dot Structures. Named after Gilbert N. Lewis, this method represents valence electrons as dots around the chemical symbol of an atom. When two atoms share a pair of electrons, we draw a line between them, representing a single covalent bond. If they share two pairs, it is a double bond, and three pairs form a triple bond. Our primary goal when drawing these structures is to satisfy the Octet Rule, which states that atoms tend to gain, lose, or share electrons to achieve a stable configuration of eight valence electrons, similar to a noble gas. However, let us look at a practical example: Carbon Dioxide. Carbon has four valence electrons, and each Oxygen has six. To satisfy the octet for all three atoms, Carbon forms two double bonds, one with each Oxygen. This is written as O equals C equals O. Now, sometimes a single Lewis structure is not enough to accurately represent a molecule. This brings us to the concept of Formal Charge. Formal charge is a bookkeeping tool that helps us determine the most plausible Lewis structure among several possibilities. It is not the actual charge on an atom, but rather the charge assigned to an atom assuming all shared electrons are distributed equally. The formula for calculating formal charge is: Valence electrons of the free atom, minus non-bonding electrons, minus one-half of the bonding electrons. For example, in a molecule like the Carbonate ion, Carbon-Oxygen-Three, different arrangements of single and double bonds can be drawn. By calculating the formal charge for each atom in each structure, we look for the structure where the formal charges are closest to zero. Ideally, the negative formal charge should reside on the most electronegative atom. Finally, we encounter a fascinating phenomenon called Resonance. In many molecules, a single Lewis structure cannot describe the actual electronic distribution. Take the Ozone molecule, O-Three, as an example. You can draw one structure with a double bond on the left and a single bond on the right, or vice versa. In reality, the ozone molecule does not flip back and forth between these two. Instead, it exists as a hybrid. The actual molecule is a resonance hybrid where both bonds are identical, having a bond order of one point five. Resonance structures are multiple valid Lewis structures that can be drawn for a single molecule, and the true structure is always an average of these contributors. Remember, resonance does not mean the electrons are moving; it means the electrons are delocalized across the entire structure, providing extra stability known as resonance energy. Understanding these three concepts—Lewis structures for representation, formal charge for accuracy, and resonance for delocalization—is essential before we move on to predicting molecular shapes using VSEPR theory.","Welcome back. In our previous session, we learned how to draw Lewis dot structures to represent the distribution of electrons. But a Lewis structure is just a flat, two-dimensional map. It tells us which atoms are connected, but it doesn't tell us the actual shape of the molecule in three-dimensional space. To understand the real shape, we need the Valence Shell Electron Pair Repulsion theory, commonly known as VSEPR theory. The fundamental principle of VSEPR is quite simple: electron pairs are negatively charged, and because like charges repel, these electron pairs want to stay as far away from each other as possible to minimize repulsion and reach a state of minimum energy. Now, when we look at a central atom, we must consider two types of electron pairs: bonding pairs, which are shared between two atoms, and lone pairs, which belong solely to the central atom. While both exert repulsive forces, they are not equal in strength. This is a crucial point. A lone pair is attracted to only one nucleus, making it more 'spread out' or bulky in space compared to a bonding pair, which is pulled tight between two nuclei. Therefore, the order of repulsive strength is: Lone Pair-Lone Pair repulsion is greater than Lone Pair-Bonding Pair repulsion, which is in turn greater than Bonding Pair-Bonding Pair repulsion. Let's apply this to predict geometries. We start by calculating the steric number, which is the sum of the number of atoms bonded to the central atom and the number of lone pairs on that central atom. If a central atom has a steric number of two, the electron pairs will move to opposite sides to stay apart, resulting in a linear geometry with a bond angle of one hundred and eighty degrees, like in Beryllium Chloride. If the steric number is three, the pairs will position themselves at the corners of an equilateral triangle, giving us a trigonal planar geometry with angles of one hundred and twenty degrees, such as in Boron Trifluoride. For a steric number of four, the electron pairs arrange themselves in a tetrahedron, aiming for angles of one hundred and nine point five degrees. In Methane, where there are four bonding pairs, we get a perfect tetrahedral shape. However, look what happens when we introduce lone pairs. In Ammonia, the nitrogen has three bonding pairs and one lone pair. That lone pair pushes the bonding pairs closer together, reducing the bond angle from one hundred and nine point five degrees to approximately one hundred and four point five degrees. Now consider Water. Oxygen has two bonding pairs and two lone pairs. The two lone pairs exert even more repulsion, squeezing the hydrogen-oxygen-hydrogen angle down to about one hundred and four degrees. As we move to higher steric numbers, like five, we see trigonal bipyramidal arrangements. Here, we have axial positions and equatorial positions. Lone pairs always prefer the equatorial positions because there is more space there to minimize repulsion. In a molecule like Sulfur Tetrafluoride, which has four bonding pairs and one lone pair, the shape is known as a see-saw. If we have a steric number of six, we look at octahedral geometries. In an octahedral arrangement, all positions are equivalent, but if we add a lone pair, as in Sulfur Tetrafluoride's cousin, we get a square pyramidal shape. Remember, the geometry of the electron pairs is called the electron geometry, but the actual shape of the molecule, or molecular geometry, is what we see when we only look at the positions of the atoms. Always account for those lone pairs, as they are the invisible architects that distort bond angles and define the true three-dimensional structure of the world around us.","Welcome back. In our previous session, we looked at how Lewis structures help us visualize electron sharing. But Lewis structures have a limitation: they don't tell us anything about the three-dimensional shape or the strength of the bond. To understand the 'how' and 'where' of bonding, we turn to the Valence Bond Theory, or VBT. Developed by Heitler and London, and later refined by Pauling, VBT provides a quantum mechanical explanation for chemical bonding. The core idea is simple: a covalent bond is formed when two half-filled atomic orbitals, one from each atom, overlap in space. For this overlap to occur, the two orbitals must contain electrons with opposite spins. Think of it like two hands reaching out to shake; the closer and more effective the grip, the stronger the bond. Now, let's talk about the 'Directional Nature' of these bonds. Unlike ionic bonds, which are electrostatic and act in all directions, covalent bonds are highly directional. This is because atomic orbitals like the p, d, and f orbitals have specific orientations in space. The bond forms only in the direction where the orbital density is highest. This directionality is exactly why molecules have specific shapes. The strength of a bond depends on the extent of this overlap. The greater the overlap, the stronger and more stable the bond. We categorize these overlaps into two main types: Sigma bonds and Pi bonds. Let's start with the Sigma bond, or the sigma bond. A sigma bond is formed by the end-to-end or head-on overlap of atomic orbitals along the internuclear axis. This can happen between two s-orbitals, an s-orbital and a p-orbital, or even two p-orbitals if they approach each other head-on. Because the electron density is concentrated directly between the two nuclei, sigma bonds are very strong and allow for free rotation of the atoms around the bond axis. Now, let's look at the Pi bond, or the pi bond. A pi bond is formed by the lateral or sideways overlap of atomic orbitals. This typically happens between two parallel p-orbitals that are perpendicular to the internuclear axis. Unlike the sigma bond, the electron density in a pi bond is located in two lobes, one above and one below the plane of the nuclei. Because the electron density is not concentrated directly between the nuclei, pi bonds are generally weaker than sigma bonds. It is also important to note that a pi bond cannot exist on its own; it can only form in addition to a sigma bond. For example, in an ethene molecule, there is one sigma bond and one pi bond between the two carbon atoms. In a triple bond, like in ethyne, you will find one sigma bond and two pi bonds. To summarize, the sigma bond is the first bond formed between any two atoms, characterized by head-on overlap and high strength, while the pi bond is a secondary bond formed by sideways overlap, characterized by its lateral electron distribution. Understanding this distinction is crucial as we move into the concept of hybridization in our next lesson.","Welcome back. In our previous lesson, we discussed Valence Bond Theory and how atomic orbitals overlap to form bonds. But there is a significant problem. If we look at methane, carbon has the ground state electronic configuration one s-squared, two s-two, two p-six. In its excited state, one electron from the two s orbital jumps to the two p-z orbital, giving us one s electron and three p electrons. Now, if these three p orbitals were to bond, we would expect three different bond lengths and three different shapes because p orbitals are directional along the x, y, and z axes. However, experimental data shows that all four bonds in methane are identical in length and strength. This brings us to the concept of Hybridization. Hybridization is the process of intermixing atomic orbitals of slightly different energies to form a new set of equivalent orbitals called hybrid orbitals. These hybrid orbitals are more effective in forming bonds because they are more directional. Let us first derive sp hybridization. Imagine a carbon atom where the one s orbital and one p orbital mix. From these two atomic orbitals, we create two new hybrid orbitals of equal energy. These are called sp hybrid orbitals. To minimize electron-electron repulsion, these two orbitals point in exactly opposite directions, creating a linear geometry with a bond angle of one hundred and eighty degrees. A classic example is Beryllium Chloride, BeCl-two, where the central beryllium atom undergoes sp hybridization. Next, let us look at sp-two hybridization. Here, one s orbital mixes with two p orbitals. This results in three equivalent sp-two hybrid orbitals. These three orbitals arrange themselves in a single plane, pointing towards the corners of an equilateral triangle to stay as far apart as possible. This creates a trigonal planar geometry with a bond angle of one hundred and twenty degrees. You can see this in Boron Trifluoride, BF-three. Finally, we must understand sp-three hybridization. In this case, one s orbital mixes with all three p orbitals. This produces four equivalent sp-three hybrid orbitals. To maximize the distance between these four electron pairs, they move into three-dimensional space, pointing towards the corners of a regular tetrahedron. This results in a tetrahedral geometry with a bond angle of approximately one hundred and nine point five degrees. Methane, CH-four, is the perfect example of this. Remember, the number of hybrid orbitals produced is always equal to the number of atomic orbitals that were mixed. In sp, two orbitals are mixed to give two hybrids; in sp-two, three are mixed to give three; and in sp-three, four are mixed to give four. This mathematical mixing is what allows molecules to adopt their specific, stable shapes.","Welcome back. In our previous session, we mastered the basics of sp, sp2, and sp3 hybridization. But as we move into more complex molecules, especially those involving transition metals or central atoms with more than four electron pairs, we need to expand our toolkit. Today, we explore hybridization involving d-orbitals. When a central atom has more than four valence electron pairs, it must utilize its vacant d-orbitals to create new hybrid orbitals. Let's start with sp3d hybridization. Here, one s-orbital, three p-orbitals, and one d-orbital—specifically the d-z-squared orbital—mix to form five equivalent sp3d hybrid orbitals. This arrangement results in a Trigonal Bipyramidal geometry. Imagine a central atom with three equatorial positions forming a triangle in a single plane, and two axial positions sitting above and below that plane. A classic example is Phosphorus Pentachloride, or P-Cl-5. In this molecule, the phosphorus atom undergoes sp3d hybridization. The three chlorine atoms in the equatorial plane have bond angles of one hundred and twenty degrees, while the two axial chlorine atoms are at ninety degrees to the equatorial plane. Now, let's step up to sp3d2 hybridization. In this case, we mix one s-orbital, three p-orbitals, and two d-orbitals—the d-x-squared minus y-squared and the d-z-squared. This creates six equivalent hybrid orbitals, leading to an Octahedral geometry. The bond angles here are a perfect ninety degrees between all adjacent ligands. A great example is Sulfur Hexafluoride, or S-F-6. In an octahedral shape, every single bond angle is ninety degrees, providing a highly symmetrical structure. Finally, we must discuss a very special case used extensively in coordination chemistry: d2sp3 hybridization. While it also results in an octahedral geometry, the origin of the orbitals is different. In d2sp3 hybridization, the central metal atom uses its inner d-orbitals—specifically the d-xy, d-yz, and d-zx orbitals—along with one s and three p orbitals. This is known as an inner orbital complex. This is common in transition metal complexes like the Ferrocyanide ion, or C-Fe-four-minus. If the metal uses its outer d-orbitals instead, like in the Dicyanoferrate ion, it is called an outer orbital complex, which follows sp3d2 hybridization. To summarize the difference: sp3d gives us Trigonal Bipyramidal, sp3d2 gives us Octahedral, and d2sp3 also gives us Octahedral but with a different orbital source. Understanding these geometries is the key to predicting the shape and reactivity of complex inorganic molecules.","Welcome back. In our previous session, we explored Valence Bond Theory, which focuses on how individual atomic orbitals overlap to form bonds. However, VBT has certain limitations, especially when explaining the magnetic properties and electronic spectra of molecules. To address these, we turn to a more comprehensive approach: Molecular Orbital Theory, or MOT. Unlike VBT, which views electrons as belonging to specific atoms, MOT suggests that when atoms combine, their atomic orbitals lose their individual identity and merge to form new orbitals called Molecular Orbitals. These molecular orbitals are not centered on a single nucleus but are spread over the entire molecule. To understand how these are formed, we use a mathematical method called the Linear Combination of Atomic Orbitals, or LCAO. Imagine two hydrogen atoms, each with a one-s orbital. When these two atoms approach each other, their wave functions, represented by the Greek letter psi, can interact in two distinct ways. The first way is constructive interference. This happens when the wave functions of the two atomic orbitals are added together. In this case, the amplitudes of the waves reinforce each other, leading to an increase in electron density between the two nuclei. This new orbital is called a Bonding Molecular Orbital, denoted as sigma one-s. Because the electron density is high between the nuclei, it acts like a glue, pulling the nuclei together and stabilizing the molecule. This orbital is lower in energy than the original atomic orbitals. The second way is destructive interference. This occurs when the wave functions are subtracted from one another. Here, the waves cancel each other out, creating a region of zero electron density between the nuclei known as a nodal plane. This new orbital is called an Antibonding Molecular Orbital, denoted as sigma star one-s. Because the electron density is pushed away from the region between the nuclei, the nuclei repel each other, making this orbital higher in energy and less stable than the original atomic orbitals. So, to summarize the LCAO method: when two atomic orbitals combine, they always produce two molecular orbitals—one bonding and one antibonding. The bonding orbital is characterized by lower energy and higher stability, while the antibonding orbital is characterized by higher energy and lower stability. This energy difference between the bonding and antibonding orbitals is what determines the overall stability of the chemical bond. In our next video, we will use this foundation to calculate bond orders and predict the magnetic behavior of various molecules.","Welcome back. In our previous session, we explored how atomic orbitals combine through the Linear Combination of Atomic Orbitals to form bonding and antibonding molecular orbitals. Today, we move from the 'how' to the 'what'. We will learn how to use these molecular orbitals to predict the actual strength of a bond and whether a molecule will be attracted to a magnet. Let us start with the concept of Bond Order. Bond order is a numerical value that tells us the stability of a molecule and the number of bonds between two atoms. To calculate it, we use a very simple formula: one-half times the difference between the number of electrons in bonding orbitals and the number of electrons in antibonding orbitals. Mathematically, we write this as: Bond Order equals one-half of the quantity, number of bonding electrons minus number of antibonding electrons. If the bond order is positive, the molecule is stable and can exist. If the bond order is zero or negative, the molecule is unstable and will not form. For example, let us look at a Hydrogen molecule, H-two. It has two electrons in the sigma bonding orbital and zero in the antibonding orbital. So, one-half of two minus zero equals one. A bond order of one means a single covalent bond. Now, consider Helium-two, He-two. It has two electrons in the bonding orbital and two in the antibonding orbital. One-half of two minus two equals zero. This explains why Helium-two does not exist in nature. Notice the relationship: as the bond order increases, the bond strength increases, and the bond length decreases. A triple bond has a higher bond order than a double bond, making it shorter and stronger. Next, let us discuss Magnetic Properties. This is one of the greatest triumphs of Molecular Orbital Theory. When we look at the electron configuration of a molecule, we check if all electrons are paired. If every electron in the molecular orbitals is paired with another of opposite spin, the molecule is called Diamagnetic. Diamagnetic substances are weakly repelled by a magnetic field. However, if there is even one unpaired electron in any molecular orbital, the molecule is called Paramagnetic. Paramagnetic substances are attracted to a magnetic field. This explains why Oxygen, O-two, is paramagnetic. Even though Lewis structures might suggest all electrons are paired, MOT shows that the two highest energy electrons occupy separate pi-antibonding orbitals with parallel spins. Now, let us put everything together by constructing a Molecular Orbital Diagram. To draw a diagram, first, draw two horizontal lines representing the atomic orbitals of the two atoms. If the atoms are identical, like Oxygen, the energy levels are the same. If they are different, like Carbon Monoxide, the more electronegative atom will have lower energy atomic orbitals. Next, draw the molecular orbitals in the center. The bonding orbitals are placed lower in energy, and the antibonding orbitals, marked with an asterisk, are placed higher. Finally, fill these orbitals with electrons following the three fundamental rules. First, the Aufbau Principle: fill the lowest energy orbitals first. Second, the Pauli Exclusion Principle: each orbital can hold a maximum of two electrons with opposite spins. Third, Hund's Rule of Maximum Multiplicity: when filling degenerate orbitals, such as the pi orbitals, place one electron in each orbital before pairing them up. By following these steps, you can predict the stability, bond length, magnetic behavior, and even the electronic spectrum of any diatomic molecule. Let us practice this with Nitrogen.","Welcome back. In our previous session, we explored how molecular orbital theory explains the electronic structure of molecules. Now, we shift our focus to a crucial physical property that determines how molecules interact with each other: Polarity. To understand polarity, we must first revisit the concept of electronegativity. As you know, electronegativity is the tendency of an atom to attract a shared pair of electrons towards itself. When two atoms with different electronegativity values form a covalent bond, the electron density is not shared equally. The more electronegative atom pulls the electrons closer, acquiring a partial negative charge, denoted by the Greek letter delta minus. Conversely, the less electronegative atom acquires a partial positive charge, denoted by delta plus. This separation of charge creates what we call a bond dipole. A bond dipole is a vector quantity, meaning it has both magnitude and direction. By convention, the direction of the dipole moment vector is drawn from the positive center to the negative center. The magnitude of this dipole moment, represented by the symbol mu, is the product of the magnitude of the charge, q, and the distance of separation between the charges, r. So, the formula is mu equals q times r. Now, the most important question is: how do these individual bond dipoles affect the entire molecule? This is where vector addition comes into play. A molecule's overall dipole moment is the vector sum of all its individual bond dipoles. If the bond dipoles are arranged in a way that they cancel each other out, the molecule will be non-polar, meaning its net dipole moment is zero. If they do not cancel, the molecule is polar. Let us look at two classic examples. Consider Carbon Tetrachloride, or C-H-four. Here, we have four C-Cl bonds. While each C-Cl bond is highly polar due to the high electronegativity of chlorine, the molecule itself is perfectly symmetrical in a tetrahedral geometry. Because of this high degree of symmetry, the four bond dipole vectors point in directions that mathematically cancel each other out perfectly. Therefore, the net dipole moment of C-H-four is zero, and the molecule is non-polar. Now, compare this to Water, or H-two-O. In water, the oxygen atom is much more electronegative than the hydrogen atoms. Furthermore, the bent shape of the water molecule, which we studied in VSEPR theory, prevents the two O-H bond dipoles from canceling out. Instead, they add up to produce a significant net dipole moment pointing towards the oxygen atom. This makes water a highly polar molecule. Symmetry is the deciding factor here. Even if a molecule has polar bonds, like Carbon Dioxide, C-O-two, it can be non-polar. In C-O-two, the oxygen atoms are on opposite sides of the carbon atom in a linear arrangement. The two C-O bond dipoles are equal in magnitude but point in exactly opposite directions. Their vector sum is zero. Thus, C-O-two is non-polar. In summary, to determine if a molecule is polar or non-polar, you must look at two things: first, the difference in electronegativity between the atoms, and second, the molecular geometry. If the geometry is highly symmetrical, like in linear, trigonal planar, or tetrahedral shapes with identical peripheral atoms, the dipoles often cancel. If the geometry is asymmetrical, like bent or pyramidal, the molecule will likely be polar. Understanding this helps us predict boiling points, solubility, and how molecules will react in a chemical environment.","Welcome back. In our previous session, we explored how dipole moments determine molecular polarity. Today, we dive into a special, powerful type of attractive force that often dictates the behavior of life-sustaining molecules: Hydrogen Bonding. Now, don't be confused—hydrogen bonding is not a covalent bond, nor is it a standard dipole-dipole interaction. It is a unique electrostatic attraction. It occurs when a hydrogen atom, which is already covalently bonded to a highly electronegative atom like Fluorine, Oxygen, or Nitrogen, experiences an attraction toward another electronegative atom nearby. Because Fluorine, Oxygen, and Nitrogen are so small and so electronegative, they pull the electron density away from the hydrogen, leaving the hydrogen nucleus—which is just a single proton—partially exposed. This 'naked' proton acts as a tiny, concentrated positive charge that seeks out the lone pairs of neighboring electronegative atoms. We categorize hydrogen bonding into two main types: Intermolecular and Intramolecular. Let's look at Intermolecular hydrogen bonding first. This occurs between two different molecules. Think of water, H-two-O. In a liquid sample of water, the hydrogen of one water molecule is attracted to the oxygen of a neighboring water molecule. This creates a vast network of connections, which is why water is a liquid at room temperature rather than a gas. Another classic example is Ethanol, C-two-H-five-O-H, where the hydrogen of one ethanol molecule bonds to the oxygen of another. Now, contrast this with Intramolecular hydrogen bonding. Here, the bond forms within a single molecule. This happens when a molecule contains both a hydrogen donor and an acceptor group in close proximity. A perfect example is o-nitrophenol. In the ortho position, the hydroxyl hydrogen can reach over and bond with the oxygen of the nitro group on the same ring. This internal bonding often makes such molecules more volatile than their para-isomers because they aren't busy bonding with their neighbors. Regarding strength, hydrogen bonding is much stronger than ordinary van der Waals forces but significantly weaker than covalent or ionic bonds. Its strength depends on the electronegativity of the donor and acceptor atoms and the distance between them. Finally, let's discuss how this affects physical properties. First, Boiling and Melting Points. Molecules that exhibit intermolecular hydrogen bonding have much higher boiling points than expected. Compare Ammonia, N-H-three, to Phosphine, P-H-three. Even though they are in the same group, Ammonia has a much higher boiling point because of hydrogen bonding. Second, Solubility. Many substances, like alcohols and sugars, are highly soluble in water because they can form hydrogen bonds with the water molecules. Third, Density and Structure. A fascinating case is ice. In liquid water, molecules are close together, but when water freezes, the hydrogen bonding network forces the molecules into a rigid, open, hexagonal lattice structure. This actually increases the volume and decreases the density, which is why ice floats. Understanding these subtle attractions is key to mastering molecular behavior.","Welcome to our final session on Chemical Bonding and Molecular Structure. We have traveled from the simple octet rule to the complex energy levels of Molecular Orbital Theory. Now, it is time to sharpen your exam skills. To master this chapter, you must transition from memorizing shapes to understanding the underlying physics. When you face a question on molecular geometry, do not just look at the formula. Follow a systematic three-step approach. First, determine the central atom and its valence electrons. Second, calculate the steric number by adding the number of bonded atoms and the number of lone pairs. Third, use this number to identify the electron geometry, and then refine it to the molecular shape by accounting for lone pair-lone pair repulsions. A common pitfall occurs when students confuse electron geometry with molecular geometry. Remember, electron geometry includes lone pairs, while molecular geometry describes only the positions of the atoms. For example, in water, the electron geometry is tetrahedral, but the molecular shape is bent. Another frequent error is in hybridization. Always check if the central atom has d-orbitals available in its valence shell before assigning sp three d or sp three d two hybridization. If you are dealing with Molecular Orbital Theory, never forget to check the total number of electrons before drawing your diagram. A single misplaced electron will lead to the wrong bond order and incorrect magnetic properties. When calculating bond order, remember the formula: one half of the absolute difference between the number of bonding electrons and antibonding electrons. If the bond order is zero, the molecule does not exist. For questions on dipole moments, treat them as vectors. Do not simply add the magnitudes of individual bond dipoles; you must consider their direction and the overall symmetry of the molecule. A molecule like carbon tetrachloride has polar bonds, but its net dipole moment is zero due to its symmetrical tetrahedral shape. As we recap, remember the hierarchy of bonding theories. Use Lewis structures for connectivity, VSEPR for shape, Valence Bond Theory for orbital overlap and hybridization, and Molecular Orbital Theory for electronic transitions and magnetic behavior. Keep an eye on formal charge to identify the most stable resonance structure, as the structure with the lowest formal charges is generally the most significant. Master these strategies, watch out for these traps, and you will find this chapter to be one of your strongest assets in chemistry. Good luck with your preparations."];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-chemistry-04-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

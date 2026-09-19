@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Trigonometric Functions, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-maths-03-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Real-world Applications, Importance, and the Concept of Angles -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Real-world Applications, Importance, and the Concept of Angles</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Trigonometry models waves, cycles, and rotations in nature.</div>
+              <div id="qx0-p1" class="qe-bullet">• Applications include astronomy, engineering, and signal processing.</div>
+              <div id="qx0-p2" class="qe-bullet">• An angle represents the amount of rotation between two rays.</div>
+              <div id="qx0-p3" class="qe-bullet">• Degrees: Based on a 360-degree full rotation.</div>
+              <div id="qx0-p4" class="qe-bullet">• Radians: Based on the relationship between arc length and radius.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":2856826905,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a rotating planet, transitioning into a pulsating sound wave and then a glowing unit circle.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D animation showing a rotating planet, transitioning into a pulsating sound wave and then a glowing unit circle.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Angles and Their Measurement: Degree vs. Radian Measure and Conversions -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Angles and Their Measurement: Degree vs. Radian Measure and Conversions</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Degree Measure: 1 degree = 60 minutes; 1 minute = 60 seconds</div>
+              <div id="qx1-p1" class="qe-bullet">• Radian Measure: Angle subtended by an arc equal to the radius</div>
+              <div id="qx1-p2" class="qe-bullet">• Conversion: Degrees to Radians = Multiply by (pi / 180)</div>
+              <div id="qx1-p3" class="qe-bullet">• Conversion: Radians to Degrees = Multiply by (180 / pi)</div>
+              <div id="qx1-p4" class="qe-bullet">• Relationship: 360 degrees = 2 pi radians</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2045488526,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D circle where a radius 'r' is being laid along the circumference to visually demonstrate the definition of one radian.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D circle where a radius 'r' is being laid along the circumference to visually demonstrate the definition of one radian.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Trigonometric Functions: Unit Circle, Signs in Quadrants, and Domain/Range -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Trigonometric Functions: Unit Circle, Signs in Quadrants, and Domain/Range</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Unit Circle: Center (0,0), Radius = 1 unit</div>
+              <div id="qx2-p1" class="qe-bullet">• On Unit Circle: x = cos(theta) and y = sin(theta)</div>
+              <div id="qx2-p2" class="qe-bullet">• Quadrant Signs: All (Q1), Sine (Q2), Tan (Q3), Cos (Q4)</div>
+              <div id="qx2-p3" class="qe-bullet">• Sine and Cosine Domain: All Real Numbers (R)</div>
+              <div id="qx2-p4" class="qe-bullet">• Sine and Cosine Range: Interval [-1, 1]</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2449897752,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate plane showing a glowing unit circle with a rotating radius vector and dynamic x-y coordinate labels.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D coordinate plane showing a glowing unit circle with a rotating radius vector and dynamic x-y coordinate labels.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Trigonometric Functions: Graphs of Sine, Cosine, Tangent, Cosecant, Secant, and Cotangent -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Trigonometric Functions: Graphs of Sine, Cosine, Tangent, Cosecant, Secant, and Cotangent</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Sine and Cosine are continuous waves with a range of negative one to one.</div>
+              <div id="qx3-p1" class="qe-bullet">• Tangent and Cotangent have vertical asymptotes where the denominator is zero.</div>
+              <div id="qx3-p2" class="qe-bullet">• Sine and Cosine graphs are horizontal shifts of each other.</div>
+              <div id="qx3-p3" class="qe-bullet">• Cosecant and Secant are reciprocal curves that touch the sine and cosine peaks.</div>
+              <div id="qx3-p4" class="qe-bullet">• Domain and range determine the boundaries and existence of each graph.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3591122541,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A dynamic 3D coordinate system where six colored trigonometric waves emerge one by one from a rotating unit circle.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A dynamic 3D coordinate system where six colored trigonometric waves emerge one by one from a rotating unit circle.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Sign of Trigonometric Functions and Periodicity: Detailed Analysis -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Sign of Trigonometric Functions and Periodicity: Detailed Analysis</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Quadrant I: All functions are positive</div>
+              <div id="qx4-p1" class="qe-bullet">• Quadrant II: Sine and Cosecant are positive</div>
+              <div id="qx4-p2" class="qe-bullet">• Quadrant III: Tangent and Cotangent are positive</div>
+              <div id="qx4-p3" class="qe-bullet">• Quadrant IV: Cosine and Secant are positive</div>
+              <div id="qx4-p4" class="qe-bullet">• Periodicity: Sine/Cosine period is 2 pi; Tangent/Cotangent period is pi</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":3816703991,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">A rotating 3D unit circle divided into four colored quadrants with animated sine waves appearing below to demonstrate period repetition.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A rotating 3D unit circle divided into four colored quadrants with animated sine waves appearing below to demonstrate period repetition.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Trigonometric Functions: Fundamental Identities and Compound Angle Formulas -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Trigonometric Functions: Fundamental Identities and Compound Angle Formulas</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Pythagorean Identities: sin²x + cos²x = 1, tan²x + 1 = sec²x, 1 + cot²x = cosec²x</div>
+              <div id="qx5-p1" class="qe-bullet">• Sine Compound Angles: sin(x ± y) = sin x cos y ± cos x sin y</div>
+              <div id="qx5-p2" class="qe-bullet">• Cosine Compound Angles: cos(x ± y) = cos x cos y ∓ sin x sin y</div>
+              <div id="qx5-p3" class="qe-bullet">• Tangent Compound Angles: tan(x ± y) = (tan x ± tan y) / (1 ∓ tan x tan y)</div>
+              <div id="qx5-p4" class="qe-bullet">• Tip: Observe the sign changes and function mixing patterns for easier recall</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":875066423,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A floating 3D chalkboard where formulas glow and transform into geometric unit circle segments as they are spoken.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A floating 3D chalkboard where formulas glow and transform into geometric unit circle segments as they are spoken.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Sum and Difference Formulas: Derivations and Worked Examples -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Sum and Difference Formulas: Derivations and Worked Examples</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Cosine Sum/Difference: Sign flips between cosine and sine terms</div>
+              <div id="qx6-p1" class="qe-bullet">• Sine Sum/Difference: Sine and cosine terms are mixed</div>
+              <div id="qx6-p2" class="qe-bullet">• Tangent Sum/Difference: Uses a fractional structure with products</div>
+              <div id="qx6-p3" class="qe-bullet">• Application: Break non-standard angles into 30, 45, or 60 degrees</div>
+              <div id="qx6-p4" class="qe-bullet">• Exact Values: Avoid decimals by using radical forms</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":160192744,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D unit circle showing two rotating vectors A and B, with geometric lines connecting their endpoints to demonstrate the distance formula derivation.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D unit circle showing two rotating vectors A and B, with geometric lines connecting their endpoints to demonstrate the distance formula derivation.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Multiple and Sub-multiple Angle Formulas: Sine, Cosine, and Tangent Derivations -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Multiple and Sub-multiple Angle Formulas: Sine, Cosine, and Tangent Derivations</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Derive sine 2θ using sine(A+B) where A=B=θ</div>
+              <div id="qx7-p1" class="qe-bullet">• Three forms of cosine 2θ using fundamental identities</div>
+              <div id="qx7-p2" class="qe-bullet">• Tangent 2θ formula derivation from tangent(A+B)</div>
+              <div id="qx7-p3" class="qe-bullet">• Sub-multiple angles: expressing sin²(θ/2) and cos²(θ/2)</div>
+              <div id="qx7-p4" class="qe-bullet">• The simplified half-angle identity for tan(θ/2)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1247169771,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D chalkboard where formulas morph and rearrange themselves through algebraic substitution.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D chalkboard where formulas morph and rearrange themselves through algebraic substitution.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Transformation Formulas: Product-to-Sum and Sum-to-Product Identities -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Transformation Formulas: Product-to-Sum and Sum-to-Product Identities</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Product-to-Sum: Converts multiplication of trig functions into addition/subtraction.</div>
+              <div id="qx8-p1" class="qe-bullet">• Sum-to-Product: Converts addition/subtraction into multiplication for simplification.</div>
+              <div id="qx8-p2" class="qe-bullet">• Derivation Tip: Use compound angle formulas to prove all transformation identities.</div>
+              <div id="qx8-p3" class="qe-bullet">• Substitution Method: Use A plus B equals C and A minus B equals D for derivations.</div>
+              <div id="qx8-p4" class="qe-bullet">• Watch out: Pay close attention to the negative sign in the cosine difference formula.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3018174379,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D chalkboard where formulas morph from products into sums using glowing mathematical operators.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D chalkboard where formulas morph from products into sums using glowing mathematical operators.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Trigonometric Equations: General and Principal Solutions -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Trigonometric Equations: General and Principal Solutions</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Principal Solutions: Values within the interval [0, 2π)</div>
+              <div id="qx9-p1" class="qe-bullet">• General Solutions: Formulas representing infinite solutions using integer 'n'</div>
+              <div id="qx9-p2" class="qe-bullet">• Sine General Solution: x = nπ(-1)^n + α</div>
+              <div id="qx9-p3" class="qe-bullet">• Cosine General Solution: x = 2nπ ± α</div>
+              <div id="qx9-p4" class="qe-bullet">• Tangent General Solution: x = nπ + α</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1097668965,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D unit circle rotating rapidly, highlighting how a horizontal line intersects the circle at infinite points, transitioning into algebraic formulas.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D unit circle rotating rapidly, highlighting how a horizontal line intersects the circle at infinite points, transitioning into algebraic formulas.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Advanced Problem Solving: Complex Identities, Word Problems, and Common Pitfalls -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Advanced Problem Solving: Complex Identities, Word Problems, and Common Pitfalls</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Strategy: Reduce complex expressions to a common angle (usually theta)</div>
+              <div id="qx10-p1" class="qe-bullet">• Tip: Convert all functions to sine and cosine to simplify fractions</div>
+              <div id="qx10-p2" class="qe-bullet">• Word Problems: Use diagrams to model periodic motion and oscillations</div>
+              <div id="qx10-p3" class="qe-bullet">• Pitfall 1: Watch for sign errors in odd and even function identities</div>
+              <div id="qx10-p4" class="qe-bullet">• Pitfall 2: Always check for undefined values and domain restrictions</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":3432554265,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen showing a complex trigonometric derivation on the left and a rotating mechanical gear modeling a sine wave on the right.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen showing a complex trigonometric derivation on the left and a rotating mechanical gear modeling a sine wave on the right.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Strategy, Time Management, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Strategy, Time Management, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Quick Recap: Angles, Unit Circle, Identities, and Equations</div>
+              <div id="qx11-p1" class="qe-bullet">• Quadrant Rule: All-Silver-Tea-Cups for sign determination</div>
+              <div id="qx11-p2" class="qe-bullet">• Strategy: Convert complex terms to Sine and Cosine first</div>
+              <div id="qx11-p3" class="qe-bullet">• Time Management: Allocate time based on question marks</div>
+              <div id="qx11-p4" class="qe-bullet">• Common Pitfall: Always verify solutions within the given domain</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":778629880,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D digital dashboard showing a checklist of the chapter topics being ticked off one by one, transitioning into a split-screen showing a timer on one side and a solved complex identity on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A 3D digital dashboard showing a checklist of the chapter topics being ticked off one by one, transitioning into a split-screen showing a timer on one side and a solved complex identity on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Trigonometric Functions today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Real-world Applications, Importance, and the Concept of Angles <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Angles and Their Measurement: Degree vs. Radian Measure and Conversions <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Trigonometric Functions: Unit Circle, Signs in Quadrants, and Domain/Range <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Trigonometric Functions: Graphs of Sine, Cosine, Tangent, Cosecant, Secant, and Cotangent <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Sign of Trigonometric Functions and Periodicity: Detailed Analysis <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Trigonometric Functions: Fundamental Identities and Compound Angle Formulas <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Sum and Difference Formulas: Derivations and Worked Examples <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Multiple and Sub-multiple Angle Formulas: Sine, Cosine, and Tangent Derivations <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Transformation Formulas: Product-to-Sum and Sum-to-Product Identities <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Trigonometric Equations: General and Principal Solutions <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Advanced Problem Solving: Complex Identities, Word Problems, and Common Pitfalls <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Strategy, Time Management, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey into one of the most beautiful and essential chapters in Class 11 Mathematics: Trigonometric Functions. Before we dive into the complex formulas and identities, let us pause and ask ourselves: Why are we studying this? Why does trigonometry matter in the real world? Trigonometry is not just about triangles on a chalkboard; it is the mathematical language of cycles, waves, and rotations. Think about the sound you hear through your headphones—that is a sound wave, which can be modeled perfectly using sine and cosine functions. Think about the light reaching your eyes, the tides of the ocean, the alternating current in your home, or even the complex orbits of planets in space. From architecture and civil engineering to navigation, astronomy, and even the digital signal processing used in your smartphones, trigonometry is everywhere. It allows us to calculate distances that are impossible to measure physically, like the height of a mountain or the distance to a star, simply by using angles and ratios. As we progress through this series of twelve lessons, you will move from basic triangles to the sophisticated world of circular functions. But to understand these functions, we must first master the very foundation of trigonometry: the concept of an angle. In geometry, you might have learned that an angle is formed when two rays originate from a common endpoint called the vertex. In trigonometry, we focus on the amount of rotation between these two rays. Imagine a circle. If you start at a fixed point and move along the edge of the circle, the amount you have turned is your angle. We measure this rotation in two primary ways: Degrees and Radians. You are already familiar with degrees. A full rotation is three hundred and sixty degrees. We divide this into smaller units like minutes and seconds, much like we divide hours into minutes. However, as we move into higher mathematics and calculus, degrees become a bit cumbersome. This is where the Radian comes in. A radian is a more natural way to measure angles, based on the properties of the circle itself. One radian is defined as the angle subtended at the center of a circle by an arc whose length is exactly equal to the radius of that circle. This creates a direct link between the linear measurement of the arc and the angular measurement of the rotation. Throughout this chapter, we will learn how to switch between these two systems seamlessly. We will also explore how angles can be positive or negative, depending on the direction of rotation—counter-clockwise being positive and clockwise being negative. Understanding this concept of rotation is the key that unlocks everything else in this chapter. So, let us prepare to move from simple triangles to the infinite world of circular motion. In our next lesson, we will dive deep into the mathematical conversion between degrees and radians. Let's get started!","Welcome back. In our last session, we introduced the concept of angles and their real-world importance. Now, it is time to dive into the actual measurement of these angles. In mathematics, we primarily use two systems: the Degree measure and the Radian measure. Let us start with the Degree measure, which you have been using since middle school. A degree is defined as one-hundred-eightieth of a complete revolution. To make this more practical, we divide one degree into sixty minutes, written as a single prime, and one minute into sixty seconds, written as a double prime. So, if you see thirty degrees, ten minutes, and twenty seconds, it represents a very precise rotation. However, in higher mathematics and calculus, the degree measure is often cumbersome. This is where the Radian measure comes in. A radian is a more natural unit because it is based on the properties of a circle itself. Imagine a circle with a radius of length 'r'. If you take a piece of string equal to the length of that radius and wrap it along the circumference of the circle, the angle subtended at the center by this arc is exactly one radian. This creates a beautiful relationship: the angle in radians is equal to the arc length divided by the radius. Because the total circumference of a circle is two times pi times the radius, a full revolution of three hundred sixty degrees is equal to two times pi radians. This gives us our most important conversion formula. To convert degrees to radians, we multiply the degree measure by pi divided by one hundred eighty. To convert radians to degrees, we multiply the radian measure by one hundred eighty divided by pi. Let us look at a few quick examples to solidify this. Suppose we have an angle of sixty degrees. To convert this to radians, we calculate sixty times pi divided by one hundred eighty. This simplifies to pi divided by three radians. Conversely, if we have an angle of pi divided by four radians, we multiply it by one hundred eighty divided by pi. The pi terms cancel out, leaving us with one hundred eighty divided by four, which is forty-five degrees. Another common angle to remember is ninety degrees, which is pi divided by two radians. It is also important to note that in most mathematical functions, especially when we move into derivatives later, we assume the angle is in radians unless stated otherwise. Remember, the radian is a dimensionless unit because it is a ratio of two lengths. Let us practice a few more. If an angle is two hundred seventy degrees, it becomes two hundred seventy times pi divided by one hundred eighty, which simplifies to three pi divided by two. If we have three pi divided two radians, it converts back to two hundred seventy degrees. Mastering these conversions is the foundation for everything we will do with trigonometric functions in the upcoming parts of this chapter.","Welcome back. In our previous session, we learned how to measure angles using degrees and radians. Now, we are going to step into the heart of trigonometry by introducing the Unit Circle. This single concept will unlock our understanding of how trigonometric functions behave beyond just right-angled triangles. Imagine a circle placed on a Cartesian coordinate system, with its center at the origin, point zero comma zero, and a radius of exactly one unit. This is our Unit Circle. When we pick any point on this circle and call it P with coordinates x comma y, we can draw a line from the origin to this point. This line forms an angle, let's call it theta, with the positive x-axis. Because the radius is one, the distance from the origin to point P is one. Using basic trigonometry, we know that the x-coordinate of point P is equal to the cosine of theta, and the y-coordinate is equal to the sine of theta. So, in the unit circle, sine is simply the y-value and cosine is the x-value. This is a revolutionary shift! We are no longer limited to angles between zero and ninety degrees. As we move around the circle, theta can be any real number. Now, let's look at how the signs of these functions change as we move through the four quadrants. In the first quadrant, where both x and y are positive, all trigonometric functions—sine, cosine, tangent, cosecant, secant, and cotangent—are positive. As we cross into the second quadrant, x becomes negative but y remains positive. Here, sine and its reciprocal, cosecant, are positive, while cosine and tangent become negative. In the third quadrant, both x and y are negative. This means sine and cosine are negative, but since tangent is y divided by x, a negative divided by a negative gives us a positive. So, in the third quadrant, only tangent and cotangent are positive. Finally, in the fourth quadrant, x is positive and y is negative. Here, cosine and secant are positive, while sine and tangent are negative. A simple way to remember this is the mnemonic: 'All Silver Tea Cups', where All stands for first quadrant, Silver for sine in the second, Tea for tangent in the third, and Cups for cosine in the fourth. Now, let's discuss the Domain and Range of these functions. The domain is the set of all possible input angles, and the range is the set of all possible output values. For the sine function, sine of theta, you can plug in any real number as an angle, so its domain is all real numbers, denoted as R. However, the y-value on the unit circle never goes above one or below negative one, so the range of sine is the interval from negative one to positive one, inclusive. The same applies to the cosine function; its domain is all real numbers, and its range is also from negative one to positive one. For the tangent function, things change. Tangent is sine divided by cosine. Whenever cosine is zero, tangent becomes undefined. This happens at ninety degrees, two hundred and seventy degrees, and so on. Therefore, the domain of tangent is all real numbers except odd multiples of pi divided by two. The range of tangent is actually all real numbers, from negative infinity to positive infinity. Similarly, for cosecant, which is one divided by sine, the domain excludes points where sine is zero, and its range is everything except the interval between negative one and positive one. Secant, being one divided by cosine, has a domain where cosine is not zero, and its range is also everything outside the negative one to positive one interval. Finally, cotangent, which is cosine divided by sine, has a domain where sine is not zero, and its range is all real numbers. Understanding these boundaries is crucial for solving equations later in this chapter.","Welcome back. In our previous session, we explored the unit circle and how trigonometric functions behave in different quadrants. Now, it is time to visualize these functions. When we plot the values of trigonometric functions against their angles, we create graphs. These graphs are not just lines; they are periodic patterns that repeat themselves infinitely. Let us start with the Sine function. Imagine the y-coordinate of a point moving around the unit circle. As the angle theta increases from zero, the sine value starts at zero, rises to a maximum of one at pi divided by two, falls back to zero at pi, reaches a minimum of negative one at three pi divided by two, and returns to zero at two pi. When we plot this on a Cartesian plane, we get a smooth, continuous wave called a sine wave. Its domain is all real numbers, and its range is restricted between negative one and positive one. Now, let us look at the Cosine function. The cosine represents the x-coordinate on the unit circle. It starts at its maximum value of one when the angle is zero. It then decreases to zero at pi divided by two, reaches its minimum of negative one at pi, and climbs back up to zero at three pi divided by two. The cosine graph looks exactly like the sine graph, just shifted horizontally by pi divided by two. This shift is what we call a phase difference. Next, we move to the Tangent function. This one is quite different. Since tangent is sine divided by cosine, the graph becomes undefined whenever the cosine is zero. This happens at pi divided by two, three pi divided by two, and so on. At these specific points, the graph shoots off to infinity, creating vertical asymptotes. The tangent graph consists of repeated branches that increase from negative infinity to positive infinity between these asymptotes. Its domain excludes these points where cosine is zero, but its range is all real numbers. Now, let us discuss the reciprocal functions. The Cosecant function is the reciprocal of sine. Wherever the sine graph is zero, the cosecant graph will have a vertical asymptote. When sine is at its peak of one, cosecant is also one. When sine is at its minimum of negative one, cosecant is negative one. This results in a series of U-shaped curves that sit above and below the sine wave. Similarly, the Secant function is the reciprocal of cosine. It shares the same asymptotes as the tangent function because wherever cosine is zero, secant becomes undefined. The secant graph consists of U-shaped curves that touch the peaks and valleys of the cosine wave. Finally, we have the Cotangent function, which is the reciprocal of tangent, or cosine divided by sine. Like the tangent function, it has vertical asymptotes, but they occur where sine is zero, such as at zero, pi, and two pi. The cotangent graph is a decreasing function within each period, sliding from positive infinity down to negative infinity. Understanding these shapes is crucial because they allow us to predict the behavior of trigonometric expressions at a glance. We will use these visual patterns to understand periodicity and signs in our next lesson.","Welcome back. In our previous session, we explored the unit circle and how trigonometric functions are defined. Today, we are going to dive deep into two critical concepts that govern how these functions behave: their signs in different quadrants and their periodic nature. Let us start with the signs. Remember, a trigonometric function's sign depends entirely on the quadrant in which the terminal side of the angle lies. We use the coordinate system where x is the cosine component and y is the sine component. In the first quadrant, where both x and y are positive, all trigonometric functions—sine, cosine, tangent, cosecant, secant, and cotangent—are positive. Moving to the second quadrant, x becomes negative while y remains positive. This means sine and its reciprocal, cosecant, are positive, while all others are negative. In the third quadrant, both x and y are negative. Here, tangent and its reciprocal, cotangent, are positive because a negative divided by a negative gives a positive result. Finally, in the fourth quadrant, x is positive and y is negative, so cosine and secant are positive, while the rest are negative. A simple mnemonic to remember this is 'All Silver Tea Cups'—All in the first, Sine in the second, Tangent in the third, and Cosine in the fourth. Now, let us transition to a very important concept: Periodicity. A function is said to be periodic if it repeats its values in regular intervals. This interval is called the period. Think of a wave moving across the screen; it repeats its shape over and over. For the sine and cosine functions, the period is two pi. This means that sine of theta is exactly equal to sine of theta plus two pi. If you add two pi to any angle, you land on the exact same position on the unit circle, so the value remains unchanged. The same applies to cosecant. For the cosine function, the period is also two pi, and this holds true for secant as well. However, tangent and cotangent behave differently. Their period is only pi. This is because the ratio of sine to cosine repeats its sign pattern every half-circle. For example, tangent of theta is equal to tangent of theta plus pi. This shorter period is a crucial detail when you are solving trigonometric equations later in this chapter. To summarize: the signs follow the quadrant rules, and the periods are two pi for sine, cosine, cosecant, and secant, but only pi for tangent and cotangent. Understanding these patterns is the key to mastering trigonometric transformations.","Welcome back. In our previous session, we explored the visual nature of trigonometric graphs and their periodicity. Today, we move from the visual to the algebraic core of trigonometry. We are going to master the fundamental identities and the powerful compound angle formulas. Let's start with the foundation: the Pythagorean Identities. You already know these from earlier classes, but in Class 11, we use them as tools for complex simplification. The first is sine squared of x plus cosine squared of x equals one. From this, we derive two more by dividing the entire equation by cosine squared of x, which gives us tangent squared of x plus one equals secant squared of x. Similarly, if we divide the first identity by sine squared of x, we get one plus cotangent squared of x equals cosecant squared of x. These three identities are your primary weapons for converting between different trigonometric ratios. Now, let's step into the heart of this lesson: Compound Angle Formulas. These formulas allow us to find the trigonometric values of angles that are sums or differences of two known angles, like seventy-five degrees, which is forty-five plus thirty. Let's look at the sine compound angles first. Sine of x plus y equals sine of x cosine of y plus cosine of x sine of y. Notice the pattern: sine mixes sine and cosine, and the sign remains the same. For the difference, sine of x minus y equals sine of x cosine of y minus cosine of x sine of y. Next, we have the cosine compound angles. Cosine is a bit more 'rebellious' with its signs. Cosine of x plus y equals cosine of x cosine of y minus sine of x sine of y. Yes, a plus sign in the bracket becomes a minus sign in the expansion. Conversely, cosine of x minus y equals cosine of x cosine of y plus sine of x sine of y. Finally, we have the tangent compound angles. Tangent of x plus y equals the tangent of x plus the tangent of y, all divided by one minus the product of tangent of x and tangent of y. For the difference, tangent of x minus y equals the tangent of x minus the tangent of y, all divided by one plus the product of tangent of x and tangent of y. To master these, don't just memorize them; observe the symmetry. Notice how cosine keeps the functions together—cosine with cosine and sine with sine—while sine mixes them. As we move forward, we will use these identities to derive even more complex formulas, but for now, your goal is to become fluent in these fundamental building blocks. Let's try a quick mental check. If you know the values for thirty degrees and forty-five degrees, you can now find the exact value of seventy-five degrees using the sine sum formula. Practice these expansions until they become second nature.","Welcome back. In our previous session, we explored the fundamental identities. Today, we step into one of the most powerful tools in trigonometry: the Sum and Difference formulas. These formulas allow us to find the exact trigonometric values for angles that aren't on our standard unit circle, like seventy-five degrees or fifteen degrees, by breaking them down into sums or differences of known angles like thirty, forty-five, or sixty degrees. Let's start with the derivation of the cosine difference formula. Imagine two angles, A and B, represented on a unit circle. If we look at the distance between the points representing these angles, we can use the distance formula in a coordinate plane. Through algebraic simplification involving the Pythagorean identity, we arrive at the formula: cosine of A minus B equals cosine A times cosine B plus sine A times sine B. Now, if we change the sign to a sum, the formula becomes: cosine of A plus B equals cosine A times cosine B minus sine A times sine B. Notice how the sign in the middle flips! Next, let's derive the sine sum and difference formulas. Using the complementary angle relationship, where sine of theta equals cosine of ninety minus theta, we can derive these. The sine of A plus B equals sine A times cosine B plus cosine A times sine B. For the difference, sine of A minus B equals sine A times cosine B minus cosine A times sine B. Finally, for tangent, we use the identity tangent equals sine divided by cosine. By substituting our sum formulas and simplifying the fraction, we get: tangent of A plus B equals the tangent of A plus the tangent of B, all divided by one minus the product of tangent A and tangent B. For the difference, it is tangent of A minus B equals the tangent of A minus the tangent of B, all divided by one plus the product of tangent A and tangent B. Let's put these to work with a worked example. Suppose we want to find the exact value of sine of seventy-five degrees. We don't have seventy-five on our standard chart, but we know that seventy-five is forty-five plus thirty. So, we apply the sine sum formula: sine of forty-five plus thirty equals sine of forty-five times cosine of thirty, plus cosine of forty-five times sine of thirty. We know sine of forty-five is one divided by the square root of two, cosine of forty-five is one divided by the square root of two, sine of thirty is one divided by two, and cosine of thirty is the square root of three divided by two. Multiplying these gives us one divided by the square root of two times square root of three divided by two, plus one divided by the square root of two times one divided by two. This simplifies to the square root of three divided by two times the square root of two, plus one divided by two times the square root of two. Combining them, we get the final exact value: the square root of six plus square root of two, all divided by four. Another quick example: find cosine of fifteen degrees. We can write this as cosine of forty-five minus thirty. Using our cosine difference formula, we get cosine of forty-five times cosine of thirty plus sine of forty-five times sine of thirty. Plugging in the values, we get one divided by the square root of two times the square root of three divided by two, plus one divided by the square root of two times one divided by two. This results in the square root of six plus square root of two, all divided by four. Notice how sine of seventy-five and cosine of fifteen yield the same result? That is because they are complementary angles! Master these derivations, and you will never struggle with non-standard angles again.","Welcome back. In our previous session, we mastered the compound angle formulas for the sum and difference of two angles. Today, we are going to take those formulas and push them further. We are going to derive the Multiple Angle Formulas, specifically for double angles, and then use them to find the Sub-multiple Angle Formulas. This is a crucial step in simplifying complex trigonometric expressions. Let us start with the Double Angle Formulas, where the angle is two times theta. To find the formula for sine of two theta, we look back at our sum formula for sine, which is sine of A plus B equals sine A cosine B plus cosine A sine B. Now, let us simply substitute A with theta and B with theta. This gives us sine of theta plus theta, which is sine of two theta, equals sine theta cosine theta plus cosine theta sine theta. Since these two terms are identical, we combine them to get the final result: sine of two theta equals two sine theta cosine theta. This is our first major derivation. Next, let us move to cosine of two theta. We use the sum formula for cosine, which is cosine of A plus B equals cosine A cosine B minus sine A sine B. Again, we substitute both A and B with theta. This gives us cosine of two theta equals cosine theta cosine theta minus sine theta sine theta, which simplifies to cosine of two theta equals cosine squared theta minus sine squared theta. Now, here is where it gets interesting. We know from our fundamental identities that cosine squared theta plus sine squared theta equals one. This means we can express cosine of two theta in two other ways. If we replace cosine squared theta with one minus sine squared theta, we get cosine of two theta equals one minus two sine squared theta. Alternatively, if we replace sine squared theta with one minus cosine squared theta, we get cosine of two theta equals two cosine squared theta minus one. These three forms are incredibly useful depending on whether you want to work with only sine or only cosine. Now, let us look at the tangent double angle formula. Using the formula for tangent of A plus B, which is tangent A cosine B plus tangent B cosine A, all over one minus tangent A tangent B, and substituting A and B with theta, we arrive at tangent of two theta equals two tangent theta, all over one minus tangent squared theta. Now, how do we move from double angles to sub-multiple angles? Sub-multiple angles are angles like theta divided by two. To find these, we use the double angle formulas in reverse. To find sine of theta, we treat theta as two times theta over two. Using our cosine double angle formula, cosine of theta equals one minus two sine squared of theta over two. If we rearrange this to solve for sine squared of theta over two, we get sine squared of theta over two equals one minus cosine theta, all divided by two. Similarly, using the other form of the cosine formula, cosine of theta equals two cosine squared of theta over two minus one, we can derive that cosine squared of theta over two equals one plus cosine theta, all divided by two. Finally, for tangent, we use the relationship tangent equals sine divided by cosine. By substituting our half-angle formulas for sine and cosine, we find that tangent of theta over two equals the square root of the quantity one minus cosine theta, divided by one plus cosine theta. However, a much cleaner version used in calculus is tangent of theta over two equals sine theta, all over one plus cosine theta. Mastering these derivations ensures you never have to rely on pure memorization; you will always be able to reconstruct them if you forget. Let us move to the practice problems.","Welcome back. In our previous lesson, we mastered the compound angle formulas. Today, we are going to take those formulas a step further by learning how to transform products into sums, and sums into products. This is a vital skill for simplifying complex trigonometric expressions and solving calculus problems later on. Let's start with the Product-to-Sum identities. Imagine you have a product of two sine or cosine functions, like sine of A times cosine of B. How do we turn this into a simple addition or subtraction? We derive these directly from our sum and difference formulas. For example, if we add the formula for sine of A plus B to the formula for sine of A minus B, the cosine terms cancel out, leaving us with two sine terms. This gives us our first identity: two sine of A times cosine of B equals sine of A plus B plus sine of A minus B. To get the final formula, we simply divide both sides by two. So, sine of A times cosine of B equals one half times the quantity sine of A plus B plus sine of A minus B. We can follow this same logic for other combinations. If we have cosine of A times cosine of B, we add the cosine sum and difference formulas to get: cosine of A times cosine of B equals one half times the quantity cosine of A plus B plus cosine of A minus B. If we have sine of A times sine of B, we subtract the formulas to get: sine of A times sine of B equals one half times the quantity cosine of A minus B minus cosine of A plus B. Notice the sign change in the last one! Finally, for cosine of A times sine of B, the formula is one half times the quantity sine of A plus B minus sine of A minus B. Now, let's look at the reverse process: Sum-to-Product identities. This is incredibly useful when you have an expression like sine of C plus sine of D and you want to turn it into a product to cancel terms in a fraction. To derive these, we use a clever substitution. Let A plus B equals C and A minus B equals D. If we solve these two equations for A and B, we find that A equals C plus D divided by two, and B equals C minus D divided by two. By substituting these values back into our product-to-sum formulas, we get the sum-to-product identities. Here they are: sine of C plus sine of D equals two sine of the quantity C plus D divided by two times cosine of the quantity C minus D divided by two. For subtraction, sine of C minus sine of D equals two cosine of the quantity C plus D divided by two times sine of the quantity C minus D divided by two. For cosine, it's a bit different. Cosine of C plus cosine of D equals two cosine of the quantity C plus D divided by two times cosine of the quantity C minus D divided by two. And lastly, cosine of C minus cosine of D equals negative two sine of the quantity C plus D divided by two times sine of the quantity C minus D divided by two. Remember that negative sign for the last cosine formula; it is a very common place to make mistakes in exams. Let's do a quick mental check. If you see a product like two sine fifty degrees times cosine twenty degrees, you can immediately transform it into sine seventy plus sine thirty. This turns a multiplication problem into a simple addition problem. Mastering these transformations will make you much faster at handling complex trigonometric identities. Let's move on to some practice problems to solidify this.","Welcome back. In our previous session, we mastered the identities and transformation formulas. Now, we move to a crucial application: solving trigonometric equations. When we solve an equation like sine of x equals one-half, we aren't just looking for one value. Because trigonometric functions are periodic, they repeat their values infinitely many times. This brings us to two distinct concepts: Principal Solutions and General Solutions. Let's start with Principal Solutions. A principal solution is any value of the angle that lies within the interval from zero to two-pi radians, or zero to three-sixty degrees. For example, if we have sine of x equals one-half, we know from our unit circle that sine is positive in the first and second quadrants. In the first quadrant, x equals pi divided by six. In the second quadrant, x equals pi minus pi divided by six, which is five-pi divided by six. These two values, pi over six and five-pi over six, are our principal solutions. Now, what if we want to express every single possible solution across the entire number line? That is where General Solutions come in. Instead of listing infinite numbers, we use a mathematical formula involving an integer, which we denote as n. Let's break down the general solutions for the three primary functions. First, for sine. If sine of x equals sine of alpha, the general solution is x equals n-pi multiplied by plus or minus one, plus alpha. This single formula covers all possible angles where the sine value repeats. Second, let's look at cosine. If cosine of x equals cosine of alpha, the general solution is x equals two-pi-n, plus or minus alpha. Notice how the period of two-pi is used here because cosine repeats its values every full rotation. Third, we have tangent. If tangent of x equals tangent of alpha, the general solution is simply x equals n-pi, plus alpha. This is because the tangent function has a period of pi, meaning it repeats every half-circle. There are also special cases. If sine of x equals zero, the general solution is x equals n-pi. If cosine of x equals zero, the general solution is x equals odd multiples of pi over two, which we write as x equals two-n-plus-one, multiplied by pi divided by two. If tangent of x equals zero, the general solution is x equals n-pi. When solving complex equations, always first simplify the expression using the identities we learned in previous parts to get it into the form of a single trigonometric function equal to a constant. Once you have that, find the principal solution first, then apply the general formula to capture all possible values. Remember, n must always be an integer, which we write as n belongs to the set of integers. Mastering these formulas is the key to unlocking higher-level calculus and physics problems.","Welcome back. We have covered all the formulas and properties of trigonometric functions. Now, it is time to move from theory to mastery. In this session, we will tackle high-level identity proofs, apply trigonometry to real-world scenarios, and, most importantly, identify the traps that often lead to marks being lost in exams. Let us start with complex identities. When you see a large, intimidating expression, do not panic. The secret is to look for patterns. If you see terms like sine plus cosine, think about squaring them or using sum-to-product formulas. If you see multiple angles like three theta or four theta, your first instinct should be to use multiple-angle formulas to bring everything back to a common angle, usually theta. A common advanced technique is to express everything in terms of tangent, especially when dealing with secant and cosecant. For example, if you have a complex fraction, try to convert all terms into sine and cosine first. This often reveals common factors that can be cancelled out. Now, let us move to word problems. Trigonometry is not just about triangles on paper; it is the language of periodic motion. You might encounter problems involving the height of a tower or the distance between two ships, but at the Class 11 level, you will see more physics-integrated problems. Imagine a pendulum swinging or a wheel rotating. The position of a point on that wheel can be described using sine and cosine functions. When solving these, always draw a diagram first. Label your angles clearly, ensuring you distinguish between the angle of elevation and the angle of depression. If a problem mentions a 'rate of change' or 'periodic oscillation,' you are looking for a trigonometric model. Finally, let us discuss the 'Common Pitfalls.' These are the silent killers in mathematics. The first pitfall is the sign error. When you use the formula for sine of a negative angle, remember that sine is an odd function, so sine of negative theta is negative sine of theta. However, cosine is an even function, so cosine of negative theta is simply cosine of theta. Forgetting this one tiny sign can ruin a ten-mark derivation. The second pitfall is the domain restriction. When you are solving trigonometric equations or simplifying identities involving tangent or secant, always check if your solution makes the denominator zero. For instance, tangent is undefined at pi divided by two plus n pi. If your 'solution' falls on one of these points, it is not a valid solution. The third pitfall is the misuse of square roots. When you take the square root of sine squared of theta, the result is not just sine of theta; it is the absolute value of sine of theta. You must check which quadrant theta lies in to decide if the result is positive or negative. Lastly, do not confuse the principal solution with the general solution. A principal solution is usually within the range of zero to two pi, while the general solution uses the integer n to represent all possible rotations. Master these nuances, and you will not just solve problems; you will dominate them.","Welcome to the final session of our journey through Trigonometric Functions. We have covered everything from the basics of radian measures to the complexities of transformation formulas. Now, it is time to transition from learning to performing. This session is your masterclass in conquering the examination. First, let us do a lightning-fast recap of the entire chapter to solidify your mental map. Remember, trigonometry is built on a hierarchy. It starts with the measurement of angles, where you must always be careful to convert degrees to radians using the formula: radians equals degrees multiplied by pi divided by one hundred and eighty. From there, we moved to the unit circle, which is the heart of trigonometry. Never forget the quadrant rules: All-Silver-Tea-Cups, meaning All are positive in the first quadrant, Sine and Cosecant in the second, Tangent and Cotangent in the third, and Cosine and Secant in the fourth. We then explored the periodic nature of these functions, where sine and cosine repeat every two pi, while tangent repeats every pi. Then came the heavy lifting: the identities. You must have the compound angle formulas, like sine of A plus B equals sine A cosine B plus cosine A sine B, etched in your memory. We used these to derive the multiple angle formulas, such as the double angle formula for sine, which is two sine A cosine A, and the various forms for cosine, including two cosine squared A minus one. We also mastered the transformation formulas, moving between products and sums. Finally, we tackled trigonometric equations, distinguishing between the principal solution and the general solution using formulas like n pi plus alpha. Now, let us talk strategy. In an exam, time is your most precious resource. When you see a complex identity proof, do not start writing blindly. Spend thirty seconds analyzing the right-hand side and the left-hand side. Often, the best strategy is to convert everything into sine and cosine. If you see a product of terms, think of the product-to-sum formulas. If you see a sum of terms, think of the sum-to-product formulas. For trigonometric equations, always check if the solution falls within the specified domain. A common pitfall is forgetting the plus or minus sign when taking square roots or when dealing with quadrants. Always verify your final answer by plugging in a simple value like zero or pi divided by two to see if the identity holds. Regarding time management, allocate your time based on marks. Do not spend ten minutes on a two-mark multiple-choice question. If you get stuck on a derivation, leave a space, move to the next question, and come back. The 'substitution method' is your best friend for complex identities—if a question looks impossible, try substituting a standard angle to see the pattern. Lastly, practice writing your steps clearly. In mathematics, the process carries as many marks as the final answer. Use proper notation, clearly state the identities you are using, and always underline your final result. You have worked hard through these twelve parts; now, go into that exam hall with confidence. You are not just solving equations; you are mastering the language of waves and cycles. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-maths-03-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

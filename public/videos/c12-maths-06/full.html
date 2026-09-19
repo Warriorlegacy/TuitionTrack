@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Application of Derivatives, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-maths-06-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Real-world significance, Rate of Change of Quantities, and Intuitive Concept -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Real-world significance, Rate of Change of Quantities, and Intuitive Concept</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Transitioning from pure differentiation to real-world applications</div>
+              <div id="qx0-p1" class="qe-bullet">• Understanding the difference between average and instantaneous rates</div>
+              <div id="qx0-p2" class="qe-bullet">• The derivative as the slope of a tangent line at a specific point</div>
+              <div id="qx0-p3" class="qe-bullet">• How multiple quantities change simultaneously (e.g., balloon volume)</div>
+              <div id="qx0-p4" class="qe-bullet">• Introduction to the concept of optimization in science and economics</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":10827137,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation of a growing spherical balloon where labels for Radius, Surface Area, and Volume pulse and change values in real-time as a tangent line slides along its surface.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D animation of a growing spherical balloon where labels for Radius, Surface Area, and Volume pulse and change values in real-time as a tangent line slides along its surface.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Rate of Change: Formal Definitions, Mathematical Modeling, and Worked Examples -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Rate of Change: Formal Definitions, Mathematical Modeling, and Worked Examples</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Rate of change is the instantaneous derivative: d-x/d-t</div>
+              <div id="qx1-p1" class="qe-bullet">• Mathematical Modeling: Relating variables via geometric formulas</div>
+              <div id="qx1-p2" class="qe-bullet">• Use the Chain Rule when differentiating with respect to time</div>
+              <div id="qx1-p3" class="qe-bullet">• Always include appropriate units (e.g., cm/s or cm^3/s)</div>
+              <div id="qx1-p4" class="qe-bullet">• Decreasing quantities must be assigned a negative rate</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1788543184,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D expanding sphere with glowing mathematical labels for V, r, and dr/dt appearing on its surface.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D expanding sphere with glowing mathematical labels for V, r, and dr/dt appearing on its surface.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Increasing and Decreasing Functions: Concept, Intervals, and Derivative Tests -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Increasing and Decreasing Functions: Concept, Intervals, and Derivative Tests</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Increasing: If x1 &lt; x2 implies f(x1) &lt;= f(x2)</div>
+              <div id="qx2-p1" class="qe-bullet">• Decreasing: If x1 &lt; x2 implies f(x1) &gt;= f(x2)</div>
+              <div id="qx2-p2" class="qe-bullet">• Strictly Increasing: f'(x) &gt; 0 for all x in the interval</div>
+              <div id="qx2-p3" class="qe-bullet">• Strictly Decreasing: f'(x) &lt; 0 for all x in the interval</div>
+              <div id="qx2-p4" class="qe-bullet">• Critical Points: Where f'(x) = 0 or is undefined</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":448787437,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate plane showing a smooth curve transitioning from a downward slope to an upward slope, with a glowing tangent line changing from a negative to a positive gradient at the vertex.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D coordinate plane showing a smooth curve transitioning from a downward slope to an upward slope, with a glowing tangent line changing from a negative to a positive gradient at the vertex.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Increasing and Decreasing Functions: Advanced Word Problems and Common Pitfalls -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Increasing and Decreasing Functions: Advanced Word Problems and Common Pitfalls</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Translate geometric constraints into a single-variable function</div>
+              <div id="qx3-p1" class="qe-bullet">• Always define the physical domain to avoid extraneous solutions</div>
+              <div id="qx3-p2" class="qe-bullet">• Check both critical points and interval endpoints for extrema</div>
+              <div id="qx3-p3" class="qe-bullet">• Use sign charts to avoid calculation errors in interval testing</div>
+              <div id="qx3-p4" class="qe-bullet">• Distinguish between strictly increasing and non-decreasing functions</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1552400218,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen showing a complex geometric diagram on the left and a step-by-step algebraic derivation on the right, with red 'X' marks appearing over common mistakes like ignoring boundaries.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A split-screen showing a complex geometric diagram on the left and a step-by-step algebraic derivation on the right, with red 'X' marks appearing over common mistakes like ignoring boundaries.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Tangents and Normals: Geometric Interpretation, Slope Formulas, and Equations -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Tangents and Normals: Geometric Interpretation, Slope Formulas, and Equations</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Tangent: A line that touches the curve at a point, mimicking its local direction.</div>
+              <div id="qx4-p1" class="qe-bullet">• Slope of Tangent (m-t): The value of the derivative f prime of a at point a.</div>
+              <div id="qx4-p2" class="qe-bullet">• Equation of Tangent: y minus y-one equals m-t times x minus x-one.</div>
+              <div id="qx4-p3" class="qe-bullet">• Normal: A line perpendicular to the tangent at the point of contact.</div>
+              <div id="qx4-p4" class="qe-bullet">• Slope of Normal (m-n): The negative reciprocal of the tangent slope, -1 divided by m-t.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2502249196,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing a glowing parabola where a bright red tangent line and a blue normal line pivot around a moving point on the curve.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D coordinate system showing a glowing parabola where a bright red tangent line and a blue normal line pivot around a moving point on the curve.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Tangents and Normals: Advanced Applications and Graphical Analysis -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Tangents and Normals: Advanced Applications and Graphical Analysis</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Angle between two curves: tan(theta) = |m1 - m2| / (1 + m1*m2)</div>
+              <div id="qx5-p1" class="qe-bullet">• Length of Tangent = |y / m|; Length of Sub-tangent = |y / m|</div>
+              <div id="qx5-p2" class="qe-bullet">• Length of Normal = |y * sqrt(1 + m^2)|; Length of Sub-normal = |y * m|</div>
+              <div id="qx5-p3" class="qe-bullet">• Vertical tangents occur when the derivative is undefined (approaches infinity)</div>
+              <div id="qx5-p4" class="qe-bullet">• The rotation of the tangent line determines the curvature and concavity</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3045663097,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing two intersecting parabolas with their respective tangent lines and the calculated angle theta highlighted in bright neon color.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D coordinate system showing two intersecting parabolas with their respective tangent lines and the calculated angle theta highlighted in bright neon color.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Maxima and Minima: Local and Absolute Extrema, Critical Points, and First Derivative Test -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Maxima and Minima: Local and Absolute Extrema, Critical Points, and First Derivative Test</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Absolute Extrema: The highest or lowest values over an entire interval.</div>
+              <div id="qx6-p1" class="qe-bullet">• Local Extrema: Highest or lowest values within a specific neighborhood.</div>
+              <div id="qx6-p2" class="qe-bullet">• Critical Points: Points where f prime of x is zero or undefined.</div>
+              <div id="qx6-p3" class="qe-bullet">• First Derivative Test: Using sign changes of f prime to identify extrema.</div>
+              <div id="qx6-p4" class="qe-bullet">• Positive to Negative sign change indicates a Local Maximum.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":1737396124,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D terrain landscape with a smooth mountain path where a glowing dot moves along the peaks and valleys, displaying the derivative value changing from positive to negative at each summit.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D terrain landscape with a smooth mountain path where a glowing dot moves along the peaks and valleys, displaying the derivative value changing from positive to negative at each summit.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Maxima and Minima: Second Derivative Test, Derivations, and Visualizing Concavity -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Maxima and Minima: Second Derivative Test, Derivations, and Visualizing Concavity</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Second Derivative Test: A faster way to classify critical points.</div>
+              <div id="qx7-p1" class="qe-bullet">• If f double prime of c is negative, the point is a local maximum.</div>
+              <div id="qx7-p2" class="qe-bullet">• If f double prime of c is positive, the point is a local minimum.</div>
+              <div id="qx7-p3" class="qe-bullet">• Concave Up: Curve bends upward; tangents lie below the graph.</div>
+              <div id="qx7-p4" class="qe-bullet">• Concave Down: Curve bends downward; tangents lie above the graph.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2574952159,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D mathematical surface transitioning smoothly from a convex bowl shape to a concave hill shape, with a tangent line sliding along the curve to demonstrate its position.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D mathematical surface transitioning smoothly from a convex bowl shape to a concave hill shape, with a tangent line sliding along the curve to demonstrate its position.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Maxima and Minima: Solving Complex Optimization Word Problems (Geometry &amp; Algebra) -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Maxima and Minima: Solving Complex Optimization Word Problems (Geometry &amp; Algebra)</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Step 1: Identify the Objective Function (the quantity to maximize/minimize)</div>
+              <div id="qx8-p1" class="qe-bullet">• Step 2: Identify the Constraint (the fixed value or relationship)</div>
+              <div id="qx8-p2" class="qe-bullet">• Step 3: Use the constraint to reduce the function to a single variable</div>
+              <div id="qx8-p3" class="qe-bullet">• Step 4: Find critical points by setting the first derivative to zero</div>
+              <div id="qx8-p4" class="qe-bullet">• Step 5: Always verify the result using the Second Derivative Test</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":510880057,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen animation showing a 3D cylinder morphing its dimensions while a mathematical equation updates in real-time next to it.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen animation showing a 3D cylinder morphing its dimensions while a mathematical equation updates in real-time next to it.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Maxima and Minima: Practical Applications in Physics and Economics -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Maxima and Minima: Practical Applications in Physics and Economics</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Physics: Stable equilibrium occurs at minimum potential energy (Second Derivative &gt; 0)</div>
+              <div id="qx9-p1" class="qe-bullet">• Fermat's Principle: Light follows the path of least time (Optimization)</div>
+              <div id="qx9-p2" class="qe-bullet">• Economics: Profit is maximized when Marginal Revenue equals Marginal Cost</div>
+              <div id="qx9-p3" class="qe-bullet">• Profit Maximization: Set the first derivative of the Profit function to zero</div>
+              <div id="qx9-p4" class="qe-bullet">• Cost Minimization: Finding the lowest cost for a specific production level</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3927124941,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows a marble rolling into a stable energy well; Right side shows a dynamic profit-revenue graph where the gap between curves is widest at the maximum profit point.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation: Left side shows a marble rolling into a stable energy well; Right side shows a dynamic profit-revenue graph where the gap between curves is widest at the maximum profit point.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Problem-Solving Strategies: Identifying Patterns, Avoiding Common Mistakes, and Step-by-Step Approach -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Problem-Solving Strategies: Identifying Patterns, Avoiding Common Mistakes, and Step-by-Step Approach</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Step 1: Translate English sentences into mathematical equations.</div>
+              <div id="qx10-p1" class="qe-bullet">• Step 2: Use secondary equations to reduce functions to one variable.</div>
+              <div id="qx10-p2" class="qe-bullet">• Pattern Recognition: Rate of Change vs. Monotonicity vs. Optimization.</div>
+              <div id="qx10-p3" class="qe-bullet">• Common Pitfall: Always check if critical points fit the physical domain.</div>
+              <div id="qx10-p4" class="qe-bullet">• Pro-Tip: Verify the nature of extrema using the Second Derivative Test.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2281790434,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D flowchart appearing in mid-air, connecting 'Problem Statement' to 'Mathematical Model' to 'Derivative Calculation' and finally to 'Verification'.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D flowchart appearing in mid-air, connecting 'Problem Statement' to 'Mathematical Model' to 'Derivative Calculation' and finally to 'Verification'.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Full Chapter Recap, PYQs, and Time Management Techniques -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Full Chapter Recap, PYQs, and Time Management Techniques</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Recap: Rate of Change, Tangents, and Maxima/Minima logic</div>
+              <div id="qx11-p1" class="qe-bullet">• Strategy: Always draw a diagram for optimization word problems</div>
+              <div id="qx11-p2" class="qe-bullet">• Tip: Use constraints to reduce functions to a single variable</div>
+              <div id="qx11-p3" class="qe-bullet">• Exam Hack: Solve direct Tangent/Normal questions before word problems</div>
+              <div id="qx11-p4" class="qe-bullet">• Common Error: Forgetting units and interval notation in final answers</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1669862945,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a student solving a complex geometry problem on one side and a ticking stopwatch on the other, transitioning into a glowing flowchart of the chapter's key formulas.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A 3D split-screen showing a student solving a complex geometry problem on one side and a ticking stopwatch on the other, transitioning into a glowing flowchart of the chapter's key formulas.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Application of Derivatives today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Real-world significance, Rate of Change of Quantities, and Intuitive Concept <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Rate of Change: Formal Definitions, Mathematical Modeling, and Worked Examples <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Increasing and Decreasing Functions: Concept, Intervals, and Derivative Tests <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Increasing and Decreasing Functions: Advanced Word Problems and Common Pitfalls <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Tangents and Normals: Geometric Interpretation, Slope Formulas, and Equations <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Tangents and Normals: Advanced Applications and Graphical Analysis <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Maxima and Minima: Local and Absolute Extrema, Critical Points, and First Derivative Test <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Maxima and Minima: Second Derivative Test, Derivations, and Visualizing Concavity <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Maxima and Minima: Solving Complex Optimization Word Problems (Geometry &amp; Algebra) <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Maxima and Minima: Practical Applications in Physics and Economics <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Problem-Solving Strategies: Identifying Patterns, Avoiding Common Mistakes, and Step-by-Step Approach <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Full Chapter Recap, PYQs, and Time Management Techniques <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our deep dive into one of the most powerful chapters in Class 12 Mathematics: the Application of Derivatives. Up until now, you have learned how to differentiate functions—finding the derivative of x squared, or sine x, or logarithmic functions. But have you ever wondered, 'What does this derivative actually tell me about the real world?' Today, we move from pure calculation to practical application. Think about a car driving down a highway. The speedometer doesn't just show a number; it shows the rate at which your position is changing with respect to time. That is a derivative in action. In this chapter, we aren't just solving for x; we are measuring how the world moves, grows, and optimizes. Let's start with the intuitive concept. Imagine you are blowing air into a spherical balloon. As you blow more air, the volume of the balloon increases. But notice something interesting: as the balloon gets bigger, the radius also increases, and the surface area expands too. All these quantities—volume, radius, and surface area—are changing simultaneously. The derivative allows us to capture this 'instantaneous' change. In previous chapters, you studied the average rate of change, which is simply the slope of a secant line passing through two points. But in the real world, we often need to know what is happening at one exact moment. This is the 'instantaneous rate of change,' which is the slope of the tangent line at a single point. Mathematically, if we have a function y that depends on x, the derivative dy over dx represents how much y changes for a tiny, infinitesimal change in x. Let's look at a classic example to ground this. Suppose the side of a square is increasing at a constant rate. If the side is 's', then the area is 's' squared. The rate at which the area changes is the derivative of the area with respect to time. We write this as d-area over d-t. Using the chain rule, we find that d-area over d-t equals two times s, multiplied by d-s over d-t. This formula tells us that the rate of change of the area depends not just on how fast the side is growing, but also on how large the side currently is! This is a crucial realization: rates of change are often dynamic, not static. We will use this concept to explore everything from how fast a shadow moves as you walk past a streetlamp, to how a company can maximize its profit by finding the perfect production level. Throughout this chapter, we will master three main pillars: how quantities change, how functions increase or decrease, and how to find the absolute maximum and minimum values of a system. This is the mathematics of optimization. Whether you are an engineer designing a bridge, an economist predicting market trends, or a biologist studying population growth, you are using the Application of Derivatives. So, keep your differentiation rules handy, because we are about to turn those abstract formulas into tools for understanding the universe. Let's get started with our first formal mathematical model.","Welcome back. In our previous session, we explored the intuitive idea of how one quantity changes with respect to another. Today, we move from intuition to mathematical precision. Let us begin with the formal definition. If a quantity x is changing with respect to another variable t, then the rate of change of x with respect to t is defined as the derivative of x with respect to t, denoted as d-x over d-t. It is crucial to remember that this rate is instantaneous. Unlike average rate of change, which looks at a large interval, the derivative tells us exactly how fast x is changing at one specific moment in time. Now, let us look at the concept of Mathematical Modeling. In many physics and geometry problems, we aren't given a direct function like y equals x squared. Instead, we are given a relationship between variables. For example, the volume of a sphere is related to its radius by the formula V equals four-thirds pi r cubed. If the radius is changing over time, we treat both V and r as functions of time, t. To find the rate of change of volume, we apply the chain rule. We differentiate both sides with respect to t, which gives us d-V over d-t equals four-thirds pi times three r squared times d-r over d-t. Simplifying this, we get d-V over d-t equals four pi r squared times d-r over d-t. This is the essence of modeling: translating a physical relationship into a differential equation. Let us work through a concrete example to solidify this. Suppose a balloon is being inflated such that its volume is increasing at a constant rate of ten cubic centimeters per second. How fast is the radius increasing when the radius is five centimeters? First, identify our knowns and unknowns. The rate of change of volume, d-V over d-t, is ten. We want to find the rate of change of the radius, d-r over d-t, at the instant when r equals five. We use the volume formula for a sphere: V equals four-thirds pi r cubed. Differentiating with respect to time t, we get d-V over d-t equals four pi r squared times d-r over d-t. Now, substitute the known values into this equation. Ten equals four pi times five squared times d-r over d-t. This simplifies to ten equals one hundred pi times d-r over d-t. To solve for d-r over d-t, we divide ten by one hundred pi. This gives us one over ten pi centimeters per second. Notice how the units are essential here; since volume is in cubic centimeters and radius is in centimeters, the rate of change of radius is in centimeters per second. Let's try one more, slightly more complex scenario involving area. Consider a square whose side length is increasing at a rate of two centimeters per second. Find the rate of change of its area. Let s be the side of the square and A be the area. We know A equals s squared. Differentiating both sides with respect to t, we get d-A over d-t equals two s times d-s over d-t. If the side length is, say, ten centimeters, then d-A over d-t equals two times ten times two, which equals forty square centimeters per second. The key takeaway here is the systematic approach: identify the geometric formula, differentiate it with respect to time using the chain rule, and then substitute the given instantaneous values. Always be mindful of whether a quantity is increasing or decreasing; if a quantity is decreasing, its rate of change must be expressed as a negative value in your equations. Mastering this modeling process is the foundation for the optimization problems we will tackle later in this chapter.","Welcome back. In our previous session, we explored how derivatives represent the rate of change. Today, we are going to use that power to understand the behavior of functions—specifically, whether a function is climbing up or sliding down. Imagine you are looking at a graph of a mountain range. Some parts are going uphill, and some are going downhill. In mathematics, we call these increasing and decreasing functions. Let's define this formally. A function f of x is said to be increasing on an interval if, for any two numbers x one and x two in that interval, whenever x one is less than x two, then f of x one is also less than or equal to f of x two. If the inequality is strictly less than, we call it a strictly increasing function. Conversely, a function is decreasing if, as x increases, the value of the function f of x decreases. Now, how do we find these intervals without plotting a thousand points? This is where the First Derivative Test comes in. The derivative, f prime of x, represents the slope of the tangent line at any point. If the slope is positive, the function is moving upwards. Therefore, if f prime of x is greater than zero for all x in an interval, the function is strictly increasing on that interval. If f prime of x is less than zero, the function is strictly decreasing. Let's walk through a concrete example. Suppose we have the function f of x equals x squared minus four x plus six. To find where this function increases or decreases, our first step is to find the derivative. The derivative f prime of x is two x minus four. Now, we need to find the critical points. These are the points where the derivative is either zero or undefined. We set two x minus four equals zero, which gives us x equals two. This value, x equals two, is our turning point. It divides the real number line into two distinct intervals: the interval from negative infinity to two, and the interval from two to infinity. To test these intervals, we pick a test point from each. Let's pick x equals zero from the first interval. Plugging zero into our derivative, two times zero minus four, gives us negative four. Since the derivative is negative, the function is decreasing on the interval from negative infinity to two. Now, let's pick a point from the second interval, say x equals five. Two times five minus four equals six. Since six is positive, the function is increasing on the interval from two to infinity. So, our conclusion is clear: the function decreases until it reaches x equals two, and then it starts increasing. One important nuance to remember is the distinction between 'increasing' and 'strictly increasing'. If the derivative is greater than or equal to zero, the function is increasing, meaning it can have flat spots. But if the derivative is strictly greater than zero, it is constantly climbing. When you solve these in your exams, always follow this systematic approach: first, find the derivative; second, find the critical points by setting the derivative to zero; third, divide the domain into intervals; and fourth, test the sign of the derivative in each interval. This method is foolproof and will help you navigate even the most complex polynomial or trigonometric functions. Let's keep this momentum going as we move into advanced applications.","Welcome back. In our previous session, we mastered the derivative test to find intervals where a function rises or falls. But in the board examinations, the challenge isn't just finding the interval; it is translating a complex paragraph into a mathematical function. Today, we tackle advanced word problems and, more importantly, the common pitfalls that cost students marks. Let us start with the structure of an advanced problem. Most high-level problems fall into three categories: geometric optimization, physical motion, or economic growth models. Take, for example, a problem involving a rectangle inscribed in a semicircle. You aren't just given a function; you are given a geometric constraint. Your first step must always be to express the quantity you want to maximize or minimize in terms of a single variable. If you have area as a function of both width and height, you must use the equation of the semicircle to substitute one variable. A common mistake here is forgetting the domain. When you find your critical points, you must check if they actually lie within the physical boundaries of the problem. For instance, a length cannot be negative, and it cannot exceed the diameter of the circle. If your derivative gives you a value outside this range, it is an extraneous solution. Now, let us discuss the 'Pitfall of the Boundary'. Many students find the critical point where the derivative is zero and stop there. But in many real-world applications, the maximum or minimum value occurs at the endpoints of the interval. This is especially true in closed intervals. Always test your critical points against the interval boundaries. Another major pitfall is the 'Sign Error during Interval Testing'. When you pick a test point from your intervals to check if the derivative is positive or negative, students often make calculation errors with complex fractions or negative signs. I recommend using a sign chart. Instead of calculating the exact value, just determine the sign of each factor in your derivative. If you have f prime of x equals x minus two times x plus three, and you are testing the interval between negative three and two, don't plug in zero and do the full math. Just see that negative times negative equals positive. This saves time and prevents errors. Let's look at a specific error regarding 'Strictly Increasing' versus 'Increasing'. In your exams, if a question asks for where a function is strictly increasing, you must ensure the derivative is strictly greater than zero. If the derivative is zero at isolated points but positive elsewhere, the function is still considered increasing, but you must be very precise with your notation. Finally, watch out for the 'Units Trap'. In word problems involving rate of change or growth, the derivative's units are the units of the dependent variable divided by the units of the independent variable. If you are finding the rate of change of area with respect to radius, your answer must be in square units per unit of radius. Neglecting units in a word problem can lead to a loss of marks even if your calculus is perfect. To summarize our strategy: first, model the function using constraints; second, define the physical domain; third, find critical points; fourth, test the intervals and the boundaries; and fifth, verify the units. Master these steps, and you will turn these complex word problems into simple algebraic exercises.","Welcome back to our journey through the Application of Derivatives. In our previous sessions, we explored how derivatives represent the rate of change. Today, we transition from pure rates to geometry. We are going to explore the concept of Tangents and Normals. Imagine a smooth, curving path on a graph, like a hilly road. If you were driving a car along this curve and suddenly your steering wheel locked straight, the straight line your car would follow at that exact instant is what we call the tangent line. Geometrically, a tangent to a curve at a given point is a straight line that just touches the curve at that point, locally mimicking the curve's direction. Now, let us look at the mathematical foundation. Recall from our study of limits that the derivative of a function, f of x, at a point x equals a, is defined as the limit of the difference quotient as h approaches zero. This derivative, f prime of a, is not just a number; it is the slope of the tangent line at the point a. So, the first key formula to remember is: the slope of the tangent, which we denote as m-t, is equal to f prime of a. If we have a point on the curve, let's call it P with coordinates of x-one and y-one, the slope of the tangent is simply the value of the derivative at x-one. Once we have the slope and a point, finding the equation of the tangent is straightforward using the point-slope form of a straight line. The equation of the tangent is: y minus y-one equals m-t times the quantity x minus x-one. Now, let us introduce the concept of the Normal. A normal is a line that is perpendicular to the tangent at the point of contact. In geometry, we know that if two lines are perpendicular, the product of their slopes is negative one. If the slope of the tangent is m-t, then the slope of the normal, which we call m-n, must satisfy the condition: m-t times m-n equals negative one. This means the slope of the normal is the negative reciprocal of the slope of the tangent. Mathematically, m-n equals negative one divided by f prime of a, provided the derivative is not zero. If the derivative is zero, the tangent is horizontal, and the normal is a vertical line. To find the equation of the normal at the point x-one, y-one, we use the point-slope form again, but with our new slope. The equation of the normal is: y minus y-one equals negative one divided by m-t times the quantity x minus x-one. Let us walk through a quick mental example. Suppose we have the curve y equals x squared. We want to find the equations of the tangent and normal at the point where x equals two. First, we find the y-coordinate. Since y equals x squared, at x equals two, y equals four. Our point is two, four. Next, we find the derivative. The derivative of x squared is two times x. Now, we evaluate this derivative at our point, where x equals two. So, the slope of the tangent, m-t, is two times two, which equals four. Using the tangent formula: y minus four equals four times the quantity x minus two. Simplifying this, we get y equals four x minus four. Now, for the normal. The slope of the normal, m-n, is negative one divided by four. Using the normal formula: y minus four equals negative one fourth times the quantity x minus two. This simplifies to y equals negative one fourth x plus four and a half. Remember, the tangent represents the instantaneous direction of the curve, while the normal represents the direction perpendicular to that motion, which is crucial in fields like optics and mechanics. Mastering these formulas is the gateway to understanding how curves behave in space.","Welcome back. In our previous session, we mastered the basic equations of tangents and normals. Today, we elevate our understanding by looking at how these lines interact with complex curves and how they help us analyze the geometry of a graph. Let us start with a sophisticated scenario: finding the angle between two curves. Imagine two curves, say y equals x squared and y equals x. At their point of intersection, they meet at a specific angle. To find this, we find the slope of the tangent to the first curve and the slope of the tangent to the second curve at that exact point. Let's call these slopes m one and m two. The angle theta between them is found using the formula: tangent of theta equals absolute value of m one minus m two, all divided by one plus m one times m two. This is a crucial tool in higher-order calculus. Now, let's move to a more challenging application: finding the length of a tangent, a normal, a sub-tangent, or a sub-normal. These are not just abstract lines; they have specific lengths relative to the axes. The length of the tangent is the distance from the point of contact to the point where the tangent intersects the x-axis. The length of the normal is the distance from the point of contact to where the normal hits the x-axis. The sub-tangent is the projection of the tangent on the x-axis, and the sub-normal is the projection of the normal on the x-axis. Mathematically, if the slope of the tangent is m, the length of the tangent is absolute value of y divided by m, and the length of the sub-tangent is absolute value of y divided by m. For the normal, the length of the normal is absolute value of y times the square root of one plus m squared, and the sub-normal is absolute value of y times m. Understanding these relationships allows us to solve complex geometric problems involving motion and curvature. Next, let's discuss graphical analysis. When we look at a graph, the tangent represents the instantaneous direction of the curve. If the tangent is horizontal, the derivative is zero, which brings us back to our concept of critical points. But look closer at the 'rate of change of the slope' itself. This leads us to the idea of how the tangent rotates as we move along the curve. If the tangent rotates counter-clockwise, the slope is increasing. If it rotates clockwise, the slope is decreasing. This visual behavior is the foundation for understanding concavity, which we will dive into deeply in our next section on Maxima and Minima. We must also be careful with vertical tangents. If the derivative approaches infinity at a point, the tangent is vertical, and its equation will be in the form x equals a constant. In such cases, the normal will be horizontal, with a slope of zero. Let's practice a mental visualization. Imagine a circle. At any point, the tangent is perpendicular to the radius. This is a classic geometric application where the derivative confirms the geometric property. As we move through more complex polynomial or trigonometric curves, these rules remain our guiding light. Always remember to differentiate carefully, find the slope at the specific point, and then apply your geometric formulas. Mastering these advanced applications ensures you can handle any curve-related problem in your board exams and beyond.","Welcome back. In our previous session, we explored how derivatives tell us about the slope of a curve. Now, we move into one of the most powerful applications of calculus: finding the highest and lowest points of a function. Imagine you are hiking a mountain range. Some peaks are the highest in the entire range, while others are just the highest points in a small local area. In mathematics, we call these local and absolute extrema. Let us define them formally. An absolute maximum of a function on a given interval is the largest value that the function attains over that entire interval. Similarly, an absolute minimum is the smallest value. However, if we are only looking at a specific neighborhood or a small interval around a point, we talk about local maxima and local minima. A function has a local maximum at a point if the function value at that point is greater than or equal to the values of the function at all nearby points. Conversely, a local minimum occurs when the function value is smaller than or equal to the values at all nearby points. To find these points, we first need to identify what we call Critical Points. A point c in the domain of a function f is a critical point if the derivative of the function at that point, which we write as f prime of c, is equal to zero, or if the derivative does not exist at that point. Think of it this way: at the very top of a smooth hill or the very bottom of a valley, the tangent line is perfectly horizontal. A horizontal line has a slope of zero. Therefore, setting the first derivative to zero is our primary tool for locating potential peaks and valleys. But be careful! Not every critical point is a maximum or a minimum. Sometimes, the function might flatten out momentarily and then continue in the same direction, like in the graph of x cubed at the origin. This is why we need a way to test these points. This brings us to the First Derivative Test. This test allows us to determine the nature of a critical point by observing how the sign of the derivative changes as we pass through it. Suppose we have a continuous function f and a critical point c. If we look at the sign of the first derivative, f prime of x, just to the left of c and just to the right of c, we can draw a conclusion. If the sign of f prime changes from positive to negative as we move from left to right through c, then the function was increasing and then started decreasing. This means the point c is a local maximum. If the sign of f prime changes from negative to positive, meaning the function was decreasing and then started increasing, then the point c is a local minimum. If the sign of the derivative does not change—for example, if it stays positive on both sides—then the point is neither a local maximum nor a local minimum; it is simply a stationary point of inflection. Let us summarize the process. Step one: find the derivative of your function. Step two: set the derivative to zero and solve for x to find your critical points. Step three: pick test values in the intervals created by these critical points. Step four: apply the First Derivative Test by checking the sign changes. By mastering these steps, you can navigate any continuous function and pinpoint its most important turning points.","Welcome back. In our previous session, we explored the First Derivative Test to identify local maxima and minima by observing sign changes in the slope. But what if the function is smooth and continuous, and we want a faster, more algebraic way to confirm the nature of a critical point? That is where the Second Derivative Test comes into play. Let us begin with the logic. Suppose we have a function, f of x, and we have found a critical point, let us call it c, where the first derivative, f prime of c, is equal to zero. This tells us the tangent is horizontal. To know if this point is a peak or a valley, we look at the rate at which the slope itself is changing. This is the second derivative, f double prime of x. If the second derivative at our critical point, f double prime of c, is negative, it means the slope is decreasing. Geometrically, this implies the curve is bending downwards, like an upside-down bowl. This shape is what we call concave down, and it guarantees that our point c is a local maximum. Conversely, if f double prime of c is positive, the slope is increasing. The curve is bending upwards, forming a shape like a right-side-up bowl. This is called concave up, and it confirms that our point c is a local minimum. Now, a very important caution: if f double prime of c equals exactly zero, the test fails. It is inconclusive. In such cases, the point could be a maximum, a minimum, or even a point of inflection, and we must revert to the First Derivative Test. Let us dive deeper into the concept of concavity. Concavity is essentially the 'curvature' of the graph. When we say a function is concave up on an interval, we mean that any tangent line drawn to the curve on that interval will lie entirely below the graph. When a function is concave down, the tangent lines lie above the graph. The transition points where the concavity changes from up to down, or down to up, are called points of inflection. To find these, we look for where the second derivative is zero or undefined, and then verify a change in sign. For example, consider the function f of x equals x cubed. The first derivative is three x squared. Setting this to zero gives us a critical point at x equals zero. The second derivative is six x. At x equals zero, the second derivative is zero, so our test is inconclusive. If we check the sign of six x, we see it is negative for negative x and positive for positive x. This means the graph changes from concave down to concave up at x equals zero. Thus, the origin is a point of inflection. Understanding this relationship between the second derivative and the shape of the graph is crucial for optimization. It allows us to not just find where a function reaches its limits, but to understand the very geometry of the motion or growth we are modeling. In the next segment, we will apply these rigorous tests to solve complex optimization problems involving geometry and algebra.","Welcome back. In our previous sessions, we mastered the Second Derivative Test and learned how to identify local extrema. But now, we move from pure calculus to the real world. Today, we tackle the most challenging part of this chapter: solving complex optimization word problems that blend geometry and algebra. These problems don't just give you a function; they give you a scenario. Your job is to translate words into mathematical models. Let's break down the universal strategy for these problems. Step one: Identify the quantity to be optimized. Is it area, volume, cost, or surface area? This is your objective function. Step two: Identify the constraints. In geometry problems, you are rarely given the function directly. Instead, you are given a fixed value, like a constant perimeter or a fixed volume. This constant is your constraint equation. Step three: Reduce the variables. This is where most students struggle. A typical objective function might have two variables, say radius and height. You cannot differentiate with respect to two variables using single-variable calculus. You must use your constraint equation to express one variable in terms of the other, then substitute it into the objective function. Now, you have a function of a single variable. Step four: Differentiate and find critical points. Set the first derivative to zero. Step five: Verify using the second derivative test. Never skip this! In a word problem, you must prove that your result is actually a maximum or a minimum as requested. Let's look at a classic geometric example. Suppose we want to find the dimensions of a closed cylindrical can of a fixed volume V that minimizes the total surface area. Our objective function is the Surface Area, S, which is equal to two pi r squared plus two pi r h. Here, we have two variables: radius, r, and height, h. Our constraint is the Volume, V, which is equal to pi r squared h. Since V is a constant, we can rearrange the volume formula to solve for h. h equals V divided by pi r squared. Now, we substitute this expression for h into our Surface Area formula. This gives us S equals two pi r squared plus two V divided by r. Now, S is a function of only one variable, r. We differentiate S with respect to r. The derivative is four pi r minus two V divided by r squared. Setting this to zero, we get four pi r equals two V divided by r squared, which simplifies to r cubed equals V divided by two pi. Taking the cube root gives us our critical radius. To ensure this minimizes the area, we find the second derivative, which is four pi plus four V divided by r cubed. Since r and V are positive, the second derivative is positive, confirming a minimum. This same logic applies to algebraic optimization, such as finding the maximum product of two numbers whose sum is constant. The pattern is always the same: Objective, Constraint, Substitution, Differentiation, and Verification. Remember, the hardest part isn't the calculus; it's the setup. Always draw a diagram for geometry problems. Label your variables clearly. If a problem mentions 'maximum volume,' your goal is to find the dimensions that make the derivative of volume zero. If it mentions 'minimum cost,' you are minimizing the cost function. Master this translation from English to Algebra, and you will master optimization.","Welcome back. We have mastered the mathematical tests for finding local and absolute extrema. Now, it is time to see why these tools are indispensable in the real world. In this lesson, we bridge the gap between pure calculus and applied sciences, specifically focusing on Physics and Economics. Let us start with Physics. In physical systems, nature often seeks a state of equilibrium or minimum energy. Consider a classic problem: a particle moving in a potential field. The stability of a system is often determined by its potential energy. If a particle is at a point where the first derivative of the potential energy function with respect to position is zero, and the second derivative is positive, the particle is at a point of minimum potential energy. This is a stable equilibrium. Think of a ball resting at the bottom of a bowl; any small displacement increases its energy, pushing it back to the center. Conversely, a maximum represents an unstable equilibrium, like a ball balanced on top of a hill. Another vital application in Physics is optimization of light travel, known as Fermat's Principle. Light travels between two points along the path that requires the least time. By setting up a time function based on the distance and velocity in different media and finding its minimum using derivatives, we can mathematically derive the laws of refraction, or Snell's Law. Now, let us shift our perspective to the world of Economics. Here, the goal is often to maximize profit or minimize cost. Let us define some fundamental terms. Total Revenue is the total money a company receives from selling its goods. Total Cost is the sum of fixed costs and variable costs. Profit is simply Total Revenue minus Total Cost. To find the maximum profit, we create a profit function, let's call it P of x, where x is the number of units produced. To find the optimal production level, we take the first derivative of the profit function, which is P prime of x, and set it to zero. This gives us the critical points. However, we must ensure this point is a maximum and not a minimum. We apply the second derivative test. If the second derivative, P double prime of x, is negative at that critical point, the profit is maximized. In economics, there is a beautiful relationship between marginals and optimization. Marginal Cost is the derivative of the Total Cost function, and Marginal Revenue is the derivative of the Total Revenue function. A key principle is that profit is maximized at the exact point where Marginal Revenue equals Marginal Cost. If Marginal Revenue is greater than Marginal Cost, the company should produce more to increase profit. If Marginal Cost exceeds Marginal Revenue, the company is losing money on every additional unit and should scale back. We also look at Cost Minimization. For a firm with a given production target, they want to find the combination of inputs, like labor and capital, that results in the lowest possible cost. This involves setting up a cost function and using derivatives to find the minimum. Whether it is a physicist finding the path of least action or an economist finding the point of maximum utility, the underlying mathematical engine is exactly what we have learned: finding where the rate of change is zero and verifying the nature of that point. Understanding these applications transforms calculus from a set of abstract rules into a powerful language for decision-making and understanding the universe.","Welcome back. We have covered the concepts, the tests, and the complex word problems of Application of Derivatives. Now, it is time to bridge the gap between knowing the formulas and scoring full marks in the exam. Many students understand the Second Derivative Test, but they struggle when a word problem is presented in a new way. Today, we focus on the strategy of pattern recognition and error prevention. Let us start with the three-step universal approach. Step one: Translation. Every optimization problem is a language problem. You must translate English sentences into mathematical equations. If a problem says 'the area is increasing at a constant rate,' you write 'd A comma d t equals k.' If it says 'the volume is maximum,' you write 'd V comma d x equals zero.' Step two: Reduction. Most problems give you two variables, like radius and height. You cannot differentiate easily with two variables. You must use a secondary equation, like the volume formula or Pythagorean theorem, to express one variable in terms of the other. This reduces your function to a single variable. Step three: Execution. This is where you apply your derivative tests. Now, let us talk about identifying patterns. There are three main types of problems in this chapter. The first is the Rate of Change pattern, where you see words like 'increasing,' 'decreasing,' 'velocity,' or 'speed.' Here, your focus is always on the derivative with respect to time. The second is the Monotonicity pattern, where you are asked to find intervals where a function is increasing or decreasing. Here, you are looking for the sign of the first derivative. The third is the Optimization pattern, which is the most common in exams. These problems always ask for 'maximum area,' 'minimum cost,' or 'largest volume.' The pattern here is: find the derivative, set it to zero to find critical points, and then use the second derivative test to confirm it is a maximum or minimum. Now, let us address the common mistakes that cost students marks. Mistake number one: Forgetting the domain. When you find a critical point, always check if it lies within the physical boundaries of the problem. For example, if you are calculating the dimensions of a box, a negative length is mathematically possible but physically impossible. Mistake number two: Confusing the first and second derivative tests. Remember, the first derivative tells you the slope or direction, while the second derivative tells you the concavity or the nature of the point. Mistake number three: Neglecting the constant. When differentiating, students often forget that constants in the original equation might disappear, but they are crucial for the relationship between variables. Another common error is the 'sign error' during the interval testing phase. When you pick a test point in an interval to check if the derivative is positive or negative, be extremely careful with your algebraic signs. To master this chapter, do not just solve more problems; solve different types of problems. If you solve ten problems of the same type, you are just practicing calculation. If you solve ten different types, you are practicing mathematics. Always write your final answer with the correct units, such as square centimeters or cubic meters, as this is a frequent requirement in the marking scheme. Let us move from theory to a systematic workflow that will ensure you never get stuck on a complex problem again.","Welcome to the grand finale of our journey through the Application of Derivatives. We have traveled from the simple rates of change to the complex optimization problems that define engineering and economics. Today is not about learning new concepts, but about mastering the art of the examination. Let us begin with a rapid-fire recap. Remember, the derivative is your primary tool. When you see a question about how one quantity changes with respect to another, you are looking at the rate of change, where dy over dx represents the instantaneous rate. When you are asked to find where a function is rising or falling, you are looking for the sign of the first derivative. If the first derivative is greater than zero, the function is increasing; if it is less than zero, it is decreasing. When we move to the geometry of curves, the slope of the tangent is simply the derivative evaluated at that point, and the slope of the normal is the negative reciprocal of that value. Finally, for Maxima and Minima, we find critical points where the first derivative is zero or undefined, and then we use the second derivative test. If the second derivative is negative, you have a local maximum; if it is positive, you have a local minimum. Now, let us talk about Previous Year Questions, or PYQs. In the last five years, the CBSE and other boards have shifted focus. They are moving away from direct formula substitution and moving toward multi-concept problems. You might see a question that combines Tangents and Normals with Maxima and Minima. For example, finding the point on a curve where the tangent is parallel to a given line, or finding the dimensions of a cylinder inscribed in a cone to maximize volume. When tackling these, always start by drawing a diagram. A diagram is not just a sketch; it is your mathematical roadmap. If you cannot visualize the relationship between the variables, you cannot form the equation. Once the equation is formed, identify your constant and your variable. In optimization problems, you will often have two variables. Use the given constraint to express one variable in terms of the other so that you have a single-variable function. This is where most students stumble. They try to differentiate with respect to two variables, which is a mistake. Next, let us discuss time management. The Application of Derivatives chapter is often where students lose time because the word problems are lengthy. Do not spend more than ten minutes on a single five-mark optimization problem. If you are stuck on the algebraic simplification, move to the next question and come back. Use the 'Scan and Categorize' technique. As soon as you get your question paper, quickly scan the AOD section. Identify the 'Easy Wins'—these are the direct Tangent and Normal questions or simple Increasing/Decreasing interval questions. Solve these first to build confidence. The 'Heavy Lifters' are the Maxima and Minima word problems. Save these for the middle of your session when your brain is in full analytical mode. A common pitfall is forgetting to state the final answer with appropriate units. If a question asks for the maximum volume, your answer must be in cubic units. If it asks for the rate of change of area, it must be in square units per unit of time. Also, always check the interval. If a question asks for the interval in which a function is increasing, do not just give the critical point; provide the interval using brackets. Finally, remember that the second derivative test is often faster for simple polynomials, but if the second derivative is zero, do not panic. It simply means the test is inconclusive, and you must revert to the first derivative test to check the sign change. You have worked hard, you have understood the logic, and now it is time to apply it with precision. Trust your process, stay calm, and master the math."];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-maths-06-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

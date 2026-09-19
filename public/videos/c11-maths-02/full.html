@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Relations and Functions, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-maths-02-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Real-world Applications, The Concept of Sets, and Why Relations &amp; Functions -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Real-world Applications, The Concept of Sets, and Why Relations &amp; Functions</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Mathematics is the study of patterns and connections.</div>
+              <div id="qx0-p1" class="qe-bullet">• Real-world examples: Smartphone apps, economics, and medicine.</div>
+              <div id="qx0-p2" class="qe-bullet">• Set Theory: A well-defined collection of distinct objects.</div>
+              <div id="qx0-p3" class="qe-bullet">• Well-defined means the membership is objective and clear.</div>
+              <div id="qx0-p4" class="qe-bullet">• Functions: A special relation where one input has exactly one output.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1458308071,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D motion graphic showing a smartphone screen where tapping an icon triggers a smooth transition to an app interface, transitioning into a mathematical mapping diagram.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D motion graphic showing a smartphone screen where tapping an icon triggers a smooth transition to an app interface, transitioning into a mathematical mapping diagram.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Cartesian Product of Sets: Definitions, Operations, and Visualizing Ordered Pairs -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Cartesian Product of Sets: Definitions, Operations, and Visualizing Ordered Pairs</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Definition: A cross B is the set of all ordered pairs (a, b) where a is in A and b is in B</div>
+              <div id="qx1-p1" class="qe-bullet">• Ordered Pairs: The sequence (a, b) is distinct from (b, a) unless a equals b</div>
+              <div id="qx1-p2" class="qe-bullet">• Cardinality Rule: If A has m elements and B has n elements, A cross B has m times n elements</div>
+              <div id="qx1-p3" class="qe-bullet">• Empty Set Property: If either set is empty, the Cartesian product is also an empty set</div>
+              <div id="qx1-p4" class="qe-bullet">• Visualization: Ordered pairs can be plotted as points on a 2D Cartesian coordinate grid</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1199284669,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D grid appears where elements of Set A slide along the X-axis and Set B along the Y-axis, with glowing lines connecting them to form intersection points representing ordered pairs.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D grid appears where elements of Set A slide along the X-axis and Set B along the Y-axis, with glowing lines connecting them to form intersection points representing ordered pairs.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Relation: Definition, Domain, Codomain, and Range with Worked Examples -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Relation: Definition, Domain, Codomain, and Range with Worked Examples</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Relation: A subset of the Cartesian product A x B</div>
+              <div id="qx2-p1" class="qe-bullet">• Domain: The set of all first elements in the ordered pairs</div>
+              <div id="qx2-p2" class="qe-bullet">• Codomain: The entire set B from which second elements are drawn</div>
+              <div id="qx2-p3" class="qe-bullet">• Range: The set of all second elements actually used in the relation</div>
+              <div id="qx2-p4" class="qe-bullet">• Key Rule: The Range is always a subset of the Codomain</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":928325901,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing two floating spheres representing sets A and B, with glowing lines connecting specific elements to form ordered pairs, highlighting the 'Domain' elements in blue and 'Range' elements in gold.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D animation showing two floating spheres representing sets A and B, with glowing lines connecting specific elements to form ordered pairs, highlighting the 'Domain' elements in blue and 'Range' elements in gold.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Types of Relations: Reflexive, Symmetric, Transitive, and Equivalence Relations -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Types of Relations: Reflexive, Symmetric, Transitive, and Equivalence Relations</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Reflexive: Every element 'a' is related to itself (a, a) ∈ R</div>
+              <div id="qx3-p1" class="qe-bullet">• Symmetric: If (a, b) ∈ R, then (b, a) must also be in R</div>
+              <div id="qx3-p2" class="qe-bullet">• Transitive: If (a, b) ∈ R and (b, c) ∈ R, then (a, c) must be in R</div>
+              <div id="qx3-p3" class="qe-bullet">• Equivalence Relation: A relation that is Reflexive, Symmetric, and Transitive</div>
+              <div id="qx3-p4" class="qe-bullet">• Example: The 'equal to' relation is a perfect Equivalence Relation</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1760466013,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D floating set of glowing spheres labeled A, B, and C, with arrows connecting them to demonstrate reflexive loops, bidirectional symmetric arrows, and transitive chains.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D floating set of glowing spheres labeled A, B, and C, with arrows connecting them to demonstrate reflexive loops, bidirectional symmetric arrows, and transitive chains.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Introduction to Functions: Mapping, Domain, Codomain, and Range Concepts -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Introduction to Functions: Mapping, Domain, Codomain, and Range Concepts</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• A function is a special relation where every input has exactly one output.</div>
+              <div id="qx4-p1" class="qe-bullet">• Domain: The set of all first elements (inputs) in the relation.</div>
+              <div id="qx4-p2" class="qe-bullet">• Codomain: The entire set of potential output values.</div>
+              <div id="qx4-p3" class="qe-bullet">• Range: The set of actual values produced by the function (subset of Codomain).</div>
+              <div id="qx4-p4" class="qe-bullet">• Rule: Every element in the domain must be mapped, and only to one element.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3933545354,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing two floating spheres, Set A and Set B, with glowing arrows connecting elements to demonstrate unique mapping versus multiple mapping.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D animation showing two floating spheres, Set A and Set B, with glowing arrows connecting elements to demonstrate unique mapping versus multiple mapping.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Types of Functions I: Identity, Constant, Polynomial, Rational, and Modulus Functions -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Types of Functions I: Identity, Constant, Polynomial, Rational, and Modulus Functions</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Constant Function: f(x) = c (Horizontal line)</div>
+              <div id="qx5-p1" class="qe-bullet">• Identity Function: f(x) = x (Diagonal line through origin)</div>
+              <div id="qx5-p2" class="qe-bullet">• Polynomial Function: f(x) = a_n x^n + ... + a_0</div>
+              <div id="qx5-p3" class="qe-bullet">• Rational Function: f(x) = p(x) / q(x), where q(x) is not zero</div>
+              <div id="qx5-p4" class="qe-bullet">• Modulus Function: f(x) = |x| (V-shaped graph)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":4236461825,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D coordinate system showing five distinct animated curves appearing one by one as they are named.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A split-screen 3D coordinate system showing five distinct animated curves appearing one by one as they are named.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Types of Functions II: Signum, Greatest Integer Function, and Exponential Functions -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Types of Functions II: Signum, Greatest Integer Function, and Exponential Functions</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Signum Function: f(x) = 1 if x &gt; 0, 0 if x = 0, and -1 if x &lt; 0</div>
+              <div id="qx6-p1" class="qe-bullet">• Greatest Integer Function: Output is the largest integer &lt;= x</div>
+              <div id="qx6-p2" class="qe-bullet">• Signum and Greatest Integer functions are known as Step Functions</div>
+              <div id="qx6-p3" class="qe-bullet">• Exponential Function: f(x) = a to the power of x, where a &gt; 0 and a is not 1</div>
+              <div id="qx6-p4" class="qe-bullet">• Exponential functions have a domain of all real numbers and range of positive reals</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":229869373,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D coordinate system showing the step-like graphs of Signum and Floor functions on the left, and a smooth, rapidly ascending exponential curve on the right.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A split-screen 3D coordinate system showing the step-like graphs of Signum and Floor functions on the left, and a smooth, rapidly ascending exponential curve on the right.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Algebra of Real Functions: Addition, Subtraction, Multiplication, and Division of Functions -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Algebra of Real Functions: Addition, Subtraction, Multiplication, and Division of Functions</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Addition: (f + g)(x) = f(x) + g(x)</div>
+              <div id="qx7-p1" class="qe-bullet">• Subtraction: (f - g)(x) = f(x) - g(x)</div>
+              <div id="qx7-p2" class="qe-bullet">• Multiplication: (fg)(x) = f(x) * g(x)</div>
+              <div id="qx7-p3" class="qe-bullet">• Division: (f/g)(x) = f(x) / g(x), where g(x) is not zero</div>
+              <div id="qx7-p4" class="qe-bullet">• Domain of combined functions is the intersection of individual domains</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1642744382,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D workspace where two mathematical curves (f and g) merge into a new curve through glowing algebraic operators (+, -, *, /).</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D workspace where two mathematical curves (f and g) merge into a new curve through glowing algebraic operators (+, -, *, /).</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Visualizing Functions: Graphing Techniques, Domain/Range Identification, and Sketching -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Visualizing Functions: Graphing Techniques, Domain/Range Identification, and Sketching</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Sketching: Find intercepts and observe end behavior</div>
+              <div id="qx8-p1" class="qe-bullet">• Domain: The set of all x-values covered by the graph</div>
+              <div id="qx8-p2" class="qe-bullet">• Range: The set of all y-values covered by the graph</div>
+              <div id="qx8-p3" class="qe-bullet">• Vertical Line Test: Ensures each input has exactly one output</div>
+              <div id="qx8-p4" class="qe-bullet">• Visualizing: Domain is horizontal, Range is vertical</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3496741169,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate plane where a dynamic vertical line slides across a curve to demonstrate the Vertical Line Test and domain boundaries.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D coordinate plane where a dynamic vertical line slides across a curve to demonstrate the Vertical Line Test and domain boundaries.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Advanced Problem Solving: Complex Domain/Range Derivations and Word Problems -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Advanced Problem Solving: Complex Domain/Range Derivations and Word Problems</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Domain constraint: Even roots must have non-negative radicands</div>
+              <div id="qx9-p1" class="qe-bullet">• Domain constraint: Denominators must never equal zero</div>
+              <div id="qx9-p2" class="qe-bullet">• Range technique: Express x in terms of y to find possible y-values</div>
+              <div id="qx9-p3" class="qe-bullet">• Range of quadratic functions: Use the vertex or inequality methods</div>
+              <div id="qx9-p4" class="qe-bullet">• Word problems: Apply domain/range to real-world constraints</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":688295382,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate plane where a complex curve morphs and shifts as the domain constraints are adjusted via sliding mathematical inequalities.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D coordinate plane where a complex curve morphs and shifts as the domain constraints are adjusted via sliding mathematical inequalities.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Identifying Non-functions, Mapping Errors, and Notation Mistakes -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Identifying Non-functions, Mapping Errors, and Notation Mistakes</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Vertical Line Test: A function must pass this to avoid multiple y-values for one x.</div>
+              <div id="qx10-p1" class="qe-bullet">• Codomain vs. Range: Range is the set of actual outputs; Codomain is the target set.</div>
+              <div id="qx10-p2" class="qe-bullet">• Domain Restrictions: Always check for zero denominators and negative square roots.</div>
+              <div id="qx10-p3" class="qe-bullet">• Correct Substitution: Use f of x notation properly when solving equations.</div>
+              <div id="qx10-p4" class="qe-bullet">• Interval Notation: Distinguish carefully between inclusive square and exclusive parentheses.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1558442788,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a vertical line sliding across a parabola versus a circle to demonstrate the Vertical Line Test.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a vertical line sliding across a parabola versus a circle to demonstrate the Vertical Line Test.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: High-Weightage Question Patterns, Revision, and Time Management -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: High-Weightage Question Patterns, Revision, and Time Management</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Focus on Domain and Range of square root and rational functions</div>
+              <div id="qx11-p1" class="qe-bullet">• Prove Equivalence Relations: Reflexive, Symmetric, and Transitive</div>
+              <div id="qx11-p2" class="qe-bullet">• Identify functions through graphical shapes (Modulus, Signum, GIF)</div>
+              <div id="qx11-p3" class="qe-bullet">• Use Concept Mapping for rapid mental revision</div>
+              <div id="qx11-p4" class="qe-bullet">• Apply the Two-Pass System to manage exam time effectively</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":1320894219,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a student's organized revision mind-map on one side and a ticking exam clock transitioning into a checklist on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A 3D split-screen showing a student's organized revision mind-map on one side and a ticking exam clock transitioning into a checklist on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Relations and Functions today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Real-world Applications, The Concept of Sets, and Why Relations &amp; Functions <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Cartesian Product of Sets: Definitions, Operations, and Visualizing Ordered Pairs <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Relation: Definition, Domain, Codomain, and Range with Worked Examples <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Types of Relations: Reflexive, Symmetric, Transitive, and Equivalence Relations <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Introduction to Functions: Mapping, Domain, Codomain, and Range Concepts <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Types of Functions I: Identity, Constant, Polynomial, Rational, and Modulus Functions <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Types of Functions II: Signum, Greatest Integer Function, and Exponential Functions <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Algebra of Real Functions: Addition, Subtraction, Multiplication, and Division of Functions <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Visualizing Functions: Graphing Techniques, Domain/Range Identification, and Sketching <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Advanced Problem Solving: Complex Domain/Range Derivations and Word Problems <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Identifying Non-functions, Mapping Errors, and Notation Mistakes <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: High-Weightage Question Patterns, Revision, and Time Management <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey into one of the most fundamental pillars of modern mathematics: Relations and Functions. Before we dive into the formulas and definitions, let's pause and ask ourselves: why are we studying this? You might think math is just about numbers, but math is actually the study of patterns and connections. Think about your smartphone. When you tap an icon, a specific app opens. That is a relation. When you input a command into a calculator and get a specific result, that is a function. In economics, the relationship between supply and demand determines prices. In medicine, the dosage of a drug is related to the patient's body weight. Everything in our universe is connected through these mathematical structures. To understand these connections, we first need a language to describe collections of objects. This language is called Set Theory. A set is simply a well-defined collection of distinct objects. For example, the set of all vowels in the English alphabet, or the set of all even numbers less than twenty. The term 'well-defined' is crucial here. If I say 'the set of beautiful flowers', it is not a mathematical set because 'beautiful' is subjective. One person's beautiful is another person's ordinary. But if I say 'the set of all red roses in this room', it is well-defined because we can objectively check every flower. Once we have sets, we can start looking at how they interact. Imagine we have two sets. Set A contains names of students in your class, and Set B contains their roll numbers. We want to see how these two groups link together. This link is what we call a Relation. A relation is essentially a rule that pairs elements from one set with elements from another. However, not all relations are created equal. Some relations are very predictable and consistent. In mathematics, we look for a special kind of relation called a Function. A function is a rule where every single input from the first set is paired with exactly one output in the second set. Think of it like a vending machine. You press a button—that is your input. The machine gives you a specific snack—that is your output. If you press the button for chips, and sometimes you get chips but other times you get a soda, the machine is broken! In mathematical terms, that would not be a function because one input led to two different outputs. This concept of 'one input, one output' is what allows us to build models, predict weather, and even program the artificial intelligence you use every day. So, in this chapter, we will start by mastering the language of sets, move into how we multiply sets together using Cartesian products, and finally, we will master the art of defining and identifying relations and functions. Let's get started!","Welcome back. In our last session, we understood why relations and functions are the backbone of mathematics. Now, we need a mathematical way to combine two different sets to create new connections. This brings us to our topic for today: The Cartesian Product of Sets. Imagine you are at a cafe. You have a set of beverages, say tea and coffee, and a set of snacks, say biscuits and cake. To find every possible combination of one drink and one snack, you are essentially performing a Cartesian Product. Let's define this formally. Suppose we have two non-empty sets, A and B. The Cartesian product of A and B, denoted as A cross B, is the set of all ordered pairs such that the first element is from set A and the second element is from set B. Mathematically, we write this as A cross B equals the set of all pairs (a, b) where a belongs to A and b belongs to B. Now, pay close attention to the term 'ordered pair'. The order matters. The pair (a, b) is not the same as the pair (b, a) unless a equals b. This is a crucial distinction. Let's look at an example. Let set A be equal to the set containing the numbers one and two. Let set B be equal to the set containing the letters x and y. To find A cross B, we pair the first element of A with every element of B, and then move to the second element of A. So, we get the pairs: one x, one y, two x, and two y. Therefore, A cross B equals the set containing (one, x), (one, y), (two, x), and (two, y). If we were to find B cross A, the order would flip. The first elements would come from B, and the second from A. So, B cross A would be (x, one), (x, two), (y, one), and (y, two). Notice that A cross B is not equal to B cross A in this case. This is a common trap in exams! Now, let's talk about the size of these sets, which we call cardinality. If set A has 'm' number of elements and set B has 'n' number of elements, then the total number of ordered pairs in A cross B will be m multiplied by n. For our previous example, set A had two elements and set B had two elements. Two times two equals four, which matches our result. What if one of the sets is empty? If set A is an empty set, then there are no elements to pick from to form a pair. In that case, A cross B will also be an empty set. This is true even if set B has a million elements. Now, how do we visualize this? Instead of just writing lists, we can use a Cartesian plane or a grid. Imagine a horizontal axis representing set A and a vertical axis representing set B. Each ordered pair becomes a specific point or a dot on this grid. This visualization is the foundation for coordinate geometry. If you have a set of real numbers on the x-axis and real numbers on the y-axis, every single point on the infinite flat plane is actually an ordered pair from the Cartesian product of the set of real numbers with itself. This concept allows us to turn abstract sets into geometric shapes and lines. To summarize: the Cartesian product creates all possible pairings, the order of elements in the pair is vital, the number of elements is the product of the individual counts, and we can visualize these pairs as points on a coordinate grid. Mastering this is your first step toward understanding relations.","Welcome back. In our previous lesson, we explored the Cartesian Product of sets, learning how to form all possible ordered pairs from two sets, A and B. Now, we are going to use that concept to define a Relation. Imagine you have two sets. A relation is simply a subset of the Cartesian product A cross B. This means a relation is a collection of specific ordered pairs where the first element comes from set A and the second comes from set B, following a particular rule or condition. Instead of taking every single possible pair, a relation picks only those that satisfy a specific relationship. For example, let set A be the set of natural numbers from one to three, and set B be the set of natural numbers from one to five. If our rule is that the element in B must be twice the element in A, our relation R would only contain the pairs like one comma two and two comma four. We write this as R is a subset of A cross B. Now, let's break down the three crucial terms you must master: Domain, Codomain, and Range. The Domain is the set of all first elements of the ordered pairs in the relation. Think of it as the set of all 'inputs' that actually participate in the relationship. The Codomain is the entire set B, the set from which the second elements are drawn, regardless of whether they are used or not. Finally, the Range is the set of all second elements that are actually paired with an element from set A. It is important to remember that the Range is always a subset of the Codomain. Let's look at a worked example to make this crystal clear. Suppose set A is equal to the set containing numbers one, two, and three. Suppose set B is equal to the set containing numbers four, five, and six. Let's define a relation R from A to B by the rule: the second element minus the first element equals three. Let's test the elements. For one in set A, we need an element in B such that x minus one equals three, which gives us four. So, one comma four is in our relation. For two in set A, we need x minus two equals three, which gives us five. So, two comma five is in our relation. For three in set A, we need x minus three equals three, which gives us six. So, three comma six is in our relation. Our relation R is the set containing one comma four, two comma five, and three comma six. Now, let's identify the components. The Domain is the set of first elements, which is one, two, and three. The Codomain is the entire set B, which is four, five, and six. In this specific case, the Range is also four, five, and six because every element in B was used. But wait, let's try one more quick example where they differ. Let set A be one and two, and set B be ten, twenty, and thirty. Let the relation be R equals one comma ten and two comma twenty. Here, the Domain is one and two. The Codomain is the whole set B, which is ten, twenty, and thirty. However, the Range is only ten and twenty, because thirty was never paired with anything. See the difference? The Codomain is the 'target' set, while the Range is the 'actual' set of results. Mastering these distinctions is the foundation for understanding functions in our next lesson.","Welcome back. In our previous video, we understood what a relation is and how to identify its domain, codomain, and range. Now, we are going to dive into the heart of the chapter: the different types of relations. Not all relations are created equal. Some have specific patterns or properties that make them very important in mathematics. Let's start with the first type: a Reflexive Relation. A relation R on a set A is called reflexive if every single element in set A is related to itself. In mathematical terms, for every element a belonging to set A, the ordered pair a comma a must be an element of R. Imagine a set A containing the numbers one, two, and three. For a relation to be reflexive, it must contain the pairs one comma one, two comma two, and three comma three. If even one element, say two, is not related to itself, the entire relation fails to be reflexive. Now, let's move to the second type: Symmetric Relations. A relation R on a set A is symmetric if, whenever an element a is related to b, then b must also be related to a. If the ordered pair a comma b is in R, then the ordered pair b comma a must also be in R. Think of it like a friendship in a small group where if person A is a friend of person B, then person B is automatically a friend of person A. However, if we have a relation like 'is taller than', it is not symmetric. If Amit is taller than Sumit, it does not mean Sumit is taller than Amit. That's a perfect example of a non-symmetric relation. Next, we have the most challenging one: Transitive Relations. A relation R on a set A is transitive if, whenever a is related to b, and b is related to c, then a must be related to c. This creates a chain. If a comma b is in R and b comma c is in R, then a comma c must also be in R. Think of the relation 'is greater than'. If five is greater than three, and three is greater than one, then five is definitely greater than one. This property is transitive. A quick note: if the condition 'a is related to b and b is related to c' never happens, the relation is still considered vacuously transitive. Now, here is the grand finale: the Equivalence Relation. A relation is called an Equivalence Relation if it satisfies all three properties we just discussed: it must be reflexive, symmetric, and transitive. When a relation meets all these criteria, it behaves very predictably, which is why it is so useful in advanced mathematics. For example, the relation 'is equal to' on the set of real numbers is an equivalence relation. Every number is equal to itself, if x equals y then y equals x, and if x equals y and y equals z, then x equals z. Let's recap. Reflexive means every element relates to itself. Symmetric means the relationship works both ways. Transitive means the relationship carries through a chain. And an Equivalence Relation is the perfect combination of all three. Mastering these definitions is crucial because they form the foundation for understanding how sets interact in higher algebra. Let's look at some practice problems to test your understanding.","Welcome back! In our previous lesson, we explored the world of relations. Today, we take a massive leap forward. We are going to discover a very special kind of relation called a Function. Now, you might be wondering, what makes a function different from a regular relation? Let's start with a simple idea. In a relation, any element from set A can be related to any element in set B. It can be messy. But a function is much more disciplined. A function is a special relation where every single element in the first set, which we call the domain, is paired with exactly one element in the second set. Think of it like this: imagine a set of students and a set of roll numbers. Every student must have a roll number, and no student can have two different roll numbers at the same time. That is the essence of a function. To understand this deeply, we need to master three key terms: Domain, Codomain, and Range. Let's use a visual mapping approach. Suppose we have Set A containing the numbers one, two, and three. And Set B contains the numbers four, five, and six. If we create a rule where we add three to every number in Set A to get a number in Set B, we get the pairs: one is mapped to four, two is mapped to five, and three is mapped to six. In this scenario, Set A is our Domain. It is the set of all possible inputs. Set B is our Codomain. The Codomain is the entire set of potential outputs we are considering. Now, look closely at the actual values that are actually 'hit' or reached by the mapping. In our example, the values four, five, and six are the outputs. These specific values form the Range. So, the Range is a subset of the Codomain. It is the collection of all second elements in the ordered pairs of the function. To summarize the distinction: the Domain is what you put into the function, the Codomain is the target set, and the Range is what actually comes out. A very important rule to remember for your exams is this: for a relation to be a function, two conditions must be met. First, every element in the domain must be mapped to something. You cannot leave an element in Set A hanging without a partner. Second, no element in the domain can be mapped to more than one element in the codomain. An element in the codomain, however, can be mapped to by more than one element from the domain. Think of a vending machine. You press one button, and you get exactly one specific snack. If you press one button and two different snacks fall out, or if you press a button and nothing happens, the machine is not functioning correctly. In mathematical terms, if an input gives multiple outputs, it is a relation, but it is NOT a function. As we move forward in this chapter, we will see how these mappings can be represented through algebraic equations, graphs, and even complex real-world models. Understanding the boundary between the domain and the range is the foundation for all calculus and higher mathematics you will encounter in the future. Let's keep this distinction clear in your mind: Domain is the input, Codomain is the pool of possibilities, and Range is the actual result.","Welcome back! In our previous session, we understood what a function is. Now, we are going to dive into the specific 'personalities' of functions. Just as humans have different roles, mathematical functions are classified based on how they map elements from the domain to the codomain. Let's start with the simplest one: the Constant Function. Imagine a function where no matter what input you provide, the output remains exactly the same. We denote this as f of x equals c, where c is a fixed real number. If you graph this, it is simply a horizontal straight line passing through c on the y-axis. For example, if f of x equals five, then whether x is one, ten, or negative fifty, the result is always five. Next, we have the Identity Function. This is the most straightforward mapping. Here, every element is mapped to itself. We write this as f of x equals x. If you input two, you get two; if you input negative three, you get negative three. On a graph, this appears as a perfect diagonal line passing through the origin at a forty-five-degree angle. Now, let's move to something more dynamic: Polynomial Functions. A polynomial function is an expression consisting of variables and coefficients, involving only non-negative integer exponents. The general form is f of x equals a-n x to the power of n, plus a subscript n-one x to the power of n-minus-one, and so on, up to a constant term. For example, f of x equals x squared plus three x plus two is a quadratic polynomial. The shape of these graphs changes depending on the degree of the polynomial. Moving on, let's look at Rational Functions. A rational function is essentially a fraction where both the numerator and the denominator are polynomial functions. We write this as f of x equals p of x divided by q of x, where q of x is not equal to zero. This 'not equal to zero' part is crucial because division by zero is undefined. This often leads to interesting features in the graph, like vertical asymptotes where the function approaches infinity. Finally, we have the Modulus Function, also known as the absolute value function. This function is defined as f of x equals absolute value of x. Its job is to turn any input into its non-negative magnitude. Formally, we define it in two parts: if x is greater than or equal to zero, f of x equals x; and if x is less than zero, f of x equals negative x. This ensures the output is always positive or zero. If you visualize its graph, it looks like a sharp 'V' shape with the vertex at the origin. Understanding these five basic types is the foundation for all advanced calculus and algebra you will encounter later. Let's look at some examples to solidify this.","Welcome back. In our previous lesson, we explored the Modulus function. Today, we are diving into three very special functions that behave differently from the smooth curves we are used to: the Signum function, the Greatest Integer Function, and the Exponential function. Let's start with the Signum function. Imagine you have a rule that doesn't care about the exact value of a number, but only cares about its sign. Is it positive, negative, or zero? That is exactly what the Signum function does. We denote it as f of x equals the signum of x. If x is greater than zero, the output is always positive one. If x is less than zero, the output is always negative one. And if x is exactly zero, the output is zero. Mathematically, we write this as a piecewise function. The domain of the Signum function is all real numbers, but notice its range is very restricted. The range is just the set containing negative one, zero, and positive one. When you graph this, it looks like a step-like pattern: a flat line at negative one for all negative x, a single dot at the origin, and a flat line at positive one for all positive x. Next, let's look at the Greatest Integer Function, often called the Floor Function. This is a very important concept in computer science and mathematics. We denote it as f of x equals the greatest integer less than or equal to x. You might see it written with special brackets like floor of x. Think of it this way: if you take any real number, what is the largest integer that is not greater than that number? For example, if x is two point five, the greatest integer less than or equal to two point five is two. If x is zero point seven, the greatest integer is zero. If x is negative one point two, be careful here! The greatest integer less than or equal to negative one point two is negative two, because negative two is the first integer to the left of negative one point two on the number line. The domain is all real numbers, but the range is the set of all integers. The graph of this function looks like a series of steps, which is why we call it a step function. Each step is closed on the left and open on the right. Finally, let's move to a much smoother and more famous function: the Exponential Function. An exponential function is a function where the variable x appears in the exponent. The general form is f of x equals a raised to the power of x, where 'a' is a positive real number and not equal to one. Let's take the most common example, e raised to the power of x, where 'e' is Euler's number, approximately two point seven one eight. Unlike the previous two functions, the exponential function is continuous and smooth. As x increases, the value of the function grows incredibly fast. As x becomes a very large negative number, the value of the function gets closer and closer to zero, but it never actually touches the x-axis. This means the x-axis is a horizontal asymptote. The domain is all real numbers, and the range is all positive real numbers, meaning the output is always greater than zero. Understanding these three functions—the discrete jumps of the Signum and Greatest Integer functions, and the rapid growth of the Exponential function—is crucial for your upcoming calculus studies.","Welcome back. In our previous session, we explored the various types of real functions. Today, we step into a very practical area: the Algebra of Real Functions. Just as we can add, subtract, multiply, or divide real numbers, we can perform these same operations on functions. But there is a catch. When we combine two functions, we must be very careful about their domains. Let us start with the addition of functions. Suppose we have two real functions, f of x and g of x, defined on some subsets of real numbers, A and B. The sum of these functions, which we denote as f plus g of x, is defined as f of x plus g of x. However, this new function is only valid for those values of x that belong to both A and B. In mathematical terms, the domain of f plus g is the intersection of the domain of f and the domain of g. This means if a number is not in both sets, the sum cannot be computed. The same logic applies to the subtraction of functions. The function f minus g of x is simply f of x minus g of x, and its domain is also the intersection of the domains of f and g. Now, let us look at the multiplication of functions. The product of f and g, written as f times g of x, is defined as the product of their individual outputs: f of x multiplied by g of x. Again, the domain is the intersection of the domains of f and g. Finally, we have the division of functions. This is where we must be extra cautious. The quotient of f and g, written as f divided by g of x, is defined as f of x divided by g of x. While the domain starts as the intersection of the domains of f and g, we must add one crucial condition: the denominator, g of x, cannot be zero. Any value of x that makes g of x equal to zero must be excluded from the domain of the quotient function. Let us look at a quick example. Suppose f of x equals x squared and g of x equals x minus two. The domain of f is all real numbers, and the domain of g is also all real numbers. For the sum, f plus g of x, we get x squared plus x minus two. Since the intersection of all real numbers with all real numbers is all real numbers, the domain is R. For the product, f times g of x, we get x squared times the quantity x minus two, which simplifies to x cubed minus two x squared. The domain remains all real numbers. But look at the division: f divided by g of x. This is x squared divided by the quantity x minus two. Here, we must ensure that the denominator, x minus two, is not zero. This means x cannot be two. So, the domain for the division is all real numbers except two. Remember, when performing algebra on functions, always find the individual domains first, find their intersection, and if you are dividing, always check for zeros in the denominator. This ensures your new function is mathematically well-defined.","Welcome back. In our previous lesson, we explored the algebra of functions. Now, we transition from abstract equations to something much more intuitive: the visual world of graphs. A function is not just a rule; it is a shape, a curve, or a line that tells a story about how one variable changes in response to another. To master this, we need to master three things: how to sketch a graph, how to identify the domain and range visually, and how to use the Vertical Line Test. Let us start with the concept of sketching. When we graph a function, say y equals f of x, we are plotting every ordered pair where the x-value is the input and the y-value is the output. To sketch a function accurately, you don't need to plot an infinite number of points. Instead, follow these steps. First, find the intercepts. To find the x-intercept, set y to zero and solve for x. To find the y-intercept, set x to zero and solve for y. Second, look for any points of discontinuity or breaks in the graph. Third, observe the behavior of the function as x becomes very large or very small. For example, if you are sketching a simple linear function like y equals two x plus three, you will see a straight line passing through the y-intercept at three. If you are sketching a quadratic function, you will see a parabola. Now, let us talk about identifying the Domain and Range directly from a graph. This is a vital skill for your exams. To find the Domain, imagine a vertical line sliding across the graph from left to right along the x-axis. The domain is the set of all x-values for which the graph exists. If the graph starts at x equals negative two and goes on forever to the right, your domain is x is greater than or equal to negative two. To find the Range, imagine a horizontal line sliding from the bottom to the top along the y-axis. The range is the set of all y-values that the graph covers. If a parabola opens upwards and its lowest point is at y equals zero, the range is all y-values greater than or equal to zero. A common mistake is confusing the two. Remember: Domain is horizontal movement, Range is vertical movement. Now, how do we know if a curve is actually a function? This brings us to the Vertical Line Test. This is the quickest way to distinguish a relation from a function visually. Take a ruler and hold it vertically against your graph. Move it from left to right. If at any point your vertical line touches the graph at more than one point, then that graph does not represent a function. Why? Because a function must assign exactly one output to every input. If the line hits two points, it means one x-value has two different y-values, which violates the very definition of a function. For example, a circle fails the vertical line test because a single x-value can correspond to both a top and a bottom point on the circle. However, a parabola or a sine wave passes the test perfectly. As you practice, try to combine these skills. Look at a graph, identify where it starts and ends on the x-axis to find the domain, look at its highest and lowest points to find the range, and use the vertical line test to confirm it is a function. Mastering these visual techniques will make the complex functions we study in higher mathematics feel much more natural. In the next part, we will tackle advanced problem-solving to put these skills to the test.","Welcome back. We have mastered the definitions and the basic types of functions. Now, it is time to step into the arena of advanced problem solving. In competitive exams, you won't just be asked to identify a function; you will be asked to find the exact set of values for which a complex expression is defined. This is the domain. And you will be asked to find the set of all possible outputs. This is the range. Let's start with the most common challenge: finding the domain of a square root function. Remember the fundamental rule: the expression inside a square root, or any even index root, must be greater than or equal to zero. Suppose we have a function f of x equals the square root of the expression four minus x squared. To find the domain, we set the inequality four minus x squared is greater than or equal to zero. This simplifies to x squared is less than or equal to four. Taking the square root of both sides, we find that x must lie between negative two and positive two, inclusive. So, our domain is the closed interval from negative two to two. Now, let's add a layer of complexity. What if we have a rational function where the denominator contains a square root? Consider f of x equals one divided by the square root of x minus five. Here, we have two constraints. First, the expression inside the root, x minus five, must be greater than or equal to zero. Second, because it is in the denominator, the entire root cannot be zero. Therefore, x minus five must be strictly greater than zero. This gives us x is greater than five. Our domain is the open interval from five to infinity. Moving to the range, this is often trickier. For a function like f of x equals x squared plus three, we know that x squared is always greater than or equal to zero for all real x. Adding three to both sides, we get x squared plus three is greater than or equal to three. Thus, the range is the interval from three to infinity. A very powerful technique for finding the range of rational functions is to express x in terms of y. If y equals the expression x plus one divided by x minus two, we rearrange this to get y times x minus two equals x plus one. Expanding this, we get y-x times x minus two-y-x equals x plus one. Moving all x terms to one side, we get x times y minus one equals two-y. Therefore, x equals the expression two minus y divided by y minus one. For x to be a real number, the denominator cannot be zero. So, y cannot be one. The range is all real numbers except one. Finally, let's look at a word problem to see why this matters. Imagine a company's profit is modeled by a function where the profit P depends on the number of units x produced. If the profit function is P of x equals negative x squared plus fifty x minus four hundred, we need to find the production range that keeps the company profitable. To find this, we set P of x greater than zero. Solving the quadratic inequality negative x squared plus fifty x minus four hundred is greater than zero, or x squared minus fifty x plus four hundred is less than zero, we find the roots are ten and forty. Thus, the company makes a profit when they produce between ten and forty units. This is how domain and range translate into real-world decision making. Master these algebraic manipulations, and you will master the heart of calculus preparation.","Welcome back. We have covered the definitions, the types, and the algebra of functions. But in the examination, even students who understand the concepts often lose marks due to subtle errors. Today, we are going to look at the three most common traps: identifying non-functions, mapping errors, and notation mistakes. Let's start with the first pitfall: confusing a relation with a function. Remember the golden rule: in a function, every element in the domain must have exactly one image in the codomain. A common mistake is looking at a set of ordered pairs and seeing that every x-value is used, but failing to notice that one x-value is paired with two different y-values. For example, if we have a relation R equals open parenthesis, one comma two, one comma three, close parenthesis, this is NOT a function because the input one is mapping to both two and three. On a graph, this is known as the Vertical Line Test. If you can draw any vertical line that intersects the graph at more than one point, you are looking at a relation, not a function. This often happens with equations involving y-squared, like x equals y-squared. If you solve for y, you get plus or minus the square root of x, which gives two outputs for one input. That is a major red flag. Moving to our second pitfall: Mapping Errors, specifically regarding Domain and Range. Many students mistakenly assume that the Codomain and the Range are the same thing. They are not. The Codomain is the entire set of potential outputs we define at the start, while the Range is only the set of actual values that the function hits. If a question asks for the range of f of x equals x-squared where the codomain is all real numbers, the range is not all real numbers; it is only non-negative real numbers. Another mapping error occurs when we ignore the restrictions of the domain. When dealing with square roots or denominators, students often forget to exclude values that make the function undefined. If you define a function with a denominator of x minus two, and you don't explicitly state that x cannot be two, your mapping is mathematically broken. Finally, let's talk about Notation Mistakes, which are the silent killers of marks in board exams. The first error is the misuse of the equals sign. Students often write f of x equals x-squared plus five, and then in the next line, they write f of x equals seven to solve for x. This is technically incorrect. You should write f of x equals seven, then substitute x-squared plus five for f of x, leading to x-squared plus five equals seven. The second notation error is confusing the function name with its value. Remember, f is the rule, and f of x is the value produced by that rule. Do not write f equals x-squared; always write f of x equals x-squared. Lastly, be very careful with the notation for sets. When writing the range in interval notation, students often use a square bracket when they should use a parenthesis. For example, if a function approaches but never reaches a value, use a parenthesis. Using a square bracket implies the value is included, which can change your entire answer from correct to incorrect. Master these distinctions, and you will move from just knowing the math to mastering the precision required for top scores.","Welcome to the final session of our journey through Relations and Functions. We have covered everything from Cartesian products to complex function algebra, and now, it is time to transition from learning to scoring. In your examinations, not all questions carry the same weight. To master this chapter, you must recognize the patterns that examiners love to repeat. The first high-weightage pattern is the 'Domain and Range Derivation' of composite functions, especially those involving square roots and rational expressions. When you see a function like the square root of a quadratic expression, remember the golden rule: the expression inside the root must be greater than or equal to zero. For rational functions, the denominator can never be zero. These are the bread and butter of five-mark questions. The second pattern involves 'Types of Relations'. You will often be asked to prove whether a given relation is an equivalence relation. To score full marks here, do not just state the answer. You must explicitly show three distinct steps: first, prove it is reflexive by showing the element relates to itself; second, prove it is symmetric; and third, prove it is transitive. If even one of these fails, the relation is not an equivalence relation. The third pattern is the 'Graphical Identification' of functions. You might be given a graph and asked to identify if it represents a Modulus function, a Signum function, or a Greatest Integer Function. Always look at the shape and the jumps in the graph. A V-shape usually indicates a Modulus function, while a step-like pattern indicates the Greatest Integer Function. Now, let's talk about revision strategy. Do not try to solve every single problem in your textbook during the final days. Instead, focus on 'Concept Mapping'. Take a blank sheet of paper and write 'Functions' in the center. Branch out into types, then sub-types, then their specific graphs. This mental map helps you retrieve information faster during the exam. Another vital revision technique is the 'Error Log'. Go back to the problems you got wrong in your practice tests. Was it a calculation error, or did you misunderstand the definition of a domain? Categorizing your mistakes prevents them from recurring. Finally, let's discuss Time Management. In a mathematics exam, time is your most precious resource. Use the 'Two-Pass System'. In the first pass, solve all the direct, formula-based questions—the one-mark and two-mark questions. This builds your confidence and secures easy marks. In the second pass, tackle the long-form derivations and complex proofs. Never get stuck on a single difficult domain problem for more than five minutes. If you are stuck, leave a space, move on, and come back later. When checking your work, do not just re-read your steps. Re-calculate the final values. A common mistake is finding the correct domain but making a sign error in the final interval notation. Always write your final answers clearly, using proper interval notation like open brackets for excluded values and closed brackets for included values. Remember, in Relations and Functions, precision in notation is just as important as the logic itself. You have worked hard, you have understood the concepts, and now you have the strategy. Go into your exams with confidence. You are ready."];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-maths-02-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

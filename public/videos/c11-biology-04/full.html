@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Animal Kingdom, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-biology-04-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Diversity of Life and the Importance of Classification -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Diversity of Life and the Importance of Classification</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Biological diversity: The vast variety of life forms on Earth.</div>
+              <div id="qx0-p1" class="qe-bullet">• Classification: Grouping organisms based on similarities and differences.</div>
+              <div id="qx0-p2" class="qe-bullet">• Purpose: Easier identification, systematic study, and naming.</div>
+              <div id="qx0-p3" class="qe-bullet">• Evolutionary Significance: Reveals relationships between different groups.</div>
+              <div id="qx0-p4" class="qe-bullet">• Basis of Classification: Using body plans and developmental patterns.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":1704950565,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A cinematic zoom-out starting from a single microscopic organism, expanding to a coral reef, then a forest, and finally a global view of Earth, overlaid with a digital organizational tree structure.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A cinematic zoom-out starting from a single microscopic organism, expanding to a coral reef, then a forest, and finally a global view of Earth, overlaid with a digital organizational tree structure.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Basis of Classification I: Levels of Organization, Symmetry, and Diploblastic/Triploblastic -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Basis of Classification I: Levels of Organization, Symmetry, and Diploblastic/Triploblastic</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Levels of Organization: Cellular, Tissue, Organ, and Organ System</div>
+              <div id="qx1-p1" class="qe-bullet">• Asymmetry: No plane divides the body into equal halves</div>
+              <div id="qx1-p2" class="qe-bullet">• Radial Symmetry: Multiple planes through central axis create equal halves</div>
+              <div id="qx1-p3" class="qe-bullet">• Bilateral Symmetry: Only one plane creates identical left and right halves</div>
+              <div id="qx1-p4" class="qe-bullet">• Germ Layers: Diploblastic (2 layers) vs Triploblastic (3 layers)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":923998941,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing a sponge (asymmetric), a jellyfish (radial), and a worm (bilateral) alongside a cross-section of embryonic layers.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D split-screen animation showing a sponge (asymmetric), a jellyfish (radial), and a worm (bilateral) alongside a cross-section of embryonic layers.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Basis of Classification II: Coelom, Segmentation, and Notochord -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Basis of Classification II: Coelom, Segmentation, and Notochord</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Coelom: A body cavity lined by mesoderm.</div>
+              <div id="qx2-p1" class="qe-bullet">• Acoelomates: No body cavity (e.g., Platyhelminthes).</div>
+              <div id="qx2-p2" class="qe-bullet">• Pseudocoelomates: Cavity present but not mesoderm-lined (e.g., Aschelminthes).</div>
+              <div id="qx2-p3" class="qe-bullet">• Metamerism: True segmentation with repeated internal organs (e.g., Annelida).</div>
+              <div id="qx2-p4" class="qe-bullet">• Notochord: A dorsal, longitudinal supporting rod defining Chordates.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":954667496,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cross-section animation showing the transition from a solid Acoelomate to a Pseudocoelomate with scattered pouches, and finally a Coelomate with a continuous mesoderm lining.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D cross-section animation showing the transition from a solid Acoelomate to a Pseudocoelomate with scattered pouches, and finally a Coelomate with a continuous mesoderm lining.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Phylum Porifera and Phylum Coelenterata (Cnidaria): Structure and Life Cycles -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Phylum Porifera and Phylum Coelenterata (Cnidaria): Structure and Life Cycles</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Porifera: Cellular level of organization and water canal system.</div>
+              <div id="qx3-p1" class="qe-bullet">• Ostia bring water in; Spongocoel is the cavity; Osculum is the exit.</div>
+              <div id="qx3-p2" class="qe-bullet">• Choanocytes: Specialized collar cells that drive water flow.</div>
+              <div id="qx3-p3" class="qe-bullet">• Cnidaria: Tissue level of organization and diploblastic structure.</div>
+              <div id="qx3-p4" class="qe-bullet">• Cnidoblasts: Stinging cells used for defense and capturing prey.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2631231131,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing water flowing through sponge ostia on the left, and a jellyfish pulsing its medusa bell while tentacles deploy stinging cnidocytes on the right.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A split-screen 3D animation showing water flowing through sponge ostia on the left, and a jellyfish pulsing its medusa bell while tentacles deploy stinging cnidocytes on the right.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Phylum Ctenophora, Platyhelminthes, and Aschelminthes: Key Features and Comparison -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Phylum Ctenophora, Platyhelminthes, and Aschelminthes: Key Features and Comparison</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Ctenophora: Marine, diploblastic, radial symmetry, 8 comb plates, bioluminescent.</div>
+              <div id="qx4-p1" class="qe-bullet">• Platyhelminthes: Flatworms, triploblastic, acoelomate, flame cells for excretion.</div>
+              <div id="qx4-p2" class="qe-bullet">• Aschelminthes: Roundworms, triploblastic, pseudocoelomate, complete digestive tract.</div>
+              <div id="qx4-p3" class="qe-bullet">• Comparison: Ctenophora (Radial) vs. Platyhelminthes/Aschelminthes (Bilateral).</div>
+              <div id="qx4-p4" class="qe-bullet">• Coelom distinction: Acoelomate (Flatworms) vs. Pseudocoelomate (Roundworms).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1180141093,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a glowing comb jelly, a flattened tapeworm, and a cylindrical roundworm side-by-side.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A split-screen 3D animation showing a glowing comb jelly, a flattened tapeworm, and a cylindrical roundworm side-by-side.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Phylum Annelida and Phylum Arthropoda: The World of Segmented and Jointed Appendages -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Phylum Annelida and Phylum Arthropoda: The World of Segmented and Jointed Appendages</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Annelida: True metameric segmentation and true coelomates.</div>
+              <div id="qx5-p1" class="qe-bullet">• Annelid Locomotion: Setae in Earthworms and parapodia in Nereis.</div>
+              <div id="qx5-p2" class="qe-bullet">• Arthropoda: Largest phylum with chitinous exoskeletons and jointed legs.</div>
+              <div id="qx5-p3" class="qe-bullet">• Arthropod Growth: Periodic moulting or ecdysis to allow body expansion.</div>
+              <div id="qx5-p4" class="qe-bullet">• Arthropod Systems: Open circulatory system and compound eyes (ommatidia).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2534790587,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a segmented Earthworm moving via setae on one side, and a highly detailed Mantis performing a jump using jointed legs on the other.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A split-screen 3D animation showing a segmented Earthworm moving via setae on one side, and a highly detailed Mantis performing a jump using jointed legs on the other.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Phylum Mollusca and Phylum Echinodermata: Soft Bodies and Spiny Skins -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Phylum Mollusca and Phylum Echinodermata: Soft Bodies and Spiny Skins</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Mollusca: Soft, unsegmented body with head, muscular foot, and visceral mass.</div>
+              <div id="qx6-p1" class="qe-bullet">• Mollusca: Mantle secretes calcareous shell; Radula used for feeding.</div>
+              <div id="qx6-p2" class="qe-bullet">• Echinodermata: Exclusively marine; Pentamerous radial symmetry in adults.</div>
+              <div id="qx6-p3" class="qe-bullet">• Echinodermata: Water Vascular System used for locomotion and respiration.</div>
+              <div id="qx6-p4" class="qe-bullet">• Echinodermata: Larvae are bilaterally symmetrical; Adults are radially symmetrical.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3870862454,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a snail's mantle secreting a shell on the left, and a starfish using its tube feet to move via the water vascular system on the right.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A split-screen 3D animation showing a snail's mantle secreting a shell on the left, and a starfish using its tube feet to move via the water vascular system on the right.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Phylum Hemichordata and Phylum Chordata: The Evolutionary Bridge -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Phylum Hemichordata and Phylum Chordata: The Evolutionary Bridge</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Hemichordata: Worm-like marine animals with proboscis, collar, and trunk</div>
+              <div id="qx7-p1" class="qe-bullet">• Stomochord in Hemichordates is a gut diverticulum, not a true notochord</div>
+              <div id="qx7-p2" class="qe-bullet">• Chordata Key Feature 1: Notochord (flexible rod-like support)</div>
+              <div id="qx7-p3" class="qe-bullet">• Chordata Key Feature 2: Dorsal, hollow nerve cord</div>
+              <div id="qx7-p4" class="qe-bullet">• Chordata Key Feature 3 &amp; 4: Pharyngeal gill slits and Post-anal tail</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":519846259,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing a Balanoglossus on the left and a developing chordate embryo on the right, highlighting the notochord and nerve cord in glowing blue.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D split-screen animation showing a Balanoglossus on the left and a developing chordate embryo on the right, highlighting the notochord and nerve cord in glowing blue.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Subphyla of Chordata: Urochordata, Cephalochordata, and Vertebrata -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Subphyla of Chordata: Urochordata, Cephalochordata, and Vertebrata</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Urochordata: Notochord present only in the larval tail.</div>
+              <div id="qx8-p1" class="qe-bullet">• Urochordata: Adults are enclosed in a tunic made of tunicin.</div>
+              <div id="qx8-p2" class="qe-bullet">• Cephalochordata: Notochord extends from head to tail.</div>
+              <div id="qx8-p3" class="qe-bullet">• Cephalochordata: Notochord persists throughout life (e.g., Amphioxus).</div>
+              <div id="qx8-p4" class="qe-bullet">• Vertebrata: Notochord is replaced by a vertebral column in adults.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2281778165,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D comparative split-screen showing a larval Ascidia, an Amphioxus, and a vertebrate fish, highlighting the shifting position and duration of the notochord.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D comparative split-screen showing a larval Ascidia, an Amphioxus, and a vertebrate fish, highlighting the shifting position and duration of the notochord.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Classification of Vertebrata: Cyclostomata, Chondrichthyes, and Osteichthyes -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Classification of Vertebrata: Cyclostomata, Chondrichthyes, and Osteichthyes</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Vertebrata: Notochord replaced by a vertebral column in adults.</div>
+              <div id="qx9-p1" class="qe-bullet">• Cyclostomata: Jawless, circular sucking mouth, no paired fins.</div>
+              <div id="qx9-p2" class="qe-bullet">• Chondrichthyes: Cartilaginous skeleton, ventral mouth, placoid scales.</div>
+              <div id="qx9-p3" class="qe-bullet">• Osteichthyes: Bony skeleton, terminal mouth, presence of operculum.</div>
+              <div id="qx9-p4" class="qe-bullet">• Buoyancy: Air bladder present in Osteichthyes; absent in Chondrichthyes.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":144654934,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D comparison showing a Lamprey, a Shark, and a Rohu fish, highlighting their mouth positions and skeletal structures.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D comparison showing a Lamprey, a Shark, and a Rohu fish, highlighting their mouth positions and skeletal structures.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Tetrapoda: Amphibia, Reptilia, Aves, and Mammalia (Comparative Analysis) -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Tetrapoda: Amphibia, Reptilia, Aves, and Mammalia (Comparative Analysis)</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Tetrapoda: Four-limbed vertebrates transitioning from water to land</div>
+              <div id="qx10-p1" class="qe-bullet">• Amphibia: Moist skin, dual life cycle, and three-chambered heart</div>
+              <div id="qx10-p2" class="qe-bullet">• Reptilia: Dry scaled skin, amniotic eggs, and mostly three-chambered heart</div>
+              <div id="qx10-p3" class="qe-bullet">• Aves: Feathers, pneumatic bones, and four-chambered heart for flight</div>
+              <div id="qx10-p4" class="qe-bullet">• Mammalia: Mammary glands, hair, and endothermic four-chambered heart</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":4280862536,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D comparison showing a frog, a lizard, a sparrow, and a cat with highlighted internal organ systems.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D comparison showing a frog, a lizard, a sparrow, and a cat with highlighted internal organ systems.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Diagram Practice, Comparative Tables, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Diagram Practice, Comparative Tables, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Mastering Symmetry: Radial vs Bilateral axis labeling</div>
+              <div id="qx11-p1" class="qe-bullet">• Coelom Differentiation: Acoelomate, Pseudocoelomate, and Coelomate</div>
+              <div id="qx11-p2" class="qe-bullet">• Comparative Study: Chondrichthyes vs Osteichthyes</div>
+              <div id="qx11-p3" class="qe-bullet">• Comparative Study: Amphibia vs Reptilia skin and heart</div>
+              <div id="qx11-p4" class="qe-bullet">• Full Chapter Recap: From Porifera to Mammalia</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":811843872,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a side-by-side comparison of a shark and a bony fish, highlighting the skeleton and gill covers.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a side-by-side comparison of a shark and a bony fish, highlighting the skeleton and gill covers.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Animal Kingdom today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Diversity of Life and the Importance of Classification <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Basis of Classification I: Levels of Organization, Symmetry, and Diploblastic/Triploblastic <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Basis of Classification II: Coelom, Segmentation, and Notochord <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Phylum Porifera and Phylum Coelenterata (Cnidaria): Structure and Life Cycles <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Phylum Ctenophora, Platyhelminthes, and Aschelminthes: Key Features and Comparison <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Phylum Annelida and Phylum Arthropoda: The World of Segmented and Jointed Appendages <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Phylum Mollusca and Phylum Echinodermata: Soft Bodies and Spiny Skins <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Phylum Hemichordata and Phylum Chordata: The Evolutionary Bridge <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Subphyla of Chordata: Urochordata, Cephalochordata, and Vertebrata <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Classification of Vertebrata: Cyclostomata, Chondrichthyes, and Osteichthyes <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Tetrapoda: Amphibia, Reptilia, Aves, and Mammalia (Comparative Analysis) <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Diagram Practice, Comparative Tables, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey into the incredible world of the Animal Kingdom. Before we dive into the specific phyla and species, we need to pause and ask ourselves a fundamental question: Why is the animal kingdom so vast, and how do we make sense of it? If you look around, from the microscopic rotifers in a drop of water to the massive blue whale in the ocean, the sheer variety of life is staggering. This is what we call biological diversity. In the animal kingdom, this diversity is expressed through different body plans, different ways of moving, different ways of eating, and different ways of reproducing. Now, imagine walking into a massive library where millions of books are just thrown in a pile on the floor. How would you find a specific book on biology? You couldn't! You would need a system—a way to organize them by genre, author, or subject. Biological classification is exactly that system for life. In biology, classification is the process of grouping organisms based on their similarities and differences. But why do we do this? First, it helps us to identify and name organisms easily. Second, it helps us to study them systematically. Instead of studying every single animal individually, we can study the characteristics of a group. Third, and perhaps most importantly, classification reveals the evolutionary relationships between different groups. It tells us the story of how life changed over millions of years. In the Animal Kingdom, we don't just group animals by how they look. We look deeper. We look at their cellular organization, their body symmetry, and their developmental patterns. This chapter is structured to take you from the simplest multicellular organisms to the most complex vertebrates. We will start by understanding the 'Basis of Classification'—the fundamental rules that scientists use to divide the kingdom. We will look at things like levels of organization, whether an animal has a body cavity, and how its body is shaped. Once we master these rules, the rest of the chapter will become a logical progression. You will see how one group of animals evolved certain features that led to the next group. By the end of this series, you won't just be memorizing names; you will be understanding the very blueprint of animal life. So, let's get ready to explore the magnificent diversity of the Animal Kingdom, starting with the fundamental rules that bring order to the chaos of nature.","Welcome back to our journey through the Animal Kingdom. In our previous session, we discussed why we classify animals. Today, we dive into the actual criteria used to group them. To understand how animals are built, we look at three fundamental pillars: Levels of Organization, Body Symmetry, and Germ Layers. Let's start with the Levels of Organization. Think of this as the complexity of the biological 'building blocks.' At the simplest level, we have the Cellular Level of Organization. Here, cells are loose collections that perform basic functions, but they aren't organized into tissues. A classic example is the Phylum Porifera, or sponges. Moving up, we find the Tissue Level. In this stage, cells that are similar in function and structure cluster together to form tissues. Think of Coelenterates like jellyfish. Next is the Organ Level. Here, tissues work together to form organs, like seen in Platyhelminthes. Finally, we reach the Organ System Level, where different organs coordinate to perform complex physiological functions, such as digestion or circulation. This is what we see in most advanced animals, including humans. Now, let's shift our focus to Body Symmetry. Symmetry refers to how an animal's body can be divided into equal halves. There are three main types. First is Asymmetry. Asymmetric animals cannot be divided into two equal halves through any plane passing through the center. Most sponges fall into this category. Second is Radial Symmetry. In radial symmetry, any plane passing through the central axis of the body divides the organism into two identical halves. Imagine a pie or a starfish; no matter which way you cut through the center, the pieces look the same. This is common in Coelenterates and Ctenophores. Third is Bilateral Symmetry. Here, the body can be divided into identical left and right halves in only one specific plane. This is a major evolutionary step, as it allows for cephalization, or the concentration of sense organs at the front end. Most complex animals, from insects to mammals, exhibit bilateral symmetry. Finally, we must discuss the internal architecture: the Germ Layers. During embryonic development, cells organize into layers. If an animal has only two layers—the outer ectoderm and the inner endoderm—it is called Diploblastic. The ectoderm forms the outer covering, while the endoderm forms the lining of the gut. Coelenterates are the primary examples of diploblastic animals. However, many animals develop a third layer, the mesoderm, sandwiched between the ectoderm and endoderm. Animals possessing all three layers—ectoderm, mesoderm, and endoderm—are called Triploblastic. This third layer, the mesoderm, is crucial because it gives rise to complex muscles and circulatory systems. Platyhelminthes, Aschelminthes, and all higher animals are triploblastic. Understanding these three criteria—organization, symmetry, and germ layers—is essential because they provide the blueprint for how we will distinguish one phylum from another in the upcoming lessons.","Welcome back. In our previous lesson, we explored how animals are organized into tissue and organ levels and how their body symmetry defines their shape. Now, we move deeper into the internal architecture of animals. To truly understand how complex an animal is, we must look at three critical features: the Coelom, Segmentation, and the Notochord. Let us start with the Coelom. In simple terms, the coelom is a fluid-filled body cavity located between the body wall and the digestive tract. But here is the catch: this cavity must be completely lined by mesoderm. This is a very important distinction for your exams. Based on the presence or absence of this cavity, we classify animals into three groups. First, we have Acoelomates. In these animals, there is no body cavity at all. The space between the body wall and the gut is completely filled with mesodermally derived tissue. Think of Platyhelminthes, like flatworms; they are solid throughout. Second, we have Pseudocoelomates. The name itself gives you a hint—'pseudo' means false. In these animals, a body cavity is present, but it is not lined by mesoderm. Instead, the mesoderm is present as scattered pouches between the ectoderm and endoderm. Aschelminthes, or roundworms, are the classic examples of this group. Third, we have the true Coelomates. Here, the body cavity is fully lined by mesoderm on all sides. This allows for more complex organ systems to develop and grow independently of the body wall. Examples include Annelids, Arthropods, Molluscs, and Chordates. Now, let us move to our second feature: Segmentation. Some animals show a body that is externally and internally divided into repetitive segments. This is known as Metamerism. In metameric segmentation, the body is divided by transverse grooves, and each segment contains its own set of excretory, nervous, and circulatory organs. Annelids are the perfect example of true metamerism. However, do not confuse this with simple body division. Some animals might look segmented externally, but they lack the internal repetition of organs. Moving on to our third and perhaps most significant feature: the Notochord. The notochord is a longitudinal, flexible, rod-like structure that extends along the dorsal side of the body. It provides structural support and acts as a scaffold for the developing nervous system. The presence or absence of this notochord is the fundamental dividing line in the animal kingdom. Animals that possess a notochord at some stage of their life cycle are classified under the Phylum Chordata. Animals that do not possess a notochord are called Non-chordates. While all chordates have a notochord, not all animals with a rod-like structure are chordates, but for your classification purposes, remember: Notochord equals Chordata. Understanding these three pillars—Coelom, Segmentation, and Notochord—is essential because they form the blueprint for the entire animal kingdom hierarchy we will study in the coming lessons.","Welcome back. In our previous session, we established the fundamental criteria used to classify animals. Today, we dive into the actual animal groups, starting with the most primitive multicellular organisms: Phylum Porifera. These are commonly known as sponges. If you look at a sponge, you won't see a complex body with organs. Instead, Poriferans exhibit a cellular level of organization. Their bodies are essentially a collection of cells performing different functions. The most defining feature of Porifera is the presence of a water transport or canal system. This system is vital for their survival. Water enters the body through minute pores called ostia, which are distributed all over the body surface. From the ostia, the water moves into a central cavity called the spongocoel, and finally, it exits through a large opening at the top known as the osculum. This continuous flow of water brings in food and oxygen and helps in the removal of waste products. Most sponges are asymmetrical, meaning they cannot be divided into two equal halves through any plane passing through the center. However, some may show radial symmetry. They are mostly marine, though some live in freshwater. A key feature to remember is the presence of specialized cells called choanocytes or collar cells. These cells line the spongocoel and the canals, using their flagella to create the water current and trap food particles. Now, let's move from the porous sponges to the stinging animals: Phylum Coelenterata, also known as Cnidaria. Unlike sponges, Coelenterates exhibit a tissue level of organization. They are diploblastic, meaning they have two embryonic layers: the outer ectoderm and the inner endoderm, separated by a non-cellular layer called the mesoglea. The most distinctive feature of this phylum is the presence of cnidoblasts, or cnidocytes. These are specialized stinging cells located mainly on the tentacles and the body margin. When an organism touches them, these cells discharge nematocysts, which can paralyze prey or act as a defense mechanism. Coelenterates show two distinct body forms: the Polyp and the Medusa. The polyp is a cylindrical, sessile form, meaning it stays attached to a substrate, like in Hydra or Adamsia. The medusa is a free-swimming, umbrella-shaped form, like in Aurelia, commonly known as jellyfish. Some cnidarians exhibit metagenesis, which is an alternation of generations. This means they switch between the asexual polyp stage and the sexual medusa stage during their life cycle. A classic example is Obelia. In Obelia, the polyp produces medusae asexually, and these medusae then produce polyps sexually. This cycle ensures both dispersal and reproduction. We also see colonial forms in this phylum, such as Physalia, commonly known as the Portuguese man-of-war, and certain corals that build massive reefs. As we transition, remember that while Porifera relies on a water canal system for nutrition, Coelenterata uses specialized stinging cells and a more organized tissue structure to interact with their environment.","Welcome back. In our previous session, we explored the world of sponges and cnidarians. Today, we move into more complex body plans by studying three distinct phyla: Ctenophora, Platyhelminthes, and Aschelminthes. Let us begin with Phylum Ctenophora. These are commonly known as sea walnuts or comb jellies. They are exclusively marine animals. If you look at them, you will notice they are diploblastic organisms, meaning they have two embryonic layers. They exhibit radial symmetry. A very unique feature of Ctenophores is the presence of eight external rows of ciliated comb plates. These plates help in locomotion, making them quite distinct from other marine invertebrates. Unlike Cnidarians, Ctenophores do not possess stinging cells. However, they are known for bioluminescence, which is the ability to emit light. This makes them glow beautifully in the deep ocean. Now, let us transition to the first of the worm-like phyla: Platyhelminthes. These are commonly called flatworms because of their dorso-ventrally flattened bodies. This is a crucial morphological feature. Unlike the previous phyla, Platyhelminthes are triploblastic, possessing ectoderm, mesoderm, and endoderm. They are also acoelomate, meaning they lack a true body cavity; the space between organs is instead filled with parenchyma tissue. Most flatworms are endoparasites, living inside the bodies of other animals. Because of this lifestyle, they have evolved specialized organs like hooks and suckers to attach to hosts. A very important physiological feature here is the presence of flame cells, or protonephridia, which help in osmoregulation and excretion. Examples include Planaria, which shows remarkable regeneration, as well as parasitic forms like Taenia, the tapeworm, and Fasciola, the liver fluke. Moving forward, we encounter Phylum Aschelminthes, also known as Nematoda. These are commonly called roundworms. While they might look similar to flatworms at a glance, their internal organization is much more advanced. Aschelminthes are triploblastic and, unlike the flatworms, they are pseudocoelomate. This means they have a body cavity, but it is not fully lined by mesoderm; instead, the mesoderm is present as scattered pouches. They exhibit bilateral symmetry. Their body is cylindrical and tapered at both ends. A defining characteristic of Nematodes is their complete digestive system, featuring a well-developed muscular pharynx. This allows them to ingest food more efficiently than flatworms. Many nematodes are parasitic, causing diseases in humans and plants. You might be familiar with Ascaris, the intestinal roundworm, or Wuchereria, which causes filariasis. To conclude this segment, let us compare them. While Ctenophores are diploblastic and radial, both Platyhelminthes and Aschelminthes are triploblastic and bilateral. The biggest distinction in the worm phyla is the coelom: Platyhelminthes are acoelomate, whereas Aschelminthes are pseudocoelomate. Understanding these structural transitions—from no cavity to a false cavity—is essential for mastering animal classification.","Welcome back. In our previous lesson, we explored the unsegmented worms. Today, we step into a more complex world where the body is divided into distinct sections. We are diving into Phylum Annelida and the largest group in the animal kingdom, Phylum Arthropoda. Let us start with Annelida. The word Annelida comes from the Latin word 'annulus', which means little ring. This is because these animals exhibit true metameric segmentation. Unlike the pseudosegmentation we saw in Platyhelminthes, in Annelids, the body is divided into segments externally and internally by septa. Annelids are triploblastic, acoelomate or pseudocoelomate? No, they are true coelomates. They possess a true coelom, which is a fluid-filled body cavity lined by mesoderm. They exhibit bilateral symmetry and are organ-system level organisms. Now, let's look at their locomotion. Annelids use longitudinal and circular muscles to move. Some, like the Earthworm, use setae—tiny hair-like structures—to grip the ground. Others, like Nereis, possess lateral appendages called parapodia, which help them swim. In terms of the circulatory system, most Annelids, including Earthworms, have a closed circulatory system, meaning blood flows through vessels rather than being open in body cavities. However, some leeches might show variations. They can be aquatic or terrestrial. For example, Nereis is an aquatic marine worm, while Earthworms are terrestrial, and leeches are often found in freshwater. Now, let's transition to the most successful phylum on Earth: Phylum Arthropoda. If Annelids are the ringed worms, Arthropods are the jointed-legged wonders. This phylum is massive, containing over two-thirds of all named species on Earth. The defining characteristic is the presence of jointed appendages. They also possess a chitinous exoskeleton, which provides protection and prevents desiccation, or drying out. Because this exoskeleton is rigid, it cannot grow with the animal. To solve this, Arthropods undergo a process called moulting or ecdysis to shed the old skeleton and grow a new one. Arthropods are triploblastic, bilaterally symmetrical, and possess a true coelom, though it is often reduced to a hemocoel where blood circulates. Their body is typically divided into three distinct regions: the head, the thorax, and the abdomen. Their sensory organs are highly developed. They have compound eyes, which consist of many individual units called ommatidia, providing a wide field of view. They also have antennae for touch and smell, and statocysts for balance. The circulatory system in Arthropods is an open type. Instead of being confined to vessels, the blood, often called haemolymph, flows into open spaces called sinuses, bathing the organs directly. The respiratory system varies widely depending on the habitat. Aquatic arthropods, like prawns, use gills. Terrestrial arthropods might use tracheal systems, like insects, or book lungs, like scorpions. Some even breathe through their skin. For excretion, most arthropods use Malpighian tubules, which help maintain salt and water balance. Examples are everywhere: from the common housefly and mosquitoes to the mighty crabs, lobsters, and even the arachnids like spiders and scorpions. While Annelids gave us the blueprint for segmentation, Arthropods took it to a whole new level of specialization with jointed limbs and complex sensory systems.","Welcome back to our journey through the Animal Kingdom. In our previous lessons, we explored the segmented world of Annelids and the massive success of Arthropods. Today, we transition from the hard exoskeletons of arthropods to two very different groups: the soft-bodied Molluscs and the spiny-skinned Echinoderms. Let us begin with Phylum Mollusca. If you look at a snail or an octopus, you are looking at a Mollusc. This is the second largest phylum in the animal kingdom, following Arthropoda. The most defining characteristic of Molluscs is their soft, unsegmented body. This body is typically divided into three main parts: a distinct head, a muscular foot, and a visceral mass. The visceral mass is where all the vital organs, like the digestive and reproductive systems, are concentrated. Now, most molluscs possess a calcareous shell that provides protection, though some, like the octopus, have lost it entirely. To protect their soft tissues from the abrasive shell, molluscs have a specialized layer called the mantle. The mantle is a soft, fleshy membrane that covers the visceral mass and is responsible for secreting the shell. One of the most important organs in a mollusc is the mantle cavity, which houses the gills, or ctenidia, used for respiration. For excretion, molluscs use a specialized organ called the nephridia. Their digestive system is complete, and many species possess a unique, rasping organ called the radula, which is used for feeding by scraping food. Examples include Pila, commonly known as the apple snail, and Sepia, the cuttlefish. Moving from the soft to the spiny, let us examine Phylum Echinodermata. The name 'Echinodermata' literally means 'spiny skin,' which is a perfect description of this group. Unlike the molluscs, echinoderms are exclusively marine animals. They exhibit a very unique level of organization. While they are triploblastic and coelomate, they show a fascinating shift in symmetry. As adults, echinoderms exhibit radial symmetry, specifically pentamerous radial symmetry, meaning their body parts are arranged in fives around a central axis. However, a crucial point for your exams: their larvae are bilaterally symmetrical. This transition from bilateral larvae to radial adults is a key evolutionary feature. The most remarkable characteristic of echinoderms is the Water Vascular System. This is not just a circulatory system; it is a complex hydraulic system used for locomotion, capture and transport of food, and respiration. Water enters through a sieve-like structure called the madreporite, travels through various canals, and eventually reaches the tube feet. These tube feet allow the animal to move, adhere to surfaces, and even open shells of prey. Their endoskeleton is composed of calcareous ossicles, which give them their characteristic spiny texture. Because they lack a centralized brain, their nervous system is quite decentralized. Common examples you should remember are Asterias, the starfish, and Echinus, the sea urchin. To summarize, while Mollusca focuses on soft bodies protected by mantles and shells, Echinodermata focuses on a unique water-driven lifestyle with spiny, radial bodies. Understanding these two phyla is essential as they represent two very different evolutionary paths in the marine environment.","Welcome back. In our previous session, we explored the spiny-skinned Echinodermata. Now, we arrive at one of the most critical junctions in animal evolution. We are moving from non-chordates to the group that includes us, the chordates. This transition is represented by Phylum Hemichordata. For a long time, these organisms were mistakenly classified as a subphylum of Chordata, but we now recognize them as a distinct phylum. Let us look at their structure. Hemichordates, such as Balanoglossus, are worm-like marine animals. Their body is divided into three distinct regions: the proboscis, the collar, and the trunk. The proboscis is a conical structure that helps in burrowing and feeding. The collar is a small region following the proboscis, and the trunk is the long, main part of the body. While they possess a structure called a stomochord, which looks somewhat like a notochord, it is actually a diverticulum of the gut. This distinction is why they are not true chordates. Now, let us cross the bridge into Phylum Chordata. To be classified as a chordate, an animal must possess four fundamental diagnostic features at some stage in its life cycle. First, we have the Notochord. This is a flexible, rod-like structure that provides skeletal support. Second, we have a Dorsal, hollow nerve cord. Unlike non-chordates, where the nerve cord is ventral and solid, chordates have a nerve cord located above the digestive tract that is hollow. Third, we have Pharyngeal gill slits. These are openings in the pharynx that allow water to pass through for respiration or filter feeding. Fourth, we have a Post-anal tail. This is an extension of the body past the anal opening, which helps in locomotion. It is important to note that these features might not be present in all chordates throughout their entire lives, but they must appear at some point during development. This set of characteristics marks a massive evolutionary leap in complexity and organization. As we move forward, we will see how these four features are modified in different subphyla, leading us from simple sea squirts to the complex vertebrates we see today. Understanding this bridge is essential because it explains how the body plan of the most advanced animals evolved from simpler, worm-like ancestors.","Welcome back. In our previous session, we explored the fundamental characteristics of Phylum Chordata, specifically the presence of a notochord, a dorsal hollow nerve cord, and paired pharyngeal gill slits. Now, we dive into the core of this phylum by examining its three distinct subphyla. The classification of Chordates is primarily based on the position and extent of the notochord during the organism's life cycle. First, let us look at Subphylum Urochordata, also known as Tunicata. In these organisms, the notochord is present only in the larval tail. As these animals undergo metamorphosis into adults, the notochord is lost. You will notice that the body of an adult urochordate is enclosed in a protective covering called a tunic, which is made of a material called tunicin, similar to cellulose. A classic example you must remember for your exams is Ascidia. Moving on to the second group, we have Subphylum Cephalochordata. This group is quite fascinating because, unlike Urochordata, the notochord extends continuously from the head to the tail. Most importantly, in Cephalochordata, the notochord persists throughout the entire life of the animal. It does not disappear during adulthood. This provides a rigid longitudinal support. The most well-known representative of this subphylum is Amphioxus, also called Branchiostoma. Now, let us transition to the most complex and diverse group: Subphylum Vertebrata. This is the group to which we, humans, belong. In Vertebrates, the notochord is not permanent in the adult stage. Instead, it is replaced by a cartilaginous or bony vertebral column. This vertebral column is formed by the development of vertebrae that protect the nerve cord. The dorsal, hollow nerve cord is situated just above the notochord or the vertebral column. Vertebrates are characterized by having a well-developed cranium, or skull, which protects the brain, and a muscular, multi-chambered heart that pumps blood through a closed circulatory system. The transition from the simple notochord of Cephalochordata to the complex vertebral column of Vertebrata represents a massive evolutionary leap in structural support and nervous system protection. To summarize: Urochordates have a notochord only in the larval tail; Cephalochordates have a notochord from head to tail that persists throughout life; and Vertebrates replace the notochord with a bony or cartilaginous vertebral column. Understanding this progression is essential before we move into the detailed classification of Vertebrata in our next lesson.","Welcome back. In our previous session, we explored the subphyla of Chordata. Today, we dive into the most prominent group: the Vertebrata. These are organisms where the notochord is replaced by a cartilaginous or bony vertebral column in the adult stage. We will focus on three distinct classes of aquatic vertebrates: Cyclostomata, Chondrichthyes, and Osteichthyes. Let us start with the most unique group, the Cyclostomes. These are jawless vertebrates. They are ectoparasites on some fishes and are found in marine or freshwater environments. A defining feature of Cyclostomes is their sucking and circular mouth. They lack jaws, paired fins, and scales. Despite these seemingly primitive features, they are true vertebrates. Think of the lampreys and hagfishes; they represent a very ancient lineage. Moving from jawless to jawed vertebrates, we enter the class Chondrichthyes. These are the cartilaginous fishes. If you have ever seen a shark or a ray, you have seen a Chondrichthyan. Their endoskeleton is composed entirely of cartilage. Their skin is typically covered with placoid scales, which give them a rough, sandpaper-like texture. One very important anatomical feature here is the position of the mouth. In Chondrichthyes, the mouth is located ventrally, meaning on the underside of the body. They also possess gill slits that are without an operculum, or a protective lid. Most of these fishes are marine, though some inhabit freshwater. They also possess an electric organ, like in the torpedo ray, and a pneumatic bladder is absent, which is why many must swim constantly to avoid sinking. Now, let us compare them to the third group: the Osteichthyes. These are the bony fishes. Unlike the previous group, their endoskeleton is made of bone. Their mouth is positioned terminally, at the very front of the head. A key distinguishing feature is the presence of an operculum, a bony flap that covers and protects the gills. They also possess an air bladder or a pneumatic bladder, which helps them regulate buoyancy, allowing them to float at different depths without constant swimming. Their scales are usually cycloid or ctenoid. While Chondrichthyes are primarily marine, Osteichthyes are highly diverse, found in both marine and freshwater habitats. To summarize the transition: we move from the jawless, circular-mouthed Cyclostomata, to the cartilaginous, ventral-mouthed Chondrichthyes, and finally to the bony, terminal-mouthed Osteichthyes. Understanding these structural differences in the mouth, skeleton, and gill covers is essential for mastering vertebrate classification.","Welcome back. Having explored the aquatic worlds of fishes, we now step onto land. In this lesson, we will perform a comparative analysis of the four major classes of Tetrapoda: Amphibia, Reptilia, Aves, and Mammalia. The term Tetrapoda literally means four limbs, which serves as the fundamental structural link between these groups. Let us begin with Class Amphibia. Amphibians are the first vertebrates to colonize land, but they are not fully independent of water. They possess a dual life cycle. They require water for reproduction and for the development of their larval stages. Anatomically, they are characterized by moist, glandular skin without scales, which often aids in respiration through cutaneous respiration. Their heart is typically three-chambered, consisting of two atria and one ventricle. Now, let us move to Class Reptilia. Unlike amphibians, reptiles have successfully broken the tie with water. They possess dry, cornified skin covered with scales or scutes, which prevents desiccation. Their reproduction is internal, and they lay amniotic eggs with hard or leathery shells. While most reptiles also have a three-chambered heart, we must make a crucial exception: Crocodilians possess a four-chambered heart. This transition from moist skin to scales is a major evolutionary milestone. Next, we look at Class Aves, the birds. Aves represents a highly specialized lineage where many features are adapted for flight. Their skin is dry and lacks glands, except for the uropygial gland or preen gland. Their forelimbs are modified into wings. A key internal feature is the presence of pneumatic, or hollow, bones, which reduce body weight for flight. Their body temperature is constant, making them homeothermic. Their heart is fully four-chambered, ensuring high metabolic efficiency. Finally, we reach the most complex group, Class Mammalia. Mammals are distinguished by the presence of mammary glands, which produce milk to nourish the young. They also possess hair or fur on their skin and have specialized teeth, known as heterodont dentition. Like birds, mammals are homeothermic, maintaining a constant body temperature. Their heart is also four-chambered, providing the high-pressure circulatory system needed to support endothermic metabolism. To summarize our comparison: Amphibians are ectothermic with moist skin and three-chambered hearts. Reptiles are ectothermic with scaled skin and mostly three-chambered hearts. Birds are endothermic with feathers and four-chambered hearts. Mammals are endothermic with hair and mammary glands, also featuring four-chambered hearts. Notice the evolutionary trend: as we move from Amphibia to Mammalia, we see an increase in metabolic independence, skin specialization, and the complexity of the circulatory system. This progression shows how vertebrates adapted from moist, aquatic-dependent environments to fully terrestrial, high-energy lifestyles.","Welcome to the final session of our journey through the Animal Kingdom. We have traveled from the simplest sponges to the most complex mammals, and now, it is time to sharpen your exam skills. In the biology exam, your ability to draw and label diagrams can be the difference between an average score and a perfect one. Let us start with the most important visual skill: drawing the basis of classification. When you draw a diagram for symmetry, do not just draw a circle. Clearly mark the axes. For radial symmetry, show the multiple planes passing through the central axis, like in a starfish. For bilateral symmetry, show a single plane dividing the body into left and right halves. When drawing body layers, remember to clearly label the ectoderm, endoderm, and the mesoderm in triploblastic animals. A common mistake is forgetting to label the coelom. If you are drawing an acoelomate, show a solid mesoderm; if a pseudocoelomate, show the scattered pouches; and if a true coelomate, show the cavity completely lined by mesoderm. Next, let us master the comparative tables. The examiners love to ask for differences. The most frequent question is the comparison between Chondrichthyes and Osteichthyes. Create a mental or written table. For Chondrichthyes, note the cartilaginous endoskeleton, placoid scales, and the absence of an operculum. For Osteichthyes, note the bony endoskeleton, cycloid or ceteoid scales, and the presence of an operculum covering the gills. Another critical comparison is between Amphibians and Reptiles. Focus on the skin—amphibians have moist, glandular skin, while reptiles have dry, cornified skin. Also, look at the heart; while both generally have a three-chambered heart, remember that crocodilians are the exception in the reptile group with a four-chambered heart. Now, let us perform a rapid-fire recap of the entire chapter to cement your memory. We began with the basis of classification: levels of organization, symmetry, coelom, and the presence of a notochord. We moved through the Non-Chordates, starting with the cellular level of Porifera, then the tissue level of Cnidaria and Ctenophora. We studied the acoelomate Platyhelminthes, the pseudocoelomate Aschelminthes, and the segmented Annelida. We saw the massive success of Arthropoda with their jointed appendages, the soft-bodied Mollusca, and the water vascular system of Echinodermata. We then crossed the bridge into Chordates, distinguishing between Urochordata, Cephalochordata, and the Vertebrata. We analyzed the fishes, moving from the cartilaginous Chondrichthyes to the bony Osteichthyes. Finally, we explored the Tetrapods: the dual-life Amphibians, the scaled Reptiles, the feathered Aves, and the milk-producing Mammals. As you revise, always look at the NCERT diagrams first. Every label in those diagrams is a potential exam question. Practice drawing the life cycle of Cnidarians, specifically the polyp and medusa stages, as this is a high-yield topic. Remember, biology is not just about reading; it is about visualizing. If you can visualize the structure, you can describe it. If you can draw the structure, you can remember it. You have worked hard through this chapter. Take these tables and diagrams, practice them on paper, and you will be ready to ace your exams. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-biology-04-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

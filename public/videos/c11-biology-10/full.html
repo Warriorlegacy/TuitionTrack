@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Cell Cycle and Cell Division, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-biology-10-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Part 1: The Continuity of Life: Introduction, Importance of Cell Division, and the Cell Cycle -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Part 1: The Continuity of Life: Introduction, Importance of Cell Division, and the Cell Cycle</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Cell division is the basis for growth, repair, and reproduction.</div>
+              <div id="qx0-p1" class="qe-bullet">• The cell cycle ensures the continuity of life and genetic information.</div>
+              <div id="qx0-p2" class="qe-bullet">• Interphase: The active preparatory phase involving growth and DNA replication.</div>
+              <div id="qx0-p3" class="qe-bullet">• M Phase: The period of actual nuclear and cytoplasmic division.</div>
+              <div id="qx0-p4" class="qe-bullet">• Cell cycle regulation is critical to prevent uncontrolled growth like cancer.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":3747675624,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D time-lapse animation showing a single cell expanding, replicating its DNA, and splitting into two identical daughter cells, with a glowing circular timer overlaying the process.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D time-lapse animation showing a single cell expanding, replicating its DNA, and splitting into two identical daughter cells, with a glowing circular timer overlaying the process.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Part 2: Interphase Deep Dive: G1, S, and G2 Phases, DNA Replication Mechanisms, and Centrosome Duplication -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Part 2: Interphase Deep Dive: G1, S, and G2 Phases, DNA Replication Mechanisms, and Centrosome Duplication</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Interphase occupies over 95% of the total cell cycle duration.</div>
+              <div id="qx1-p1" class="qe-bullet">• G-one Phase: Cell growth, organelle duplication, and metabolic activity.</div>
+              <div id="qx1-p2" class="qe-bullet">• S Phase: DNA replication occurs; DNA content doubles, chromosome number stays constant.</div>
+              <div id="qx1-p3" class="qe-bullet">• Centrosome Duplication: Occurs during the S phase to prepare for spindle formation.</div>
+              <div id="qx1-p4" class="qe-bullet">• G-two Phase: Final protein synthesis and quality check of replicated DNA.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":1309413319,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D time-lapse animation showing a cell expanding in size, DNA strands unzipping and replicating in the nucleus, and a centrosome splitting into two distinct units.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D time-lapse animation showing a cell expanding in size, DNA strands unzipping and replicating in the nucleus, and a centrosome splitting into two distinct units.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Part 3: M Phase Fundamentals: Mitosis Overview, Karyokinesis, and the Mechanics of Prophase -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Part 3: M Phase Fundamentals: Mitosis Overview, Karyokinesis, and the Mechanics of Prophase</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• M Phase consists of Karyokinesis (nuclear division) and Cytokinesis (cytoplasmic division)</div>
+              <div id="qx2-p1" class="qe-bullet">• Mitosis is 'equational division' as chromosome number remains constant</div>
+              <div id="qx2-p2" class="qe-bullet">• Prophase: Chromatin condenses into visible, rod-like chromosomes</div>
+              <div id="qx2-p3" class="qe-bullet">• Each chromosome consists of two sister chromatids joined at the centromere</div>
+              <div id="qx2-p4" class="qe-bullet">• Prophase features centrosome migration, spindle formation, and nuclear envelope breakdown</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":328328199,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D time-lapse showing chromatin condensing into X-shaped sister chromatids while the nuclear envelope fragments and centrosomes move to opposite poles.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D time-lapse showing chromatin condensing into X-shaped sister chromatids while the nuclear envelope fragments and centrosomes move to opposite poles.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Part 4: Mitotic Progression: Metaphase, Anaphase, Telophase, and Cytokinesis in Plant vs Animal Cells -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Part 4: Mitotic Progression: Metaphase, Anaphase, Telophase, and Cytokinesis in Plant vs Animal Cells</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Metaphase: Chromosomes align at the equatorial plate.</div>
+              <div id="qx3-p1" class="qe-bullet">• Anaphase: Centromeres split and sister chromatids move to opposite poles.</div>
+              <div id="qx3-p2" class="qe-bullet">• Telophase: Nuclear envelopes reform and chromosomes de-condense.</div>
+              <div id="qx3-p3" class="qe-bullet">• Animal Cytokinesis: Cleavage furrow forms via a contractile ring.</div>
+              <div id="qx3-p4" class="qe-bullet">• Plant Cytokinesis: Cell plate forms from Golgi vesicles.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":1480001236,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing an animal cell pinching inward via a cleavage furrow on the left, and a plant cell building a cell plate from the center outward on the right.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A split-screen 3D animation showing an animal cell pinching inward via a cleavage furrow on the left, and a plant cell building a cell plate from the center outward on the right.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Part 5: Mitosis Mastery: Diagrammatic Analysis, Common Errors in Mitosis, and Clinical Significance -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Part 5: Mitosis Mastery: Diagrammatic Analysis, Common Errors in Mitosis, and Clinical Significance</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Visual Cues: Chromosome shape and equatorial alignment</div>
+              <div id="qx4-p1" class="qe-bullet">• Plant vs Animal: Cell plate versus Cleavage furrow</div>
+              <div id="qx4-p2" class="qe-bullet">• Mitotic Error: Non-disjunction and Aneuploidy</div>
+              <div id="qx4-p3" class="qe-bullet">• Clinical Link: Uncontrolled division and Cancer formation</div>
+              <div id="qx4-p4" class="qe-bullet">• Checkpoints: The role of G-two and M phase quality control</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":356933626,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a healthy mitotic division on the left and a cancerous, rapid, disorganized division with non-disjunction on the right.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A split-screen 3D animation showing a healthy mitotic division on the left and a cancerous, rapid, disorganized division with non-disjunction on the right.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Part 6: Introduction to Meiosis: Why Reduction Division Matters and the Significance of Meiosis -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Part 6: Introduction to Meiosis: Why Reduction Division Matters and the Significance of Meiosis</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Meiosis is known as 'Reduction Division' because it halves the chromosome number.</div>
+              <div id="qx5-p1" class="qe-bullet">• It transforms diploid cells (2n) into haploid gametes (n).</div>
+              <div id="qx5-p2" class="qe-bullet">• Prevents exponential increase in chromosome numbers across generations.</div>
+              <div id="qx5-p3" class="qe-bullet">• Crucial for maintaining species-specific chromosomal stability.</div>
+              <div id="qx5-p4" class="qe-bullet">• Generates genetic variation, driving evolution and adaptation.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":20251615,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a diploid cell dividing into four unique haploid daughter cells, transitioning from a mathematical doubling error to a stable cycle of life.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D animation showing a diploid cell dividing into four unique haploid daughter cells, transitioning from a mathematical doubling error to a stable cycle of life.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Part 7: Meiosis I - Part A: Prophase I Detailed Breakdown (Leptotene, Zygotene, Pachytene) -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Part 7: Meiosis I - Part A: Prophase I Detailed Breakdown (Leptotene, Zygotene, Pachytene)</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Leptotene: Chromatin condenses into visible thread-like chromosomes.</div>
+              <div id="qx6-p1" class="qe-bullet">• Zygotene: Homologous chromosomes pair up through a process called synapsis.</div>
+              <div id="qx6-p2" class="qe-bullet">• Pachytene: Crossing over occurs via the enzyme recombinase.</div>
+              <div id="qx6-p3" class="qe-bullet">• Diplotene: Synaptonemal complex dissolves and chiasmata become visible.</div>
+              <div id="qx6-p4" class="qe-bullet">• Diakinesis: Chiasmata terminalize and the nuclear envelope breaks down.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3356937462,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular animation showing two homologous chromosomes zipping together via a synaptonemal complex, exchanging colored segments during Pachytene, and pulling apart at X-shaped chiasmata during Diplotene.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D molecular animation showing two homologous chromosomes zipping together via a synaptonemal complex, exchanging colored segments during Pachytene, and pulling apart at X-shaped chiasmata during Diplotene.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Part 8: Meiosis I - Part B: Metaphase I, Anaphase I, Telophase I, and the Mechanics of Crossing Over -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Part 8: Meiosis I - Part B: Metaphase I, Anaphase I, Telophase I, and the Mechanics of Crossing Over</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Metaphase I: Bivalents align at the equatorial plate.</div>
+              <div id="qx7-p1" class="qe-bullet">• Anaphase I: Homologous chromosomes separate; sister chromatids stay attached.</div>
+              <div id="qx7-p2" class="qe-bullet">• Telophase I: Chromosomes reach poles; reduction to haploid sets occurs.</div>
+              <div id="qx7-p3" class="qe-bullet">• Crossing Over: Exchange of genetic material between non-sister chromatids.</div>
+              <div id="qx7-p4" class="qe-bullet">• Chiasmata: The physical sites where genetic recombination occurs.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":1195783193,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing homologous chromosome pairs aligning at the equator, then pulling apart in Anaphase I, with a close-up zoom on a chiasma showing DNA strands swapping colors.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D animation showing homologous chromosome pairs aligning at the equator, then pulling apart in Anaphase I, with a close-up zoom on a chiasma showing DNA strands swapping colors.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Part 9: Meiosis II: The Equational Division, Comparison with Mitosis, and Detailed Phase A -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Part 9: Meiosis II: The Equational Division, Comparison with Mitosis, and Detailed Phase A</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Meiosis II is called the equational division.</div>
+              <div id="qx8-p1" class="qe-bullet">• Sister chromatids separate during Meiosis II.</div>
+              <div id="qx8-p2" class="qe-bullet">• No DNA replication occurs between Meiosis I and II.</div>
+              <div id="qx8-p3" class="qe-bullet">• Prophase II: Chromatin condenses and nuclear envelope breaks down.</div>
+              <div id="qx8-p4" class="qe-bullet">• Metaphase II: Chromosomes align at the metaphase plate.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":1238733582,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a Mitotic cell (diploid) side-by-side with a Meiosis II cell (haploid) to highlight the difference in chromosome count during metaphase alignment.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation showing a Mitotic cell (diploid) side-by-side with a Meiosis II cell (haploid) to highlight the difference in chromosome count during metaphase alignment.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Part 10: Comparative Analysis: Mitosis vs. Meiosis, Quantitative DNA/Chromosome Calculation -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Part 10: Comparative Analysis: Mitosis vs. Meiosis, Quantitative DNA/Chromosome Calculation</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Mitosis: Equational division; produces genetically identical clones.</div>
+              <div id="qx9-p1" class="qe-bullet">• Meiosis: Reduction division; generates genetic variation via crossing over.</div>
+              <div id="qx9-p2" class="qe-bullet">• Chromosome number (n) vs. DNA content (C): Know the distinction.</div>
+              <div id="qx9-p3" class="qe-bullet">• S-phase: DNA doubles (2C to 4C), but chromosome number remains constant.</div>
+              <div id="qx9-p4" class="qe-bullet">• Meiosis I results in one-n, two-C; Meiosis II results in one-n, one-C.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":169481926,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a cell dividing into two identical cells on the left, and a single cell dividing through two stages into four unique cells on the right, with floating mathematical labels for 'n' and 'C' changing in real-time.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation showing a cell dividing into two identical cells on the left, and a single cell dividing through two stages into four unique cells on the right, with floating mathematical labels for 'n' and 'C' changing in real-time.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Part 11: Problem-Solving Workshop: Numerical Problems on Chromosome Numbers and DNA Content -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Part 11: Problem-Solving Workshop: Numerical Problems on Chromosome Numbers and DNA Content</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Key Variables: n = haploid chromosome number, c = haploid DNA content</div>
+              <div id="qx10-p1" class="qe-bullet">• S Phase Rule: DNA doubles (2c to 4c), but chromosome number remains 2n</div>
+              <div id="qx10-p2" class="qe-bullet">• G1 Phase: Diploid cell has 2n chromosomes and 2c DNA content</div>
+              <div id="qx10-p3" class="qe-bullet">• Meiosis I Result: Cells become haploid (n) but retain 2c DNA content</div>
+              <div id="qx10-p4" class="qe-bullet">• Meiosis II Result: Final products are haploid (n) with c DNA content</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":1798844617,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A dynamic split-screen showing a cell transitioning from G1 to G2, with numerical counters for 'n', '2n', 'c', and '4c' updating in real-time as chromatids replicate.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A dynamic split-screen showing a cell transitioning from G1 to G2, with numerical counters for 'n', '2n', 'c', and '4c' updating in real-time as chromatids replicate.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Part 12: Exam Masterclass: High-Yield NCERT Diagrams, PYQs, Common Mistakes, and Full Chap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Part 12: Exam Masterclass: High-Yield NCERT Diagrams, PYQs, Common Mistakes, and Full Chap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• High-Yield Diagrams: Mitosis stages and Prophase I sub-stages</div>
+              <div id="qx11-p1" class="qe-bullet">• Key Concept: DNA doubles in S-phase, but chromosome number stays constant</div>
+              <div id="qx11-p2" class="qe-bullet">• Meiosis Sequence: Leptotene, Zygotene, Pachytene, Diplotene, Diakinesis</div>
+              <div id="qx11-p3" class="qe-bullet">• Common Error: Confusing Mitosis (clones) with Meiosis (variation)</div>
+              <div id="qx11-p4" class="qe-bullet">• Cytokinesis: Cell plate in plants vs. Cleavage furrow in animals</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":2114018854,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a Mitotic cell dividing alongside a Meiotic cell, highlighting the difference in chromosome count and genetic variation.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a Mitotic cell dividing alongside a Meiotic cell, highlighting the difference in chromosome count and genetic variation.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Cell Cycle and Cell Division today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Part 1: The Continuity of Life: Introduction, Importance of Cell Division, and the Cell Cycle <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Part 2: Interphase Deep Dive: G1, S, and G2 Phases, DNA Replication Mechanisms, and Centrosome Duplication <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Part 3: M Phase Fundamentals: Mitosis Overview, Karyokinesis, and the Mechanics of Prophase <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Part 4: Mitotic Progression: Metaphase, Anaphase, Telophase, and Cytokinesis in Plant vs Animal Cells <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Part 5: Mitosis Mastery: Diagrammatic Analysis, Common Errors in Mitosis, and Clinical Significance <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Part 6: Introduction to Meiosis: Why Reduction Division Matters and the Significance of Meiosis <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Part 7: Meiosis I - Part A: Prophase I Detailed Breakdown (Leptotene, Zygotene, Pachytene) <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Part 8: Meiosis I - Part B: Metaphase I, Anaphase I, Telophase I, and the Mechanics of Crossing Over <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Part 9: Meiosis II: The Equational Division, Comparison with Mitosis, and Detailed Phase A <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Part 10: Comparative Analysis: Mitosis vs. Meiosis, Quantitative DNA/Chromosome Calculation <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Part 11: Problem-Solving Workshop: Numerical Problems on Chromosome Numbers and DNA Content <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Part 12: Exam Masterclass: High-Yield NCERT Diagrams, PYQs, Common Mistakes, and Full Chap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Welcome, students. Today, we begin a journey into the very heart of biological existence. We are starting Chapter Ten of your Class 11 Biology textbook: Cell Cycle and Cell Division. Before we dive into the complex mechanics, let us ask a fundamental question: How does life persist? How does a single fertilized egg, a zygote, transform into a complex multicellular organism like a human being? Or, how does a small wound on your skin heal itself? The answer lies in the phenomenon of cell division. Cell division is the process by which a parent cell divides to produce new daughter cells. This process is the cornerstone of the continuity of life. Without it, growth would be impossible, repair would never occur, and life would simply cease to exist after a single generation. Let us look at the importance of this process through three primary lenses. First, growth. In multicellular organisms, growth is not just an increase in size, but an increase in the number of cells. From a single cell to trillions of cells, division is the engine of development. Second, repair and replacement. Your body is constantly losing cells. Red blood cells, skin cells, and the lining of your gut are replaced through continuous cell division. Third, reproduction. In unicellular organisms like Amoeba, cell division is the method of reproduction itself. In multicellular organisms, specialized cell division leads to the formation of gametes, ensuring the transfer of genetic information to the next generation. Now, let us move to the core concept: The Cell Cycle. A cell does not simply divide at random. It follows a highly regulated, ordered sequence of events. Think of it like a well-choreographed dance or a precise manufacturing assembly line. The cell cycle is the series of events that take place in a cell leading to its division and duplication of its DNA to produce two daughter cells. We can divide the cell cycle into two main phases. The first is the Interphase, which is the period between two successive divisions. This is not a 'resting phase' as some might mistakenly think. In fact, the cell is incredibly active during interphase. It is performing metabolic functions, growing in size, and most importantly, replicating its genetic material. Interphase is often called the preparatory phase because the cell is preparing everything it needs for the actual division. The second major phase is the M Phase, or the Mitotic phase. This is the actual period of division where the nucleus and the cytoplasm divide to create two distinct entities. To understand the cell cycle quantitatively, we often look at the time spent in each phase. In a typical human cell, the cell cycle lasts approximately twenty-four hours. However, this duration can vary significantly depending on the type of cell. For instance, embryonic cells divide much faster than mature skin cells. The cell cycle is governed by internal checkpoints—biological control systems that ensure each phase is completed accurately before the next begins. If a cell detects damage to its DNA or insufficient nutrients, it will pause the cycle. This regulation is crucial; if the cell cycle loses its control, it can lead to uncontrolled cell proliferation, which is the hallmark of cancer. In the upcoming parts of this series, we will zoom in on the specific sub-phases of interphase, the intricate steps of mitosis, and the reductional division known as meiosis. But for now, remember this: the cell cycle is the rhythmic heartbeat of biological continuity, ensuring that life, in all its complexity, continues from one generation to the next.","Welcome back. In our last session, we introduced the cell cycle. Now, we are going to step inside the most critical, yet often overlooked, period of a cell's life: Interphase. While the M-phase is when the visible action of division happens, Interphase is where the actual preparation occurs. In fact, for a typical eukaryotic cell, Interphase occupies more than ninety-five percent of the total duration of the cell cycle. It is not a 'resting phase' as the name might suggest; rather, it is a period of intense metabolic activity and growth. Let us break Interphase down into its three distinct sub-phases: G-one, S, and G-two. First, we have the G-one phase, also known as the Gap-one phase. This is the interval between mitosis and the initiation of DNA replication. During G-one, the cell is metabolically very active. It grows physically larger, copies organelles, and makes the molecular building blocks it will need in later steps. The cell monitors its environment here to ensure conditions are favorable for division. If the cell does not receive the right signals, it may exit the cycle and enter a non-dividing state called G-zero. Next, we move into the most crucial stage: the S phase, or Synthesis phase. This is where the magic of DNA replication happens. During the S phase, the amount of DNA in the cell is doubled. However, it is very important to note a distinction that often confuses students: while the DNA content doubles, the chromosome number remains the same. For example, if a cell starts with forty-six chromosomes, after the S phase, it will still have forty-six chromosomes, but each chromosome will now consist of two identical sister chromatids joined at the centromere. This replication is semi-conservative, meaning each new DNA molecule consists of one old strand and one newly synthesized strand. This ensures genetic continuity. Along with DNA, the centrosome, which serves as the main microtubule-organizing center in animal cells, also duplicates during the S phase. This duplication is vital because, during mitosis, the two centrosomes will move to opposite poles to form the mitotic spindle. Finally, we enter the G-two phase, or the Gap-two phase. This is the second growth phase. The cell continues to grow and synthesizes the proteins required for mitosis, such as tubulin for spindle fibers. The cell also performs a final check of the newly replicated DNA to ensure there are no errors or damage. Think of G-one as gathering supplies, S phase as photocopying the blueprints, and G-two as a final quality control inspection before the big construction project of mitosis begins. Understanding this sequence is fundamental because any error in these stages can lead to mutations or uncontrolled cell division. Let's look closer at the molecular mechanics of how these phases transition.","Welcome back. In our previous sessions, we explored the long, preparatory journey of Interphase, where the cell grows and replicates its DNA. Now, we enter the most dramatic stage of the cell cycle: the M Phase, or the Mitotic Phase. While Interphase is about preparation, the M Phase is about execution. It is the stage where the genetic material, which was loosely packed as chromatin, is organized and distributed into two new daughter cells. The M Phase is broadly divided into two major processes: Karyokinesis and Cytokinesis. Karyokinesis is the division of the nucleus, and Cytokinesis is the division of the cytoplasm. Today, we will focus specifically on Karyokinesis, which is the heart of mitosis. Mitosis is often called equational division. Why? Because the number of chromosomes in the parent cell remains exactly the same in the two daughter cells. If a parent cell has forty-six chromosomes, each daughter cell will also have forty-six. This precision is vital for maintaining genetic stability across generations of cells. Karyokinesis itself is subdivided into four distinct, sequential stages: Prophase, Metaphase, Anaphase, and Telophase. Let us zoom in on the very first stage: Prophase. This is where the real transformation begins. During Interphase, our DNA looked like a tangled mass of thin threads called chromatin. But as Prophase begins, the cell must make this DNA transportable. To do this, the chromatin undergoes condensation. The threads become shorter, thicker, and much more visible under a light microscope. They transform into distinct, rod-like structures called chromosomes. Now, it is important to remember that a chromosome is not just a single piece of DNA. Because of the S phase we studied earlier, each chromosome now consists of two identical halves called sister chromatids. These two chromatids are joined together at a specific constricted region known as the centromere. As Prophase progresses, we see the centrosomes, which were duplicated during the S phase, starting to move toward opposite poles of the cell. In animal cells, these centrosomes act as the organizing centers for the mitotic spindle. Between these moving centrosomes, a network of microtubules begins to assemble. This network is called the mitotic spindle, and it acts like a mechanical scaffolding that will eventually pull the chromosomes apart. As we approach the end of Prophase, the nucleolus, which was responsible for making ribosomes, begins to disappear. Even more importantly, the nuclear envelope, or the membrane surrounding the nucleus, starts to fragment and break down into small vesicles. This breakdown is essential because the spindle fibers need clear access to the chromosomes to attach to them. By the time Prophase concludes, the nucleus has effectively 'dissolved,' leaving the condensed chromosomes floating in the cytoplasm, ready to be captured by the spindle apparatus. This transition marks the end of the preparatory stage of division and sets the stage for the highly organized alignment we will see in Metaphase. Pay close attention to the relationship between the centromere and the spindle fibers, as this is the key to understanding how life ensures every cell gets the exact same blueprint.","Welcome back. In our previous session, we saw how the chromosomes condense and the spindle fibers begin to form during prophase. Now, let us witness the actual movement and separation that makes mitosis so precise. We begin with Metaphase. This is the stage of alignment. As the spindle fibers attach to the kinetochores of each chromosome, they exert tension, pulling the chromosomes until they all line up perfectly along the equatorial plane, also known as the metaphase plate. If you look at a microscope slide, this is the most distinct stage because the chromosomes are at their most condensed state. Next, we move into Anaphase, the stage of separation. This is a rapid and dramatic event. The centromeres split, and the sister chromatids are pulled apart toward opposite poles of the cell. These separated chromatids are now considered individual daughter chromosomes. The movement is driven by the shortening of the kinetochore microtubules. You can visualize this as a tug-of-war where both sides finally win, pulling the genetic material to the far ends of the cell. Once the chromosomes reach the poles, we enter Telophase. Think of telophase as the reverse of prophase. The chromosomes begin to de-condense, returning to their thread-like chromatin state. The nuclear envelope, which broke down earlier, starts to re-form around each set of chromosomes at the poles. The nucleolus also reappears. At this point, karyokinesis, or the division of the nucleus, is complete. But the cell is still one single unit; we need to divide the cytoplasm to create two distinct cells. This final step is called Cytokinesis. Now, pay close attention, because the mechanism of cytokinesis differs significantly between animal and plant cells. In animal cells, the process is driven by an outer-to-inner approach. Because animal cells have a flexible plasma membrane, a contractile ring made of actin and myosin filaments forms just beneath the cell membrane at the equator. This ring tightens, creating a constriction called a cleavage furrow. As the ring contracts, the furrow deepens until the parent cell is literally pinched into two separate daughter cells. However, plant cells face a challenge: they have a rigid cell wall that cannot be pinched. Instead, plant cells use an inner-to-outer approach. During telophase, vesicles derived from the Golgi apparatus move toward the center of the cell. These vesicles fuse together to form a structure called the cell plate. The cell plate grows outward until it reaches the existing cell walls. Eventually, the cell plate matures into a new cell wall that separates the two daughter cells. So, to summarize: Metaphase aligns, Anaphase separates, Telophase restores the nuclei, and Cytokinesis divides the cytoplasm via a cleavage furrow in animals or a cell plate in plants. Understanding these mechanical differences is crucial for your exams.","Welcome back. We have successfully navigated through the stages of mitosis, from prophase to cytokinesis. Now, it is time to master the visual interpretation of these processes and understand what happens when things go wrong. Let us begin with a diagrammatic analysis. When you look at a textbook diagram of mitosis, do not just see colorful blobs. Look for the specific markers. In prophase, look for the condensation of chromatin into visible threads. In metaphase, the most critical visual cue is the alignment of chromosomes along the equatorial plate. If you see chromosomes scattered, it is not metaphase. In anaphase, look for the V-shaped or J-shaped movement of sister chromatids being pulled toward opposite poles. This shape is a result of the centromere leading the way. In telophase, look for the reappearance of the nucleolus and the loosening of chromosomes. A common mistake students make when drawing or identifying these stages is confusing anaphase with late metaphase. Remember, in metaphase, the kinetochore microtubules are attached, but in anaphase, the centromere has already split. Another error is failing to distinguish between cytokinesis in plant cells and animal cells in diagrams. If you see a cell plate forming in the center, it is a plant cell. If you see a cleavage furrow pinching the membrane, it is an animal cell. Now, let us move to a much more serious topic: errors in mitosis. Mitosis is designed to be an exact copy of the parent cell, but errors can occur. One major error is non-disjunction. While we often discuss non-disjunction in meiosis, it can also occur during mitosis in somatic cells. This happens when sister chromatids fail to separate properly during anaphase. Instead of one chromatid going to each pole, both might move to one side. This results in one daughter cell having an extra chromosome and the other having one fewer. This state is known as aneuploidy. Why does this matter? This brings us to the clinical significance. When mitotic errors occur in somatic cells, they can lead to uncontrolled cell proliferation. This is the fundamental basis of cancer. In a healthy body, cell cycle checkpoints—specifically the G-two and M checkpoints—act as quality control inspectors. They ensure that DNA is fully replicated and that chromosomes are properly attached to the spindle fibers. If these checkpoints fail, a cell with damaged DNA or an incorrect number of chromosomes can continue to divide. This accumulation of mutations and abnormal cell growth leads to the formation of tumors. Furthermore, certain chromosomal abnormalities caused by mitotic errors can lead to mosaicism. Mosaicism is a condition where an individual has two or more genetically different cell lines derived from a single zygote. This can result in various developmental syndromes. Understanding these errors is not just about biology; it is about understanding the mechanism of disease and the target for modern chemotherapy, which often works by disrupting the mitotic spindle to stop cancer cells from dividing. Keep these visual cues and clinical links in mind as you prepare for your exams.","Welcome back, everyone. In our previous lessons, we mastered Mitosis—the process of equational division that ensures genetic consistency. But now, we move toward one of the most beautiful and complex processes in biology: Meiosis. If mitosis is about maintaining, meiosis is about diversifying. You might be wondering, why do we need a different kind of division? Why can't all cells just use mitosis? To understand this, we have to look at the big picture: sexual reproduction. Imagine a scenario where a human sperm cell, which is haploid, fuses with a human egg cell, which is also haploid. If these cells were produced through mitosis, they would each carry forty-six chromosomes. Upon fertilization, the resulting zygote would have ninety-two chromosomes. In the next generation, that number would double again to one hundred and eighty-four! This would lead to a biological catastrophe. The chromosome number would increase exponentially with every single generation, making life as we know it impossible. This is where Meiosis steps in as the 'Reduction Division.' Meiosis is a specialized form of cell division that reduces the chromosome number by exactly half, from diploid to haploid. By producing gametes with n chromosomes instead of two n chromosomes, meiosis ensures that when fertilization occurs, the restored zygote maintains the correct diploid number of the species. But meiosis isn't just about math and numbers; it is the engine of evolution. While mitosis creates clones, meiosis creates uniqueness. Through the processes we will study in detail in the upcoming parts, meiosis introduces genetic variation. This variation is the raw material for natural selection. Without the shuffling of genes that occurs during meiosis, every sibling would be a carbon copy of one another, and species would lack the ability to adapt to changing environments. So, let us define the core significance of Meiosis in three main pillars. First, the Maintenance of Chromosomal Stability: It prevents the doubling of chromosomes across generations by ensuring gametes are haploid. Second, the Generation of Genetic Variation: Through recombination and independent assortment, it ensures that no two gametes are exactly alike. And third, the Foundation of Sexual Reproduction: It allows for the fusion of two specialized cells to create a genetically unique individual. In the upcoming lessons, we will dive deep into the two stages of meiosis. We will see how Meiosis One is the reductional division, where homologous chromosomes separate, and how Meiosis Two is the equational division, which closely resembles mitosis. Get ready, because we are about to enter the most intricate dance of the chromosomes.","Welcome back. In our previous session, we established why meiosis is essential for maintaining chromosome numbers across generations. Today, we are diving into the most complex and longest phase of meiosis: Prophase One. Unlike mitosis, where Prophase is relatively quick, Prophase One in meiosis is a prolonged, intricate dance of chromosomes. It is divided into five distinct sub-stages: Leptotene, Zygotene, Pachytene, Diplotene, and Diakinesis. Let us begin with the first stage: Leptotene. At this stage, the chromatin begins to condense into visible threads. These threads are the chromosomes. Even though we can see them, it is important to remember that each chromosome still consists of two sister chromatids joined at the centromere, though they may not be clearly distinguishable yet. Moving to the second stage, Zygotene. This is a critical phase where the homologous chromosomes—one from the father and one from the mother—find each other and start pairing up. This process of pairing is called synapsis. As they pair, they form a structure known as a bivalent or a tetrad, because it contains four chromatids. The proteinaceous structure that holds these homologous partners together is called the synaptonemal complex. Think of it as a zipper that zips the two chromosomes together. Now, we enter the most significant stage of Prophase One: Pachytene. This is where the real magic of genetic diversity happens. During Pachytene, the synaptonemal complex is fully formed, and the homologous chromosomes are tightly paired. The most crucial event here is crossing over. This is the physical exchange of genetic material between non-sister chromatids of homologous chromosomes. An enzyme called recombinase facilitates this exchange. Because of crossing over, the chromosomes are no longer identical to the parental ones; they become recombinant. This is the very reason why siblings look different even though they have the same parents. To visualize this, imagine two decks of cards being shuffled together so that some cards from one deck end up in the other. Once Pachytene is complete, the cell moves into Diplotene. In this stage, the synaptonemal complex, which acted like a zipper, begins to dissolve or disappear. As a result, the homologous chromosomes start to repel each other and move apart. However, they do not move completely away. They remain attached at specific points where crossing over actually took place. These X-shaped connection points are called chiasmata. The term chiasma is the singular form. These chiasmata are vital because they hold the bivalents together until the next phase. Finally, we reach the fifth and last stage: Diakinesis. This is the stage of terminalization. The chiasmata move toward the ends of the chromosomes, making the connection look like it is disappearing. The chromosomes reach their maximum state of condensation. The nucleolus disappears, and the nuclear envelope begins to break down, preparing the cell to enter Metaphase One. By the end of Diakinesis, the cell is fully prepared for the spindle fibers to attach to the kinetochores. Understanding these five stages is essential because they represent the mechanical basis of heredity and variation. Let's review: Leptotene is about condensation, Zygotene is about synapsis, Pachytene is about crossing over, Diplotene is about chiasmata formation, and Diakinesis is about the final breakdown of the nucleus.","Welcome back. In our previous session, we explored the intricate stages of Prophase I, where the complex dance of synapsis and recombination began. Now, we move forward into the next stages of Meiosis I. Having completed Prophase I, the cell enters Metaphase I. This is a critical stage for ensuring the correct distribution of genetic material. During Metaphase I, the bivalents, or tetrads, align themselves at the equatorial plate of the cell. Unlike mitosis, where individual chromosomes line up, here it is the homologous pairs that align. The spindle fibers, attached to the kinetochores of the homologous chromosomes, exert tension, ensuring that each pair is properly oriented. Next, we transition into Anaphase I. This is perhaps the most defining moment of reductional division. The homologous chromosomes, which were paired up, now begin to separate and move toward opposite poles of the cell. It is vital to note a key distinction here: the sister chromatids remain attached at their centromeres. We are not separating chromatids; we are separating homologous pairs. This separation is what reduces the chromosome number by half. Following this, we enter Telophase I. The chromosomes reach the poles, and the nuclear envelope may temporarily reform around each set of chromosomes. In many organisms, cytokinesis follows immediately, resulting in two haploid daughter cells. However, these cells are not yet genetically identical to the original parent cell due to the events we must now discuss in detail: the mechanics of crossing over. While we touched upon recombination in Prophase I, let us look closer at the physical mechanism. During the pachytene stage of Prophase I, non-sister chromatids of homologous chromosomes exchange genetic material. This process is facilitated by a complex protein structure called the synaptonemal complex. The physical points where the exchange occurs are called chiasmata. These chiasmata are not just markers of exchange; they play a functional role in holding the bivalent together until Anaphase I. The enzyme involved in breaking and rejoining the DNA strands is called recombinase. This precise cutting and rejoining of DNA strands between non-sister chromatids results in new combinations of alleles. This is the very foundation of genetic variation in sexually reproducing organisms. As the DNA is swapped, the chromatids become 'recombinant,' meaning they carry a mix of maternal and paternal genes. This ensures that no two gametes are exactly alike. So, to recap: Metaphase I brings bivalents to the equator, Anaphase I pulls homologous pairs apart while keeping sister chromatids together, and Telophase I concludes the first division. All of this is driven by the genetic shuffling achieved through the mechanical process of crossing over at the chiasmata. Understanding this sequence is essential for grasping how meiosis maintains species stability while driving evolution through variation.","Welcome back. In our previous session, we witnessed the dramatic reduction of chromosome number during Meiosis I. Now, we enter a phase that looks very familiar. We are starting Meiosis II. If Meiosis I was a reduction division, Meiosis II is known as the equational division. Why do we call it equational? Because, unlike Meiosis I, the number of chromosomes in the daughter cells remains the same as the parent cells entering this stage. Let us look at the context. At the end of Meiosis I, we have two haploid cells. Each cell contains chromosomes that still consist of two sister chromatids joined at a centromere. Our goal in Meiosis II is to separate these sister chromatids. This process is remarkably similar to mitosis. In fact, if you were to look at a single cell undergoing Meiosis II, you might mistake it for a cell undergoing mitosis. However, there is a crucial difference in the starting material. In mitosis, the cell starts with a diploid number of chromosomes, each with two chromatids. In Meiosis II, the cell starts with a haploid number of chromosomes, each with two chromatids. Now, let us dive into the detailed stages of Meiosis II, starting with Prophase II. During Prophase II, the chromatin condenses to form chromosomes again. The nuclear envelope, which may have partially reformed during Telophase I, breaks down completely. The nucleolus disappears, and the centrosomes, which were duplicated during the interphase between Meiosis I and II, begin to move to opposite poles of the cell. This movement is facilitated by the lengthening of the spindle microtubules. It is important to note that there is no S-phase between Meiosis I and Meiosis II. This is a vital distinction. The DNA is not replicated again before Meiosis II begins. This lack of DNA replication is what ensures that the chromosome number remains haploid throughout the process. As we transition into Metaphase II, the chromosomes align at the metaphase plate, just like in mitosis. The spindle fibers from opposite poles attach to the kinetochores of the sister chromatids. This alignment is precise, ensuring that when the chromatids are eventually pulled apart, each new daughter cell receives exactly one copy of each chromosome. Understanding this transition is key to mastering the mechanics of cell division. We have moved from the complex recombination of Prophase I to the simple, efficient separation of chromatids in Meiosis II. Let us keep this momentum as we move into the active separation phase.","Welcome back. We have explored the intricate dance of Mitosis and the complex stages of Meiosis. Now, it is time to bring it all together. To master this chapter, you must be able to distinguish between these two processes at a glance and, more importantly, perform the mathematical calculations that frequently appear in competitive exams. Let us start with a comparative analysis. Think of Mitosis as 'Equational Division.' Why? Because the number of chromosomes in the daughter cells remains exactly the same as the parent cell. If a parent cell has forty-six chromosomes, the two daughter cells will also have forty-six chromosomes each. This is essential for growth and tissue repair. On the other hand, Meiosis is 'Reduction Division.' Its primary goal is to halve the chromosome number to ensure that when fertilization occurs, the original chromosome number is restored in the zygote. If a diploid cell has twenty chromosomes, after Meiosis, the four resulting gametes will each have only ten chromosomes. Now, let us look at the genetic outcome. Mitosis produces genetically identical clones. There is no mixing of genetic material. Meiosis, however, is the architect of variation. Through the processes of crossing over in Prophase one and independent assortment in Metaphase one, Meiosis creates cells that are genetically unique. Now, let us move to the most critical skill: Quantitative DNA and Chromosome Calculation. This is where many students lose marks. You must distinguish between 'n', which represents the haploid number of chromosomes, and 'C', which represents the amount of DNA content. Let us use a concrete example. Suppose we have a cell in a diploid state, denoted as two-n. Let the initial amount of DNA in the G-one phase be represented as two-C. As the cell enters the S phase, DNA replication occurs. Crucially, the chromosome number does not change during the S phase, but the DNA content doubles. So, after the S phase, the cell is still two-n, but the DNA content is now four-C. Now, let us track this through Mitosis. After Mitosis is complete, the two daughter cells will each be two-n, and each will have two-C amount of DNA. Now, let us apply this to Meiosis, which is more complex. After Meiosis one, the cell has undergone reduction. The cells are now haploid, denoted as one-n, but because the sister chromatids are still attached, the DNA content is still two-C. It is not one-C yet! We must wait for Meiosis two. Meiosis two is essentially an equational division, similar to mitosis. When Meiosis two is complete, the four resulting daughter cells are one-n, and their DNA content is finally reduced to one-C. To summarize this for your notes: In Mitosis, the transition is from two-n, two-C to two-n, two-C. In Meiosis, the transition is from two-n, two-C, through Meiosis one to one-n, two-C, and finally through Meiosis two to one-n, one-C. Always remember: Chromosome number is counted by the number of centromeres. DNA content is measured by the mass of the genetic material. If you see a cell with twenty chromosomes and forty picograms of DNA, and it undergoes meiosis, the resulting gametes will have ten chromosomes and ten picograms of DNA. Practice this logic, and you will never get a numerical question wrong.","Welcome back to our deep dive into Cell Cycle and Cell Division. In our previous sessions, we explored the theoretical mechanics of mitosis and meiosis. But now, it is time to put that knowledge to the test. In competitive exams like NEET, you won't just be asked to name a phase; you will be asked to calculate the exact amount of DNA or the number of chromosomes present at a specific moment in the cell cycle. This is where most students stumble, so let us master the logic together. First, let us establish our fundamental variables. We use 'n' to represent the haploid number of chromosomes, which is the set of chromosomes found in a gamete. We use 'c' to represent the amount of DNA present in a haploid nucleus. For example, if a cell has a chromosome number of ten, then n equals five. If the DNA content in that haploid nucleus is ten picograms, then c equals ten. Now, let us look at our first rule: The relationship between DNA and Chromosomes. Remember, a chromosome consists of one or two chromatids. During the G1 phase, a chromosome is a single structure consisting of one chromatid. Therefore, in G1, the DNA content is exactly '2c' if the cell is diploid, and the chromosome number is '2n'. As we enter the S phase, DNA replication occurs. This is the most critical part of our calculations. During the S phase, the DNA amount doubles from '2c' to '4c', but—and this is very important—the chromosome number remains '2n'. Why? Because even though the DNA has doubled, the two sister chromatids are still physically attached at the centromere. They are counted as a single chromosome. So, if you see a question asking for the chromosome number in G2 phase, the answer is still '2n', even though the DNA content is '4c'. Let us try a sample problem. A cell has twenty chromosomes and a DNA content of twenty picograms in the G1 phase. What will be the chromosome number and DNA content in the G2 phase? In G1, 2n equals twenty, so n equals ten. The DNA content is twenty picograms. Moving to G2, the DNA replicates. The DNA content doubles, so twenty times two equals forty picograms. However, the chromosome number stays the same at twenty. Now, let us increase the complexity. Let us look at Meiosis. In Meiosis I, specifically after Meiosis I is complete but before Meiosis II begins, what happens? During Anaphase I, homologous chromosomes separate. This leads to a reduction in the chromosome number. After Telophase I and cytokinesis, the two resulting daughter cells are now haploid. This means the chromosome number is now 'n'. However, because each chromosome still consists of two sister chromatids, the DNA content is still '2c' relative to the new haploid number. It is not 'c' yet. The DNA only reduces to 'c' after the completion of Meiosis II. Let us summarize this mathematical pattern for a diploid cell. In G1, it is 2n and 2c. In S and G2, it is 2n and 4c. After Meiosis I, it is n and 2c. After Meiosis II, it is n and c. If you remember this sequence, you can solve any numerical problem. Always identify whether the cell is in a mitotic cycle or a meiotic cycle first. Then, check if the cell is in a haploid or diploid state. Finally, apply the doubling rule for the S phase and the halving rule for the end of Meiosis I and Meiosis II. Let us practice one more. If a cell in a plant has a DNA content of forty picograms in G2, what was its DNA content in G1? Since DNA doubles in S phase, we simply divide forty by two, giving us twenty picograms. If the chromosome number in G2 is sixteen, what is the haploid number n? Since G2 is still diploid, twenty-n is sixteen, so n is eight. Keep these ratios in mind, and you will never make a mistake in these calculations.","Welcome to the final stretch of our journey through Cell Cycle and Cell Division. We have covered everything from the intricacies of Interphase to the complex dance of Meiosis. Now, it is time to transition from learning to scoring. In this Exam Masterclass, we will focus on the high-yield areas that the examiners love. First, let us look at the NCERT diagrams. If you look at your textbook, the diagram of Mitosis—specifically the stages of Metaphase and Anaphase—is a goldmine for questions. You must be able to identify a cell stage just by looking at the position of chromosomes. Remember, in Metaphase, chromosomes align at the equatorial plate, while in Anaphase, sister chromatids move toward opposite poles. Another critical diagram is the Prophase One stages. You must distinguish between Zygotene, where synapsis occurs, and Pachytene, where crossing over happens. If a question shows a recombination nod, it is Pachytene. Next, let us tackle Previous Year Questions, or PYQs. A very common pattern in NEET and board exams is the relationship between DNA content and chromosome number. For example, if a cell has a diploid number of 2n equals 16, what will be the DNA content after the S phase? You must remember that during the S phase, the DNA amount doubles, but the chromosome number remains the same. So, if the initial DNA content was 2C, it becomes 4C, but the chromosome number stays 16. Another frequent question type involves the sequence of stages in Meiosis. You might be asked to arrange Leptotene, Zygotene, Pachytene, Diplotene, and Diakinesis in order. Do not get confused; remember the mnemonic: 'L-Z-P-D-D'. Now, let us address the most common mistakes students make. Mistake number one is confusing Mitosis with Meiosis in terms of genetic variation. Remember, Mitosis produces genetically identical clones, while Meiosis produces genetically diverse offspring due to crossing over. Mistake number two is the calculation of ploidy. Students often forget that after Meiosis I, the cell becomes haploid, even though the chromosomes still consist of two sister chromatids. Mistake number three is misidentifying Cytokinesis. In plant cells, look for the cell plate forming from the center outwards, whereas in animal cells, look for the cleavage furrow forming from the outside inwards. To wrap up this entire chapter, let us do a rapid-fire recap. Cell division is essential for growth, repair, and reproduction. The cell cycle consists of Interphase, which includes G-one, S, and G-two phases, and the M phase. Mitosis is equational division, maintaining the chromosome number. Meiosis is reductional division, reducing the chromosome number by half and introducing variation. The S phase is the only period where DNA replication occurs. Prophase one is the longest and most complex phase of meiosis. Mastering these concepts, being able to draw these diagrams, and practicing these numerical calculations will ensure you score full marks in this chapter. You are now ready to tackle any question on Cell Division. Keep practicing, and I will see you in the next chapter."];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-biology-10-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Conic Sections, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-maths-10-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Geometry of Curves and Real-World Applications -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Geometry of Curves and Real-World Applications</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Conic sections are curves formed by the intersection of a plane and a double cone</div>
+              <div id="qx0-p1" class="qe-bullet">• The four main types are Circle, Ellipse, Parabola, and Hyperbola</div>
+              <div id="qx0-p2" class="qe-bullet">• The angle of the intersecting plane determines the specific type of conic section</div>
+              <div id="qx0-p3" class="qe-bullet">• Parabolic shapes are used in reflectors, such as headlights and satellite dishes</div>
+              <div id="qx0-p4" class="qe-bullet">• Planetary orbits follow elliptical paths according to Kepler's Laws</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1425790293,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a double-napped cone being intersected by a plane at varying angles to transition from a circle to an ellipse, a parabola, and finally a hyperbola.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D animation showing a double-napped cone being intersected by a plane at varying angles to transition from a circle to an ellipse, a parabola, and finally a hyperbola.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Foundations: Conic Sections Definition, Locus, and Eccentricity -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Foundations: Conic Sections Definition, Locus, and Eccentricity</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Locus: A set of points satisfying a specific geometric condition.</div>
+              <div id="qx1-p1" class="qe-bullet">• Focus (F): A fixed point used to define the conic section.</div>
+              <div id="qx1-p2" class="qe-bullet">• Directrix (L): A fixed straight line used to define the conic section.</div>
+              <div id="qx1-p3" class="qe-bullet">• Eccentricity (e): The constant ratio of distance from focus to distance from directrix.</div>
+              <div id="qx1-p4" class="qe-bullet">• Shapes: e = 1 (Parabola), e &lt; 1 (Ellipse), e &gt; 1 (Hyperbola).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":4192347301,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate plane showing a moving point P, a fixed point F, and a line L, with dynamic lines connecting them to illustrate the ratio P-F/P-D = e.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D coordinate plane showing a moving point P, a fixed point F, and a line L, with dynamic lines connecting them to illustrate the ratio P-F/P-D = e.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): The Circle: Standard Equations, General Form, and Properties -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">The Circle: Standard Equations, General Form, and Properties</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Circle: A conic section with eccentricity e = 0</div>
+              <div id="qx2-p1" class="qe-bullet">• Standard Equation: (x - h)^2 + (y - k)^2 = r^2</div>
+              <div id="qx2-p2" class="qe-bullet">• General Form: x^2 + y^2 + 2gx + 2fy + c = 0</div>
+              <div id="qx2-p3" class="qe-bullet">• Center: (-g, -f) | Radius: sqrt(g^2 + f^2 - c)</div>
+              <div id="qx2-p4" class="qe-bullet">• Condition for Real Circle: g^2 + f^2 - c &gt; 0</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1918596379,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cone being sliced horizontally by a plane to form a circle, transitioning into a 2D coordinate plane showing the expansion of (x-h)^2 + (y-k)^2.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D cone being sliced horizontally by a plane to form a circle, transitioning into a 2D coordinate plane showing the expansion of (x-h)^2 + (y-k)^2.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): The Parabola: Definition, Standard Equations, and Focus-Directrix Property -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">The Parabola: Definition, Standard Equations, and Focus-Directrix Property</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Definition: Locus of points where distance to Focus equals distance to Directrix</div>
+              <div id="qx3-p1" class="qe-bullet">• Eccentricity of a Parabola: e = 1</div>
+              <div id="qx3-p2" class="qe-bullet">• Standard Form (Horizontal): y squared = 4ax (Opens Right) or y squared = -4ax (Opens Left)</div>
+              <div id="qx3-p3" class="qe-bullet">• Standard Form (Vertical): x squared = 4ay (Opens Up) or x squared = -4ay (Opens Down)</div>
+              <div id="qx3-p4" class="qe-bullet">• Key Components: Vertex, Focus, Directrix, Axis, and Latus Rectum</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":4223821324,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate plane showing a point P moving such that its distance to a point F and a line L remains equal, tracing a glowing parabola.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D coordinate plane showing a point P moving such that its distance to a point F and a line L remains equal, tracing a glowing parabola.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Parabola Deep Dive: Derivations, Tangents, and Worked Examples -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Parabola Deep Dive: Derivations, Tangents, and Worked Examples</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Deriving y squared equals 4ax using the focus-directrix definition</div>
+              <div id="qx4-p1" class="qe-bullet">• Understanding the role of 'a' as the focal distance</div>
+              <div id="qx4-p2" class="qe-bullet">• The tangent formula: y times y-one equals 2a of x plus x-one</div>
+              <div id="qx4-p3" class="qe-bullet">• Step-by-step derivation of tangent equations</div>
+              <div id="qx4-p4" class="qe-bullet">• Applying algebraic verification to tangent lines</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":611859678,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing a parabola opening right, with a moving point P tracing the curve and a glowing tangent line updating its position in real-time.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D coordinate system showing a parabola opening right, with a moving point P tracing the curve and a glowing tangent line updating its position in real-time.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): The Ellipse: Definition, Standard Equations, and Geometric Properties -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">The Ellipse: Definition, Standard Equations, and Geometric Properties</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Definition: Locus of points where the sum of distances from two foci is constant</div>
+              <div id="qx5-p1" class="qe-bullet">• Major Axis: The longest diameter passing through the foci</div>
+              <div id="qx5-p2" class="qe-bullet">• Minor Axis: The shortest diameter perpendicular to the major axis</div>
+              <div id="qx5-p3" class="qe-bullet">• Standard Equation: x squared over a squared plus y squared over b squared equals one</div>
+              <div id="qx5-p4" class="qe-bullet">• Eccentricity (e): A value between 0 and 1, where e equals c over a</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3684666914,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a string loop moving around two pins to trace an ellipse, transitioning into a coordinate plane showing the x and y axes with labeled a, b, and c segments.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D animation showing a string loop moving around two pins to trace an ellipse, transitioning into a coordinate plane showing the x and y axes with labeled a, b, and c segments.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Ellipse Advanced: Eccentricity, Foci, Latus Rectum, and Derivations -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Ellipse Advanced: Eccentricity, Foci, Latus Rectum, and Derivations</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Eccentricity (e) for an ellipse: 0 &lt; e &lt; 1</div>
+              <div id="qx6-p1" class="qe-bullet">• Focal distance formula: c squared = a squared - b squared</div>
+              <div id="qx6-p2" class="qe-bullet">• Coordinates of Foci: (plus or minus c, 0) for horizontal ellipses</div>
+              <div id="qx6-p3" class="qe-bullet">• Length of Latus Rectum: 2b squared divided by a</div>
+              <div id="qx6-p4" class="qe-bullet">• Locus definition: Sum of distances from foci to any point is 2a</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1648378539,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing an ellipse where the foci glow, the latus rectum expands, and the eccentricity slider changes the shape from a circle to a thin oval.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D coordinate system showing an ellipse where the foci glow, the latus rectum expands, and the eccentricity slider changes the shape from a circle to a thin oval.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): The Hyperbola: Definition, Standard Equations, and Key Components -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">The Hyperbola: Definition, Standard Equations, and Key Components</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Hyperbola: Locus where the difference of distances from foci is constant</div>
+              <div id="qx7-p1" class="qe-bullet">• Standard Equation (Horizontal): x squared over a squared minus y squared over b squared equals one</div>
+              <div id="qx7-p2" class="qe-bullet">• Standard Equation (Vertical): y squared over a squared minus x squared over b squared equals one</div>
+              <div id="qx7-p3" class="qe-bullet">• Key Relationship: c squared equals a squared plus b squared</div>
+              <div id="qx7-p4" class="qe-bullet">• Length of Latus Rectum: two b squared over a</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2560006415,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a double cone being sliced vertically to reveal two diverging hyperbola branches, with labeled foci, vertices, and the transverse axis.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D animation showing a double cone being sliced vertically to reveal two diverging hyperbola branches, with labeled foci, vertices, and the transverse axis.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Hyperbola Advanced: Asymptotes, Eccentricity, and Comparison with Ellipse -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Hyperbola Advanced: Asymptotes, Eccentricity, and Comparison with Ellipse</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Asymptotes: Lines that the hyperbola approaches as x and y tend to infinity.</div>
+              <div id="qx8-p1" class="qe-bullet">• Asymptote Equations: y equals plus or minus (b over a) times x.</div>
+              <div id="qx8-p2" class="qe-bullet">• Eccentricity (e): For a hyperbola, e is always greater than one.</div>
+              <div id="qx8-p3" class="qe-bullet">• Eccentricity Formula: e equals the square root of one plus (b squared over a squared).</div>
+              <div id="qx8-p4" class="qe-bullet">• Ellipse vs Hyperbola: Sum of terms (Ellipse) vs Difference of terms (Hyperbola).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3275224229,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing a hyperbola emerging from its central box, with dashed asymptote lines extending to infinity and the foci moving outward.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D coordinate system showing a hyperbola emerging from its central box, with dashed asymptote lines extending to infinity and the foci moving outward.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Problem Solving Workshop: Mixed Conic Equations and Word Problems -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Problem Solving Workshop: Mixed Conic Equations and Word Problems</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Identify conics using the coefficients A, B, and C</div>
+              <div id="qx9-p1" class="qe-bullet">• Use the discriminant B squared minus 4AC for rotated conics</div>
+              <div id="qx9-p2" class="qe-bullet">• Complete the square to find centers and radii</div>
+              <div id="qx9-p3" class="qe-bullet">• Translate word problems into standard coordinate forms</div>
+              <div id="qx9-p4" class="qe-bullet">• Always verify your solution by substituting points back</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"orbit","seed":76628648,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen showing a messy general equation transforming into a clean standard form via completing the square, alongside a 3D satellite dish model.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen showing a messy general equation transforming into a clean standard form via completing the square, alongside a 3D satellite dish model.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Identifying Mistakes in Graphs and Algebraic Manipulations -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Identifying Mistakes in Graphs and Algebraic Manipulations</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Watch for coefficient errors when completing the square</div>
+              <div id="qx10-p1" class="qe-bullet">• Verify signs to distinguish between Ellipses and Hyperbolas</div>
+              <div id="qx10-p2" class="qe-bullet">• Ensure Hyperbola curves approach, but never touch, asymptotes</div>
+              <div id="qx10-p3" class="qe-bullet">• Check eccentricity bounds: e &lt; 1 for Ellipse, e &gt; 1 for Hyperbola</div>
+              <div id="qx10-p4" class="qe-bullet">• Distinguish between the length of Latus Rectum and axis lengths</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":340860399,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen animation showing a 'Wrong' graph with a curve touching an asymptote versus a 'Correct' graph showing the asymptotic approach, alongside a red 'X' over a sign error in an equation.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen animation showing a 'Wrong' graph with a curve touching an asymptote versus a 'Correct' graph showing the asymptotic approach, alongside a red 'X' over a sign error in an equation.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Revision, Time Management, and High-Yield Questions -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Revision, Time Management, and High-Yield Questions</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Revision Strategy: Mental mapping of foci, directrix, and standard equations.</div>
+              <div id="qx11-p1" class="qe-bullet">• Time Management: Use the Three-Pass Method to prioritize scoring questions.</div>
+              <div id="qx11-p2" class="qe-bullet">• Sketching: Always draw a rough graph to verify algebraic results.</div>
+              <div id="qx11-p3" class="qe-bullet">• High-Yield Topics: Locus definitions, intersections, and parametric forms.</div>
+              <div id="qx11-p4" class="qe-bullet">• Advanced Mastery: Condition of tangency and coordinate transformations.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":4254245070,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen showing a student's organized workspace on one side and a dynamic, glowing 3D summary of all four conic equations rotating on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen showing a student's organized workspace on one side and a dynamic, glowing 3D summary of all four conic equations rotating on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Conic Sections today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Geometry of Curves and Real-World Applications <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Foundations: Conic Sections Definition, Locus, and Eccentricity <small>5:00</small></button>
+          <button type="button" data-seek="600">3. The Circle: Standard Equations, General Form, and Properties <small>10:00</small></button>
+          <button type="button" data-seek="900">4. The Parabola: Definition, Standard Equations, and Focus-Directrix Property <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Parabola Deep Dive: Derivations, Tangents, and Worked Examples <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. The Ellipse: Definition, Standard Equations, and Geometric Properties <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Ellipse Advanced: Eccentricity, Foci, Latus Rectum, and Derivations <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. The Hyperbola: Definition, Standard Equations, and Key Components <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Hyperbola Advanced: Asymptotes, Eccentricity, and Comparison with Ellipse <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Problem Solving Workshop: Mixed Conic Equations and Word Problems <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Identifying Mistakes in Graphs and Algebraic Manipulations <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Revision, Time Management, and High-Yield Questions <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone, and welcome to our journey into the fascinating world of Conic Sections. Before we dive into the complex equations and algebraic proofs that define this chapter, we need to understand what we are actually looking at. In your previous classes, you have studied straight lines, circles, and perhaps some basic curves. But nature and engineering rarely move in perfectly straight lines. Instead, we see curves everywhere—the path of a thrown ball, the shape of a satellite dish, or even the orbits of planets around the sun. All these shapes belong to a single, beautiful family called Conic Sections. To understand them, let us first visualize the origin of these curves. Imagine a double-napped right circular cone. This is essentially two cones joined at their tips, or vertices, extending infinitely in both directions. Now, imagine a flat plane passing through this double cone. Depending on the angle at which this plane intersects the cone, the resulting shape or 'slice' we see is different. If the plane cuts the cone horizontally, perpendicular to its axis, we get a perfect circle. If we tilt the plane slightly, the circle stretches into an ellipse. If we tilt it even further, so that the plane is parallel to the side or the generator of the cone, we create a parabola. And finally, if the plane cuts through both the top and bottom nappes of the cone, we get a hyperbola. These are the four fundamental conic sections. But why does this matter beyond just cutting shapes out of cones? The geometry of these curves is the language of the universe. Let's look at some real-world applications. Have you ever wondered why a car's headlight uses a curved mirror? It is a parabolic reflector. Because of the unique geometric properties of a parabola, any light ray originating from its focus is reflected outward in parallel lines, creating a powerful beam. Similarly, satellite dishes and radio telescopes use parabolic shapes to collect incoming weak signals and concentrate them onto a single point, the focus. In the realm of astronomy, the paths of planets and comets are not random. Kepler's Laws of Planetary Motion tell us that the orbits of planets are ellipses, with the sun at one of the two foci. If a comet passes near a star and is not captured by its gravity, it might follow a parabolic or even a hyperbolic path, escaping into deep space forever. Even in architecture, the arches of bridges and the design of cooling towers in power plants utilize these curves to distribute weight and stress efficiently. In this chapter, we will move from this visual intuition to mathematical precision. We will learn how to define these curves using a concept called 'locus,' how to use a value called 'eccentricity' to distinguish between them, and how to write their equations in a coordinate plane. By the end of this series, you won't just see a curve on a graph; you will see the underlying mathematical structure that governs everything from a simple flashlight to the movement of the stars. Let's get started.","Welcome back. In our previous session, we explored how conic sections appear in our daily lives, from the curves of satellite dishes to the orbits of planets. Now, it is time to move from observation to formal mathematics. To understand conics, we must first master three fundamental concepts: the definition of a conic section, the concept of a locus, and the crucial role of eccentricity. Let us start with the concept of a locus. In geometry, a locus is simply a set of points that satisfy a specific condition or a rule. Imagine you are holding a rope tied to a pole, and you walk around it, keeping the rope tight. The path you trace on the ground is a circle. That circle is the locus of all points that are at a constant distance from a fixed point. In conic sections, we deal with more complex rules involving distances. Now, let us define a conic section formally. While we often think of them as slices of a cone, the algebraic definition is much more powerful. A conic section is the locus of a point that moves in a plane such that its distance from a fixed point, called the focus, is always in a constant ratio to its distance from a fixed straight line, called the directrix. This constant ratio is the most important value in this chapter: it is called the eccentricity, denoted by the letter 'e'. Let us break this down mathematically. Suppose we have a point P moving in a plane. Let F be a fixed point, which we call the focus. Let L be a fixed straight line, which we call the directrix. Let the distance from point P to the focus F be represented as P-F. Let the perpendicular distance from point P to the directrix L be represented as P-D. The definition states that the ratio of P-F to P-D is a constant. Mathematically, we write this as P-F divided by P-D equals 'e'. This single equation, P-F equals 'e' times P-D, is the foundation of all conic sections. The value of this eccentricity, 'e', determines the very shape of the curve. If 'e' is equal to one, the distance to the focus is exactly equal to the distance to the directrix. This specific condition gives us a Parabola. If 'e' is less than one, the point stays closer to the focus than to the directrix, resulting in a closed curve called an Ellipse. Finally, if 'e' is greater than one, the point moves further away from the focus relative to the directrix, creating an open curve known as a Hyperbola. Think of eccentricity as a measure of how much a curve deviates from being a perfect circle. In fact, a circle is a special case where the eccentricity is zero, though in the formal focus-directrix definition, we treat it as the limiting case where the directrix moves to infinity. To summarize, every conic section is defined by a focus, a directrix, and an eccentricity. By changing only that one value, 'e', we transition from a parabola to an ellipse, and then to a hyperbola. Understanding this relationship is the key to unlocking the algebraic equations we will derive in the upcoming sections.","Welcome back. In our previous sessions, we explored the fundamental definition of conic sections using the focus-directrix property. Now, we zoom in on a very special case: the Circle. You might wonder, is a circle a conic section? Yes, it is! A circle is formed when a plane intersects a cone perpendicular to its axis. In terms of eccentricity, a circle is a unique conic where the eccentricity, denoted by 'e', is exactly equal to zero. This means the distance from any point on the circle to the center is constant, and the directrix has moved to infinity. Let us start with the most fundamental definition. A circle is the locus of a point that moves in a plane such that its distance from a fixed point is always constant. This fixed point is called the center, and the constant distance is the radius. Let the center be the point 'h comma k' and the radius be 'r'. If any point on the circle is 'x comma y', then according to the distance formula, the square of the distance between 'x comma y' and 'h comma k' must equal 'r' squared. This gives us our Standard Equation of a circle: 'x minus h' squared plus 'y minus k' squared equals 'r' squared. If the center is at the origin, 'zero comma zero', the equation simplifies beautifully to 'x' squared plus 'y' squared equals 'r' squared. Now, let us move to the General Form of a circle's equation. If we expand the standard equation, we get a quadratic expression in terms of x and y. The general form is written as 'x' squared plus 'y' squared plus '2-g-x' plus '2-f-y' plus 'c' equals zero. Here, 'g', 'f', and 'c' are real numbers. It is very important to note that in the general form, the coefficients of 'x' squared and 'y' squared must be equal, and there should be no 'x-y' term. If there were an 'x-y' term, the shape would be a rotated conic, not a circle. From this general equation, we can actually work backward to find the center and the radius. The center of the circle is given by the point 'minus-g comma minus-f'. To find the radius, we use the formula: square root of 'g' squared plus 'f' squared minus 'c'. For a circle to actually exist in the real plane, the value inside that square root, which is 'g' squared plus 'f' squared minus 'c', must be greater than zero. If it equals zero, the circle shrinks to a single point, called a point circle. If it is less than zero, we call it an imaginary circle because no real points satisfy the equation. Finally, let's look at some key properties. A circle is perfectly symmetrical about any line passing through its center. Any chord of a circle that is perpendicular to a diameter is bisected by that diameter. Also, remember that the tangent to a circle at any point is always perpendicular to the radius drawn to the point of contact. Understanding these algebraic forms and geometric properties is crucial before we move on to the more eccentric curves like the parabola. Let's practice a few examples to solidify this.","Welcome back to our journey through Conic Sections. In our previous session, we established the fundamental concept of eccentricity, which is the constant ratio of distances that defines all conic curves. Today, we zoom in on one specific, beautiful curve: The Parabola. Now, you might have seen the path of a basketball or a fountain's water spray; that shape is a parabola. But mathematically, what is it? A parabola is defined as the locus of a point that moves in a plane such that its distance from a fixed point is always equal to its distance from a fixed straight line. This fixed point is called the Focus, usually denoted by the letter F. The fixed straight line is called the Directrix, usually denoted by the letter L. Because the distance to the focus and the distance to the directrix are equal, the eccentricity, or 'e', of a parabola is always exactly equal to one. Let's visualize this. Imagine a point P moving on the plane. If the distance from P to the Focus is equal to the perpendicular distance from P to the Directrix, then P traces out a parabola. The point halfway between the focus and the directrix is a very special point called the Vertex. The line passing through the focus and perpendicular to the directrix is known as the Axis of Symmetry. The length of the segment passing through the focus, perpendicular to the axis, and ending at the curve is called the Latus Rectum. Now, let's look at the standard algebraic forms. The most common parabola has its vertex at the origin, point zero comma zero. If the parabola opens to the right along the x-axis, its equation is y squared equals four-a-x. In this case, the focus is located at the point a comma zero, and the directrix is the vertical line x equals negative a. Here, 'a' represents the distance from the vertex to the focus. If the parabola opens to the left, the equation becomes y squared equals minus four-a-x. Now, what if the parabola opens upwards or downwards? If it opens upwards along the y-axis, the equation is x squared equals four-a-y, with the focus at zero comma a and the directrix at y equals negative a. If it opens downwards, the equation is x squared equals minus four-a-y, with the focus at zero comma negative a and the directrix at y equals a. Notice the pattern? The squared term tells you which axis the parabola is symmetric about. If x is squared, it's a vertical parabola; if y is squared, it's a horizontal parabola. The constant 'four-a' is a crucial value because it determines how wide or narrow the curve is. This value, four-a, is also the length of the Latus Rectum. To summarize, a parabola is the set of all points where the distance to the focus equals the distance to the directrix, making its eccentricity exactly one. We have four standard orientations depending on whether the axis is horizontal or vertical, and whether it opens in the positive or negative direction. In our next segment, we will dive deeper into the algebraic derivations of these equations and solve some complex problems.","Welcome back to our journey through Conic Sections. In the previous part, we defined the parabola using the focus-directrix property. Now, it is time to roll up our sleeves and dive into the mathematical heart of the parabola. We will derive the standard equation, explore the concept of tangents, and solve some practical problems. Let us start with the formal derivation. Imagine a parabola with its focus at point F, located at coordinate h, k, and a directrix which is a vertical line x equals d. By the definition of a parabola, any point P on the curve must be equidistant from the focus and the directrix. If we let the coordinates of P be x and y, then the distance from P to F must equal the perpendicular distance from P to the directrix. Using the distance formula, we get the square root of the quantity x minus h squared plus y minus k squared, which equals the absolute value of x minus d. Squaring both sides, we get x minus h squared plus y minus k squared equals x squared minus two times x times d plus d squared. After simplifying and rearranging the terms, we arrive at the standard form. For a parabola opening to the right with its vertex at the origin, this simplifies beautifully to y squared equals four a x, where a is the distance from the vertex to the focus. Now, let us talk about tangents. A tangent is a straight line that touches the parabola at exactly one point. If we have a point P with coordinates x-one and y-one on the parabola y squared equals four a x, the equation of the tangent at that point can be found using the method of substitution or calculus. The standard formula for the tangent at point x-one, y-one is y times y-one equals two a of x plus x-one. This is a very powerful tool for solving coordinate geometry problems. Let us look at a worked example to solidify this. Suppose we have the parabola y squared equals eight x. Here, four a equals eight, so a equals two. The focus is at two, zero, and the directrix is x equals negative two. Now, let us find the equation of the tangent at the point where x equals two. First, we find the corresponding y-value. If x is two, then y squared equals eight times two, which is sixteen. So, y can be four or negative four. Let us pick the point two, four. Using our tangent formula, y times four equals two times two of x plus two. This simplifies to four y equals four x plus four, or simply y equals x plus one. To check if this is correct, we can substitute y equals x plus one back into the original equation. This gives us the quantity x plus one squared equals eight x, which expands to x squared plus two x plus one equals eight x, or x squared minus six x plus one equals zero. Wait, let us re-verify our math. If the point is two, four, and the equation is y squared equals eight x, the derivative is two y times dy dx equals eight, so dy dx equals four divided by y. At y equals four, the slope is one. Using the point-slope form, y minus four equals one times x minus two, which gives y equals x plus two. Let us re-apply the tangent formula: y times y-one equals two a of x plus x-one. Here, y times four equals four of x plus two, which is four y equals four x plus two, or y equals x plus zero point five. Let us re-calculate the slope carefully. If y squared equals eight x, then two y dy dx equals eight, so dy dx equals four divided by y. At y equals four, the slope is one. The equation is y minus four equals one times x minus two, which is y equals x plus two. Using the formula y times y-one equals two a of x plus x-one, we get y times four equals four times x plus two, which is four y equals four x plus two, so y equals x plus zero point five. Let us correct the formula application: the formula is y times y-one equals two a of x plus x-one. For y squared equals eight x, four a is eight, so two a is four. At point two, four, we have y times four equals four times x plus two, which is four y equals four x plus two, or y equals x plus zero point five. Actually, the standard tangent formula for y squared equals 4ax at (x1, y1) is y times y1 equals 2a times (x plus x1). Let us re-apply: 4y = 4(x + 2), which means y = x + 2. This matches our slope calculation perfectly. Remember, the tangent is a line that touches the curve at exactly one point and represents the instantaneous direction of the curve at that point. Mastering these derivations and the tangent formula will allow you to tackle even the most complex conic section problems in your exams.","Welcome back. In our previous lesson, we mastered the parabola. Now, we move to a beautiful, closed curve that governs the orbits of planets: The Ellipse. Let's start with its formal definition. An ellipse is the locus of a point which moves in a plane such that the sum of its distances from two fixed points is always constant. These two fixed points are called the foci, or singular, the focus. Imagine you have two pins stuck into a board, a loop of string around them, and a pencil pulling the string taut. As you move the pencil, the shape you trace is an ellipse. The sum of the distances from the pencil to the two pins remains equal to the length of the string. This constant sum is actually equal to the length of the major axis. Now, let's look at the geometric components. The longest diameter of the ellipse is called the major axis, and it passes through both foci. The shortest diameter is the minor axis, which is perpendicular to the major axis at its center. The point where these two axes intersect is the center of the ellipse. Let's derive the standard equation. Suppose we place the center at the origin, point zero, zero, and let the major axis lie along the x-axis. Let the coordinates of the point on the ellipse be x and y. Let the distance from the center to each focus be 'c'. Let the length of the semi-major axis be 'a' and the semi-minor axis be 'b'. By the definition of an ellipse, the sum of the distances from any point P to the foci F one and F two is two-a. Using the distance formula and simplifying the algebra, we arrive at the standard equation: x squared over a squared plus y squared over b squared equals one. In this equation, 'a' is always greater than 'b'. If the major axis were on the y-axis, the equation would simply swap the denominators, with a squared under y squared. Now, let's talk about eccentricity, denoted by the letter 'e'. For a circle, the eccentricity is zero. For a parabola, it is exactly one. For an ellipse, the eccentricity is always between zero and one. It measures how 'stretched' the ellipse is. We calculate it using the relationship: e equals square root of one minus b squared over a squared. Another important property is the relationship between a, b, and c, which is a squared equals b squared plus c squared. This tells us that the distance to the focus, 'c', is equal to 'a' times 'e'. To summarize the geometry: the vertices are at plus or minus a on the x-axis, the co-vertices are at plus or minus b on the y-axis, and the foci are at plus or minus c on the x-axis. Understanding these components is crucial before we dive into the advanced derivations in our next session.","Welcome back. In our previous session, we defined the ellipse and its standard equation. Now, we are going to dive deep into the mathematical soul of the ellipse. To truly master this curve, we must understand the specific parameters that define its shape and size. Let us start with the concept of eccentricity, denoted by the letter 'e'. For an ellipse, the eccentricity is always a value between zero and one. Mathematically, we define it as the ratio of the distance from the focus to the distance from the directrix. If 'e' is close to zero, the ellipse looks almost like a circle. As 'e' approaches one, the ellipse becomes increasingly elongated. Now, let us locate the Foci. In a horizontal ellipse with the equation 'x squared over a squared plus y squared over b squared equals one', where 'a' is greater than 'b', the two foci lie on the major axis. Their coordinates are given as 'plus or minus c, zero', where 'c' is the distance from the center to each focus. There is a fundamental relationship you must memorize: 'c squared equals a squared minus b squared'. This 'c' is the focal distance. Next, let us discuss the Latus Rectum. This is a chord that passes through one of the foci and is perpendicular to the major axis. It helps us understand the 'width' of the ellipse at its focal points. The length of the latus rectum is calculated using the formula 'two b squared divided by a'. This is a crucial value for sketching accurate graphs. Now, let us move to the formal derivation. We start with the locus definition: the sum of the distances from any point P on the ellipse to the two fixed foci, F1 and F2, is a constant. Let this constant be '2a'. So, the distance P to F1 plus the distance P to F2 equals '2a'. If we place the center at the origin, the foci are at 'c' and negative 'c'. Using the distance formula, we write the square root of the quantity 'x minus c squared plus y squared' plus the square root of the quantity 'x plus c squared plus y squared' equals '2a'. To derive the standard equation, we isolate one radical, square both sides, simplify the terms, isolate the remaining radical again, and square a second time. Through algebraic manipulation and substituting 'b squared' for 'a squared minus c squared', we arrive at our standard form: 'x squared over a squared plus y squared over b squared equals one'. Remember, if the ellipse were vertical, 'b' would be greater than 'a', and the foci would lie on the y-axis. Understanding these derivations is not just about passing exams; it is about understanding how the geometry of the curve is locked into its algebraic structure. Let us practice these formulas to ensure they become second nature.","Welcome back. In our previous lessons, we explored the closed curves of the circle and the ellipse. Now, we step into a different realm of conic sections. Today, we begin our study of the hyperbola. While the ellipse is a bounded curve, the hyperbola is unbounded, consisting of two separate, symmetrical parts called branches. Let us start with the formal definition. A hyperbola is the locus of a point that moves in a plane such that the difference of its distances from two fixed points, which we call the foci, is always a constant. Let the two fixed points be F sub one and F sub two. If P is any point on the hyperbola, then the absolute value of the quantity P F sub one minus P F sub two is equal to a constant, which we usually denote as two a. This constant two a is actually the distance between the two vertices of the hyperbola. Now, let us look at the standard equation of a hyperbola centered at the origin. When the transverse axis, which is the line passing through the foci and vertices, lies along the x-axis, the equation is given by x squared over a squared minus y squared over b squared equals one. In this equation, a is the semi-transverse axis and b is the semi-conjugate axis. Notice the minus sign; this is the crucial distinction from the ellipse. The vertices are located at the points plus or minus a, zero. The foci are located at plus or minus c, zero, where c is the distance from the center to each focus. The relationship between these constants is c squared equals a squared plus b squared. This is different from the ellipse, where c squared equals a squared minus b squared. Now, what if the hyperbola is vertical? If the transverse axis lies along the y-axis, the equation becomes y squared over a squared minus x squared over b squared equals one. Here, the vertices are at zero, plus or minus a, and the foci are at zero, plus or minus c. The value of c is still calculated using c squared equals a squared plus b squared. To understand the shape, we must mention the latus rectum. The length of the latus rectum for a hyperbola is given by the formula two b squared over a. This line segment passes through the focus and is perpendicular to the transverse axis. It helps us determine how wide or narrow the branches of the hyperbola open. To summarize, the hyperbola is defined by a constant difference in distances, its standard form involves a subtraction of terms, and its geometry is governed by the relationship between a, b, and c. In the next part, we will dive deeper into the fascinating concept of asymptotes and how they guide the shape of the hyperbola as it extends toward infinity.","Welcome back. In our previous session, we established the standard equation of a hyperbola and identified its transverse and conjugate axes. Today, we are going to dive into the advanced characteristics that make the hyperbola truly unique: its asymptotes, the specific behavior of its eccentricity, and how it fundamentally differs from the ellipse we studied earlier. Let us start with the concept of asymptotes. Imagine a hyperbola stretching out toward infinity. As the x and y values become extremely large, the curve begins to look almost like a straight line. These straight lines are called asymptotes. For a standard hyperbola with the equation x squared over a squared minus y squared over b squared equals one, the asymptotes are two intersecting lines that pass through the center. To find their equations, we look at the limit where the constant one becomes negligible. This gives us the equations y equals plus or minus (b over a) times x. These lines act as boundaries that the hyperbola approaches closer and closer but never actually touches. They are essential for sketching the hyperbola accurately. Next, let us look at eccentricity, denoted by the letter e. In a circle, eccentricity is zero. In an ellipse, eccentricity is always less than one. But for a hyperbola, the eccentricity is always greater than one. This is a crucial distinction. The formula for the eccentricity of a hyperbola is the square root of one plus b squared over a squared. Because we are adding a positive value to one before taking the square root, the result is always greater than one. This high eccentricity is what causes the curve to 'open up' and diverge rather than close back in on itself like an ellipse. Now, let us perform a direct comparison between the ellipse and the hyperbola to solidify your understanding. Think of them as mathematical opposites in several ways. First, look at the signs in their standard equations. For an ellipse, we have the sum of two terms: x squared over a squared plus y squared over b squared equals one. For a hyperbola, we have the difference: x squared over a squared minus y squared over b squared equals one. This single change in sign transforms a closed loop into an open, two-part curve. Second, consider the relationship between the semi-axes and the distance to the foci. In an ellipse, the semi-major axis a is the largest value, and the relationship is a squared equals b squared plus c squared, where c is the distance to the focus. In a hyperbola, the distance to the focus c is actually larger than the semi-transverse axis a. The relationship is rearranged to c squared equals a squared plus b squared. Third, let us talk about the shape. An ellipse is a bounded curve, meaning it stays within a finite region of the coordinate plane. A hyperbola is an unbounded curve, extending infinitely in two directions. Finally, consider the foci. In an ellipse, the foci lie inside the closed curve. In a hyperbola, the foci lie 'inside' the two separate branches, tucked into the curves as they move away from the center. Understanding these nuances—the asymptotic behavior, the eccentricity greater than one, and the sign reversal in the equation—is the key to mastering conic sections. In our next session, we will put all these tools to the test in our Problem Solving Workshop.","Welcome back to our deep dive into Conic Sections. Up until now, we have mastered the individual identities of the circle, the parabola, the ellipse, and the hyperbola. But in a real examination, you won't always be told which curve you are looking at. Today, we enter the workshop phase. Our goal is to develop a systematic approach to decoding mixed equations and translating real-world scenarios into mathematical models. Let's start with the first challenge: The Identification Problem. Imagine you are presented with a general second-degree equation in the form of A x squared plus B x y plus C y squared plus D x plus E y plus F equals zero. Your first instinct should not be to graph it, but to analyze the coefficients. If the B term, which is the x-y term, is zero, we look at the product of the coefficients of the squared terms. If A times C is greater than zero, you are likely looking at an ellipse or a circle. If A times C is less than zero, it is a hyperbola. If either A or C is zero, we are dealing with a parabola. If you encounter an x-y term, the curve is rotated, and we would need to use the discriminant, B squared minus four A C, to identify the type. Let's practice a mental drill. If I give you the equation x squared minus four y squared equals sixteen, what do you see? Notice the minus sign between the squared terms. This tells us immediately that it is a hyperbola. We then divide by sixteen to get x squared over sixteen minus y squared over four equals one, revealing our semi-major axis and semi-minor axis. Now, let's move to the second challenge: The Transformation Problem. Often, a conic is not centered at the origin. You might see an equation like x squared plus y squared plus six x minus eight y plus nine equals zero. To solve this, we use the method of completing the square for both x and y. Group the x terms together and the y terms together. This becomes x squared plus six x plus y squared minus eight y equals negative nine. To complete the square for x, we take half of six, which is three, and square it to get nine. For y, we take half of negative eight, which is negative four, and square it to get sixteen. Add nine and sixteen to both sides. Now the equation becomes x plus three squared plus y minus four squared equals sixteen. Immediately, we can see this is a circle with center at negative three, four and a radius of four. The third and most critical part of our workshop is Word Problems. These require you to translate English into Geometry. Let's look at a classic scenario: An architect is designing a satellite dish. The dish is shaped like a parabola. If the dish is forty centimeters wide and ten centimeters deep, where should the receiver be placed? Here, we must set up a coordinate system. Let's place the vertex at the origin, zero, zero. The equation of a vertical parabola is x squared equals four a y. Since the dish is forty centimeters wide, it extends from x equals negative twenty to x equals positive twenty. At the edge, the depth is ten, so when x is twenty, y is ten. Plugging these into our equation, twenty squared equals four a times ten. This gives us four hundred equals forty a, so a equals ten. Since the receiver must be placed at the focus, which is at the point zero, a, the receiver should be placed exactly ten centimeters above the vertex. Finally, always remember the 'Check' step. Once you find your parameters, plug a point back into your original equation to ensure the equality holds. Mastery comes not from memorizing formulas, but from recognizing the patterns hidden within the algebra. Let's get to work.","Welcome back. We have explored the beautiful geometry of circles, parabolas, ellipses, and hyperbolas. But as we approach the final stages of this chapter, we must address a critical reality: even if you understand the concepts, small errors in calculation or visualization can lead to the wrong answer. Today, we are looking at the most common pitfalls that students encounter in exams. Let's start with algebraic manipulations. The most frequent error occurs during the process of completing the square. When you are given a general second-degree equation and you need to transform it into a standard form, many students forget to distribute the coefficient of the squared term to the constant term. For example, if you have two times x squared plus eight x, and you want to complete the square, you must remember that the constant you add inside the parenthesis is multiplied by that leading coefficient when you expand it back. If you miss this, your center or vertex will be completely wrong. Another major trap is the sign error in the standard forms. In an ellipse, the equation is x squared over a squared plus y squared over b squared equals one. Students often accidentally swap the signs, making it a hyperbola, or they forget that if the larger denominator is under y squared, the major axis is vertical, not horizontal. This leads to incorrect foci and directrix calculations. Now, let's move to graphing errors. A very common mistake is the incorrect sketching of the hyperbola. Students often draw the curves touching the asymptotes, rather than approaching them. Remember, the curve never actually touches the asymptote; it only gets infinitely close. Also, pay close attention to the orientation. If the equation is y squared over a squared minus x squared over b squared equals one, the hyperbola opens vertically along the y-axis. Many students instinctively draw it opening horizontally because they are used to the x-term being positive. Another subtle error involves the eccentricity. When calculating eccentricity for an ellipse, remember that e is always less than one. If your calculation gives you a value greater than one for an ellipse, you have likely swapped the values of a squared and b squared in your formula. For a hyperbola, e must be greater than one. If you get a fraction less than one, check your subtraction in the denominator. We also see errors in identifying the latus rectum. Students often confuse the length of the latus rectum with the distance between the foci or the length of the major axis. Always double-check your formula: for a parabola, it is four a; for an ellipse, it is two b squared over a. Finally, watch out for the directrix. In a parabola, the directrix is a line, not a point. If you are asked for the equation of the directrix and you provide a single coordinate, you will lose marks. It must be in the form x equals constant or y equals constant. By staying vigilant with these algebraic signs, checking your eccentricity bounds, and ensuring your graphs respect the asymptotic behavior, you will move from being a student who knows the formulas to a student who masters the mathematics. Let's practice identifying these errors in the upcoming problems.","Welcome to the final session of our journey through Conic Sections. We have traveled from the basic definition of a locus to the intricate complexities of hyperbolas and their asymptotes. Now, it is time to transition from learning to performing. This masterclass is designed to ensure that your hard work translates into high scores in your examinations. Let us begin with our Revision Strategy. When you sit down for a Conic Sections exam, do not start by solving complex problems immediately. Start with a mental scan of your formula sheet. Recall the standard equations for the circle, the parabola, the ellipse, and the hyperbola. Quickly visualize their shapes and the positions of their foci, directrices, and vertices. This mental mapping prevents the common error of mixing up signs, such as confusing the equation of an ellipse with that of a hyperbola. Next, let us discuss Time Management. Conic sections problems often involve heavy algebraic manipulation. A common mistake is spending ten minutes on a single derivation and leaving no time for the conceptual questions. To master this, use the 'Three-Pass Method'. In your first pass, solve all the direct, formula-based questions. These are your scoring anchors. In your second pass, tackle the multi-step problems, such as finding the equation of a tangent or a normal given a specific point. In your third pass, approach the high-order thinking questions or word problems that require drawing a diagram. Speaking of diagrams, never attempt a conic section problem without a rough sketch. A quick sketch helps you verify if your calculated eccentricity makes sense. For example, if you calculate an eccentricity of zero point eight for a hyperbola, your sketch will immediately tell you that something is wrong, because the eccentricity of a hyperbola must always be greater than one. Now, let us focus on High-Yield Questions. In most examinations, certain patterns repeat. First, look for questions involving the 'Locus' definition. You might be asked to find the equation of a curve where the ratio of the distance from a fixed point to a fixed line is constant. Remember, this is the fundamental definition of all conics. Second, master the 'Intersection' problems. You will often be asked to find the points where a line intersects a conic or where two conics intersect. This requires solving simultaneous equations, usually resulting in a quadratic. Third, pay close attention to 'Parametric Coordinates'. Questions asking you to prove a property using the parameter, such as t for a parabola or theta for an ellipse, are very common. Using parametric forms often simplifies the algebra significantly compared to using standard x and y coordinates. Fourth, be prepared for 'Transformation' questions. These involve shifting the origin or rotating the axes to simplify a general second-degree equation into a standard form. Finally, the most challenging but rewarding questions involve 'Tangents and Normals'. You must be fluent in using the condition of tangency, such as substituting the line equation into the conic equation and setting the discriminant to zero. As you prepare, do not just memorize formulas; understand the relationship between them. Understand how the ellipse becomes a circle as eccentricity approaches zero, or how a parabola is the limiting case of an ellipse. Practice with a timer to build your speed. Remember, accuracy in algebra is just as important as conceptual clarity in geometry. You have built a strong foundation throughout this series. Now, go forth with confidence, keep your sketches neat, your calculations precise, and your focus sharp. Good luck with your examinations!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-maths-10-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Hydrocarbons, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-chemistry-09-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Why Hydrocarbons Matter, Classification, and Structural Isomerism -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Why Hydrocarbons Matter, Classification, and Structural Isomerism</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Hydrocarbons: Organic compounds made of Carbon and Hydrogen only</div>
+              <div id="qx0-p1" class="qe-bullet">• Aliphatic: Straight, branched, or non-aromatic cyclic chains</div>
+              <div id="qx0-p2" class="qe-bullet">• Saturated (Alkanes) vs. Unsaturated (Alkenes and Alkynes)</div>
+              <div id="qx0-p3" class="qe-bullet">• Aromatic Hydrocarbons: Stable cyclic structures like Benzene</div>
+              <div id="qx0-p4" class="qe-bullet">• Structural Isomerism: Same molecular formula, different connectivity</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2927516502,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular model transitions from a straight chain of four carbons to a branched structure, highlighting the change in shape while the atom count remains constant.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D molecular model transitions from a straight chain of four carbons to a branched structure, highlighting the change in shape while the atom count remains constant.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Alkanes I: Nomenclature, Preparation Methods, and Reaction Mechanisms -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Alkanes I: Nomenclature, Preparation Methods, and Reaction Mechanisms</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Alkanes are saturated hydrocarbons also known as paraffins</div>
+              <div id="qx1-p1" class="qe-bullet">• IUPAC naming: Longest chain, lowest locants, alphabetical order</div>
+              <div id="qx1-p2" class="qe-bullet">• Wurtz Reaction: Alkyl halides plus Sodium in dry ether</div>
+              <div id="qx1-p3" class="qe-bullet">• Decarboxylation: Carboxylic acid salts plus Soda Lime</div>
+              <div id="qx1-p4" class="qe-bullet">• Free Radical Substitution: Initiation, Propagation, and Termination</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":96236250,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular animation showing a chlorine molecule splitting into two radicals under UV light, followed by a step-by-step collision sequence with a methane molecule.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D molecular animation showing a chlorine molecule splitting into two radicals under UV light, followed by a step-by-step collision sequence with a methane molecule.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Alkanes II: Physical Properties, Chemical Reactions, and Conformations of Ethane -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Alkanes II: Physical Properties, Chemical Reactions, and Conformations of Ethane</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Boiling points increase with molecular mass and decrease with branching.</div>
+              <div id="qx2-p1" class="qe-bullet">• Alkanes are non-polar and rely on weak London dispersion forces.</div>
+              <div id="qx2-p2" class="qe-bullet">• Halogenation occurs via a free radical substitution mechanism.</div>
+              <div id="qx2-p3" class="qe-bullet">• Complete combustion produces carbon dioxide, water, and heat.</div>
+              <div id="qx2-p4" class="qe-bullet">• Staggered conformation is more stable than eclipsed due to lower torsional strain.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3141371633,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular model of ethane rotating from an eclipsed to a staggered position, showing energy level changes.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D molecular model of ethane rotating from an eclipsed to a staggered position, showing energy level changes.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Alkenes I: Nomenclature, Structure, and Methods of Preparation -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Alkenes I: Nomenclature, Structure, and Methods of Preparation</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Alkenes are unsaturated hydrocarbons with C=C double bonds</div>
+              <div id="qx3-p1" class="qe-bullet">• IUPAC suffix is 'ene'; double bond gets lowest locant number</div>
+              <div id="qx3-p2" class="qe-bullet">• Double bond consists of one sigma bond and one pi bond</div>
+              <div id="qx3-p3" class="qe-bullet">• Geometry around double-bonded carbons is trigonal planar</div>
+              <div id="qx3-p4" class="qe-bullet">• Preparation: Dehydration of alcohols, Dehydrohalogenation, and Dehalogenation</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3382709337,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular model of ethene rotating to show the sideways overlap of p-orbitals forming the pi bond.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D molecular model of ethene rotating to show the sideways overlap of p-orbitals forming the pi bond.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Alkenes II: Stereochemistry, Physical Properties, and Electrophilic Addition Reactions -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Alkenes II: Stereochemistry, Physical Properties, and Electrophilic Addition Reactions</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Restricted rotation due to pi-bond prevents free movement.</div>
+              <div id="qx4-p1" class="qe-bullet">• Cis-isomers: identical groups on the same side; Trans: opposite sides.</div>
+              <div id="qx4-p2" class="qe-bullet">• Boiling points increase with mass but decrease with branching.</div>
+              <div id="qx4-p3" class="qe-bullet">• Electrophilic addition: Pi electrons attack electron-deficient species.</div>
+              <div id="qx4-p4" class="qe-bullet">• Markovnikov's Rule: Hydrogen attaches to the carbon with more hydrogens.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2535987752,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a rotating molecule stopping abruptly at a double bond, transitioning into a color-coded mechanism of a carbocation forming and being attacked by a bromide ion.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D animation showing a rotating molecule stopping abruptly at a double bond, transitioning into a color-coded mechanism of a carbocation forming and being attacked by a bromide ion.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Alkenes III: Oxidation, Ozonolysis, and Polymerization Reactions -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Alkenes III: Oxidation, Ozonolysis, and Polymerization Reactions</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Baeyer's Reagent: Cold, dilute alkaline KMnO4 forms diols (glycols).</div>
+              <div id="qx5-p1" class="qe-bullet">• Oxidative Cleavage: Hot, concentrated KMnO4 breaks the C=C bond completely.</div>
+              <div id="qx5-p2" class="qe-bullet">• Ozonolysis: Uses Ozone followed by Zn/H2O to locate double bond positions.</div>
+              <div id="qx5-p3" class="qe-bullet">• Ozonolysis Products: Cleavage yields aldehydes or ketones based on substituents.</div>
+              <div id="qx5-p4" class="qe-bullet">• Addition Polymerization: Monomers link via pi-bond opening to form long chains.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2903286337,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular animation showing an ethene molecule reacting with ozone to form a cyclic ozonide, which then splits into two separate aldehyde molecules.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D molecular animation showing an ethene molecule reacting with ozone to form a cyclic ozonide, which then splits into two separate aldehyde molecules.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Alkynes I: Nomenclature, Structure, and Methods of Preparation -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Alkynes I: Nomenclature, Structure, and Methods of Preparation</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Alkynes contain at least one carbon-carbon triple bond.</div>
+              <div id="qx6-p1" class="qe-bullet">• IUPAC suffix for alkynes is 'yne'.</div>
+              <div id="qx6-p2" class="qe-bullet">• Triple bond consists of one sigma bond and two pi bonds.</div>
+              <div id="qx6-p3" class="qe-bullet">• Hybridization is sp, resulting in a linear geometry (180 degrees).</div>
+              <div id="qx6-p4" class="qe-bullet">• Preparation via dehydrohalogenation of vicinal or geminal dihalides.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":1988374332,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular model of ethyne rotating to show the 180-degree linear bond angle and the overlap of sp and p orbitals.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D molecular model of ethyne rotating to show the 180-degree linear bond angle and the overlap of sp and p orbitals.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Alkynes II: Acidic Character, Physical Properties, and Addition Reactions -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Alkynes II: Acidic Character, Physical Properties, and Addition Reactions</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• sp hybridization increases acidity due to high s-character</div>
+              <div id="qx7-p1" class="qe-bullet">• Acidity order: Ethyne &gt; Propyne &gt; But-2-yne</div>
+              <div id="qx7-p2" class="qe-bullet">• Lindlar's catalyst produces cis-alkenes; Na/NH3 produces trans-alkenes</div>
+              <div id="qx7-p3" class="qe-bullet">• Halogenation leads to tetrahaloalkanes with excess reagent</div>
+              <div id="qx7-p4" class="qe-bullet">• Hydration of alkynes via tautomerism produces aldehydes or ketones</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":461867898,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular model of ethyne transitioning from a linear structure to a sodium ethynide ion, followed by a split-screen showing Lindlar vs Birch reduction pathways.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D molecular model of ethyne transitioning from a linear structure to a sodium ethynide ion, followed by a split-screen showing Lindlar vs Birch reduction pathways.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Aromatic Hydrocarbons I: Benzene Structure, Resonance, and Nomenclature -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Aromatic Hydrocarbons I: Benzene Structure, Resonance, and Nomenclature</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Benzene molecular formula: C-H-six</div>
+              <div id="qx8-p1" class="qe-bullet">• All C-C bond lengths are equal at 139 pm</div>
+              <div id="qx8-p2" class="qe-bullet">• Resonance: Delocalization of pi-electrons in a ring</div>
+              <div id="qx8-p3" class="qe-bullet">• Hückel's Rule: Cyclic, planar, and 4n plus 2 pi-electrons</div>
+              <div id="qx8-p4" class="qe-bullet">• Nomenclature: Using ortho, meta, and para for substituents</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":478059910,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D rotating benzene ring transitioning from two Kekule structures into a smooth, continuous electron cloud ring.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D rotating benzene ring transitioning from two Kekule structures into a smooth, continuous electron cloud ring.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Aromatic Hydrocarbons II: Electrophilic Substitution Reactions (Nitration, Sulphonation, Halogenation) -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Aromatic Hydrocarbons II: Electrophilic Substitution Reactions (Nitration, Sulphonation, Halogenation)</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Benzene undergoes substitution rather than addition to maintain aromaticity.</div>
+              <div id="qx9-p1" class="qe-bullet">• The reaction proceeds via a resonance-stabilized sigma complex intermediate.</div>
+              <div id="qx9-p2" class="qe-bullet">• Nitration: Uses nitrating mixture to generate the nitronium ion, N-O-plus.</div>
+              <div id="qx9-p3" class="qe-bullet">• Sulphonation: Uses fuming sulphuric acid; the electrophile is S-O-three.</div>
+              <div id="qx9-p4" class="qe-bullet">• Halogenation: Requires a Lewis acid catalyst like AlCl-three to generate Cl-plus.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3331399096,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular animation showing a benzene ring being attacked by a nitronium ion, transitioning into a non-aromatic sigma complex before losing a proton to return to a stable benzene structure.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D molecular animation showing a benzene ring being attacked by a nitronium ion, transitioning into a non-aromatic sigma complex before losing a proton to return to a stable benzene structure.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Aromatic Hydrocarbons III: Friedel-Crafts Reactions and Polysubstitution Patterns -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Aromatic Hydrocarbons III: Friedel-Crafts Reactions and Polysubstitution Patterns</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Friedel-Crafts Alkylation: Benzene + Alkyl Halide + AlCl3 yields Alkylbenzene</div>
+              <div id="qx10-p1" class="qe-bullet">• Risk of Carbocation Rearrangement in Alkylation reactions</div>
+              <div id="qx10-p2" class="qe-bullet">• Friedel-Crafts Acylation: Introduction of Acyl groups to form Aromatic Ketones</div>
+              <div id="qx10-p3" class="qe-bullet">• Ortho-Para Directors: Activating groups like Alkyl and Hydroxyl</div>
+              <div id="qx10-p4" class="qe-bullet">• Meta Directors: Deactivating groups like Nitro and Carbonyl</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3072088749,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular model of benzene rotating, with colored spheres representing electrophiles attacking specific carbon positions based on directing effects.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D molecular model of benzene rotating, with colored spheres representing electrophiles attacking specific carbon positions based on directing effects.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Full Chapter Recap, Common Mistakes, and Problem-Solving Techniques -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Full Chapter Recap, Common Mistakes, and Problem-Solving Techniques</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Regioselectivity: Markovnikov vs. Anti-Markovnikov (Peroxide Effect)</div>
+              <div id="qx11-p1" class="qe-bullet">• Mechanism Accuracy: Electron-pushing arrows and resonance stability</div>
+              <div id="qx11-p2" class="qe-bullet">• Ozonolysis: Using cleavage products to reconstruct the alkene</div>
+              <div id="qx11-p3" class="qe-bullet">• Carbocation Stability: Tertiary &gt; Secondary &gt; Primary</div>
+              <div id="qx11-p4" class="qe-bullet">• Retrosynthetic Analysis: Working backwards from the target molecule</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3477244581,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a 'Correct' vs 'Incorrect' mechanism flow, with glowing electron arrows moving between molecules.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a 'Correct' vs 'Incorrect' mechanism flow, with glowing electron arrows moving between molecules.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Hydrocarbons today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Why Hydrocarbons Matter, Classification, and Structural Isomerism <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Alkanes I: Nomenclature, Preparation Methods, and Reaction Mechanisms <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Alkanes II: Physical Properties, Chemical Reactions, and Conformations of Ethane <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Alkenes I: Nomenclature, Structure, and Methods of Preparation <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Alkenes II: Stereochemistry, Physical Properties, and Electrophilic Addition Reactions <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Alkenes III: Oxidation, Ozonolysis, and Polymerization Reactions <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Alkynes I: Nomenclature, Structure, and Methods of Preparation <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Alkynes II: Acidic Character, Physical Properties, and Addition Reactions <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Aromatic Hydrocarbons I: Benzene Structure, Resonance, and Nomenclature <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Aromatic Hydrocarbons II: Electrophilic Substitution Reactions (Nitration, Sulphonation, Halogenation) <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Aromatic Hydrocarbons III: Friedel-Crafts Reactions and Polysubstitution Patterns <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Full Chapter Recap, Common Mistakes, and Problem-Solving Techniques <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone! Welcome to our deep dive into one of the most fundamental and exciting chapters in Organic Chemistry: Hydrocarbons. Before we start drawing structures and balancing equations, we need to answer a very important question: Why do hydrocarbons matter? Look around you. From the fuel in your car, like petrol and diesel, to the plastic in your phone, the synthetic fibers in your clothes, and even the medicines that save lives—hydrocarbons are the backbone of modern civilization. They are the simplest organic compounds, consisting entirely of carbon and hydrogen atoms. Because carbon has this incredible ability to form long chains and rings, these molecules can create an almost infinite variety of substances. Now, let's get organized. To study them, we classify hydrocarbons into two main categories based on their structure. The first major group is Aliphatic Hydrocarbons. These are compounds where the carbon atoms are joined in straight chains, branched chains, or even closed rings that are not aromatic. Within the aliphatic group, we further divide them into three types. First, we have Alkanes, which are saturated hydrocarbons. Saturated means they contain only single bonds between carbon atoms. Think of them as being 'full' of hydrogen. Second, we have Alkenes, which are unsaturated because they contain at least one carbon-to-carbon double bond. Third, we have Alkynes, which are also unsaturated but contain at least one carbon-to-carbon triple bond. If you see a double or triple bond, you know you are dealing with an unsaturated system. The fourth category is Aromatic Hydrocarbons, also known as Arenes. These are special cyclic structures that follow Hückel's rule and possess a unique stability due to resonance, with benzene being the most famous example. Now, let's move to a concept that often trips students up in exams: Structural Isomerism. This is a phenomenon where two or more compounds have the exact same molecular formula but different structural arrangements of atoms. Imagine you have the molecular formula C-four-H-ten. You could arrange those four carbons in a straight line, creating n-butane. Or, you could take one carbon and attach it as a branch to the second carbon in the chain, creating isobutane, also known as two-methylpropane. Even though they have the same number of atoms, they are different molecules with different physical and chemical properties. In this chapter, we will explore different types of structural isomerism, including chain isomerism, where the carbon skeleton changes; position isomerism, where the functional group or multiple bond moves to a different carbon; and functional isomerism, where the atoms rearrange to form entirely different functional groups. Understanding isomerism is like learning to see the different shapes a single set of building blocks can make. It is the key to mastering organic structure. In the next part of this series, we will begin our journey with the simplest of all: the Alkanes. Let's get started!","Welcome back to our journey through Hydrocarbons. In our previous session, we classified hydrocarbons and explored structural isomerism. Today, we dive into the first major group: the Alkanes. Alkanes are saturated hydrocarbons, meaning they contain only single bonds between carbon atoms. Because they are fully saturated with hydrogen, they are often called paraffins, from the Latin word 'parum affinis', meaning little affinity or low reactivity. Let us start with Nomenclature. Following the IUPAC system, we first identify the longest continuous carbon chain, which serves as our parent chain. We number the carbons starting from the end that gives the substituents the lowest possible locant or number. If there is a tie, we use alphabetical order to decide the numbering. For example, in a five-carbon chain with a methyl group on the second carbon, we call it two-methylpentane. If we have multiple substituents, like two methyl groups, we use prefixes like di, tri, or tetra, and we still use alphabetical order for naming, ignoring these prefixes during alphabetization. Now, let us move to how we actually make these molecules, the Preparation Methods. There are several key laboratory and industrial routes. First is the Hydrogenation of Alkenes or Alkynes. By reacting an unsaturated hydrocarbon with hydrogen gas in the presence of a catalyst like Nickel, Palladium, or Platinum, we saturate the bond to form an alkane. This is a classic addition reaction. Second is the Wurtz Reaction. This is a very important method for preparing higher alkanes. Here, an alkyl halide reacts with metallic sodium in the presence of dry ether. If we take methyl chloride and react it with sodium, we get ethane. If we use ethyl chloride, we get butane. Note that Wurtz reaction is best for preparing symmetrical alkanes; using two different alkyl halides often results in a mixture of products. Third, we have Decarboxylation. This involves heating the sodium salt of a carboxylic acid with soda lime, which is a mixture of sodium hydroxide and calcium hydroxide. This process removes one carbon atom in the form of carbon dioxide, leaving us with an alkane that has one less carbon than the original salt. For example, heating sodium acetate with soda lime yields methane. Fourth is the Kolbe's Electrolytic Method. This is a fascinating electrochemical process. When an aqueous solution of sodium or potassium salt of a carboxylic acid undergoes electrolysis, the carboxylic acid group is removed. At the anode, the alkyl groups combine to form an alkane. For instance, electrolyzing sodium acetate produces ethane at the anode. Finally, let us discuss the Reaction Mechanisms. Since alkanes are relatively unreactive, they primarily undergo substitution reactions, specifically Free Radical Substitution. This process occurs in three distinct stages. Stage one is Initiation. Here, a reagent like a halogen molecule, say Chlorine, undergoes homolytic fission under the influence of UV light or heat. This means the bond breaks such that each atom takes one electron, creating two highly reactive chlorine radicals. Stage two is Propagation. A chlorine radical attacks an alkane molecule, pulling away a hydrogen atom to form hydrogen chloride and leaving behind an alkyl radical. This alkyl radical is then extremely hungry for electrons and attacks another chlorine molecule, creating a chloroalkane and regenerating a chlorine radical. This regeneration keeps the chain reaction going. Stage three is Termination. This happens when two radicals collide and combine to form a stable molecule, such as two chlorine radicals forming chlorine gas, or an alkyl radical and a chlorine radical forming a chloroalkane. This effectively ends the cycle. Understanding these steps is crucial for predicting the products of alkane reactions. Let us proceed to look at their physical properties in the next segment.","Welcome back to our series on Hydrocarbons. In our previous lesson, we explored how alkanes are prepared. Today, we dive into how they behave in the real world—their physical properties, their chemical reactivity, and the fascinating spatial arrangements of ethane. Let us start with physical properties. Since alkanes are non-polar molecules, the only intermolecular forces acting between them are weak London dispersion forces. This has a direct impact on their boiling and melting points. As the molecular mass increases, the number of electrons increases, making the dispersion forces stronger. Therefore, the boiling point of alkanes increases with an increase in the number of carbon atoms. For the first ten alkanes, the boiling point increases steadily. However, you will notice that for branched-chain alkanes, the boiling point is lower than their straight-chain isomers. This is because branching makes the molecule more spherical, reducing the surface area available for intermolecular contact. Now, let us move to chemical reactions. Alkanes are known as paraffins, which comes from the Latin words 'parum' meaning little and 'affinis' meaning affinity. This is because they are relatively inert. However, they do undergo certain important reactions. The most significant is substitution reaction, specifically halogenation. When alkanes react with halogens like chlorine or bromine in the presence of sunlight or ultraviolet light, a hydrogen atom is replaced by a halogen atom. For example, in the chlorination of methane, one hydrogen is replaced by chlorine to form chloromethane, then further substitution can lead to dichloromethane, trichloromethane, and finally tetrachloromethane. This process is a free radical chain reaction involving initiation, propagation, and termination steps. Another important reaction is combustion. Alkanes are excellent fuels. When they burn in excess oxygen, they produce carbon dioxide, water, and a large amount of heat energy. The complete combustion of methane looks like this: one molecule of methane plus two molecules of oxygen yields one molecule of carbon dioxide and two molecules of water. If oxygen is limited, incomplete combustion occurs, producing carbon monoxide or carbon soot. Now, let us shift our focus to a very important concept in stereochemistry: the conformations of ethane. Because the carbon-carbon single bond allows for free rotation, the atoms can arrange themselves in different spatial orientations without breaking any bonds. These different spatial arrangements are called conformations. Let us look at the ethane molecule, which consists of two methyl groups joined by a single bond. We primarily study two extreme cases: the eclipsed conformation and the staggered conformation. In the eclipsed conformation, the hydrogen atoms on the front carbon are directly aligned with the hydrogen atoms on the back carbon. This creates maximum repulsion between the electron clouds of the C-H bonds. This state is high in energy and therefore unstable. In contrast, in the staggered conformation, the hydrogen atoms on the front carbon are positioned exactly halfway between the hydrogen atoms on the back carbon. This minimizes the repulsion and results in a lower energy, more stable state. The energy difference between these two forms is called torsional strain. In ethane, the staggered conformation is more stable than the eclipsed conformation by about twelve kilo-joules per mole. Understanding these rotations is crucial for predicting how larger molecules will behave in three-dimensional space. Keep these concepts in mind as we prepare to move into the world of unsaturated hydrocarbons in our next lesson.","Welcome back to our journey through Hydrocarbons. In our previous lessons, we mastered the saturated world of Alkanes. Today, we step into a more reactive and dynamic realm: the Alkenes. Alkenes, also known as olefins, are unsaturated hydrocarbons that contain at least one carbon-to-carbon double bond. This double bond is the heart of their chemistry. Let us start with Nomenclature. According to IUPAC rules, the suffix changes from 'ane' to 'ene'. The first priority is to find the longest continuous carbon chain that contains both carbons of the double bond. Once you have identified this parent chain, you must number it from the end that gives the double bond the lowest possible position. For example, in a four-carbon chain with a double bond starting at the first carbon, we call it But-1-ene. If the bond starts at the second carbon, it is But-2-ene. If there are substituents like methyl or chloro groups, number the chain to give the double bond the lowest number first, and then use the substituents to decide the final numbering. Now, let's look at the Structure. An alkene features a carbon-to-carbon double bond consisting of one sigma bond and one pi bond. The sigma bond is formed by the head-on overlap of sp-hybridized orbitals, while the pi bond is formed by the lateral or sideways overlap of unhybridized p-orbitals. This pi bond is electron-rich and sits above and below the plane of the nuclei, making alkenes highly attractive to electrophiles. Because of this pi bond, the geometry around the double-bonded carbons is trigonal planar, with bond angles of approximately one hundred and twenty degrees. This planar structure is crucial for their reactivity. Now, how do we prepare these molecules in the laboratory? There are several key methods. The first and most common is Dehydration of Alcohols. When an alcohol is heated with a strong acid catalyst, like concentrated sulfuric acid or phosphoric acid, a molecule of water is removed. For instance, heating ethanol with concentrated sulfuric acid at one hundred and seventy degrees Celsius yields ethene. The mechanism involves the protonation of the hydroxyl group, the formation of a carbocation, and the subsequent loss of a proton. Second, we have Dehydrohalogenation of Alkyl Halides. This involves reacting an alkyl halide with an alcoholic solution of a base, such as potassium hydroxide. The base abstracts a proton from the beta-carbon, and the halide ion leaves, creating the double bond. This is an elimination reaction, specifically an E-two mechanism. Third, we can use Dehalogenation of Vicinal Dihalides. If you take a molecule where two halogen atoms are on adjacent carbons, such as 1,2-dibromoethane, and treat it with zinc dust in ethanol, the halogens are removed, leaving behind a double bond. Finally, there is the Pyrolysis of Alkanes. When long-chain alkanes are heated to very high temperatures in the absence of air, they undergo cracking, breaking down into smaller alkanes and alkenes. This is a vital industrial process for producing fuel components. Understanding these preparation methods is essential because the structure of the starting material often dictates the position of the resulting double bond. Let's move on to the specific details of these mechanisms in our next segment.","Welcome back to our series on Hydrocarbons. In our previous lesson, we explored how alkenes are prepared and how we name them. Today, we dive deeper into the fascinating world of alkene geometry, their physical characteristics, and most importantly, how they react with electrophiles. Let's start with stereochemistry. Unlike alkanes, which can rotate freely around single bonds, the carbon-carbon double bond in alkenes is rigid. This double bond consists of one sigma bond and one pi bond. The pi bond is formed by the sideways overlap of p-orbitals, which prevents rotation. Because this rotation is restricted, alkenes can exist as different stereoisomers. Specifically, we look at geometric isomerism, often called cis-trans isomerism. If two identical groups are on the same side of the double bond, we call it the cis-isomer. If they are on opposite sides, it is the trans-isomer. For example, in cis-but-2-ene, the two methyl groups are on the same side, whereas in trans-but-2-ene, they are across from each other. This spatial arrangement is crucial because it affects how molecules interact with each other. Moving on to physical properties, alkenes are non-polar hydrocarbons. Like alkanes, they are insoluble in water but highly soluble in organic solvents like benzene or ether. Their boiling points increase with the increase in molecular mass due to stronger London dispersion forces. However, there is a small catch: branched alkenes generally have lower boiling points than their straight-chain counterparts because branching reduces the surface area available for intermolecular contact. Now, let's get to the heart of this lesson: Electrophilic Addition Reactions. The double bond is a region of high electron density, making it a perfect target for electrophiles, which are electron-loving species. An electrophile is an electron-deficient species, often carrying a positive charge, like a proton or a carbocation. Let's look at the addition of hydrogen halides, such as hydrogen chloride or hydrogen bromide. When hydrogen bromide, H-B-R, reacts with an alkene, the pi electrons attack the hydrogen atom. This breaks the double bond and forms a carbocation intermediate. The remaining bromide ion then attacks this carbocation to form a haloalkane. But wait, there is a very important rule here: Markovnikov's Rule. This rule states that in the addition of a protic acid to an asymmetric alkene, the hydrogen atom attaches to the carbon atom that already has the greater number of hydrogen atoms. This happens because the reaction proceeds via the most stable carbocation. Remember, a tertiary carbocation is more stable than a secondary one, which is more stable than a primary one. This stability dictates the final product. We also see addition reactions with halogens, like bromine. When bromine, B-R-2, reacts with an alkene, it forms a cyclic bromonium ion intermediate. This is a key distinction from the carbocation mechanism. The subsequent attack by the bromide ion occurs from the opposite side, leading to anti-addition, where the two bromine atoms end up on opposite faces of the molecule. Finally, we have the addition of water, known as hydration, which requires an acid catalyst to form alcohols. This also follows Markovnikov's rule. Understanding these mechanisms and the stability of intermediates is the key to mastering alkene chemistry. In our next video, we will explore oxidation and ozonolysis. See you there.","Welcome back to our journey through Hydrocarbons. In our previous lessons, we mastered the electrophilic addition of hydrogen halides and water to alkenes. Today, we move into more advanced transformations: Oxidation, Ozonolysis, and the fascinating world of Polymerization. Let us begin with the oxidation of alkenes. Unlike alkanes, which are relatively inert, the carbon-carbon double bond in alkenes is a site of high electron density, making it susceptible to oxidative reagents. First, let us look at the reaction with cold, dilute, alkaline potassium permanganate, also known as Baeyer's Reagent. When an alkene reacts with this pinkish solution, the double bond breaks, and two hydroxyl groups are added across the carbons. This forms a glycol, or a diol. For example, ethene reacts with cold alkaline potassium permanganate to produce ethane-one, two diol. A key observation here is that the pink color of the permanganate disappears, leaving a brown precipitate of manganese dioxide. This reaction is a classic test for unsaturation. Now, what happens if we use a more vigorous oxidizing agent? If we use hot, concentrated potassium permanganate or potassium dichromate, the carbon-carbon bond undergoes complete cleavage. This is where we enter the realm of Ozonolysis. Ozonolysis is a powerful method used to locate the position of a double bond in an unknown alkene. The process involves two steps. First, the alkene reacts with ozone, ozone, which is an allotrope of oxygen, to form an unstable cyclic intermediate called an ozonide. Second, this ozonide is treated with a reducing agent like zinc and water, or an oxidizing agent like hydrogen peroxide. If we use zinc and water, we get aldehydes or ketones. For instance, if we take propene, which is CH3-CH equals CH2, and subject it to ozonolysis with zinc and water, the double bond breaks, and we get ethanal and methanal. If the alkene is cyclic, like cyclohexene, ozonolysis will result in a straight-chain dicarbonyl compound, specifically hexanedial. This is a vital tool for structural elucidation in organic synthesis. Finally, let us discuss Polymerization. This is the process where many small molecules, called monomers, join together to form a giant molecule called a polymer. We categorize this into two types: Addition Polymerization and Condensation Polymerization. In addition polymerization, specifically chain-growth polymerization, the pi bond of the alkene opens up to link with neighboring molecules. Think of ethene. Under high pressure and in the presence of a catalyst, ethene molecules link up to form polyethene, which is used extensively in plastics. Another example is propene, which polymerizes to form polypropylene. These reactions are often initiated by free radicals, which are highly reactive species with an unpaired electron. As the chain grows, the molecular weight increases dramatically, transforming a gas or liquid into a solid material. Understanding these reactions is crucial because they bridge the gap between simple laboratory molecules and the massive industrial materials that define our modern world. Let's dive deeper into the mechanisms of each.","Welcome back to our series on Hydrocarbons. In our previous lessons, we explored the saturated alkanes and the unsaturated alkenes. Today, we dive into the next level of unsaturation: the Alkynes. Alkynes are aliphatic hydrocarbons that contain at least one carbon-carbon triple bond. This triple bond is the defining feature that dictates their unique chemistry. Let us start with the nomenclature. The IUPAC rules for alkynes are very similar to those for alkenes, but with one crucial difference. Instead of the suffix 'ene', we use the suffix 'yne'. For example, a two-carbon chain with a triple bond is called ethyne, though you might know it commonly as acetylene. When naming, we must identify the longest continuous carbon chain that contains the triple bond. We then number the chain from the end that gives the triple bond the lowest possible position. If there are substituents, we name them according to standard IUPAC rules, ensuring the locant for the triple bond is clearly indicated. For instance, pent-2-yne refers to a five-carbon chain where the triple bond starts at the second carbon. Now, let us look at the structure. A carbon-carbon triple bond consists of one sigma bond and two pi bonds. This is a vital point for your exams. The sigma bond is formed by the head-on overlap of sp hybridized orbitals, while the two pi bonds are formed by the sideways overlap of unhybridized p orbitals. Because of this specific hybridization, the geometry around the triple-bonded carbon atoms is linear. The bond angle is exactly one hundred and eighty degrees. This means the molecule is straight, unlike the planar structure we saw in alkenes. The bond length of a carbon-carbon triple bond is approximately one hundred and twenty percent of a double bond and significantly shorter than a single bond. Moving on to the methods of preparation. There are several ways to synthesize alkynes in the laboratory. The first major method is the dehydrohalogenation of vicinal dihalides. Vicinal dihalides are compounds where two halogen atoms are attached to adjacent carbon atoms. When these are treated with a strong base, such as alcoholic potassium hydroxide, two molecules of hydrogen halide are removed through an elimination reaction. This process occurs in two steps, first forming a vinyl halide and then the alkyne. A second method involves the dehydrohalogenation of geminal dihalides. In geminal dihalides, both halogen atoms are attached to the same carbon atom. Treatment with a strong base also results in the elimination of two hydrogen halides to yield the alkyne. Another important method is the reduction of vicinal or geminal dihalides using zinc dust. This is a specialized reduction that can be used to prepare specific unsaturated structures. Finally, we can prepare alkynes through the reaction of acetylenic compounds with alkyl halides. For example, if we take ethyne and react it with methyl bromide in the presence of sodium amide, we can produce propyne. This works because the terminal hydrogen in an alkyne is somewhat acidic and can be removed by a very strong base like sodium amide to create an acetylide ion, which then acts as a nucleophile. Understanding these structural and preparatory foundations is essential before we move on to their chemical reactivity in the next video.","Welcome back to our series on Hydrocarbons. In our previous session, we explored how alkynes are prepared and their structural characteristics. Today, we dive deeper into the unique behavior of alkynes, specifically focusing on their acidic nature, physical properties, and the fascinating world of addition reactions. Let us start with something that distinguishes alkynes from alkanes and alkenes: their acidic character. You might wonder, why is a hydrocarbon acidic? In ethyne, or acetylene, the carbon atoms are sp hybridized. This means the s-character is fifty percent. Because the electrons are held closer to the nucleus in an sp orbital, the carbon-hydrogen bond becomes highly polarized. This makes it relatively easy for the hydrogen atom to be released as a proton, or a hydrogen ion. If we react ethyne with a strong base like sodium amide, sodium ethynide is formed. This reaction is a classic way to demonstrate acidity. However, remember that this acidity decreases as we move from ethyne to propyne and then to but-2-yne. As the s-character decreases from fifty percent in sp to thirty-three percent in sp-two, the bond becomes less polar and less acidic. Now, let us look at the physical properties. Like most hydrocarbons, alkynes are non-polar molecules. Their solubility in water is negligible, but they dissolve well in organic solvents like ether or benzene. As the number of carbon atoms increases, the boiling point increases due to stronger van der Waals forces. For example, ethyne is a gas, while larger alkynes are liquids or solids at room temperature. Now, the core of today's lesson: Addition Reactions. Because of the presence of a triple bond, which consists of one sigma bond and two pi bonds, alkynes are highly unsaturated and undergo addition reactions quite readily. The first major type is Hydrogenation. When an alkyne reacts with hydrogen in the presence of a catalyst like palladium or platinum, it undergoes complete saturation to become an alkane. But, we can stop halfway! If we use a poisoned catalyst like Lindlar's catalyst, which is palladium on calcium carbonate and lead, we get a cis-alkene. This is a crucial method for stereoselective synthesis. On the other hand, if we use sodium in liquid ammonia, we perform a Birch reduction, which yields a trans-alkene. Next, let's discuss Halogenation. Adding bromine or chlorine to an alkyne results in the addition of two halogen atoms. First, a dihaloalkene is formed, and with excess halogen, a tetrahaloalkane is produced. Moving to Hydrohalogenation, when an alkyne reacts with a hydrogen halide like hydrogen bromide, it follows Markovnikov's rule. The hydrogen attaches to the carbon with more hydrogens, and the halide attaches to the more substituted carbon. This can happen once to form a vinyl halide, and a second time to form a geminal dihalide, where both halogens are on the same carbon. Finally, we have Hydration. When ethyne reacts with water in the presence of dilute sulfuric acid and mercuric sulfate, it doesn't just stay an alcohol. It initially forms an unstable enol, which immediately undergoes keto-enol tautomerism to become acetaldehyde. For higher alkynes, this process yields ketones. Understanding these mechanisms is vital for mastering organic synthesis. Let's move on to the next part where we transition into the world of aromatic hydrocarbons.","Welcome back. In our previous lessons, we explored aliphatic hydrocarbons—alkanes, alkenes, and alkynes. But now, we step into a completely different world: the world of Aromatic Hydrocarbons. Unlike the open chains or simple rings we have studied, aromatic compounds possess a unique stability and a very specific structural arrangement. The most iconic member of this family is Benzene. Let us look at its molecular formula, which is C-H-six. If you try to draw benzene as a simple cyclic molecule with three alternating single and double bonds, you will run into a problem. In a standard cyclohexatriene structure, we would expect the bond lengths to be different—the single bonds should be longer and the double bonds should be shorter. However, experimental data tells us something fascinating. In benzene, all six carbon-carbon bond lengths are identical, measuring exactly one hundred and thirty-nine picometers. This is intermediate between a single bond and a double bond. So, how do we explain this? We use the concept of Resonance. Benzene does not exist as one single structure, but as a hybrid of two equivalent Kekule structures. Imagine two resonance structures where the double bonds are at positions one, three, and five, and then another where they shift to positions two, four, and six. The actual molecule is a resonance hybrid of these two. This means the pi-electrons are not localized between two specific carbon atoms; instead, they are delocalized in a continuous ring above and below the plane of the carbon atoms. This delocalization creates a special stability known as Aromaticity. To be classified as aromatic, a compound must follow Hückel's Rule. This rule states that a cyclic, planar, fully conjugated system must have a specific number of pi-electrons, following the formula four-n plus two, where n is a non-negative integer. This means aromatic rings must have two, six, ten, or fourteen pi-electrons. Benzene, with its six pi-electrons, perfectly fits this rule where n equals one. Now, let's move to how we name these molecules, known as Nomenclature. For simple benzene, the name is just benzene. But when we add substituents, we follow specific rules. If there is only one substituent, like a methyl group, we call it methylbenzene, though the common name toluene is widely used. If we have a hydroxyl group, it becomes phenol. If we have an amino group, it is aniline. When multiple substituents are present, we must number the ring to give the lowest possible locants to the substituents. For example, in a ring with two methyl groups at the one and three positions, we call it one, three-dimethylbenzene, or more commonly, meta-xylene. If we have three substituents, we number them to ensure the set of numbers is as small as possible. We also use prefixes like ortho, meta, and para for disubstituted benzenes. Ortho refers to the one, two position, meta to the one, three position, and para to the one, four position. Understanding this structural dance of electrons and the systematic way we name these rings is crucial before we dive into their chemical reactivity in the next video.","Welcome back. In our previous lesson, we explored the unique structure of benzene and the concept of resonance that makes it so stable. Today, we move from structure to reactivity. You might wonder, if benzene is so stable due to resonance, how does it react at all? The answer lies in Electrophilic Substitution Reactions. Unlike alkenes, which undergo addition reactions to break their pi bonds, benzene prefers substitution. This allows the ring to retain its aromatic stability even after a reaction occurs. Let us look at the general mechanism first. In every electrophilic substitution, a powerful electrophile, which is an electron-deficient species, attacks the electron-rich pi cloud of the benzene ring. This creates a temporary intermediate called a sigma complex or a carbocation, where the aromaticity is momentarily lost. To restore this stability, a proton is lost from the ring, and the aromatic system is regenerated. Now, let us dive into the specific types of reactions. First, we have Nitration. To nitrate benzene, we use a mixture of concentrated nitric acid and concentrated sulphuric acid. This is known as a nitrating mixture. Here, sulphuric acid acts as a catalyst and a proton donor to generate the active electrophile, which is the nitronium ion, written as N-O-plus double bonded to O. The reaction is as follows: benzene reacts with the nitronium ion to form nitrobenzene and water. Next, we study Sulphonation. In this process, benzene reacts with fuming sulphuric acid, which is a solution of sulphur trioxide in concentrated sulphuric acid. The electrophile here is sulphur trioxide, or S-O-three. When benzene reacts with S-O-three, it produces benzene sulphonic acid. This reaction is reversible, which is a very important point for your exams. Third, let us discuss Halogenation. Benzene undergoes halogenation with chlorine or bromine. However, unlike simple alkenes, this reaction requires a Lewis acid catalyst, such as anhydrous aluminium chloride or anhydrous ferric chloride. These catalysts are essential because they help in generating the electrophile. For example, when chlorine reacts with benzene in the presence of aluminium chloride, the aluminium chloride pulls a chloride ion away from the chlorine molecule, creating a positive chlorine electrophile, Cl-plus. This results in chlorobenzene and hydrogen chloride. Throughout these reactions, remember the pattern: an electrophile replaces a hydrogen atom on the ring. This substitution mechanism is the key to why benzene behaves differently from the unsaturated aliphatic compounds we studied earlier. Pay close attention to the role of the catalyst in each reaction, as this is a frequent question in competitive exams. In the next part, we will see how having an existing group on the ring directs where the next electrophile will go.","Welcome back to our series on Hydrocarbons. In our previous session, we explored the general mechanism of electrophilic aromatic substitution. Today, we dive into two very specific and industrially vital topics: the Friedel-Crafts reactions and the fascinating patterns of polysubstitution. Let us start with the Friedel-Crafts Alkylation. In this reaction, an alkyl group is introduced into the benzene ring. To achieve this, we react benzene with an alkyl halide, such as methyl chloride, in the presence of a Lewis acid catalyst like anhydrous aluminium chloride. The aluminium chloride reacts with the alkyl halide to generate a carbocation, which acts as the powerful electrophile. This carbocation then attacks the benzene ring, leading to the formation of an alkylated benzene. However, there is a significant catch in alkylation: carbocation rearrangement. If the alkyl group can form a more stable carbocation, such as a secondary or tertiary one, the product will reflect that rearrangement. Furthermore, alkyl groups are activating groups, meaning once one alkyl group is attached, the ring becomes more reactive, often leading to multiple alkylations. This brings us to the second Friedel-Crafts reaction: Alkylation. Here, instead of an alkyl group, we introduce an acyl group, which is a carbonyl group attached to an alkyl group, represented as R-C-equals-O. We react benzene with an acyl halide, like acetyl chloride, using anhydrous aluminium chloride as the catalyst. This reaction produces an aromatic ketone. Unlike alkylation, Friedel-Crafts Acylation is much more controlled. Because the acyl group is electron-withdrawing, it deactivates the ring, preventing further substitution and avoiding the problem of carbocation rearrangement. This makes acylation a preferred method for preparing straight-chain alkylbenzenes via a subsequent reduction step. Now, let us shift our focus to Polysubstitution Patterns. What happens when we substitute more than one hydrogen atom on a benzene ring? The position of the second substituent is strictly governed by the nature of the first substituent already present. Substituents are classified into two types: ortho-para directors and meta directors. Ortho-para directors are groups that increase electron density at the ortho and para positions through resonance or inductive effects. Examples include hydroxyl groups, amino groups, halogens, and alkyl groups. If you have toluene, where a methyl group is attached to benzene, a second substitution will primarily occur at the two ortho positions and the one para position. On the other hand, we have meta directors. These are electron-withdrawing groups that decrease electron density across the ring, but they decrease it most significantly at the ortho and para positions, leaving the meta position as the most reactive site. Examples include the nitro group, cyano group, and carbonyl groups. If you start with nitrobenzene, any subsequent electrophilic attack will almost exclusively occur at the meta position. Understanding these directing effects is the key to predicting the outcome of complex organic syntheses. Remember, the electronic nature of the first group dictates the map for all future reactions on that ring.","Welcome to the final session of our Hydrocarbons series. We have traveled from the simple single bonds of alkanes to the complex resonance of aromatic rings. Today, we aren't just reviewing facts; we are mastering the art of the exam. Let's start with a rapid-fire structural recap. Remember, the backbone of this chapter is the distinction between saturation and unsaturation. When you see an alkene, think electrophilic addition. When you see an alkyne, think about that unique acidic hydrogen at the terminal position. When you see benzene, your mind should immediately jump to electrophilic aromatic substitution. Now, let's address the most common mistakes students make in examinations. Mistake number one: The Markovnikov versus Anti-Markovnikov trap. In the addition of hydrogen halides to unsymmetrical alkenes, students often forget that the presence of peroxides flips the regioselectivity. If the question mentions peroxides, you must follow the free radical mechanism and place the halogen on the less substituted carbon. Do not default to Markovnikov's rule blindly. Mistake number two: Misidentifying resonance contributors in aromatic systems. When drawing mechanisms for nitration or Friedel-Crafts alkylation, ensure your arrows show the movement of electron pairs, not just nuclei. Also, remember that resonance structures must have the same number of unpaired electrons and no breaking of sigma bonds. Mistake number three: Confusing Ozonolysis products. Ozonolysis is a powerful tool for locating double bonds. If you are given a product and asked to find the starting alkene, remember that the carbon-carbon double bond is cleaved, and each carbon receives an oxygen atom. If you see a ketone and an aldehyde, you are looking at a cleavage point. Mistake number four: Forgetting the stability order of carbocations. In both alkanes and alkenes, the stability follows the order of tertiary, secondary, and then primary carbocations. This dictates the major product in almost every addition reaction. Let's talk problem-solving techniques. When you face a multi-step synthesis question, work backwards. This is called retrosynthetic analysis. If the target molecule is an alcohol, ask yourself: 'Can I get this from an alkene via hydration?' or 'Can I get this from a carbonyl via reduction?' If the question asks you to distinguish between two compounds, like ethane and ethene, look for functional group tests. For example, bromine water or potassium permanganate tests are your best friends for detecting unsaturation. For aromatic versus aliphatic compounds, use the benzene test or look for the characteristic stability of the ring. When dealing with nomenclature, always identify the longest continuous carbon chain containing the functional group first. A common error is choosing a shorter chain because it looks simpler. Always number the chain to give the lowest possible locant to the functional group, then the multiple bonds, and finally the substituents. For the physical properties section, remember the trend: as the molecular mass increases, the boiling point increases due to stronger London dispersion forces. However, branching decreases the surface area, which in turn lowers the boiling point. This is a favorite question in multiple-choice sections. Finally, pay close attention to stereochemistry. In alkene addition, remember that if the starting material is cis or trans, the product's stereochemistry is often predictable. Don't ignore the concept of chirality when discussing substituted alkanes. As you prepare for your exams, don't just memorize reactions; understand the electron flow. Why does the electrophile attack the pi-cloud? Why does the substituent direct the next group to the ortho or para position? Once you master the 'why', the 'what' becomes easy. You have covered a massive syllabus, from the simplicity of methane to the elegance of benzene. Stay calm, draw your structures clearly, and always double-check your valency. You are ready. Good luck with your preparations."];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-chemistry-09-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

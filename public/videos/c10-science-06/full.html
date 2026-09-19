@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Control and Coordination, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c10-science-06-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Why Control and Coordination Matters in Living Organisms -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Why Control and Coordination Matters in Living Organisms</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Stimulus: Any change in the environment that triggers a response.</div>
+              <div id="qx0-p1" class="qe-bullet">• Response: The reaction of an organism to a specific stimulus.</div>
+              <div id="qx0-p2" class="qe-bullet">• Coordination: Synchronized working of different body parts.</div>
+              <div id="qx0-p3" class="qe-bullet">• Animals use Nervous and Endocrine systems for coordination.</div>
+              <div id="qx0-p4" class="qe-bullet">• Plants use chemical messengers called hormones for coordination.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3153181151,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a human jumping away from a sudden loud noise on one side, and a sunflower turning its head towards the sun on the other.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A split-screen 3D animation showing a human jumping away from a sudden loud noise on one side, and a sunflower turning its head towards the sun on the other.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Animals: The Nervous System, Neurons, and Reflex Action -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Animals: The Nervous System, Neurons, and Reflex Action</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• The Neuron: The fundamental structural and functional unit of the nervous system.</div>
+              <div id="qx1-p1" class="qe-bullet">• Structure of a Neuron: Dendrites, Cell Body (Cyton), and Axon.</div>
+              <div id="qx1-p2" class="qe-bullet">• Synapse: The chemical gap between two neurons where signals are transmitted.</div>
+              <div id="qx1-p3" class="qe-bullet">• Reflex Action: An immediate, involuntary response to a stimulus.</div>
+              <div id="qx1-p4" class="qe-bullet">• Reflex Arc Pathway: Receptor -&gt; Sensory Neuron -&gt; Spinal Cord -&gt; Motor Neuron -&gt; Effector.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3093516934,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic fly-through of a neuron, showing an electrical impulse traveling down the axon and converting into glowing chemical neurotransmitters at the synapse.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D cinematic fly-through of a neuron, showing an electrical impulse traveling down the axon and converting into glowing chemical neurotransmitters at the synapse.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): The Human Brain: Structure, Functions, and Protection -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">The Human Brain: Structure, Functions, and Protection</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Brain Protection: Skull (Cranium) and Cerebrospinal Fluid (CSF) act as shock absorbers.</div>
+              <div id="qx2-p1" class="qe-bullet">• Forebrain (Cerebrum): Center for intelligence, memory, and conscious thought.</div>
+              <div id="qx2-p2" class="qe-bullet">• Midbrain: Connects forebrain and hindbrain; controls eye and auditory reflexes.</div>
+              <div id="qx2-p3" class="qe-bullet">• Hindbrain (Pons &amp; Medulla): Controls breathing, heartbeat, and involuntary reflexes.</div>
+              <div id="qx2-p4" class="qe-bullet">• Hindbrain (Cerebellum): Maintains body posture, balance, and precision of movement.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":52136381,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D medical animation zooming from the protective skull into the brain, highlighting the Cerebrum, Midbrain, and Hindbrain in different colors as they are mentioned.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D medical animation zooming from the protective skull into the brain, highlighting the Cerebrum, Midbrain, and Hindbrain in different colors as they are mentioned.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Coordination in Plants: Immediate Response to Stimuli (Nastic Movements) -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Coordination in Plants: Immediate Response to Stimuli (Nastic Movements)</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Nastic movements are rapid and non-directional responses.</div>
+              <div id="qx3-p1" class="qe-bullet">• Unlike tropism, these movements do not depend on growth.</div>
+              <div id="qx3-p2" class="qe-bullet">• Mimosa pudica (Touch-me-not) is a classic example.</div>
+              <div id="qx3-p3" class="qe-bullet">• Movement is driven by changes in turgor pressure in the pulvinus.</div>
+              <div id="qx3-p4" class="qe-bullet">• Water outflow from cells causes leaves to fold or collapse.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":1669197667,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A high-definition 3D close-up of a Mimosa pudica leaf being touched, transitioning into a cross-section animation showing water molecules exiting cells in the pulvinus, causing them to deflate.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A high-definition 3D close-up of a Mimosa pudica leaf being touched, transitioning into a cross-section animation showing water molecules exiting cells in the pulvinus, causing them to deflate.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Plant Growth and Hormones: Phytohormones and Their Roles -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Plant Growth and Hormones: Phytohormones and Their Roles</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Phytohormones: Chemical messengers controlling plant growth and development</div>
+              <div id="qx4-p1" class="qe-bullet">• Auxins: Promote cell elongation and facilitate phototropism</div>
+              <div id="qx4-p2" class="qe-bullet">• Gibberellins: Stimulate stem growth and seed germination</div>
+              <div id="qx4-p3" class="qe-bullet">• Cytokinins: Promote rapid cell division in fruits and seeds</div>
+              <div id="qx4-p4" class="qe-bullet">• Abscisic Acid and Ethylene: Regulate growth inhibition and fruit ripening</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":818718416,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D time-lapse of a seedling growing, with glowing colored particles representing different hormones moving to specific parts of the plant.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D time-lapse of a seedling growing, with glowing colored particles representing different hormones moving to specific parts of the plant.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Animal Hormones: The Endocrine System and Chemical Coordination -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Animal Hormones: The Endocrine System and Chemical Coordination</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Endocrine glands are ductless glands that secrete hormones directly into the blood.</div>
+              <div id="qx5-p1" class="qe-bullet">• The Pituitary gland is the 'Master Gland' regulating growth and other glands.</div>
+              <div id="qx5-p2" class="qe-bullet">• Thyroxine regulates metabolism; iodine deficiency causes goitre.</div>
+              <div id="qx5-p3" class="qe-bullet">• Insulin from the pancreas regulates blood sugar levels; deficiency causes diabetes.</div>
+              <div id="qx5-p4" class="qe-bullet">• Adrenaline prepares the body for 'fight or flight' during stress or emergencies.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2739264866,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D human anatomical model showing the endocrine system, highlighting glands with glowing pulses of light as hormones enter the bloodstream.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D human anatomical model showing the endocrine system, highlighting glands with glowing pulses of light as hormones enter the bloodstream.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Mechanism of Hormone Action: Feedback Mechanisms and Signal Transduction -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Mechanism of Hormone Action: Feedback Mechanisms and Signal Transduction</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Negative Feedback: The primary mechanism for regulating hormone secretion levels.</div>
+              <div id="qx6-p1" class="qe-bullet">• Homeostasis: Maintaining a stable internal environment through feedback loops.</div>
+              <div id="qx6-p2" class="qe-bullet">• Water-soluble Hormones: Bind to surface receptors and use second messengers.</div>
+              <div id="qx6-p3" class="qe-bullet">• Lipid-soluble Hormones: Pass through membranes to act directly on DNA.</div>
+              <div id="qx6-p4" class="qe-bullet">• Signal Transduction: The process of converting an extracellular signal into a cellular response.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":1701234965,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: left side shows a glucose-insulin feedback loop; right side shows a hormone binding to a cell receptor and triggering a cascading molecular chain reaction inside.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A split-screen 3D animation: left side shows a glucose-insulin feedback loop; right side shows a hormone binding to a cell receptor and triggering a cascading molecular chain reaction inside.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Deep Dive: Diagram Practice, Activity Analysis, and Visualizing Pathways -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Deep Dive: Diagram Practice, Activity Analysis, and Visualizing Pathways</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Labeling the Neuron: Dendrites, Cyton, Axon, and Synapse</div>
+              <div id="qx7-p1" class="qe-bullet">• Brain Anatomy: Distinguishing Forebrain, Midbrain, and Hindbrain</div>
+              <div id="qx7-p2" class="qe-bullet">• Nastic Movements: Turgor pressure changes in Mimosa pudica</div>
+              <div id="qx7-p3" class="qe-bullet">• Reflex Arc Pathway: Receptor to Sensory to Spinal Cord to Motor to Effector</div>
+              <div id="qx7-p4" class="qe-bullet">• Hormonal Feedback: The negative feedback loop mechanism</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":1385873638,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a glowing electrical impulse traveling through a neuron on the left, and a real-time simulation of a Mimosa leaf folding due to water movement on the right.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A split-screen 3D animation showing a glowing electrical impulse traveling through a neuron on the left, and a real-time simulation of a Mimosa leaf folding due to water movement on the right.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Problem Solving: Case Studies, Word Problems, and Concept Application -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Problem Solving: Case Studies, Word Problems, and Concept Application</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Trace Reflex Arcs: Stimulus to Effector pathway</div>
+              <div id="qx8-p1" class="qe-bullet">• Apply Phototropism: Auxin distribution on shaded sides</div>
+              <div id="qx8-p2" class="qe-bullet">• Clinical Application: Linking symptoms to endocrine glands</div>
+              <div id="qx8-p3" class="qe-bullet">• Feedback Loops: Explaining how hormone levels are regulated</div>
+              <div id="qx8-p4" class="qe-bullet">• Data Interpretation: Analyzing growth curves and hormone effects</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":2258803202,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen showing a medical case study on the left and a biological flowchart on the right, with glowing connections forming between symptoms and organs.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen showing a medical case study on the left and a biological flowchart on the right, with glowing connections forming between symptoms and organs.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Common Mistakes: Misconceptions in Reflex Arcs and Plant Hormones -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Common Mistakes: Misconceptions in Reflex Arcs and Plant Hormones</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Reflex Action: Processed in the spinal cord, not the brain.</div>
+              <div id="qx9-p1" class="qe-bullet">• Neuron Direction: Sensory goes to CNS; Motor goes to effector.</div>
+              <div id="qx9-p2" class="qe-bullet">• Auxin: Causes bending due to uneven distribution on the shaded side.</div>
+              <div id="qx9-p3" class="qe-bullet">• Abscisic Acid: A growth inhibitor, not a promoter.</div>
+              <div id="qx9-p4" class="qe-bullet">• Tropic vs Nastic: Directional growth vs non-directional response.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3711455945,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a glowing electrical impulse traveling through a spinal cord on the left, and a plant stem bending toward light with highlighted auxin concentration on the right.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation showing a glowing electrical impulse traveling through a spinal cord on the left, and a plant stem bending toward light with highlighted auxin concentration on the right.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Exam Technique: How to Answer High-Weightage Questions and Keywords -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Exam Technique: How to Answer High-Weightage Questions and Keywords</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Use precise scientific keywords like Phototropism, Synapse, and Effector.</div>
+              <div id="qx10-p1" class="qe-bullet">• Adopt the Point-Process-Diagram method for 5-mark long answers.</div>
+              <div id="qx10-p2" class="qe-bullet">• Always draw and label diagrams for structures like Neurons or the Brain.</div>
+              <div id="qx10-p3" class="qe-bullet">• Use T-shaped tables for all 'Distinguish between' comparison questions.</div>
+              <div id="qx10-p4" class="qe-bullet">• Apply the Identify-Relate-Conclude rule for case-study questions.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1517398542,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen showing a messy paragraph on the left being transformed into a structured, labeled diagram and bulleted list on the right.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen showing a messy paragraph on the left being transformed into a structured, labeled diagram and bulleted list on the right.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Full Chapter Recap and Final Revision Strategy -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Full Chapter Recap and Final Revision Strategy</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Recap: Nervous System (Fast) vs. Endocrine System (Slow)</div>
+              <div id="qx11-p1" class="qe-bullet">• Key Plant Hormones: Auxins, Gibberellins, Cytokinins, and Abscisic Acid</div>
+              <div id="qx11-p2" class="qe-bullet">• Diagram Mastery: Neuron, Reflex Arc, and Human Brain</div>
+              <div id="qx11-p3" class="qe-bullet">• Concept Alert: Nastic vs. Tropic Movements</div>
+              <div id="qx11-p4" class="qe-bullet">• Exam Tip: Use Keywords and Explain Feedback Loops</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1758284548,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A high-tech digital dashboard displaying a checklist of chapter topics that glow green as a 'Mastery Achieved' badge appears in the center.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A high-tech digital dashboard displaying a checklist of chapter topics that glow green as a 'Mastery Achieved' badge appears in the center.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Control and Coordination today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Why Control and Coordination Matters in Living Organisms <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Animals: The Nervous System, Neurons, and Reflex Action <small>5:00</small></button>
+          <button type="button" data-seek="600">3. The Human Brain: Structure, Functions, and Protection <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Coordination in Plants: Immediate Response to Stimuli (Nastic Movements) <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Plant Growth and Hormones: Phytohormones and Their Roles <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Animal Hormones: The Endocrine System and Chemical Coordination <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Mechanism of Hormone Action: Feedback Mechanisms and Signal Transduction <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Deep Dive: Diagram Practice, Activity Analysis, and Visualizing Pathways <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Problem Solving: Case Studies, Word Problems, and Concept Application <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Common Mistakes: Misconceptions in Reflex Arcs and Plant Hormones <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Exam Technique: How to Answer High-Weightage Questions and Keywords <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Full Chapter Recap and Final Revision Strategy <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone! Welcome to our first session on a fascinating chapter in Class 10 Science: Control and Coordination. Before we dive into the complex structures of the brain or the chemical signals of hormones, we need to answer a fundamental question: Why do living organisms even need control and coordination? Imagine for a moment that you are walking down a busy street and suddenly, a speeding vehicle comes towards you. What happens? You don't sit there and think, 'Hmm, should I move my leg now?' No! Your body reacts almost instantly. You jump back. This instant reaction is a perfect example of coordination. Now, let's look at what is actually happening. Every living organism, from a tiny single-celled amoeba to a massive blue whale, lives in a constantly changing environment. The temperature changes, light intensity fluctuates, predators appear, and food sources move. To survive, an organism must be able to sense these changes and respond to them appropriately. This ability to sense a change in the environment is called stimulus. A stimulus can be anything—a touch, a sound, a smell, a change in light, or even a change in temperature. The response to this stimulus is what we call coordination. Coordination is the process through which different organs and systems of an organism work together in a synchronized manner to produce a meaningful response. Think of an orchestra. If every musician played their own tune at their own speed, it would just be noise. But when they follow a conductor and play in sync, it becomes music. Similarly, in our body, our heart, lungs, muscles, and nerves must work in perfect harmony. If our nervous system sends a signal to move our hand, but our muscles don't receive that signal, or if they receive it too late, the coordination fails. In multicellular organisms like humans, this is even more critical. We have trillions of cells. These cells cannot act independently; if they did, our body would be a chaotic mess of conflicting actions. We need a system to tell the cells what to do and when to do it. In animals, this is primarily achieved through two systems: the Nervous System, which uses electrical impulses for rapid responses, and the Endocrine System, which uses chemical messengers called hormones for slower, long-lasting effects. Now, let's look at plants. You might think, 'Plants don't have brains or nerves, so how do they coordinate?' This is a great question. Even though plants lack a nervous system, they are incredibly sensitive to their surroundings. They grow towards light, their roots grow towards water, and some even fold their leaves when touched. Plants achieve coordination through chemical means, using specialized substances called phytohormones. So, to summarize our starting point: Stimulus is the trigger, Response is the action, and Coordination is the synchronized management of these responses to ensure survival and homeostasis. In this series of twelve lessons, we will explore how animals use neurons and the brain to manage these tasks, how plants use hormones to grow and move, and how our endocrine system keeps our internal chemistry in perfect balance. Let's get started on this journey of understanding how life stays in control!","Welcome back. In our previous session, we discussed why coordination is essential for survival. Now, we shift our focus from plants to animals. While plants rely primarily on chemical signals, animals have developed a much faster method of communication: the Nervous System. This system allows us to respond to even the slightest changes in our environment almost instantaneously. At the very heart of this system is a specialized cell called the Neuron. Think of the neuron as the fundamental building block of the nervous system. A neuron is not like a typical cell; it has a unique structure designed specifically for transmitting information. It consists of three main parts. First, we have the Dendrites. These are short, hair-like projections that emerge from the cell body. Their job is to receive incoming electrical impulses from other neurons or sensory organs. Second, there is the Cell Body, also known as the Cyton. This contains the nucleus and the cytoplasm, acting as the control center where the signal is processed. Third, we have the Axon. This is a long, single fiber that carries the impulse away from the cell body toward the next neuron. To ensure the signal travels quickly and doesn't leak out, many axons are covered in a fatty layer called the Myelin Sheath. Now, how does a signal actually move? When an impulse reaches the end of an axon, it cannot simply jump the gap to the next neuron. This tiny gap is called a Synapse. To cross this gap, the electrical signal is converted into a chemical signal. Chemicals called neurotransmitters are released from the nerve endings of one neuron. These chemicals diffuse across the synapse and trigger a new electrical impulse in the dendrites of the next neuron. This process—electrical to chemical and back to electrical—is how information flows through your entire body. But what happens when you encounter an immediate danger, like touching a hot plate? You don't have time to think, 'Oh, this is hot, I should move my hand.' Instead, your body performs a Reflex Action. A reflex action is a sudden, involuntary, and highly coordinated response to a stimulus. This happens because the signal doesn't wait to be processed by the conscious brain; instead, it follows a shortcut called a Reflex Arc. Let's trace the path of a Reflex Arc. First, there is the Stimulus, such as heat or a sharp object. This is detected by specialized cells called Receptors, located in our sense organs. For example, thermoreceptors in the skin detect heat. The impulse travels from the receptor along a Sensory Neuron toward the spinal cord. Inside the spinal cord, the signal is passed to a Relay Neuron, which acts as a bridge. The relay neuron immediately passes the signal to a Motor Neuron. The motor neuron then carries the command away from the spinal cord to an Effector, which is usually a muscle or a gland. The muscle contracts, and your hand pulls away instantly. This entire circuit—Receptor, Sensory Neuron, Spinal Cord, Motor Neuron, and Effector—is the Reflex Arc. By bypassing the brain's conscious processing center for the initial movement, the reflex arc saves precious milliseconds, preventing serious injury. This is the beauty of the nervous system: it combines high-speed communication with life-saving automatic responses.","Welcome back. In our previous session, we explored how neurons transmit signals and how reflex actions allow for lightning-fast responses. But what is the master controller behind all these complex activities? That is the human brain. The brain is the most sophisticated central information processing organ in our body. It is the main coordinating center of the entire body. Before we look at how it works, let's talk about how it is protected. The brain is incredibly delicate, so nature has provided it with two layers of physical security. First, the brain sits inside a bony box called the cranium or the skull. This provides a hard, protective shell. Second, inside the skull, the brain is wrapped in three layers of membranes called meninges. Between these membranes, there is a special fluid called Cerebrospinal Fluid, or CSF. This fluid acts as a shock absorber. If you bump your head, the CSF cushions the brain, preventing it from hitting the hard skull. Now, let's dive into the structure of the brain. We can divide the brain into three main regions: the Forebrain, the Midbrain, and the Hindbrain. Let's start with the Forebrain. This is the largest and most developed part of the brain. The main component of the forebrain is the Cerebrum. The cerebrum is responsible for all our conscious activities. When you think, when you remember a childhood memory, when you solve a math problem, or when you decide to pick up a pen, your cerebrum is at work. It is the seat of intelligence, memory, reasoning, and sensory perception. It receives sensory information from our eyes, ears, nose, tongue, and skin, and interprets it. For example, if you touch something hot, the cerebrum processes that sensation and tells you, 'This is hot!' Moving on to the Midbrain. The midbrain acts as a bridge. It connects the forebrain to the hindbrain. It plays a crucial role in controlling certain involuntary actions, such as the movement of our eyes and the response to visual and auditory stimuli. Now, let's look at the Hindbrain. Even though it is called the 'hind' brain, it is vital for survival. It consists of three major parts: the Pons, the Medulla, and the Cerebellum. The Pons helps in regulating the respiratory functions, essentially assisting the brainstem in controlling your breathing rhythm. The Medulla Oblongata is perhaps the most critical for life-sustaining functions. It controls involuntary actions that we don't even think about, such as heartbeat, blood pressure, salivation, and vomiting. If the medulla is damaged, life cannot be sustained. Finally, we have the Cerebellum. Have you ever tried walking in a straight line or riding a bicycle? That precision is thanks to the cerebellum. The cerebellum is responsible for precision in voluntary actions and maintaining the posture and equilibrium or balance of the body. When you walk, your cerebellum ensures you don't fall over. It coordinates the movement of your muscles so that your actions are smooth rather than jerky. To summarize, the forebrain handles thinking and sensation, the midbrain handles eye and auditory reflexes, and the hindbrain manages vital involuntary functions through the medulla and coordination through the cerebellum. Understanding this division is key to understanding how our body responds to the world around us.","Welcome back. In our previous session, we explored how animals use a complex nervous system to respond to the environment. But what about plants? Plants don't have a nervous system, and they certainly don't have muscles or neurons. Yet, they are far from being passive. They respond to stimuli too. Today, we are looking at a very specific type of movement: Nastic Movements, also known as immediate responses to stimuli. Unlike growth-related movements, which are slow and directional, nastic movements are rapid and non-directional. This means the direction of the movement does not depend on where the stimulus comes from. Let's look at the most famous example: the Mimosa pudica, commonly known as the 'Touch-me-not' plant. If you touch the leaves of this plant, they fold up almost instantly. If you touch them again after a few minutes, they fold again. This isn't because the plant is growing towards or away from your finger. It is a sudden response to the physical stimulus of touch. So, how does this happen without nerves? The secret lies in the cells of the plant, specifically in a structure called the pulvinus. The pulvinus is a swollen part at the base of the leaf or leaflet. When the plant is touched, it triggers a change in the water content within the cells of the pulvinus. This is a process involving turgor pressure. Think of a cell like a tiny balloon filled with water. When the water pressure inside, known as turgor pressure, is high, the cell is firm and swollen. When the water leaves the cell, the pressure drops, and the cell becomes limp or flaccid. In the Mimosa plant, the stimulus of touch causes an immediate outflow of ions, followed by water, from the cells in the pulvinus. As the water leaves, the cells lose their turgidity, the pressure drops, and the leaves collapse or fold. This is a purely mechanical response driven by changes in water pressure, not by growth. It is important to distinguish this from tropism, which we will cover in the next part. In tropism, like phototropism, the plant grows towards light. That is a slow, growth-dependent, and directional movement. But nastic movements, like our touch-me-not example, are fast, non-growth-dependent, and non-directional. They are essentially a survival mechanism to protect the plant from herbivory or physical damage. To summarize, nastic movements are characterized by three things: they are rapid, they do not involve growth, and the direction of movement is independent of the stimulus direction. The mechanism is driven by the movement of water in and out of cells, changing their turgor pressure. Keep this distinction in mind: Tropism is about growth and direction; Nastic movement is about immediate, non-growth-based response via turgor changes.","Welcome back. In our previous lesson, we looked at how plants respond immediately to stimuli, like the folding of leaves in a Mimosa pudica plant. But what about the slower, more permanent changes? What about how a tiny seed turns into a massive tree? This isn't just about movement; it is about growth. Unlike animals, plants don't have a nervous system. They cannot run away from danger or move toward food. Instead, they rely entirely on chemical messengers called phytohormones, or plant hormones. These are organic compounds produced in very small quantities, but they control every aspect of a plant's life cycle. Let's categorize these into two main groups: Growth Promoters and Growth Inhibitors. First, let's look at the promoters. The most famous one is Auxin. Auxins are synthesized at the tips of stems and roots. Their primary job is to promote cell elongation. This is why plants show phototropism. When light comes from one side, auxins move to the shady side of the stem, causing those cells to grow longer, which eventually bends the plant toward the light. Next, we have Gibberellins. If Auxins are about length, Gibberellins are about expansion and breaking dormancy. They help in the growth of the stem and are crucial for seed germination. They help the plant overcome the 'sleep' state of a seed so it can start growing. Then, we have Cytokinins. These are the hormones of cell division. You will find high concentrations of cytokinins in areas where rapid cell division is happening, like in developing fruits and seeds. They promote cytokinesis, which is the physical division of the cytoplasm. Now, let's shift our focus to the regulators that slow things down. These are the growth inhibitors. The most important one is Abscisic Acid, often called the stress hormone. When a plant faces harsh conditions, like drought, Abscisic Acid takes over. It inhibits growth, causes the closing of stomata to prevent water loss, and promotes the wilting and falling of leaves. It is essentially the plant's way of saying, 'Stop growing and start surviving.' Finally, we have Ethylene. Ethylene is unique because it is a gaseous hormone. It is primarily responsible for fruit ripening. When a fruit ripens, it releases ethylene, which then signals neighboring fruits to ripen as well. This is why putting a ripe banana in a bag with unripe mangoes helps the mangoes ripen faster. To summarize, Auxins, Gibberellins, and Cytokinins work together to build the plant up, while Abscisic Acid and Ethylene help manage growth and aging. Understanding this balance is key to understanding how plants survive in a changing environment.","In our previous lessons, we explored how the nervous system uses electrical impulses to send lightning-fast messages across the body. But what happens when a response needs to be more widespread, or perhaps a bit more sustained? This brings us to our new topic: Chemical Coordination. While the nervous system is like a wired telephone network, the endocrine system is more like a wireless broadcast system. Instead of electrical impulses traveling through neurons, the body uses chemical messengers called hormones. These hormones are secreted by specialized organs known as endocrine glands. Unlike exocrine glands, which have ducts to carry secretions to specific locations—like sweat glands—endocrine glands are ductless. They pour their secretions directly into the bloodstream, allowing the hormones to travel to distant target organs throughout the entire body. Now, let's look at the key players in this system. The master controller is the Hypothalamus, located in the brain. It acts as the bridge between the nervous system and the endocrine system, telling other glands when to start or stop working. Just below it sits the Pituitary Gland. Often called the 'Master Gland,' the pituitary gland secretes several hormones that regulate other endocrine glands. For example, it controls growth through the Growth Hormone. If there is too much growth hormone during childhood, it leads to a condition called gigantism; if there is too little, it results in dwarfism. Next, let's talk about the Thyroid Gland, located in the neck region. It produces a hormone called Thyroxine. Thyroxine regulates the metabolism of carbohydrates, proteins, and fats in our cells to ensure proper growth. Interestingly, the synthesis of thyroxine requires the presence of iodine in our diet. This is why we are advised to use iodized salt. A deficiency of iodine can lead to a swelling in the neck known as a goitre. Moving down, we find the Pancreas. This is a unique gland because it acts as both an exocrine and an endocrine gland. The endocrine function of the pancreas is to secrete Insulin directly into the blood. Insulin is crucial because it regulates blood sugar levels. It ensures that the glucose in your blood is taken up by the cells to be used for energy. If insulin levels are low or the body doesn't respond to it, blood sugar rises, leading to a condition called diabetes. Then, we have the Adrenal Glands, sitting atop both kidneys. These are our 'emergency glands.' When you are scared, angry, or under stress, the adrenal glands release Adrenaline. This hormone prepares your body for 'fight or flight.' It increases your heart rate, raises blood pressure, and diverts more blood to your muscles so you can react quickly to the situation. Finally, let's touch upon the Gonads. In males, the testes produce Testosterone, which governs male secondary sexual characteristics and sperm production. In females, the ovaries produce Estrogen and Progesterone, which regulate the menstrual cycle and female secondary sexual characteristics. It is important to remember that even though these hormones travel through the whole body via the blood, they only affect specific 'target cells' that have the right receptors to receive the message. This precision is what makes chemical coordination so effective. In the next part, we will dive deeper into how these hormones actually trigger changes inside a cell through feedback mechanisms.","In our previous segment, we explored the various endocrine glands and the specific hormones they secrete. But have you ever wondered how a tiny chemical messenger, traveling through the vast bloodstream, knows exactly when to stop working or how it actually tells a cell to change its behavior? Today, we dive into the 'how' and 'when' of hormonal control. First, let us understand the concept of Feedback Mechanisms. Imagine you are driving a car. When you speed up, you notice the speedometer rising. If you go too fast, you instinctively press the brake to maintain a steady speed. Your body works in a very similar way through a process called negative feedback. Hormones are not released in a constant, uncontrolled stream. Instead, their secretion is regulated by the concentration of the hormone or its effect in the blood. Let us take the example of blood sugar regulation. When your blood glucose levels rise after a meal, the pancreas detects this change and secretes insulin. Insulin helps cells absorb glucose, which brings the blood sugar level back down to normal. Once the sugar level drops, the stimulus for insulin secretion is removed, and the pancreas slows down its production. This is negative feedback. If the sugar level were to drop too low, a different hormone called glucagon would be released to increase it. This constant adjustment ensures homeostasis, or a stable internal environment. Now, let us move to the second part of our lesson: Signal Transduction. How does a hormone, which stays outside the cell, trigger a change inside the cell? This is the essence of signal transduction. Hormones are generally classified into two types based on their solubility: water-soluble and lipid-soluble hormones. Water-soluble hormones, like many peptide hormones, cannot pass through the fatty, lipid-rich cell membrane. Therefore, they act as 'first messengers.' They bind to specific receptors located on the surface of the cell membrane. Think of this like a doorbell. The person ringing the bell is outside, but the sound travels inside the house. When the hormone binds to the receptor, it triggers a change in the membrane that activates a series of molecules inside the cell. This chain reaction is called a signal transduction pathway. This often involves 'second messengers' like cyclic AMP, which carry the signal from the membrane to the internal machinery of the cell, such as enzymes, to produce a specific response. On the other hand, lipid-soluble hormones, such as steroid hormones, are different. Because they are made of lipids, they can slide right through the cell membrane. They enter the cell and bind to receptors located inside the cytoplasm or even within the nucleus. Once the hormone-receptor complex is formed, it binds directly to the DNA. This interaction turns specific genes on or off, leading to the synthesis of new proteins. So, to summarize: water-soluble hormones use surface receptors and second messengers to trigger rapid changes, while lipid-soluble hormones enter the cell to directly influence gene expression. Understanding these two pathways—the feedback loop that controls 'how much' hormone is sent, and signal transduction that explains 'what the hormone does'—is crucial for mastering the concept of chemical coordination.","Welcome back. We have covered the theory of how animals and plants coordinate their actions. Now, it is time to move from reading to seeing and doing. In your Board exams, a correct diagram can often earn you full marks even if your explanation is brief. Let us start with the most critical diagram in this chapter: The Neuron. When you draw a neuron, do not just draw a line. You must clearly label the Dendrites, which receive the incoming signal, the Cell Body or Cyton, where the nucleus resides, and the Axon, the long fiber that carries the impulse away. Pay special attention to the Nerve Endings. A common mistake is forgetting to show the Synapse—that tiny gap between two neurons. Remember, the signal is electrical within the neuron but becomes chemical at the synapse. Next, let us look at the Human Brain. You must be able to distinguish between the Forebrain, Midbrain, and Hindbrain. When sketching the Cerebrum, emphasize its folded structure, the convolutions, which increase surface area. For the Hindbrain, ensure you clearly separate the Pons, the Cerebellum, and the Medulla Oblongata. If a question asks about involuntary actions like heartbeat or blood pressure, your finger should immediately point to the Medulla. Now, let us analyze a classic NCERT activity: the response of a Mimosa pudica plant, or the Touch-me-not plant. When you touch the leaves, you are observing a Nastic movement. This is not growth-dependent. Instead, it is caused by the change in the amount of water in the cells of the pulvinus, which is the swollen base of the leaf stalk. As water moves out of these cells, they lose turgor pressure, causing the leaves to fold. Visualizing this pathway is key: Stimulus of touch leads to an electrical-chemical signal, which causes water to move out of cells, resulting in a change in shape. We also need to visualize the Reflex Arc pathway. Imagine you touch a hot object. The pathway is: Receptor in the skin, to the Sensory Neuron, which carries the impulse to the Spinal Cord, then to the Relay Neuron, and finally to the Motor Neuron, which carries the command to the Effector muscle to pull your hand away. Notice that the brain is informed later; the immediate action is handled by the spinal cord to save time. Finally, let us look at the feedback mechanism of hormones. Think of it like a thermostat in an air conditioner. When blood glucose levels rise, the Pancreas detects this and releases Insulin. As glucose levels drop back to normal, the secretion of insulin is reduced. This is a negative feedback loop. If you can draw these pathways—the neuron, the reflex arc, and the feedback loop—you have mastered the visual essence of this chapter. Practice these diagrams repeatedly, ensuring your labeling is neat and precise.","Welcome back. We have covered the theory, the diagrams, and the hormones. Now, it is time to put that knowledge to the test. In your Board exams, you won't just be asked to define a term; you will be given a scenario and asked to apply what you know. Let us start with a classic Case Study involving the Reflex Arc. Imagine a student accidentally touches a hot beaker in a chemistry lab. The question might ask: 'Trace the pathway of the impulse and identify the role of the spinal cord versus the brain.' To solve this, do not just list parts. Use the flow: Stimulus, Receptor, Sensory Neuron, Spinal Cord, Motor Neuron, Effector, and Response. Remember, the brain is informed later, but the immediate action is handled by the spinal cord to prevent tissue damage. This is a high-scoring way to structure your answer. Next, let us look at Plant Coordination word problems. A common question involves a plant kept in a dark box with a single small hole for light. You might be asked to predict the movement and name the hormone responsible. Here, you must apply the concept of Phototropism. The answer is not just 'it grows towards light.' You must explain that Auxin, the plant hormone, accumulates on the shaded side of the shoot. This higher concentration causes cells on the dark side to grow longer, bending the stem toward the light source. If the question asks about a plant drooping due to lack of water, you are looking at Turgor Pressure and the role of Abscisic Acid in closing stomata. Now, let us tackle a complex application question regarding the Endocrine System. Suppose a patient shows symptoms of constant hunger, excessive thirst, and frequent urination. You must act like a doctor. Identify the gland: the Pancreas. Identify the hormone: Insulin. Identify the condition: Diabetes Mellitus. When solving these, always link the symptom to the physiological function of the hormone. For example, if a question mentions 'increased metabolic rate and weight loss,' your mind should immediately jump to the Thyroid gland and Thyroxine. Another area where students struggle is the Feedback Mechanism. You might get a problem stating: 'The blood sugar level has risen significantly after a meal. Describe the response.' Do not just say 'insulin is released.' Use the feedback loop logic: High glucose levels are detected by the pancreas, which triggers the secretion of insulin. Insulin facilitates glucose uptake by cells, lowering blood sugar. Once levels return to normal, the secretion of insulin is inhibited. This 'loop' logic is what examiners look for. Finally, let us practice interpreting experimental data. You might see a graph showing plant growth over time with different hormone concentrations. If the curve rises and then falls, it indicates that while certain hormones like Gibberellins promote growth, excessive amounts or the presence of growth inhibitors like Abscisic Acid can arrest it. When you face a word problem, follow these three steps: First, underline the keywords like 'stimulus,' 'inhibitor,' or 'target organ.' Second, connect the keyword to a specific biological process we studied. Third, write your answer in a logical sequence, using arrows for pathways where possible. Mastering these application-based questions is the difference between knowing the chapter and mastering the chapter. Let us move to the next part where we address common misconceptions.","Welcome back. Before we move into our exam techniques, we need to clear the fog. In science, knowing the right answer is only half the battle; the other half is avoiding the common traps that lead to marks being deducted. Today, we are tackling the most frequent misconceptions in Reflex Arcs and Plant Hormones. Let's start with the Reflex Arc. A very common mistake students make is thinking that the brain is the primary decision-maker in a reflex action. While the brain is eventually informed, the immediate response is processed in the spinal cord. If a question asks, 'Where is the impulse processed during a reflex action?', do not write 'the brain'. The correct answer is the spinal cord. Another error is confusing the pathway. Students often think the sensory neuron carries the signal away from the body. Remember, sensory neurons carry information towards the Central Nervous System, while motor neurons carry the command away to the effector, like a muscle. If you swap these in a diagram or a description, you lose the concept. Now, let's shift to Plant Hormones, or Phytohormones. This is where the most confusion lies. The first big misconception is regarding Auxin. Many students believe Auxin is distributed evenly across a plant stem. This is incorrect. Auxin is produced at the shoot tip and it migrates to the shaded side of the plant. It is the accumulation of Auxin on the dark side that causes those cells to grow longer, which is why the plant bends towards the light. If you say 'Auxin causes bending' without mentioning 'uneven distribution' or 'growth on the shaded side', your answer is incomplete. Secondly, let's talk about Abscisic Acid. Students often group it with growth promoters like Gibberellins or Auxins. This is a major error. Abscisic Acid is a growth inhibitor. It is the 'stress hormone' that tells the plant to stop growing, close stomata, and shed leaves. If a question asks which hormone helps a plant survive drought, and you pick Auxin, you are wrong; the answer is Abscisic Acid. A third mistake involves Cytokinins. Students often confuse their role with Auxins. While Auxins promote apical dominance—meaning they help the tip grow—Cytokinins promote cell division and help in the growth of lateral buds. Think of Auxin as the 'leader' at the top and Cytokinin as the 'builder' in the sides. Lastly, be careful with the term 'Nastic Movements' versus 'Tropic Movements'. Students often use them interchangeably. Remember, Tropic movements, like phototropism, are directional and depend on the direction of the stimulus. Nastic movements, like the folding of a Mimosa pudica leaf, are non-directional; the leaf folds regardless of where the touch comes from. Keep these distinctions clear, and you will avoid the most common pitfalls in your board exams.","Welcome back. We have covered the entire depth of Control and Coordination, from the firing of a neuron to the complex feedback loops of the endocrine system. Now, it is time to talk about the most important part of your preparation: scoring those marks in the examination. You might know the concepts, but if you cannot present them using the specific scientific language the examiners are looking for, you might lose marks. Let us start with the concept of 'Keywords'. In Biology, examiners do not just look for general descriptions; they look for precise terminology. For example, if a question asks about how a plant responds to light, do not just say 'the plant grows towards the light.' Instead, use the term 'Phototropism.' If you are describing a reflex action, do not just say 'the signal goes to the brain'; you must specify that the 'impulse is processed in the spinal cord' to ensure a 'rapid, involuntary response.' Other high-weightage keywords you must use include 'Synapse' when discussing nerve impulses, 'Chemical Messenger' for hormones, 'Gustatory receptors' for taste, and 'Olfactory receptors' for smell. Now, let us look at how to tackle high-weightage questions, which are usually five-mark long-answer questions. These questions often ask you to 'Describe the mechanism' or 'Explain the process.' For these, never write a single, massive paragraph. Instead, use the 'Point-Process-Diagram' method. First, break your answer into logical points. If you are explaining the Reflex Arc, your first point should define the stimulus, your second should describe the receptor, the third the sensory neuron, the fourth the spinal cord integration, the fifth the motor neuron, and the sixth the effector organ. Second, always include a diagram if the question involves a structure or a pathway. Even if the question does not explicitly say 'Draw a diagram,' if you are explaining the Human Brain or a Neuron, a neat, labeled sketch will instantly signal to the examiner that you have mastered the concept. A well-labeled diagram can often earn you three out of five marks even if your written explanation is brief. Third, pay close attention to 'Comparison Questions.' You will often see questions like 'Differentiate between Nastic and Tropic movements' or 'Compare Nervous and Hormonal coordination.' For these, always use a T-shaped table. Do not write two separate paragraphs. A table allows you to compare specific parameters like 'Speed of response,' 'Nature of movement,' and 'Duration of effect' side-by-side. This makes your answer clear and easy to grade. Another common high-weightage area is the 'Feedback Mechanism.' When answering questions about insulin or blood sugar regulation, use a flow-chart approach. Show the stimulus, the detection by the gland, the secretion of the hormone, and the resulting change in the body. This visual logic is much more powerful than a long sentence. Finally, let us address the 'Application-Based Questions.' These are the 'Case Studies' where a scenario is given, such as 'A person is experiencing extreme thirst and frequent urination; identify the possible hormonal imbalance.' In these cases, follow the 'Identify-Relate-Conclude' rule. First, identify the symptom. Second, relate it to the specific hormone or gland we studied, such as the Pancreas and Insulin. Third, conclude with the physiological reason. By using this structured approach—focusing on keywords, using diagrams, employing tables for comparisons, and following flow-charts—you turn your knowledge into marks. Remember, the examiner is looking for scientific precision, not just a story. Practice writing these answers using the exact terms we have discussed throughout this chapter.","Welcome to the final stretch of our journey through Control and Coordination. You have traveled from the microscopic electrical impulses of a single neuron to the complex chemical orchestration of the entire endocrine system. Now, it is time to transition from learning to mastering. This session is your ultimate roadmap for the exam. First, let us perform a rapid-fire mental recap. Remember, coordination is the synchronized working of different organs to produce a specific response. In animals, this is achieved through the dual system of the nervous system for immediate, lightning-fast responses like reflex actions, and the endocrine system for slow, long-lasting chemical communication. Do not forget the distinction between the central nervous system, comprising the brain and spinal cord, and the peripheral nervous system. When you think of the brain, visualize the three main parts: the forebrain for thinking and sensory processing, the midbrain, and the hindbrain, which houses the cerebellum for precision and the medulla for involuntary actions. Now, shift your focus to plants. Plants lack a nervous system, so they rely entirely on chemical messengers called phytohormones. Remember the roles: Auxins for growth and phototropism, Gibberellins for stem elongation, Cytokinins for cell division, and Abscisic Acid as the growth inhibitor that manages wilting and dormancy. Now, let us talk strategy. To score full marks, you must master the art of the diagram. In the exam, a well-labeled diagram of a neuron, a reflex arc, or the human brain can earn you more marks than a page of text. When drawing a reflex arc, ensure the pathway from receptor to sensory neuron, to spinal cord, to motor neuron, and finally to the effector is crystal clear. Next, pay close attention to the feedback mechanism. If a question asks how the body regulates blood sugar, do not just mention insulin; explain the loop. High blood sugar triggers the pancreas to release insulin, which lowers sugar, which then signals the pancreas to stop insulin production. This 'loop' concept is a favorite for high-weightage questions. Avoid common pitfalls. A common mistake is confusing nastic movements, like the folding of Mimosa pudica leaves, with tropic movements, which are growth-dependent. Nastic movements are independent of the direction of the stimulus, whereas tropism is always directional. Another mistake is forgetting that hormones travel through the blood. Always mention the circulatory system when discussing endocrine functions. For your final revision strategy, I recommend the 'Active Recall' method. Instead of just reading your notes, close your book and try to draw the pathway of a hormone or the structure of a neuron from memory. Use the 'Keyword Technique' for descriptive answers. For example, if a question asks about the function of the cerebellum, your answer must include keywords like 'precision', 'posture', and 'balance'. Do not write long, rambling paragraphs. Use bullet points and underline your key terms. Finally, practice time management. In the exam, tackle the diagram-based questions first while your mind is fresh. You have worked hard through this chapter, and you have the concepts. Now, go forth with confidence, focus on the accuracy of your diagrams, and the precision of your scientific terminology. You are ready. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c10-science-06-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

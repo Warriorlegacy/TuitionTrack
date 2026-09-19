@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Matrices, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-maths-03-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction to Matrices: Real-world Applications, Concept of Arrays, and Order of a Matrix -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction to Matrices: Real-world Applications, Concept of Arrays, and Order of a Matrix</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Matrix: A rectangular array of numbers arranged in rows and columns</div>
+              <div id="qx0-p1" class="qe-bullet">• Real-world uses: Computer graphics, Google Search, and Economics</div>
+              <div id="qx0-p2" class="qe-bullet">• Rows: Horizontal arrangements; Columns: Vertical arrangements</div>
+              <div id="qx0-p3" class="qe-bullet">• Order of a Matrix: Represented as m by n (rows by columns)</div>
+              <div id="qx0-p4" class="qe-bullet">• Element Notation: a subscript m,n denotes the entry at row m, column n</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":2751278517,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D digital grid transforms from a messy list of fruit sales data into a clean, glowing mathematical matrix structure.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D digital grid transforms from a messy list of fruit sales data into a clean, glowing mathematical matrix structure.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Types of Matrices: Row, Column, Square, Diagonal, Scalar, Identity, and Zero Matrices -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Types of Matrices: Row, Column, Square, Diagonal, Scalar, Identity, and Zero Matrices</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Row Matrix: Only one row; Column Matrix: Only one column</div>
+              <div id="qx1-p1" class="qe-bullet">• Square Matrix: Number of rows equals number of columns</div>
+              <div id="qx1-p2" class="qe-bullet">• Diagonal Matrix: Square matrix with non-diagonal elements as zero</div>
+              <div id="qx1-p3" class="qe-bullet">• Scalar Matrix: Diagonal matrix with all diagonal elements equal</div>
+              <div id="qx1-p4" class="qe-bullet">• Identity Matrix: Diagonal elements are all one; Zero Matrix: All elements are zero</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":2192632839,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D workspace where different matrix grids fly in, morphing from a single row into a tall column, then expanding into a square, with diagonal elements glowing gold.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D workspace where different matrix grids fly in, morphing from a single row into a tall column, then expanding into a square, with diagonal elements glowing gold.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Equality of Matrices: Conditions, Solving for Variables, and Worked Examples -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Equality of Matrices: Conditions, Solving for Variables, and Worked Examples</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Condition 1: Matrices must have the same order (dimensions).</div>
+              <div id="qx2-p1" class="qe-bullet">• Condition 2: All corresponding elements must be identical.</div>
+              <div id="qx2-p2" class="qe-bullet">• Equality notation: a-sub-i-j = b-sub-i-j for all i and j.</div>
+              <div id="qx2-p3" class="qe-bullet">• Method: Equate corresponding elements to form algebraic equations.</div>
+              <div id="qx2-p4" class="qe-bullet">• Always verify your solved variables by substituting them back.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":724567196,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing two matrices side-by-side; as the teacher speaks, glowing lines connect corresponding elements, transforming them into algebraic equations that float in the center.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen 3D animation showing two matrices side-by-side; as the teacher speaks, glowing lines connect corresponding elements, transforming them into algebraic equations that float in the center.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Matrix Operations I: Addition and Subtraction, Properties, and Geometric Interpretations -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Matrix Operations I: Addition and Subtraction, Properties, and Geometric Interpretations</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Addition and subtraction require matrices of the same order.</div>
+              <div id="qx3-p1" class="qe-bullet">• Operations are performed element-wise.</div>
+              <div id="qx3-p2" class="qe-bullet">• Commutative Property: A + B = B + A.</div>
+              <div id="qx3-p3" class="qe-bullet">• Associative Property: (A + B) + C = A + (B + C).</div>
+              <div id="qx3-p4" class="qe-bullet">• Geometric Interpretation: Addition represents translation in space.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":3470265163,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate grid where a vector point moves from its origin to a new position via a sliding animation representing matrix addition.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D coordinate grid where a vector point moves from its origin to a new position via a sliding animation representing matrix addition.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Matrix Operations II: Scalar Multiplication and Algebraic Properties of Matrix Addition -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Matrix Operations II: Scalar Multiplication and Algebraic Properties of Matrix Addition</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Scalar Multiplication: Multiply every element of the matrix by the real number k.</div>
+              <div id="qx4-p1" class="qe-bullet">• Commutative Law: A + B = B + A for matrices of the same order.</div>
+              <div id="qx4-p2" class="qe-bullet">• Associative Law: (A + B) + C = A + (B + C).</div>
+              <div id="qx4-p3" class="qe-bullet">• Additive Identity: A + O = A, where O is the Zero Matrix.</div>
+              <div id="qx4-p4" class="qe-bullet">• Additive Inverse: A + (-A) = O, where -A has elements with opposite signs.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":3603450132,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D grid of numbers where a scalar 'k' floats above, causing all numbers to pulse and transform simultaneously into their new values.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D grid of numbers where a scalar 'k' floats above, causing all numbers to pulse and transform simultaneously into their new values.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Matrix Multiplication I: The Dot Product Rule, Conformability Conditions, and Step-by-Step -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Matrix Multiplication I: The Dot Product Rule, Conformability Conditions, and Step-by-Step</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Multiplication is possible only if Columns of A = Rows of B</div>
+              <div id="qx5-p1" class="qe-bullet">• If A is m x n and B is n x q, the product C is m x q</div>
+              <div id="qx5-p2" class="qe-bullet">• The Dot Product Rule: Sum of products of corresponding elements</div>
+              <div id="qx5-p3" class="qe-bullet">• Element C(i,j) = (Row i of A) dot (Column j of B)</div>
+              <div id="qx5-p4" class="qe-bullet">• Always follow the 'Row by Column' movement pattern</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":2039806929,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D grid where a glowing horizontal row from Matrix A slides and rotates to overlap a vertical column from Matrix B, highlighting the multiplication pairs.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D grid where a glowing horizontal row from Matrix A slides and rotates to overlap a vertical column from Matrix B, highlighting the multiplication pairs.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Matrix Multiplication II: Properties (Non-commutativity), Associative Law, and Complex Examples -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Matrix Multiplication II: Properties (Non-commutativity), Associative Law, and Complex Examples</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Non-commutativity: A times B is generally not equal to B times A</div>
+              <div id="qx6-p1" class="qe-bullet">• Order matters: Changing the sequence changes the resulting elements</div>
+              <div id="qx6-p2" class="qe-bullet">• Associative Law: A times (B times C) equals (A times B) times C</div>
+              <div id="qx6-p3" class="qe-bullet">• Grouping vs. Ordering: You can change grouping, but not the sequence</div>
+              <div id="qx6-p4" class="qe-bullet">• Conformability must be maintained for all groupings</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1947578266,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing two different matrices A and B transforming into two distinct result matrices for AB and BA, followed by a cascading chain of three matrices grouping together to show identical results.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D split-screen showing two different matrices A and B transforming into two distinct result matrices for AB and BA, followed by a cascading chain of three matrices grouping together to show identical results.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Transpose of a Matrix: Definition, Symmetry, Skew-Symmetry, and Transpose Properties -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Transpose of a Matrix: Definition, Symmetry, Skew-Symmetry, and Transpose Properties</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Transpose (A^T): Rows become columns and columns become rows</div>
+              <div id="qx7-p1" class="qe-bullet">• Order Change: If A is m x n, then A^T is n x m</div>
+              <div id="qx7-p2" class="qe-bullet">• Property 1: (A^T)^T = A</div>
+              <div id="qx7-p3" class="qe-bullet">• Property 2: (A + B)^T = A^T + B^T</div>
+              <div id="qx7-p4" class="qe-bullet">• Property 3: (AB)^T = B^T A^T (Reverse Order Rule)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":3935376197,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D grid representing a matrix rotates 90 degrees and flips across the diagonal axis to demonstrate the row-to-column transformation.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D grid representing a matrix rotates 90 degrees and flips across the diagonal axis to demonstrate the row-to-column transformation.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Symmetric and Skew-Symmetric Matrices: Derivations, Theorems, and Decomposition of a Square Matrix -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Symmetric and Skew-Symmetric Matrices: Derivations, Theorems, and Decomposition of a Square Matrix</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Symmetric Matrix: A transpose equals A</div>
+              <div id="qx8-p1" class="qe-bullet">• Skew-Symmetric Matrix: A transpose equals negative A</div>
+              <div id="qx8-p2" class="qe-bullet">• Skew-Symmetric matrices must have zero diagonal elements</div>
+              <div id="qx8-p3" class="qe-bullet">• Decomposition: A equals P plus Q (Symmetric + Skew-Symmetric)</div>
+              <div id="qx8-p4" class="qe-bullet">• Formula for P: one-half times (A plus A transpose)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":559841042,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D grid of numbers where elements flip across the diagonal to show symmetry, then transform into negatives to show skew-symmetry, finally splitting into two separate matrices.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D grid of numbers where elements flip across the diagonal to show symmetry, then transform into negatives to show skew-symmetry, finally splitting into two separate matrices.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Advanced Matrix Algebra: Polynomials of Matrices, Matrix Equations, and Word Problems -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Advanced Matrix Algebra: Polynomials of Matrices, Matrix Equations, and Word Problems</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Defining Polynomials: Replacing variables with matrices and constants with Identity matrices</div>
+              <div id="qx9-p1" class="qe-bullet">• Solving Matrix Equations: Using the inverse of a matrix to isolate the unknown</div>
+              <div id="qx9-p2" class="qe-bullet">• Order Matters: A inverse times B is not equal to B times A inverse</div>
+              <div id="qx9-p3" class="qe-bullet">• Modeling Word Problems: Using matrices to represent production and cost data</div>
+              <div id="qx9-p4" class="qe-bullet">• Step-by-Step Word Problems: Define matrices, check dimensions, and multiply</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1535906758,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D floating blackboard where a polynomial expression transforms into a matrix equation, followed by a split-screen showing a business spreadsheet converting into a matrix model.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D floating blackboard where a polynomial expression transforms into a matrix equation, followed by a split-screen showing a business spreadsheet converting into a matrix model.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls and Error Analysis: Calculation Mistakes, Dimension Errors, and Conceptual -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls and Error Analysis: Calculation Mistakes, Dimension Errors, and Conceptual</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Always verify conformability: Columns of A must equal Rows of B.</div>
+              <div id="qx10-p1" class="qe-bullet">• Use finger-tracking to prevent row-column multiplication errors.</div>
+              <div id="qx10-p2" class="qe-bullet">• Distribute negative signs to ALL elements during subtraction.</div>
+              <div id="qx10-p3" class="qe-bullet">• Never assume commutativity: A times B is not necessarily B times A.</div>
+              <div id="qx10-p4" class="qe-bullet">• The Transpose Rule: (A times B) transpose equals B transpose times A transpose.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":3064550263,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen showing a 'Correct' vs 'Incorrect' calculation path with red 'X' marks and green checkmarks appearing over specific matrix elements.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen showing a 'Correct' vs 'Incorrect' calculation path with red 'X' marks and green checkmarks appearing over specific matrix elements.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: High-Weightage Question Patterns, Time Management, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: High-Weightage Question Patterns, Time Management, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• High-Weightage: Matrix equations and Symmetric/Skew-Symmetric proofs</div>
+              <div id="qx11-p1" class="qe-bullet">• Time Management: Use intermediate steps for complex multiplications</div>
+              <div id="qx11-p2" class="qe-bullet">• Avoid Pitfalls: Watch for sign errors and dimension mismatches</div>
+              <div id="qx11-p3" class="qe-bullet">• Key Property: Transpose of A times B equals Transpose of B times Transpose of A</div>
+              <div id="qx11-p4" class="qe-bullet">• Recap: From basic orders to advanced matrix algebra and properties</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":2871466385,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen showing a ticking exam clock on one side and a glowing, organized matrix grid on the other, with key formulas floating in 3D space.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen showing a ticking exam clock on one side and a glowing, organized matrix grid on the other, with key formulas floating in 3D space.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Matrices today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction to Matrices: Real-world Applications, Concept of Arrays, and Order of a Matrix <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Types of Matrices: Row, Column, Square, Diagonal, Scalar, Identity, and Zero Matrices <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Equality of Matrices: Conditions, Solving for Variables, and Worked Examples <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Matrix Operations I: Addition and Subtraction, Properties, and Geometric Interpretations <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Matrix Operations II: Scalar Multiplication and Algebraic Properties of Matrix Addition <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Matrix Multiplication I: The Dot Product Rule, Conformability Conditions, and Step-by-Step <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Matrix Multiplication II: Properties (Non-commutativity), Associative Law, and Complex Examples <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Transpose of a Matrix: Definition, Symmetry, Skew-Symmetry, and Transpose Properties <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Symmetric and Skew-Symmetric Matrices: Derivations, Theorems, and Decomposition of a Square Matrix <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Advanced Matrix Algebra: Polynomials of Matrices, Matrix Equations, and Word Problems <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls and Error Analysis: Calculation Mistakes, Dimension Errors, and Conceptual <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: High-Weightage Question Patterns, Time Management, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our first session on one of the most powerful tools in modern mathematics: Matrices. Before we dive into the definitions and formulas, let's ask ourselves: why do we need matrices? Imagine you are a shopkeeper. You sell three types of fruits—apples, bananas, and oranges—across two different days. To keep track of your sales, you could write a long list of sentences, but that would be messy. Instead, you can organize this data into a neat rectangular grid. This grid is what we call a matrix. In the real world, matrices are everywhere. They are the backbone of computer graphics, helping to rotate and scale 3D objects in video games. They are used by Google to rank search results and by economists to model complex market trends. Essentially, whenever we have large amounts of data that need to be organized and manipulated together, we use a matrix. So, what exactly is a matrix? Mathematically, a matrix is a rectangular array of numbers, symbols, or expressions, arranged in horizontal rows and vertical columns. Think of it like a spreadsheet or a seating arrangement in a classroom. The individual items inside the matrix are called elements or entries. Let's look at an example. Suppose we have a matrix A, where the first row contains the numbers 2, 4, and 6, and the second row contains 1, 3, and 5. We write this by enclosing the numbers in large square brackets or parentheses. The horizontal lines of numbers are our rows, and the vertical lines are our columns. Now, a very crucial concept you must master is the 'Order of a Matrix'. The order tells us the dimensions of the matrix, which is vital for all future operations like addition and multiplication. We express the order as 'm by n', where 'm' represents the number of rows and 'n' represents the number of columns. For example, if a matrix has 2 rows and 3 columns, we say its order is 2 by 3, written as 2 subscript m, 3 subscript n. It is very important not to confuse rows with columns. Remember: Rows go left to right, and Columns go up and down. Let's practice. If I have a matrix with 5 rows and 2 columns, its order is 5 by 2. If I have a single row with 4 elements, it is a 1 by 4 matrix. If I have a single column with 3 elements, it is a 3 by 1 matrix. We also use notation to identify specific elements. We denote an element by its position using lowercase letters with two subscripts. For example, a subscript m, subscript n refers to the element located in the m-th row and the n-th column. So, if I say element a subscript 2, subscript 1, I am talking about the number sitting in the second row and the first column. Understanding this structure is your first step toward mastering linear algebra. In our next session, we will explore the different specific types of matrices that exist. Let's get started!","Welcome back to our journey through Matrices. In our previous lesson, we understood what a matrix is and how to determine its order. Now, it is time to look at the different 'personalities' or types of matrices that exist based on their shape and the elements they contain. Let us start with the simplest ones: Row and Column matrices. A Row Matrix is a matrix that has only one single row. For example, a matrix with elements one, two, and three arranged horizontally is a row matrix of order one by three. On the other hand, a Column Matrix is a matrix that consists of only one single column. If we stack those same numbers vertically, it becomes a column matrix of order three by one. Now, let us move to a very important category: the Square Matrix. A matrix is called a square matrix if the number of rows is exactly equal to the number of columns. If a matrix has order two by two or three by three, it is a square matrix. This equality of rows and columns allows us to talk about something very special called the 'diagonal' of a matrix. In a square matrix, the elements located from the top-left corner to the bottom-right corner are called the main diagonal elements. This leads us to our next type: the Diagonal Matrix. A diagonal matrix is a square matrix where all the elements outside this main diagonal are zero. However, the elements on the diagonal itself can be anything. Now, what if all those diagonal elements are exactly the same? If we have a diagonal matrix where every single element on the main diagonal is the same constant value, we call it a Scalar Matrix. For instance, if the diagonal elements are all five, it is a scalar matrix. A very special case of the scalar matrix is the Identity Matrix. An Identity Matrix is a square matrix where all the diagonal elements are exactly one, and all other elements are zero. We usually denote it with the letter I. It is the most important matrix in algebra, acting much like the number one does in regular multiplication. Finally, let us look at the simplest form of all: the Zero Matrix, also known as the Null Matrix. A zero matrix is a matrix in which every single element is zero. Unlike the others we discussed, a zero matrix does not have to be square; it can be of any order, such as two by three or one by four. To summarize, we classify matrices by their dimensions—like row, column, and square—and by the specific values of their elements—like diagonal, scalar, identity, and zero. Understanding these types is crucial because, in our next lesson, we will see how these specific structures behave when we try to set two matrices equal to each other.","Welcome back. In our previous session, we explored the different types of matrices, from identity to zero matrices. Now, we move to a crucial concept that allows us to compare two different matrices: the Equality of Matrices. When do we say that Matrix A is exactly equal to Matrix B? It is not enough for them to just look similar. For two matrices to be equal, two strict conditions must be satisfied simultaneously. First, they must be of the same order. This means if Matrix A is a two-by-two matrix, Matrix B must also be a two-by-two matrix. If their dimensions differ, they can never be equal. Second, every single corresponding element must be identical. This means the element in the first row and first column of Matrix A must equal the element in the first row and first column of Matrix B, and so on for every position in the array. We denote this as a-sub-i-j equals b-sub-i-j for all values of i and j. Let's look at a mathematical representation. Suppose we have Matrix A with elements a-one-one, a-one-two, a-two-one, and a-two-two, and Matrix B with elements b-one-one, b-one-two, b-two-one, and b-two-two. For A to equal B, then a-one-one must equal b-one-one, a-one-two must equal b-one-two, and so on. This concept is incredibly powerful because it allows us to solve for unknown variables. In many algebraic problems, you will be given two matrices and told they are equal, but some elements will be replaced by variables like x, y, or z. Your task is to create a system of equations. Let's work through a practical example together. Suppose we have Matrix A, where the first row is x plus y and two, and the second row is three and x minus y. We are told that Matrix A is equal to Matrix B, where the first row is five and four, and the second row is three and one. Step one: check the order. Both are two-by-two matrices, so we can proceed. Step two: equate the corresponding elements. From the first row, first column, we get the equation: x plus y equals five. From the first row, second column, we get: two equals four. Wait, let's look closer at a more solvable example to avoid confusion. Let's say Matrix A has elements x plus y and eight, and the second row is three and 2y. Matrix B has elements 5 and 8, and the second row is 3 and 10. By equating them, we get our first equation: x plus y equals five. Our second equation comes from the last element: two y equals ten. Now, we solve this system. From two y equals ten, we divide both sides by two to find that y equals five. Now, substitute y equals five back into our first equation: x plus five equals five. Subtracting five from both sides, we find that x equals zero. So, the values that make these matrices equal are x equals zero and y equals five. Always remember to check your answers by plugging them back into the original matrices to ensure every single element matches perfectly. This method of equating elements is the foundation for solving matrix equations later in this chapter. Practice these steps carefully, as a single sign error in your algebraic equations will lead to the wrong values for your variables.","Welcome back. In our previous lessons, we learned how to identify different types of matrices and when two matrices are considered equal. Now, we move into the actual arithmetic of matrices. Let's start with the most fundamental operation: Matrix Addition. Suppose we have two matrices, let's call them Matrix A and Matrix B. Before we even think about adding them, there is one golden rule you must remember: the matrices must be of the same order. This means if Matrix A is a two-by-two matrix, Matrix B must also be a two-by-two matrix. If their dimensions are different, addition is undefined. Why? Because addition is performed element-wise. To find the sum, you simply add the element in the first row and first column of Matrix A to the element in the first row and first column of Matrix B, and so on for every single position. The resulting matrix, let's call it Matrix C, will have the exact same order as the original matrices. Now, let's look at Subtraction. The logic here is identical to addition. To subtract Matrix B from Matrix A, you subtract the corresponding elements. Again, the matrices must have the same order. If you have a matrix with three rows and two columns, you can only subtract another three-by-two matrix from it. Now, let's discuss the beautiful properties that govern these operations. First, we have the Commutative Property of Addition. This states that Matrix A plus Matrix B is equal to Matrix B plus Matrix A. The order in which you add them doesn't change the result. Second, we have the Associative Property of Addition. This means if you are adding three matrices, A, B, and C, then grouping A and B first, and then adding C, will give you the same result as grouping B and C first, and then adding A. Mathematically, we write this as A plus the sum of B and C, equals the sum of A and B, plus C. Third, there is the Existence of an Additive Identity. The Zero Matrix, which we discussed in the previous part, acts as the identity. If you add a Zero Matrix to any Matrix A, you simply get Matrix A back. Finally, we have the Additive Inverse. For every matrix A, there exists a matrix negative A, where every element is the negation of the corresponding element in A. When you add A and negative A, you get the Zero Matrix. Now, let's step away from the numbers for a moment and look at the Geometric Interpretation. This is where matrices become truly powerful. Imagine a point on a two-dimensional plane represented by a vector or a small matrix. When we add two matrices, we are essentially performing a translation in space. If Matrix A represents a position and Matrix B represents a displacement or a shift, then Matrix A plus Matrix B gives us the new position. It is like moving an object from one coordinate to another by adding a specific distance in the x and y directions. This concept is the foundation for computer graphics, where every movement of a character on a screen is calculated using matrix addition and other operations. So, remember: same order for addition and subtraction, element-wise calculation, and think of addition as a shift or translation in space. Let's practice some examples to solidify this.","Welcome back to our journey through Matrices. In our previous lesson, we learned how to add and subtract matrices of the same order. Today, we are going to expand our toolkit by exploring two critical concepts: Scalar Multiplication and the formal algebraic properties of matrix addition. Let us start with Scalar Multiplication. In the world of matrices, a 'scalar' is simply a real number. When we multiply a matrix by a scalar, say a number 'k', we are not performing a dot product like in matrix multiplication. Instead, it is much simpler. We multiply every single element inside the matrix by that number 'k'. For example, if we have a two-by-two matrix where the elements are a, b, c, and d, and we multiply it by the scalar k, the resulting matrix will have elements k times a, k times b, k times c, and k times d. Think of it as scaling the entire matrix up or down. If k is greater than one, the values grow; if k is between zero and one, the values shrink. If k is negative, the signs of all elements flip. Let's look at a quick mental calculation. If matrix A has elements 1, 2, 3, and 4, and we multiply it by scalar 3, our new matrix becomes 3, 6, 9, and 12. It is that straightforward. Now, let's move to the more formal side of things: the Algebraic Properties of Matrix Addition. Since we already know that we can only add matrices of the same order, we can now define the laws that govern this operation. The first is the Commutative Law. This states that for any two matrices A and B of the same order, A plus B is equal to B plus A. Because matrix addition is performed element-wise, and real number addition is commutative, the order in which you add the matrices does not change the result. The second is the Associative Law. This tells us that if we have three matrices, A, B, and C, all of the same order, then the grouping of addition does not matter. That is, A plus the sum of B and C is the same as the sum of A and B, plus C. This is incredibly useful when solving long matrix equations. Next, we have the Existence of an Additive Identity. Just as adding zero to a number doesn't change it, there exists a special matrix called the Zero Matrix, denoted by O. When you add the Zero Matrix to any matrix A, you simply get matrix A back. The Zero Matrix is a matrix where every single entry is zero. Finally, we have the Existence of an Additive Inverse. For every matrix A, there exists another matrix, which we call negative A, such that when you add A and negative A together, you get the Zero Matrix. To find the additive inverse, you simply change the sign of every element in the matrix. If an element was positive, it becomes negative, and vice versa. Understanding these properties is not just about passing exams; it is about understanding the structure of linear algebra. These rules allow us to manipulate complex equations just like we do with simple algebra, providing the foundation for everything we will study in the upcoming sections on matrix multiplication and transposes. Let's move on to some practice problems to solidify these concepts.","Welcome back. In our previous lessons, we mastered addition and subtraction, where we simply added corresponding elements. But now, we enter the most powerful operation in linear algebra: Matrix Multiplication. This is not just adding numbers; it is a process of combining rows and columns. Let's start with the most important rule: the Condition of Conformability. You cannot multiply just any two matrices. For the product of matrix A and matrix B to exist, the number of columns in matrix A must be exactly equal to the number of rows in matrix B. If matrix A is of order m by n, and matrix B is of order p by q, then the multiplication A times B is only possible if n equals p. If this condition is met, the resulting product matrix, let's call it C, will have the order m by q. This means the product takes its rows from the first matrix and its columns from the second. Think of it as a handshake between the width of the first and the height of the second. Now, how do we actually calculate the numbers? We use the Dot Product Rule. To find an element in the resulting matrix, say the element in the first row and first column, you take the first row of matrix A and the first column of matrix B. You multiply the first element of the row by the first element of the column, the second by the second, and so on, and then you sum all these products together. This is the dot product. Let's walk through a step-by-step example. Suppose matrix A is a two by three matrix, with elements in the first row as one, two, and three, and the second row as four, five, and six. Matrix B is a three by two matrix, with the first column being seven, eight, and nine, and the second column being ten, eleven, and twelve. Since A has three columns and B has three rows, they are conformable. The result will be a two by two matrix. To find the element at position one, one, we take row one of A: one, two, three; and column one of B: seven, eight, nine. We calculate: one times seven, plus two times eight, plus three times nine. That is seven plus sixteen plus twenty-seven, which equals fifty. Next, for position one, two, we take row one of A: one, two, three; and column two of B: ten, eleven, twelve. We calculate: one times ten, plus two times eleven, plus three times twelve. That is ten plus twenty-two plus thirty-six, which equals sixty-eight. Now for the second row of the result. For position two, one, we take row two of A: four, five, six; and column one of B: seven, eight, nine. We calculate: four times seven, plus five times eight, plus six times nine. That is twenty-eight plus forty plus fifty-four, which equals one hundred and twenty-two. Finally, for position two, two, we take row two of A: four, five, six; and column two of B: ten, eleven, twelve. We calculate: four times ten, plus five times eleven, plus six times twelve. That is forty plus fifty-five plus seventy-two, which equals one hundred and sixty-seven. Our final product matrix is two by two, with elements fifty, sixty-eight in the first row, and one hundred and twenty-two, one hundred and sixty-seven in the second row. Always remember: it is Row times Column. If you try to multiply a two by two matrix by a three by two matrix, the inner dimensions, two and three, do not match, and the operation is undefined. Keep practicing this rhythmic movement of row-to-column multiplication to avoid calculation errors.","Welcome back. In our previous session, we mastered the mechanics of the dot product rule and learned how to check if two matrices are conformable for multiplication. Today, we move from 'how' to multiply to 'why' certain rules apply, or more importantly, why some rules we know from basic algebra do not apply here. Let us start with a very important concept: Non-commutativity. In your earlier studies with real numbers, you learned that if you multiply two numbers, say five and three, the order does not matter; five times three is the same as three times five. We call this the commutative property. However, in the world of matrices, this is generally not true. If we have two square matrices, A and B, it is not always true that A multiplied by B equals B multiplied by A. In fact, even if both products are defined, they often result in entirely different matrices. Let us look at a quick mental example. Suppose matrix A is a two by two matrix and matrix B is also a two by two. When we calculate A times B, we are multiplying rows of A by columns of B. If we swap them to B times A, we are now multiplying rows of B by columns of A. The elements being paired up are completely different. In many cases, A times B might be possible, but B times A might not even be defined if the dimensions do not match. So, always remember: order matters in matrix multiplication. Now, let us move to a property that does hold true: the Associative Law. This law states that if you have three matrices, A, B, and C, and they are conformable for multiplication, then the grouping of the matrices does not change the final result. Mathematically, we write this as: A multiplied by the product of B and C is equal to the product of A and B multiplied by C. This means that if you have a long chain of multiplication, you can choose to multiply the first two first, or the last two first, and you will arrive at the same answer. This is a powerful tool for simplifying complex calculations. Let us see this in action with a complex example. Imagine we have three matrices. Matrix A is a two by three matrix, Matrix B is a three by two matrix, and Matrix C is a two by two matrix. To find the product A times B times C, we can first find the product of B and C. Since B is three by two and C is two by two, their product, let's call it D, will be a three by two matrix. Now, we multiply A, which is two by three, by our new matrix D, which is three by two. The result will be a two by two matrix. Alternatively, we could have multiplied A and B first. A times B would result in a two by two matrix. Then, multiplying that result by C, which is two by two, would also give us a two by two matrix. The final result is identical. This demonstrates that while we cannot change the order of the matrices, we can change how we group them. To summarize: Matrix multiplication is not commutative, meaning A times B is not necessarily B times A. But it is associative, meaning the grouping of terms does not affect the outcome. Mastering these properties is essential before we move on to the Transpose of a matrix in our next lesson.","Welcome back. In our previous lesson, we mastered the complexities of matrix multiplication. Now, we move to a fundamental operation that changes the very structure of a matrix: the Transpose. Imagine you have a matrix where the rows are horizontal and the columns are vertical. The transpose operation is like flipping the matrix over its main diagonal. Formally, if we have a matrix A, its transpose is denoted as A transpose, where we switch the rows and columns. This means the first row of matrix A becomes the first column of A transpose, the second row becomes the second column, and so on. If matrix A has an order of m by n, then its transpose, A transpose, will always have an order of n by m. Let us look at an example. Suppose matrix A has elements a sub one one, a sub one two, and a sub two one. If we take the transpose, the element at row one, column two moves to row two, column one. It is a simple but powerful transformation. Now, let us explore the properties of the transpose. First, the transpose of a transpose of a matrix is the original matrix itself. In mathematical terms, A transpose transpose equals A. Second, let us consider the transpose of a sum. The transpose of the sum of two matrices A and B is equal to the sum of their transposes. So, A plus B transpose equals A transpose plus B transpose. Third, and most importantly, let us look at the transpose of a product. This is where many students make mistakes. The transpose of the product of two matrices A and B is equal to the product of their transposes in reverse order. That is, A times B transpose equals B transpose times A transpose. This reversal is crucial for the dimensions to remain conformable. Moving forward, the transpose allows us to define two very special types of square matrices: Symmetric and Skew-Symmetric matrices. A square matrix A is called a Symmetric matrix if it is equal to its transpose. That is, A equals A transpose. This happens when the elements are mirror images across the main diagonal, meaning a sub ij equals a sub ji for all values of i and j. On the other hand, a square matrix A is called a Skew-Symmetric matrix if its transpose is equal to the negative of the original matrix. Mathematically, A transpose equals negative A. In a skew-symmetric matrix, a very important condition exists: all the elements on the main diagonal must be zero. This is because for diagonal elements, a sub ii must equal negative a sub ii, and the only number equal to its own negative is zero. Additionally, for all other elements, a sub ij must equal negative a sub ji. Understanding these definitions is the gateway to decomposing any square matrix into a symmetric and a skew-symmetric part, which we will cover in our next session. Let's keep practicing these transformations to build your intuition.","Welcome back. In our previous lesson, we explored the concept of the Transpose of a matrix. Today, we are going to use that concept to classify square matrices into two very special categories: Symmetric and Skew-Symmetric matrices. Let's start with the definition of a Symmetric matrix. A square matrix A is said to be symmetric if it is equal to its transpose. In mathematical terms, we write A transpose equals A. This means that the elements in the rows are identical to the elements in the columns. For example, if you have a three-by-three matrix where the element at row one, column two is five, then the element at row two, column one must also be five. Now, let's look at the Skew-Symmetric matrix. A square matrix A is called skew-symmetric if its transpose is equal to the negative of itself. We write this as A transpose equals negative A. This has a very important consequence. For a skew-symmetric matrix, the element at row i, column j must be the negative of the element at row j, column i. But what happens when i equals j? That is, what happens to the diagonal elements? If we apply the rule, the element must equal its own negative. The only number that is equal to its negative is zero. Therefore, a fundamental property of every skew-symmetric matrix is that all its diagonal elements must be zero. Now, let's move to a very important theorem. This theorem states that every square matrix can be uniquely expressed as the sum of a symmetric matrix and a skew-symmetric matrix. This is known as the decomposition of a square matrix. Let's derive this. Suppose we have a square matrix A. We can write A as one-half of the quantity A plus A transpose, plus one-half of the quantity A minus A transpose. Let's call the first part P and the second part Q. So, A equals P plus Q. If we take the transpose of P, we get one-half of the quantity A transpose plus A transpose transpose. Since the transpose of a transpose is the original matrix, P transpose equals one-half of A transpose plus A. This is exactly the same as P, which proves that P is a symmetric matrix. Now, let's look at Q. The transpose of Q is one-half of the quantity A minus A transpose transpose, which becomes one-half of A transpose minus A. This is the negative of our original Q. Thus, Q is a skew-symmetric matrix. This proves that any square matrix A can be decomposed into P, which is symmetric, and Q, which is skew-symmetric. To summarize, a symmetric matrix satisfies A transpose equals A, a skew-symmetric matrix satisfies A transpose equals negative A and has zeros on the diagonal, and every square matrix is the sum of these two types. Let's try a quick mental check. If a matrix has elements that are mirror images across the main diagonal, it is symmetric. If those elements are negatives of each other and the diagonal is all zeros, it is skew-symmetric. Understanding this decomposition is crucial for higher-level linear algebra and advanced matrix equations.","Welcome back. We have mastered the basics and the properties of symmetry. Now, we step into the advanced realm where matrices behave much like real numbers, but with specific rules. Let us begin with Polynomials of Matrices. Suppose we have a square matrix A. We can define a polynomial function of this matrix. If we have a polynomial P of x, such as x squared minus five x plus six, we can substitute the matrix A into this expression. This means P of A equals A squared minus five times A plus six times the Identity matrix I. It is crucial to remember that the constant term, like the number six in our example, must be multiplied by the Identity matrix to maintain conformability. You cannot add a scalar directly to a matrix. Next, let us look at Matrix Equations. These are equations where the unknown is a matrix. For example, if we have AX equals B, where A and B are given matrices, our goal is to find the matrix X. If A is a non-singular matrix, meaning its determinant is not zero, we can find X by multiplying both sides by the inverse of A from the left. So, X equals A inverse times B. Always remember the order of multiplication. In matrix algebra, A inverse times B is not the same as B times A inverse. This is a common trap in exams. Now, let us tackle Word Problems. Matrices are incredibly powerful for modeling real-world systems, especially in business and economics. Imagine a scenario where two companies produce two different products using different amounts of raw materials. We can represent the production requirements as one matrix and the cost or quantity of materials as another. By performing matrix multiplication, we can instantly calculate the total resources required or the total cost for multiple production cycles. For instance, if Matrix M represents the units of material per product, and Matrix P represents the number of products produced, then the product M times P gives us the total materials used. When solving these, always start by defining your variables clearly. Create a matrix for each category of data, ensure the dimensions are conformable for multiplication, and then perform the operation. Let us practice a mental check. If you are solving a matrix equation like X plus A equals B, you subtract A from both sides to get X equals B minus A. If it is AX equals B, you use the inverse. If it is XA equals B, you multiply by the inverse on the right, giving X equals B times A inverse. Mastering these advanced applications will not only help you in your board exams but also provides the foundation for higher mathematics and computer science algorithms. Let's dive into some solved examples to solidify these concepts.","Welcome back. We have covered the mechanics, the properties, and the advanced algebra of matrices. But even the brightest students can lose marks in the final exam due to avoidable errors. Today, we are performing an 'error autopsy' to identify exactly where things go wrong. Let's start with the most frequent culprit: Dimension Errors. Before you even pick up your pen to multiply, you must check conformability. A common mistake is attempting to multiply a matrix of order two by three with one of order two by three. Remember, the number of columns in the first matrix must equal the number of rows in the second. If you ignore this, you aren't just getting the wrong answer; you are performing an undefined operation. Always write down the orders side-by-side before starting. Next, let's talk about Calculation Mistakes, specifically in Matrix Multiplication. This is where most marks are lost. The 'row-by-column' rule is easy to state but easy to mess up during long calculations. Students often accidentally multiply a row by a row, or a column by a column. To avoid this, use your fingers to physically track the movement: left to right on the row, and top to bottom on the column. Another huge pitfall is the Sign Error during subtraction. When you subtract matrix B from matrix A, you must distribute the negative sign to every single element of matrix B. If matrix B has a negative element, subtracting it makes it positive. Many students only apply the minus sign to the first element and forget the rest. Moving on to Scalar Multiplication, a common error is applying the scalar only to the first row or the diagonal elements. Remember, the scalar must be distributed to every single entry in the matrix, no exceptions. Now, let's look at Conceptual Pitfalls. The most dangerous one is assuming that matrix algebra works exactly like real number algebra. In real numbers, a times b is always equal to b times a. In matrices, this is generally false. Never assume commutativity. If a question asks you to simplify 'A times B minus B times A', do not assume the answer is zero unless you have proven the matrices commute. Similarly, do not assume that if the product of two matrices is a zero matrix, then one of the individual matrices must be a zero matrix. This is a major trap! In matrix algebra, two non-zero matrices can multiply to give a zero matrix. Lastly, be careful with the Transpose. When taking the transpose of a product, remember the reversal rule: the transpose of 'A times B' is 'B transpose times A transpose'. Many students simply write 'A transpose times B transpose', which is incorrect for non-commutative matrices. If you master these error-checking techniques, you won't just be solving matrices; you will be mastering them. Let's move into our final session, the Exam Masterclass.","Welcome to the final segment of our journey through Matrices. You have mastered the concepts, from the basic order of a matrix to the complexities of symmetric and skew-symmetric decomposition. Now, it is time to transition from learning to performing. In the board examinations, Matrices is a high-scoring chapter, but many students lose marks not due to lack of knowledge, but due to procedural errors. Let us look at the high-weightage question patterns. The most frequent long-answer questions, typically carrying five marks, involve solving matrix equations or finding the values of variables using the equality of matrices. Another favorite is the proof involving symmetric and skew-symmetric matrices, specifically proving that any square matrix can be expressed as the sum of a symmetric and a skew-symmetric matrix. You must also be prepared for questions involving the properties of the transpose and matrix multiplication, especially where you are asked to prove non-commutativity. Now, let's talk about time management. In the exam, do not spend too much time on simple addition or subtraction problems. These are quick wins. Save your mental energy for matrix multiplication. Multiplication is where most calculation errors occur. My golden rule for you is: always write down the intermediate steps of your dot product. Do not try to multiply a three-by-three matrix in your head. If you skip steps, you risk a sign error, and a single wrong sign in the first row will ruin your entire result. For the short-answer questions, focus on the properties. If a question asks about the transpose of a product, remember that the transpose of A multiplied by B is equal to the transpose of B multiplied by the transpose of A. Knowing these properties saves you from tedious manual calculations. Let us do a rapid-fire recap of the entire chapter to cement your understanding. We started with the definition of a matrix as a rectangular array of numbers organized in rows and columns. We categorized them into types like row, column, square, diagonal, scalar, identity, and zero matrices. We learned that for two matrices to be equal, they must have the same order and their corresponding elements must be identical. We explored addition and subtraction, which are only possible when matrices have the same dimensions. We moved into the core of the chapter: matrix multiplication. Remember, for multiplication to be defined, the number of columns in the first matrix must equal the number of rows in the second. We learned that matrix multiplication is generally not commutative, meaning A multiplied by B is not necessarily equal to B multiplied by A. We then studied the transpose, which involves interchanging rows and columns. This led us to the vital concepts of symmetric matrices, where the matrix equals its transpose, and skew-symmetric matrices, where the matrix equals the negative of its transpose. We also touched upon matrix equations and the algebra of polynomials. As we conclude, remember that Matrices is a logical subject. If your dimensions do not match, stop and re-evaluate. If your multiplication feels wrong, check your signs. Practice the NCERT examples repeatedly, as they form the blueprint for board questions. You are now ready to tackle any matrix problem with confidence. Keep practicing, stay organized, and I will see you in the next chapter."];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-maths-03-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

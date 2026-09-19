@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>The Trees, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c10-english-16-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Symbolism of Nature vs. Urbanization -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Symbolism of Nature vs. Urbanization</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Core Conflict: The struggle between the natural world and human-made urban spaces.</div>
+              <div id="qx0-p1" class="qe-bullet">• Symbolism of the House: Represents confinement, domesticity, and artificial limits.</div>
+              <div id="qx0-p2" class="qe-bullet">• Symbolism of the Forest: Represents freedom, the wild, and ecological balance.</div>
+              <div id="qx0-p3" class="qe-bullet">• The Ecological Lens: Nature's rebellion against being treated as mere decoration.</div>
+              <div id="qx0-p4" class="qe-bullet">• The Sociological Lens: A metaphor for breaking social boundaries and seeking liberation.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":108840901,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a cramped, grey concrete room with a single potted plant, while the other side shows a vast, glowing, sun-drenched ancient forest.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A split-screen 3D animation: one side shows a cramped, grey concrete room with a single potted plant, while the other side shows a vast, glowing, sun-drenched ancient forest.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Stanza 1 Analysis: The Struggle for Liberation -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Stanza 1 Analysis: The Struggle for Liberation</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• The central conflict: Trees moving from domestic houses to the empty forest.</div>
+              <div id="qx1-p1" class="qe-bullet">• Symbolism of the 'Empty Forest': A broken ecosystem awaiting restoration.</div>
+              <div id="qx1-p2" class="qe-bullet">• Nature vs. Domestication: Trees as decorative objects vs. living entities.</div>
+              <div id="qx1-p3" class="qe-bullet">• The theme of Liberation: A purposeful rebellion against confinement.</div>
+              <div id="qx1-p4" class="qe-bullet">• Metaphorical layer: The house represents societal restrictions.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1070008011,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a cramped, dimly lit living room on the left and a vast, misty, silent forest on the right, with glowing green silhouettes of trees slowly drifting from the room toward the woods.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation showing a cramped, dimly lit living room on the left and a vast, misty, silent forest on the right, with glowing green silhouettes of trees slowly drifting from the room toward the woods.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Stanza 2 Analysis: The Movement of Roots and Leaves -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Stanza 2 Analysis: The Movement of Roots and Leaves</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Roots 'working' symbolize the persistent struggle for liberation.</div>
+              <div id="qx2-p1" class="qe-bullet">• The 'veranda floor' represents the boundaries of domestic confinement.</div>
+              <div id="qx2-p2" class="qe-bullet">• Simile: Twigs compared to 'newly discharged patients' showing urgency.</div>
+              <div id="qx2-p3" class="qe-bullet">• The 'glass' acts as a transparent but rigid barrier of civilization.</div>
+              <div id="qx2-p4" class="qe-bullet">• The stanza highlights the transition from confinement to active rebellion.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1797930662,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D close-up animation of thick, pulsing tree roots cracking a marble veranda floor under moonlight.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D close-up animation of thick, pulsing tree roots cracking a marble veranda floor under moonlight.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Stanza 3 Analysis: The Breaking of Glass and Boundaries -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Stanza 3 Analysis: The Breaking of Glass and Boundaries</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Symbolism of Glass: Represents artificial boundaries and domestic confinement.</div>
+              <div id="qx3-p1" class="qe-bullet">• The Act of Breaking: Signifies a violent, necessary liberation from control.</div>
+              <div id="qx3-p2" class="qe-bullet">• Auditory Imagery: The sharp sound of shattering glass marks a turning point.</div>
+              <div id="qx3-p3" class="qe-bullet">• Movement to the Forest: A purposeful migration back to the natural order.</div>
+              <div id="qx3-p4" class="qe-bullet">• Transition of Identity: From decorative objects to wild, autonomous beings.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4088670741,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D close-up of a glass window pane cracking and shattering in slow motion as thick, green tree branches push through the shards toward a dark, vast forest background.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D close-up of a glass window pane cracking and shattering in slow motion as thick, green tree branches push through the shards toward a dark, vast forest background.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Stanza 4 Analysis: The Moon and the Forest's Return -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Stanza 4 Analysis: The Moon and the Forest's Return</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Simile: 'Moon is broken like a mirror' represents light filtered through leaves.</div>
+              <div id="qx4-p1" class="qe-bullet">• Visual Imagery: Fragmented moonlight creates a sense of dynamic movement.</div>
+              <div id="qx4-p2" class="qe-bullet">• Symbolism of the 'Crown': Represents the sovereignty and power of nature.</div>
+              <div id="qx4-p3" class="qe-bullet">• Shift in Perspective: Transition from indoor confinement to outdoor majesty.</div>
+              <div id="qx4-p4" class="qe-bullet">• Thematic Triumph: Nature reclaiming its rightful, unconfined space.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":616250592,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A low-angle 3D shot looking up through the dense, moving branches of a massive oak tree, with moonlight splintering into bright, shimmering shards through the leaves.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A low-angle 3D shot looking up through the dense, moving branches of a massive oak tree, with moonlight splintering into bright, shimmering shards through the leaves.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Literary Devices I: Metaphor, Simile, and Personification -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Literary Devices I: Metaphor, Simile, and Personification</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Personification: Giving human qualities to non-human elements like roots and leaves.</div>
+              <div id="qx5-p1" class="qe-bullet">• Simile: A direct comparison between two things using 'like' or 'as'.</div>
+              <div id="qx5-p2" class="qe-bullet">• Metaphor: An indirect comparison where one thing is described as being another.</div>
+              <div id="qx5-p3" class="qe-bullet">• Extended Metaphor: The entire poem acts as a symbol for women's liberation.</div>
+              <div id="qx5-p4" class="qe-bullet">• The 'House' vs. 'Forest' metaphor: Domestic restriction vs. social freedom.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":624466678,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on the left, literal roots cracking a floor; on the right, a translucent overlay of a person breaking through chains.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A split-screen 3D animation: on the left, literal roots cracking a floor; on the right, a translucent overlay of a person breaking through chains.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Literary Devices II: Imagery, Enjambment, and Alliteration -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Literary Devices II: Imagery, Enjambment, and Alliteration</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Imagery: Using sensory details to create vivid mental pictures.</div>
+              <div id="qx6-p1" class="qe-bullet">• Tactile and Visual Imagery: Feeling the roots and seeing the broken moon.</div>
+              <div id="qx6-p2" class="qe-bullet">• Enjambment: Lines flowing into each other without punctuation.</div>
+              <div id="qx6-p3" class="qe-bullet">• Purpose of Enjambment: Mimicking the continuous movement of nature.</div>
+              <div id="qx6-p4" class="qe-bullet">• Alliteration: Repetition of consonant sounds for rhythm and emphasis.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1305305031,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split screen showing a close-up of roots cracking a floor on one side, and a flowing, unpunctuated line of text morphing into a moving forest on the other.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A split screen showing a close-up of roots cracking a floor on one side, and a flowing, unpunctuated line of text morphing into a moving forest on the other.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Thematic Deep Dive: Feminism and Environmentalism -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Thematic Deep Dive: Feminism and Environmentalism</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Trees as a metaphor for women breaking domestic boundaries</div>
+              <div id="qx7-p1" class="qe-bullet">• The struggle against patriarchal and societal constraints</div>
+              <div id="qx7-p2" class="qe-bullet">• Environmental critique: Nature cannot be domesticated or contained</div>
+              <div id="qx7-p3" class="qe-bullet">• The intersection of liberation: Reclaiming the natural and social sphere</div>
+              <div id="qx7-p4" class="qe-bullet">• Key concept: The movement from 'interior' confinement to 'exterior' freedom</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2384911538,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows tree roots cracking a floor, the other shows a silhouette of a woman stepping through a doorway into a vast landscape.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A split-screen 3D animation: one side shows tree roots cracking a floor, the other shows a silhouette of a woman stepping through a doorway into a vast landscape.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Poetic Structure: Rhythm, Rhyme, and Free Verse -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Poetic Structure: Rhythm, Rhyme, and Free Verse</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Form: The poem is written in Free Verse, lacking a fixed rhyme or meter.</div>
+              <div id="qx8-p1" class="qe-bullet">• Symbolism of Form: Free Verse mirrors the theme of breaking boundaries.</div>
+              <div id="qx8-p2" class="qe-bullet">• Rhythm: Uses natural cadence instead of a repetitive, mechanical beat.</div>
+              <div id="qx8-p3" class="qe-bullet">• Enjambment: Lines flow into each other to create a sense of continuous motion.</div>
+              <div id="qx8-p4" class="qe-bullet">• Structural Intent: The lack of 'containment' in structure reflects the trees' escape.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":597379464,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation of a rigid, metallic cage dissolving into flowing, organic ink lines that move across the screen like growing vines.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D animation of a rigid, metallic cage dissolving into flowing, organic ink lines that move across the screen like growing vines.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Critical Vocabulary and Contextual Meanings -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Critical Vocabulary and Contextual Meanings</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Exertion and Straining: Highlighting the intense physical struggle for freedom.</div>
+              <div id="qx9-p1" class="qe-bullet">• Disengage: The process of releasing oneself from artificial constraints.</div>
+              <div id="qx9-p2" class="qe-bullet">• Boughs: Representing the heavy, powerful limbs of the trees.</div>
+              <div id="qx9-p3" class="qe-bullet">• Glass as a Metaphor: Symbolizing the breaking of domestic and social barriers.</div>
+              <div id="qx9-p4" class="qe-bullet">• Contextual Precision: Using specific verbs to elevate your exam answers.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2594485910,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on the left, a close-up of a root cracking a floor tile; on the right, a glossary of terms appearing in elegant, floating typography.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation: on the left, a close-up of a root cracking a floor tile; on the right, a glossary of terms appearing in elegant, floating typography.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Mistakes: Misinterpreting Symbolism and Tone -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Mistakes: Misinterpreting Symbolism and Tone</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Avoid literalism: The trees represent more than just biological plants.</div>
+              <div id="qx10-p1" class="qe-bullet">• Nuanced Tone: It is a mix of tension, urgency, and triumph, not just joy.</div>
+              <div id="qx10-p2" class="qe-bullet">• The House Symbolism: It represents confinement and social restrictions.</div>
+              <div id="qx10-p3" class="qe-bullet">• The Moon Imagery: Represents a shattering of old perspectives.</div>
+              <div id="qx10-p4" class="qe-bullet">• The Empty Forest: Symbolizes a world lacking balance and true freedom.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":888039221,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a literal tree breaking a window on one side, and a symbolic silhouette of a woman breaking through iron bars on the other.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a literal tree breaking a window on one side, and a symbolic silhouette of a woman breaking through iron bars on the other.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: RTCs, Theme Essays, and Full Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: RTCs, Theme Essays, and Full Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• RTC Strategy: Always link literal imagery to metaphorical meaning.</div>
+              <div id="qx11-p1" class="qe-bullet">• Essay Tip: Connect Environmentalism and Feminism using comparative transitions.</div>
+              <div id="qx11-p2" class="qe-bullet">• Keywords for High Marks: Subjugation, Liberation, Reclamation, and Rebellion.</div>
+              <div id="qx11-p3" class="qe-bullet">• Avoid Pitfalls: Do not treat the poem as a literal description of nature.</div>
+              <div id="qx11-p4" class="qe-bullet">• Final Recap: Symbolism, Literary Devices, Themes, and Tone.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2934873005,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on one side, a woman stepping out of a dark room into sunlight; on the other, trees breaking through a glass greenhouse into a vast forest.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation: on one side, a woman stepping out of a dark room into sunlight; on the other, trees breaking through a glass greenhouse into a vast forest.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix The Trees today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Symbolism of Nature vs. Urbanization <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Stanza 1 Analysis: The Struggle for Liberation <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Stanza 2 Analysis: The Movement of Roots and Leaves <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Stanza 3 Analysis: The Breaking of Glass and Boundaries <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Stanza 4 Analysis: The Moon and the Forest's Return <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Literary Devices I: Metaphor, Simile, and Personification <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Literary Devices II: Imagery, Enjambment, and Alliteration <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Thematic Deep Dive: Feminism and Environmentalism <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Poetic Structure: Rhythm, Rhyme, and Free Verse <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Critical Vocabulary and Contextual Meanings <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Mistakes: Misinterpreting Symbolism and Tone <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: RTCs, Theme Essays, and Full Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello, students! Welcome to our comprehensive deep dive into Adrienne Rich's powerful poem, 'The Trees'. Before we break down the stanzas and the poetic devices, we need to understand the 'why' behind this poem. Why did the poet write about trees moving from a house into a forest? To understand this, we must look at the central conflict of the poem: the clash between Nature and Urbanization. Now, let's define these two terms clearly. Urbanization refers to the process where human beings build cities, concrete structures, and artificial environments. In these urban spaces, nature is often treated as a decoration. We put plants in pots, we keep trees in small gardens, and we confine them within the four walls of our homes. On the other hand, Nature represents the wild, the untamed, and the original state of the world. In the poem, the forest is not just a collection of trees; it is a symbol of freedom, balance, and the natural order of life. Think about the setting the poet describes. She speaks of trees that are currently inside a house. This is a crucial metaphor. A house is a symbol of confinement, domesticity, and the artificial boundaries created by humans. When trees are kept inside a house, they are no longer truly 'trees' in their functional sense; they are merely ornaments. They are stripped of their purpose, which is to provide shade, oxygen, and a habitat for wildlife. This brings us to the core symbolism. The movement of the trees from the house to the forest symbolizes the rebellion of the natural world against human control. It is a struggle for liberation. As we progress through this series, you will see how the poet uses the physical struggle of the roots and leaves to represent a much larger struggle. This struggle is twofold. First, it is an environmental struggle. It is a critique of how modern civilization has tried to domesticate and imprison nature. We have replaced vast, breathing forests with concrete jungles, and in doing so, we have created an imbalance in the ecosystem. Second, and perhaps more subtly, the poem carries a social symbolism. The trees can be seen as a metaphor for people—specifically women—who have been confined to the domestic spheres of a house, much like the trees are confined to the living room. Just as the trees are breaking through the glass to reach the forest, there is a sense of suppressed energy breaking free from social constraints. So, as we study this poem, I want you to keep two lenses in mind. The first lens is the Ecological Lens: see the poem as a call to return nature to its rightful place. The second lens is the Sociological Lens: see the poem as a metaphor for the breaking of boundaries and the quest for freedom. By the end of this chapter, you won't just see a poem about plants; you will see a poem about the unstoppable force of life reclaiming its space. Let's get started with our first stanza analysis.","Welcome back. In our previous segment, we established the core conflict: the tension between the artificial, urban world and the wild, untamed force of nature. Now, let us dive straight into the heart of the poem by analyzing the first stanza. This stanza is not just a description; it is a declaration of movement. The poet, Adrienne Rich, begins with a striking image: 'The trees are moving out into the forest.' Notice the verb 'moving.' This isn't a passive state. The trees are actively, purposefully shifting from their confined domestic spaces toward their natural habitat. But where is this forest? The poem tells us the forest has been empty all these days. This is a crucial detail. An empty forest is a broken ecosystem; it is a landscape lacking its soul. By stating the forest is empty, the poet suggests that nature has been displaced, perhaps by human expansion or urbanization, leaving a void that only the trees can fill. As we look closer at the lines, we see the struggle for liberation. The trees are currently trapped inside houses. Think about the irony here. A tree inside a house is no longer a tree in the functional, biological sense; it has become a decorative object, a piece of furniture, a captive of human aesthetics. This represents the domestication of nature. The struggle begins the moment these trees decide to break free from the glass windows and the manicured gardens to reclaim their rightful place. The stanza sets a tone of quiet but unstoppable momentum. It is not a violent explosion, but a steady, inevitable migration. This movement symbolizes a rebellion against confinement. When we analyze this through a literary lens, we see that the 'forest' represents freedom and the 'house' represents the restrictive structures of society. The trees are the protagonists of this struggle, fighting to return to a state of being where they are not 'owned' or 'contained' but are simply part of the wild rhythm of the earth. As you read these lines, pay attention to the sense of urgency. The trees are not just wandering; they are returning to where they belong to restore the balance of the world. This sets the stage for the physical struggle we will see in the next stanza, where we witness the actual mechanics of this escape.","Welcome back. In our previous segment, we looked at the overarching struggle for liberation. Now, let us zoom in on the physical mechanics of that rebellion. We are diving into the second stanza of Adrienne Rich's 'The Trees'. This stanza is crucial because it moves from the abstract idea of freedom to the visceral, almost violent, physical effort required to achieve it. The poet writes, 'All night long / my roots work to disengage themselves / from the cracks in the veranda floor.' Let's pause on that imagery. The 'roots' represent the deep-seated, fundamental essence of nature—or perhaps, metaphorically, the suppressed identity of women. They aren't just sitting there; they are 'working.' This implies a continuous, exhausting, and nocturnal struggle. The choice of 'all night long' suggests that this transformation happens in the shadows, away from the judgmental eyes of society, during the time when the world is quietest. The setting is a 'veranda floor.' Think about what a veranda represents: it is a man-made, domestic, and controlled space. It is the boundary between the house and the wild. By trying to break through the 'cracks' in the veranda, the roots are attempting to dismantle the very architecture of domesticity that seeks to contain them. It is a battle between the organic and the inorganic. Next, the poet describes the leaves and the twigs. She says, 'the leaves strain toward the glass / the twigs also want to move like newly discharged patients.' This is one of the most striking similes in the entire poem. Let's analyze it deeply. Why 'newly discharged patients'? Imagine a person who has been confined to a hospital bed for a long time. When they are finally discharged, they are weak, perhaps a bit disoriented, but they are filled with an overwhelming, almost frantic urge to step into the sunlight and breathe fresh air. They move with a sense of urgency and a lack of coordination because they are reclaiming their autonomy. By comparing the twigs to these patients, Rich suggests that the trees—and by extension, the women or the natural world—have been 'institutionalized' or confined. They have been treated as objects to be kept, rather than living forces to be respected. The word 'strain' is vital here. It isn't a gentle stretching; it is a forceful, painful effort. The leaves are pushing against the 'glass'—the transparent but hard barrier of human civilization. The glass is a symbol of the illusion of safety. It allows us to look at nature, but it prevents us from truly being part of it. It is a barrier that is clear but impenetrable. As we analyze this stanza, notice the sensory details: the tactile sensation of roots working through cracks, the visual of leaves pressing against glass, and the kinetic energy of the 'straining' twigs. This stanza shifts the poem from a quiet observation to a scene of intense, quiet labor. The movement is slow, but it is inevitable. The tension is building. The domestic space is no longer a sanctuary; it is becoming a prison that is being systematically dismantled from within. As we move forward, keep this image of the 'newly discharged patient' in your mind, as it perfectly captures the mixture of vulnerability and fierce determination that defines this movement.","Welcome back. In our previous segment, we observed the physical struggle of the roots and leaves. Now, we move into the third stanza, which is perhaps the most intense and action-oriented part of Adrienne Rich's poem. This stanza marks the transition from internal effort to external breakthrough. Let us look closely at the text. The poet describes how the trees are moving towards the forest, but they aren't just walking; they are breaking through barriers. The most significant image here is the 'breaking of glass.' Why glass? In a literal sense, these trees are likely decorative plants kept inside houses, behind glass windows or panes. But symbolically, the glass represents the artificial boundaries created by humans to contain nature. It represents the domestic sphere, the confinement of the home, and the rigid structures of society that attempt to keep the wild, untamed spirit of nature—and by extension, women—under control. When the poet mentions the glass breaking, it is a moment of violent liberation. It is not a quiet exit; it is a shattering of the status quo. As the trees move, the glass cracks and breaks, signifying that once the urge for freedom becomes strong enough, no man-made barrier can hold it back. This brings us to the sensory details. The poet uses auditory imagery here. We can almost hear the sharp, sudden sound of the glass splintering. This sound serves as a wake-up call. It signals that the period of quiet confinement is over. Furthermore, notice the movement described. The trees are moving towards the forest, which has been empty for a long time. This movement is purposeful and relentless. It is not a random wandering; it is a migration back to their rightful home. The 'forest' here is not just a collection of trees; it is the natural order, the vastness of the world where things are allowed to grow without restriction. By breaking the glass, the trees are reclaiming their identity. They are moving from being 'objects' of decoration in a living room to being 'subjects' of the wild forest. This stanza is crucial because it shifts the poem from a description of struggle to a description of successful rebellion. The boundary between the 'inside'—the human, controlled world—and the 'outside'—the natural, free world—is being demolished. As we analyze this, keep in mind the dual meaning: the ecological necessity of trees returning to forests, and the social necessity of individuals breaking free from oppressive domestic roles. The breaking glass is the sound of revolution.","Welcome back. In the previous section, we saw the trees breaking through the glass boundaries of the house. Now, we move into the fourth stanza, which marks the climax of the poem's movement. This is the moment of transition from the artificial, indoor space to the natural, outdoor world. Let us look closely at the lines: 'The moon is broken like a mirror, / And the pieces flash now in the crown / Of the tallest oak.' This is a stunning piece of imagery. Notice the simile used here: 'The moon is broken like a mirror.' Why does Adrienne Rich use this comparison? It is not because the moon is actually shattered, but because of the visual effect created by the trees. As the trees move out of the house and into the forest, their thick, dense branches and leaves begin to obstruct our view of the moon. When you look up through the canopy of a massive oak tree, the moonlight is filtered, fragmented, and scattered into many small, bright pieces. To the observer, it looks as if a mirror has been smashed, and the shards are reflecting light. This imagery serves a dual purpose. First, it emphasizes the physical strength and height of the trees. The 'tallest oak' is now so dominant that it can intercept and 'break' the light of the celestial moon. Second, it symbolizes the disruption of the old, static order. The moon, which usually shines clearly and uninterruptedly over a controlled landscape, is now being fragmented by the returning force of nature. This fragmentation represents the breaking of the old, domestic patterns that kept the trees—and by extension, women—confined. Now, let us look at the second part of this stanza: 'The moon is broken, / The pieces flash now in the crown / Of the tallest oak.' The word 'crown' is highly significant. In a botanical sense, the crown is the top part of a tree, including the branches and leaves. However, in a symbolic sense, a crown represents sovereignty, power, and royalty. By placing the 'broken pieces' of moonlight in the crown of the oak, the poet is crowning the tree. Nature is reclaiming its throne. The tree is no longer a decorative object in a living room; it is a majestic, sovereign entity in the forest. This stanza also highlights a shift in perspective. We are no longer looking at the trees from the inside of a house; we are looking up at them from the forest floor. The movement is complete. The trees have successfully transitioned from the 'interior' to the 'exterior.' This transition is not just a change of location; it is a change of status. The trees have moved from being captives to being rulers of their own domain. As we analyze this, keep in mind the interplay between light and shadow. The 'flashing' of the moon pieces creates a sense of dynamic energy and movement, contrasting sharply with the stillness of the house we saw in the earlier stanzas. This is the triumph of the natural rhythm over the artificial stillness. The forest is no longer empty; it is being filled, and the moon itself becomes a participant in this celebration of return. As the trees occupy the space, they change how we perceive the very sky above them. This stanza is the visual crescendo of the poem, where the struggle of the roots and the breaking of the glass culminate in a magnificent, fragmented display of light and power.","Welcome back. In our previous segment, we analyzed the physical movement of the trees as they break free from the confines of the house. Now, we are going to look at the 'how' of the poem. How does Adrienne Rich make us feel this struggle? She does it through literary devices. These are the tools a poet uses to add layers of meaning beyond the literal words. Today, we focus on the big three: Metaphor, Simile, and Personification. Let us start with Personification. Personification is when a poet gives human qualities, emotions, or intentions to non-human things, like animals, objects, or even plants. In 'The Trees', this is the most dominant device. Look at the way the roots are described. The poet says the roots work all night to disengage themselves from the cracks in the veranda floor. Roots do not have a 'will' or a 'purpose' in the human sense; they simply grow. But by saying they are 'working' to free themselves, Rich gives them human agency. They aren't just growing; they are planning an escape. Similarly, the leaves are described as 'straining' toward the glass. Straining implies an intense physical effort and a desire, which are human traits. This makes the trees feel like characters in a drama rather than just pieces of vegetation. Next, let us discuss Simile. A simile is a direct comparison between two different things using the words 'like' or 'as'. It is a way of saying one thing is similar to another to create a vivid picture. In this poem, the poet uses imagery that feels almost like a simile, even when the word 'like' is implied. However, pay close attention to the descriptions of the moon. When the trees move out, the moon is seen through the crown of the oak tree. While the poem is heavy on metaphor, the comparisons it makes help us visualize the tension. If we look at the movement of the branches, they are compared to the effort of a person trying to break free. Now, let us move to the most profound device used here: Metaphor. A metaphor is an indirect comparison. Unlike a simile, which says something is 'like' something else, a metaphor says something 'is' something else. It is much deeper. In 'The Trees', the entire poem is an extended metaphor. This means the metaphor lasts throughout the whole piece. On a literal level, we are reading about trees moving from a house to a forest. But on a metaphorical level, the trees represent something much larger. They represent women breaking free from the domestic spheres and traditional roles imposed upon them by society. The 'house' is a metaphor for the restrictive boundaries of the home, and the 'forest' is a metaphor for the vast, liberated world of freedom and equality. When the roots struggle against the floor, it is a metaphor for the struggle against social constraints. When the leaves strain toward the glass, it is a metaphor for the longing for intellectual and social liberation. Understanding these devices is crucial because if you only read the poem literally, you miss the soul of the poem. You see plants; the poet wants you to see a revolution. As you prepare for your exams, remember: Personification brings the trees to life, Simile clarifies the imagery, and Metaphor provides the deep, underlying meaning of the entire work. Keep these definitions in mind as we move to our next session on Imagery and Alliteration.","Welcome back. In our previous segment, we explored how Adrienne Rich uses metaphors and personification to breathe life into the trees. Now, we are going to look at the technical tools that make the poem feel so alive and fluid. We will focus on three specific devices: Imagery, Enjambment, and Alliteration. Let us start with Imagery. Imagery is the use of vivid, descriptive language that appeals to our five senses—sight, sound, touch, smell, and taste. In 'The Trees,' the imagery is overwhelmingly visual and tactile. Think about the line where the roots work all night to disengage themselves from the cracks in the veranda floor. Can you see the slow, straining movement? Can you feel the tension of the wood against the stone? This is visual and tactile imagery. Another striking example is the description of the moon being broken like a mirror by the crown of the oak tree. This creates a sharp, fractured visual in your mind. The poet isn't just telling us the trees are moving; she is painting a picture so detailed that you can almost hear the glass breaking and see the moonlight splintering. Next, let us discuss Enjambment. This is a term you must remember for your exams. Enjambment occurs when a sentence or a phrase continues from one line of poetry to the next without any terminal punctuation, like a period or a comma, at the end of the line. If you look closely at the poem, you will notice that many lines do not end with a full stop. Instead, the thought flows directly into the next line. Why does Adrienne Rich do this? It is not by accident. The enjambment mimics the very movement of the trees. Just as the trees are breaking free, moving out of the house, and flowing toward the forest, the lines of the poem flow into one another without being stopped by boundaries. The lack of punctuation at the end of lines creates a sense of continuous, unstoppable momentum. It reflects the unstoppable force of nature. Finally, let us look at Alliteration. Alliteration is the repetition of consonant sounds at the beginning of words that are close together in a sentence. It creates a musical quality and draws attention to specific phrases. For example, consider the subtle repetition of sounds that guide the rhythm of the poem. When we see similar sounds repeating, it helps to emphasize the struggle or the grace of the movement. Alliteration helps to tie the poem together, making the reading experience smooth yet impactful. By combining these three devices—the vivid pictures of Imagery, the flowing movement of Enjambment, and the musicality of Alliteration—the poet ensures that 'The Trees' is not just a poem to be read, but an experience to be felt. As you revise, try to find one more example of enjambment in the text and note how it changes the pace of your reading. In our next session, we will move into a deep thematic dive, looking at how this poem connects to feminism and environmentalism.","Welcome back. We have analyzed the imagery and the literary devices, but now we reach the heart of Adrienne Rich's poem. To truly understand 'The Trees', we must look beyond the literal leaves and roots. We need to explore the powerful dual themes of Feminism and Environmentalism. You might ask, how can a poem about trees be about women? This is where the concept of extended metaphor comes into play. Adrienne Rich was a prominent feminist poet, and in this poem, the trees serve as a profound metaphor for women. For centuries, women have been confined to the 'interior'—the domestic sphere, the house, the private space. Just as the trees in the poem are trapped inside a house, unnaturally placed in decorative pots, women have historically been restricted to domestic roles, expected to stay within the boundaries of the home. The struggle of the roots to disengage from the cracks and the leaves to strain toward the glass represents the struggle of women to break free from societal constraints and patriarchal structures. When the poem describes the trees moving out into the forest, it is not just a biological event; it is a social revolution. It symbolizes women reclaiming their rightful place in the public sphere, in society, and in the world of intellect and action. Now, let us look at the second layer: Environmentalism. On a literal level, the poem is a critique of how humanity has attempted to domesticate nature. We take the wild, sprawling energy of a forest and try to shrink it into a living room or a balcony. We treat nature as an ornament, something to be controlled and displayed. This 'man-made' version of nature is artificial and suffocating. The poem suggests that nature cannot be truly contained. The breaking of the glass and the movement of the trees represent the inevitable rebellion of the natural world against human encroachment. There is a beautiful, symbiotic link here between the feminist and environmentalist readings. Both themes deal with the concept of 'liberation from confinement.' Both themes address the tension between the 'natural' state of being and the 'artificial' structures imposed by humans. The trees represent a force that is being suppressed but possesses an inherent, unstoppable power to reclaim its original habitat. When you write your long-answer questions in the exam, do not just say 'the trees are moving.' Instead, say 'the trees symbolize the movement of marginalized groups—both nature and women—striving to break free from artificial boundaries to reclaim their true essence.' This intersectional approach will show the examiner that you understand the depth of Rich's social commentary. Remember, the forest is not just a place of trees; it is a symbol of freedom, autonomy, and the natural order that humans have disrupted. As we move forward, keep this duality in mind: the poem is a call to action for both the planet and for human equality.","Welcome back. We have explored the deep metaphors and the intense imagery of Adrienne Rich's 'The Trees'. Now, we are going to look at the skeleton of the poem—its structure. How does the poet use the very shape of her words to convey the feeling of movement and liberation? In poetry, structure is never accidental. It is a tool used to control the pace and the emotional impact on the reader. Let's start with the most obvious question: Does this poem follow a strict rhyme scheme? If you look closely at the stanzas, you will notice that there is no consistent pattern of end-rhymes. You won't find an A-B-A-B or an A-A-B-B pattern here. Instead, Adrienne Rich uses what we call Free Verse. Now, what exactly is Free Verse? It is a form of poetry that does not use consistent meter patterns, regular rhythms, or rhyme schemes. You might wonder, 'If there is no rhyme, does that make it less poetic?' Absolutely not. In fact, for this specific poem, Free Verse is a deliberate stylistic choice. Think about the subject matter: trees breaking out of houses, roots cracking floors, and leaves straining toward the forest. A rigid, highly structured rhyme scheme would feel like a cage. It would feel too controlled, too 'domesticated.' By using Free Verse, the poet mirrors the very theme of the poem—the breaking of boundaries and the refusal to be contained. The structure itself is 'free,' just like the trees she describes. Now, let's talk about Rhythm. Even without a formal meter, like iambic pentameter, the poem has a distinct flow. This is achieved through a technique called Cadence. Cadence is the natural rise and fall of the voice. Because the poem lacks a heavy, driving beat, the rhythm feels organic and unpredictable. It mimics the slow, steady, almost silent struggle of the trees. It isn't a march; it is a gradual, creeping movement. This leads us to a very important structural element we touched on briefly in the literary devices section: Enjambment. Enjambment occurs when a sentence or a phrase runs over from one line to the next without any terminal punctuation, like a period or a comma, at the end of the line. In 'The Trees,' Rich uses enjambment extensively. Why? Because enjambment creates a sense of continuous motion. It prevents the reader from stopping abruptly. It forces your eyes to move quickly from one line to the next, creating a visual and auditory 'flow.' This flow represents the unstoppable momentum of nature reclaiming its space. If the lines were all broken by heavy punctuation, the poem would feel choppy and stagnant. Instead, the lines bleed into one another, much like the roots and branches are bleeding out into the night. So, to summarize our structural analysis: First, the poem is written in Free Verse, which rejects artificial constraints to reflect the theme of liberation. Second, it lacks a formal rhyme scheme, allowing for a more natural, conversational, yet intense tone. Third, the rhythm is driven by cadence rather than a strict meter, giving it an organic feel. And fourth, the heavy use of enjambment creates a sense of unstoppable, flowing movement. Understanding these structural choices helps you realize that the poem isn't just about what the poet is saying, but how the very arrangement of her words makes you feel the tension and the eventual release. In our next segment, we will build your academic toolkit by looking at critical vocabulary and contextual meanings essential for your exams.","Welcome back. Now that we have explored the deep themes and literary devices of Adrienne Rich's 'The Trees', it is time to master the specific language that makes this poem so powerful. In a literature exam, your ability to use the exact words from the text, or even better, the precise vocabulary to describe them, can significantly boost your scores. Let us break down the most critical terms. First, let's look at the word 'Exertion'. In the context of the poem, the trees are not just moving; they are performing a massive physical effort. The roots are working to disengage themselves from the cracks in the veranda floor. This implies a sense of struggle and intense labor. Next, we have the word 'Straining'. When the poet says the roots are straining, she is using a word that suggests tension. Imagine a muscle being pulled to its limit. This word is crucial because it highlights the difficulty of the liberation process. Then, we encounter the term 'Boughs'. You might simply think of these as branches, but in poetic language, 'boughs' often carries a sense of weight and strength. The boughs are long, sturdy limbs of the trees that are pushing against the ceiling. Moving to the second stanza, let's discuss 'Disengage'. This is a sophisticated verb. It doesn't just mean 'to move'; it means to release oneself from a connection or a restriction. The roots are trying to disengage from the artificial, man-made constraints of the house. Now, let's look at the imagery of the 'Glass'. When the poet mentions the glass breaking, she isn't just talking about a window. In a contextual sense, the glass represents the transparent but rigid barriers of domesticity and confinement. The breaking of the glass is a metaphor for the shattering of social or physical limitations. We also see the word 'Scarcely'. The poet uses this to describe the light or the movement, suggesting that the transition is subtle, almost hesitant, yet inevitable. Another important word is 'Intricate'. This describes the patterns of the leaves and the complexity of the struggle. It suggests that the movement of nature is not simple or linear; it is a complex, detailed process of reclaiming space. Finally, let's talk about the word 'Imprisoned'. While the word 'imprisoned' might not be explicitly used in every line, the entire atmosphere of the trees being inside a house conveys this meaning. The trees are in a state of captivity. Understanding these nuances is vital. For example, if an exam question asks about the 'struggle' of the trees, don't just say they are moving. Say they are 'exerting themselves' to 'disengage' from their 'confinement'. This level of vocabulary shows the examiner that you have a deep, nuanced understanding of the text. Remember, in poetry, words are never chosen by accident. Every word, from the heavy 'boughs' to the delicate 'straining' of roots, serves to build the tension between the natural world and the artificial world. As we move toward our final sections, keep these specific terms in your mental toolkit. They are the building blocks for your long-form answers and your critical appreciation essays.","Welcome back. We have analyzed the imagery, the metaphors, and the deep themes of Adrienne Rich's 'The Trees'. Now, before we move to our final Exam Masterclass, we need to address a critical area. In board exams, many students lose marks not because they didn't read the poem, but because they misinterpreted the subtle layers of symbolism and the specific tone of the poet. Let us look at the first major pitfall: treating the poem as a literal description of nature. A very common mistake is to answer questions by saying the poem is simply about trees moving from a house to a forest. While that is the literal action, it is a superficial reading. If a question asks about the 'struggle' in the poem, do not just talk about biological growth. You must connect the movement of the trees to the breaking of social barriers or the liberation of women. If you treat it only as an environmental poem, you miss the feminist subtext that is central to Rich's work. The second mistake involves the tone. Students often label the tone as purely 'happy' or 'celebratory' because the trees finally reach the forest. However, this is an oversimplification. The tone is actually complex; it is a blend of tension, urgency, and quiet triumph. There is a sense of struggle and even a hint of violence in phrases like 'the glass breaks'. It is not a peaceful stroll into the woods; it is a hard-fought escape. If you describe the tone as merely 'joyful', you miss the underlying struggle. Third, let's talk about the symbolism of the 'house'. Many students mistake the house for a place of safety and comfort. In the context of this poem, the house represents confinement, domesticity, and the artificial boundaries set by society. The trees are 'inside' the house, which symbolizes how certain elements of nature, or certain groups of people, have been restricted to indoor, controlled environments. Do not describe the house as a sanctuary; describe it as a cage that is being broken. Fourth, watch out for how you interpret the 'Moon'. Some students view the moon simply as a celestial object in the sky. But remember our analysis of the imagery. The moon, which appears broken like a mirror due to the crown of the oak tree, symbolizes the shift in perspective. The old, static view of the world is being shattered by this new, moving force. Finally, a common error in long-answer questions is failing to maintain the distinction between the 'natural world' and the 'human world'. When discussing the 'forest' that was empty, do not just say it was a place without trees. Explain that an empty forest represents a world out of balance, a world where the essential forces of life and freedom are missing. When the trees return, it is the restoration of cosmic and social order. Keep these distinctions clear: the literal is the vehicle, but the symbolic is the destination. Avoid one-dimensional answers. Instead of saying 'the trees move to the forest', say 'the trees, symbolizing suppressed forces, break through the domestic confines to reclaim their natural space.' This level of depth is what moves your answer from an average score to a perfect score. Let's ensure we don't fall into these traps of oversimplification.","Welcome to our final session on Adrienne Rich's 'The Trees'. We have journeyed from the struggle of the roots to the liberation of the forest, and now, it is time to transform that understanding into high-scoring exam answers. Let's start with Reference to Context questions, or RTCs. In an RTC, you will be given a specific stanza and asked to identify the speaker, the poetic device, and the deeper meaning. For example, if the question asks about the 'broken glass,' do not just say it is a window breaking. You must explain that it symbolizes the shattering of domestic boundaries and the liberation of women from the confines of the home. Always link the literal action to the metaphorical significance to secure full marks. Next, let's tackle the Theme Essay. A common long-answer question will ask you to discuss the dual themes of Environmentalism and Feminism. To write a topper-level essay, use a comparative structure. Start by explaining how the trees represent nature reclaiming its space from urbanization. Then, transition using words like 'similarly' or 'in a parallel sense' to explain how the trees represent women breaking free from patriarchal structures. Mention that both nature and women have been 'imprisoned' or 'decorative' in human-controlled spaces, and both are now asserting their natural right to exist in the wild. Use keywords like 'subjugation,' 'liberation,' 'reclamation,' and 'metaphorical struggle.' Now, let's look at common pitfalls. One major mistake students make is treating the poem as a simple description of nature. Remember, this is not a biology lesson; it is a poem of rebellion. If you describe the trees moving as just 'growth,' you lose marks. Describe it as 'an active, strenuous effort toward freedom.' Another mistake is ignoring the tone. The tone is not just happy; it is intense, determined, and slightly surreal. Finally, let's do a lightning-fast recap of the entire chapter to cement your memory. We began with the symbolism of nature versus urbanization. We analyzed the struggle of the roots and leaves in the first two stanzas, the breaking of boundaries in the third, and the triumphant return to the forest under the moon in the fourth. We identified key literary devices like personification, where the trees act with human intent, and enjambment, which gives the poem its flowing, restless energy. We explored the deep themes of feminism and environmentalism and noted the poem's lack of a strict rhyme scheme, which mirrors the breaking of rules. You are now fully equipped. When you sit for your exam, read the questions carefully, identify the metaphor, and always connect the imagery to the larger message of freedom. You have mastered 'The Trees'. Good luck with your preparations!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c10-english-16-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Integrals, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-maths-07-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction to Integration: The Reverse Process of Differentiation and Area Under Curves -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction to Integration: The Reverse Process of Differentiation and Area Under Curves</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Integration is the inverse process of differentiation (Antiderivative).</div>
+              <div id="qx0-p1" class="qe-bullet">• The Constant of Integration 'C' accounts for lost constants during differentiation.</div>
+              <div id="qx0-p2" class="qe-bullet">• Integration provides a method to find the area under complex curves.</div>
+              <div id="qx0-p3" class="qe-bullet">• Geometric interpretation: Summing infinite thin rectangles under a curve.</div>
+              <div id="qx0-p4" class="qe-bullet">• Integration bridges the gap between rates of change and total accumulation.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3400368206,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation: Left side shows a function being broken into slopes (Differentiation); Right side shows a curve being filled with growing vertical rectangles (Integration).</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D split-screen animation: Left side shows a function being broken into slopes (Differentiation); Right side shows a curve being filled with growing vertical rectangles (Integration).</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Indefinite Integrals: Basic Formulas, Constant of Integration, and Algebraic Methods -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Indefinite Integrals: Basic Formulas, Constant of Integration, and Algebraic Methods</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Integration is the anti-derivative or reverse process of differentiation</div>
+              <div id="qx1-p1" class="qe-bullet">• The Constant of Integration (C) represents an unknown real number</div>
+              <div id="qx1-p2" class="qe-bullet">• Power Rule: Integral of x^n is (x^(n+1))/(n+1) for n not equal to -1</div>
+              <div id="qx1-p3" class="qe-bullet">• Special Case: Integral of 1/x is ln|x| + C</div>
+              <div id="qx1-p4" class="qe-bullet">• Use algebraic expansion and splitting terms to simplify complex fractions</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":4228149463,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate plane showing a family of parallel parabolas shifting vertically as 'C' changes.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D coordinate plane showing a family of parallel parabolas shifting vertically as 'C' changes.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Integration by Substitution: Changing Variables and Simplifying Complex Expressions -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Integration by Substitution: Changing Variables and Simplifying Complex Expressions</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Substitution is the reverse process of the Chain Rule in differentiation.</div>
+              <div id="qx2-p1" class="qe-bullet">• Identify a part of the function, u or t, whose derivative is also present.</div>
+              <div id="qx2-p2" class="qe-bullet">• Step 1: Set u equals the inner function and find du in terms of dx.</div>
+              <div id="qx2-p3" class="qe-bullet">• Step 2: Replace all x terms and dx with the new variable and du.</div>
+              <div id="qx2-p4" class="qe-bullet">• Step 3: Integrate the simplified form and substitute back to the original variable.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3109401266,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D mathematical landscape where a complex, jagged function curve smoothly morphs into a simple parabola through a glowing 'Substitution' portal.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D mathematical landscape where a complex, jagged function curve smoothly morphs into a simple parabola through a glowing 'Substitution' portal.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Integration using Trigonometric Identities and Standard Formulas -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Integration using Trigonometric Identities and Standard Formulas</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Use double angle formulas to reduce powers of sin^2(x) and cos^2(x)</div>
+              <div id="qx3-p1" class="qe-bullet">• Apply product-to-sum identities for integrals of sin(Ax)cos(Bx)</div>
+              <div id="qx3-p2" class="qe-bullet">• Split odd powers of sine or cosine to enable substitution</div>
+              <div id="qx3-p3" class="qe-bullet">• Master standard integrals for secant, cosecant, and tangent functions</div>
+              <div id="qx3-p4" class="qe-bullet">• Transform complex trigonometric expressions into basic integrable forms</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":566121215,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D chalkboard where trigonometric identities glow and morph into simpler integral forms as the teacher speaks.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D chalkboard where trigonometric identities glow and morph into simpler integral forms as the teacher speaks.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Integration by Partial Fractions: Decomposing Rational Functions -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Integration by Partial Fractions: Decomposing Rational Functions</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Ensure the numerator degree is less than the denominator degree</div>
+              <div id="qx4-p1" class="qe-bullet">• Perform long division if the fraction is improper</div>
+              <div id="qx4-p2" class="qe-bullet">• Case 1: Distinct linear factors use constant numerators</div>
+              <div id="qx4-p3" class="qe-bullet">• Case 2: Repeated linear factors require increasing powers</div>
+              <div id="qx4-p4" class="qe-bullet">• Case 3: Irreducible quadratic factors require linear numerators (Ax + B)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":228888199,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D mathematical workspace where a complex fraction physically splits into several smaller, simpler fractions as the teacher explains the decomposition.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D mathematical workspace where a complex fraction physically splits into several smaller, simpler fractions as the teacher explains the decomposition.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Integration by Parts: The ILATE Rule and Derivation of the Product Rule -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Integration by Parts: The ILATE Rule and Derivation of the Product Rule</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Integration by Parts is the reverse process of the Product Rule of differentiation.</div>
+              <div id="qx5-p1" class="qe-bullet">• Formula: Integral of v du = uv - Integral of u dv.</div>
+              <div id="qx5-p2" class="qe-bullet">• Use the ILATE rule to choose the function 'u' for easier integration.</div>
+              <div id="qx5-p3" class="qe-bullet">• I: Inverse Trig, L: Logarithmic, A: Algebraic, T: Trigonometric, E: Exponential.</div>
+              <div id="qx5-p4" class="qe-bullet">• Priority: The function higher in the ILATE list should be chosen as 'u'.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":869170932,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D floating chalkboard where the Product Rule formula transforms through algebraic steps into the Integration by Parts formula, followed by the ILATE letters glowing in sequence.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D floating chalkboard where the Product Rule formula transforms through algebraic steps into the Integration by Parts formula, followed by the ILATE letters glowing in sequence.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Special Integrals: Integration of Functions involving Square Roots and Quadratic Forms -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Special Integrals: Integration of Functions involving Square Roots and Quadratic Forms</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Standard forms for 1/(x^2 + a^2) and 1/(x^2 - a^2)</div>
+              <div id="qx6-p1" class="qe-bullet">• Integration involving square roots: √(a^2 - x^2) and √(x^2 ± a^2)</div>
+              <div id="qx6-p2" class="qe-bullet">• The importance of the 'Completing the Square' technique</div>
+              <div id="qx6-p3" class="qe-bullet">• Distinguishing between logarithmic and inverse trigonometric results</div>
+              <div id="qx6-p4" class="qe-bullet">• Common pitfalls: Sign errors and the constant of integration</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":582430621,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D floating chalkboard where quadratic expressions morph into their integral counterparts using glowing mathematical symbols.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D floating chalkboard where quadratic expressions morph into their integral counterparts using glowing mathematical symbols.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Definite Integrals: Fundamental Theorem of Calculus and Properties of Definite Integrals -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Definite Integrals: Fundamental Theorem of Calculus and Properties of Definite Integrals</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Definite Integral: Represents a specific numerical value or net area.</div>
+              <div id="qx7-p1" class="qe-bullet">• Fundamental Theorem: Integral of f(x) from a to b is F(b) minus F(a).</div>
+              <div id="qx7-p2" class="qe-bullet">• Limit Reversal: Integral from a to b equals negative integral from b to a.</div>
+              <div id="qx7-p3" class="qe-bullet">• Interval Splitting: Integral from a to b equals integral from a to c plus c to b.</div>
+              <div id="qx7-p4" class="qe-bullet">• Linearity: Integrals distribute over addition and subtraction.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":4174984577,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate plane where a curve is shaded under its arc, and the limits 'a' and 'b' glow on the x-axis as the area value is calculated through a floating formula.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D coordinate plane where a curve is shaded under its arc, and the limits 'a' and 'b' glow on the x-axis as the area value is calculated through a floating formula.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Advanced Properties of Definite Integrals: Symmetry, Periodicity, and King's Property -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Advanced Properties of Definite Integrals: Symmetry, Periodicity, and King's Property</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Even Functions: Integral from -a to a is 2 times integral from 0 to a</div>
+              <div id="qx8-p1" class="qe-bullet">• Odd Functions: Integral from -a to a is always zero</div>
+              <div id="qx8-p2" class="qe-bullet">• Periodic Functions: Integral over n periods equals n times the period integral</div>
+              <div id="qx8-p3" class="qe-bullet">• King's Property: Integral of f(x) from a to b equals f(a + b - x) from a to b</div>
+              <div id="qx8-p4" class="qe-bullet">• Strategy: Apply King's Property and add the resulting integral to the original</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2025212536,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing a sine wave being reflected across the y-axis and a shifting window moving along a periodic function to demonstrate integral equality.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D coordinate system showing a sine wave being reflected across the y-axis and a shifting window moving along a periodic function to demonstrate integral equality.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Applications of Integrals: Finding Areas Under Simple Curves and Between Two Curves -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Applications of Integrals: Finding Areas Under Simple Curves and Between Two Curves</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Area under a curve y=f(x) is the definite integral from a to b of f(x) dx</div>
+              <div id="qx9-p1" class="qe-bullet">• If the curve is below the x-axis, use the absolute value of the function</div>
+              <div id="qx9-p2" class="qe-bullet">• Area between two curves is the integral of (Upper Function - Lower Function)</div>
+              <div id="qx9-p3" class="qe-bullet">• Step 1: Sketch curves; Step 2: Find intersection points; Step 3: Set limits</div>
+              <div id="qx9-p4" class="qe-bullet">• Integration can be performed with respect to x or with respect to y</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2701268803,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system where a shaded region between a parabola and a line dynamically grows as an integral sign sweeps across the x-axis.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D coordinate system where a shaded region between a parabola and a line dynamically grows as an integral sign sweeps across the x-axis.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Integration Masterclass: Solving Complex Word Problems and Real-world Modeling -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Integration Masterclass: Solving Complex Word Problems and Real-world Modeling</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Translating real-world rates of change into integral equations</div>
+              <div id="qx10-p1" class="qe-bullet">• Kinematics: Integrating acceleration and velocity for displacement</div>
+              <div id="qx10-p2" class="qe-bullet">• Modeling population growth and chemical reaction rates</div>
+              <div id="qx10-p3" class="qe-bullet">• The Modeling Workflow: Identify, Set up, Limit, and Evaluate</div>
+              <div id="qx10-p4" class="qe-bullet">• Applying the Fundamental Theorem of Calculus to accumulation problems</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":312188923,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a mathematical integral transforming into a moving high-speed train and a flowing water tank.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D split-screen showing a mathematical integral transforming into a moving high-speed train and a flowing water tank.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Strategy: Common Mistakes, Time Management, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Strategy: Common Mistakes, Time Management, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Always include the constant of integration '+ C' in indefinite integrals.</div>
+              <div id="qx11-p1" class="qe-bullet">• Double-check signs and coefficients during the substitution method.</div>
+              <div id="qx11-p2" class="qe-bullet">• Strictly follow the ILATE rule for Integration by Parts.</div>
+              <div id="qx11-p3" class="qe-bullet">• Use Definite Integral properties to simplify calculations early.</div>
+              <div id="qx11-p4" class="qe-bullet">• Manage time by skipping stuck problems and returning to them later.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2655522287,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen animation showing a student's checklist being ticked off alongside a glowing mathematical formula sheet.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen animation showing a student's checklist being ticked off alongside a glowing mathematical formula sheet.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Integrals today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction to Integration: The Reverse Process of Differentiation and Area Under Curves <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Indefinite Integrals: Basic Formulas, Constant of Integration, and Algebraic Methods <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Integration by Substitution: Changing Variables and Simplifying Complex Expressions <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Integration using Trigonometric Identities and Standard Formulas <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Integration by Partial Fractions: Decomposing Rational Functions <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Integration by Parts: The ILATE Rule and Derivation of the Product Rule <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Special Integrals: Integration of Functions involving Square Roots and Quadratic Forms <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Definite Integrals: Fundamental Theorem of Calculus and Properties of Definite Integrals <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Advanced Properties of Definite Integrals: Symmetry, Periodicity, and King's Property <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Applications of Integrals: Finding Areas Under Simple Curves and Between Two Curves <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Integration Masterclass: Solving Complex Word Problems and Real-world Modeling <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Strategy: Common Mistakes, Time Management, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey into one of the most beautiful and powerful chapters in Class 12 Mathematics: Integrals. Up until now, you have spent a lot of time learning Differentiation. You learned how to find the rate of change, the slope of a tangent, and how a function behaves at a specific point. But what if we want to go backward? What if we know the rate of change, and we want to find the original function? This is exactly what Integration is all about. In mathematics, we call this the 'Antiderivative' or the 'Reverse Process of Differentiation'. Think of it like this: if differentiation is the process of breaking a function down into its constituent rates, integration is the process of putting those pieces back together to reconstruct the original function. Let us look at a simple example. Suppose we have a function, let's say, x squared. When we differentiate x squared with respect to x, we get two x. Now, if I give you the function two x and ask you, 'What function was differentiated to get this?', you would immediately say x squared. This process of finding the original function from its derivative is integration. However, there is a small catch. When we differentiate a constant, like five, or ten, or any number 'C', the result is always zero. This means that if we differentiate x squared plus five, we get two x. But if we differentiate x squared plus ten, we also get two x. So, when we integrate two x to get back to the original function, we cannot be sure what the original constant was. To account for this, we always add a symbol 'C' at the end of our result, which we call the 'Constant of Integration'. So, the integral of two x with respect to x is x squared plus C. This 'C' represents any possible constant that might have disappeared during differentiation. Now, let us shift our perspective to a completely different but equally important view of integration. While the first view is algebraic, the second view is geometric. Integration is fundamentally linked to the concept of finding the area under a curve. Imagine you have a curve plotted on a graph, and you want to find the area trapped between that curve and the x-axis, between two specific points. In your earlier classes, you learned how to find the area of simple shapes like rectangles, triangles, and circles using standard formulas. But what if the boundary is a complex curve, like a parabola or a sine wave? Standard geometry fails us here. This is where integration becomes our superpower. We use a method called 'Riemann Sums', where we divide the area under the curve into infinitely many, incredibly thin rectangles. As the width of these rectangles approaches zero and their number approaches infinity, the sum of their areas gives us the exact area under the curve. This connection between the algebraic antiderivative and the geometric area is the heart of the Fundamental Theorem of Calculus, which we will explore deeply in this chapter. So, to summarize our starting point: Integration is both the inverse operation of differentiation and a powerful tool for calculating the area under irregular curves. In the upcoming lessons, we will master the formulas, the techniques of substitution, and the complex methods required to solve even the most challenging problems. Let's get started!","Welcome back to our journey through Calculus. In our previous session, we established that integration is essentially the reverse process of differentiation. If differentiation tells us the rate of change, integration helps us recover the original function from its derivative. Today, we dive deep into the mechanics of Indefinite Integrals. Let's start with a fundamental concept: the Constant of Integration. When we differentiate a constant, say the number five or the number ten, the result is always zero. This means if we have the function x squared plus five, its derivative is two x. But if we have x squared plus ten, its derivative is also two x. So, if we are given the derivative two x and asked to find the original function, how do we know if the original was x squared plus five or x squared plus ten? We cannot know for certain. To account for this unknown constant, we always add a capital C at the end of our result. This C represents any arbitrary real number. Therefore, we write the integral of two x as x squared plus C. This C is what makes our answer a family of curves rather than a single line. Now, let's look at our toolkit: the Basic Formulas. These are the building blocks of everything we will do in this chapter. The first and most important is the Power Rule. The integral of x raised to the power of n, where n is not equal to negative one, is x raised to the power of n plus one, all divided by n plus one, plus C. For example, if you integrate x cubed, you increase the power to four and divide by four, giving you one-fourth x to the power of four plus C. Now, what happens if n is exactly negative one? The formula above would result in division by zero, which is impossible. This is a special case. The integral of one over x is the natural logarithm of the absolute value of x, plus C. This is a crucial identity to memorize. Moving to trigonometric functions, the integration of sine x is negative cosine x plus C. The integration of cosine x is simply sine x plus C. Remember, the signs often flip compared to differentiation. For the exponential function, the integral of e raised to the power of x is just e raised to the power of x plus C, because it is its own derivative. If we have e raised to the power of ax, the integral is one over a times e raised to the power of ax plus C. Beyond these direct formulas, we must master Algebraic Methods to simplify complex expressions before we integrate. One common method is expanding algebraic expressions. If you see an integral of a binomial like the bracket x plus two raised to the power of three, do not try to integrate it directly. Instead, use the algebraic identity to expand it into x cubed plus six x squared plus twelve x plus eight. Once expanded, you can apply the power rule to each term individually. Another vital method is using the method of splitting terms. If you have a fraction like the quantity x plus five divided by x, do not get stuck. Split the fraction into x divided by x plus five divided by x. This simplifies to one plus five over x. Now, the integral becomes the integral of one, which is x, plus the integral of five over x, which is five log of the absolute value of x, all plus C. Finally, we use the method of substitution in its simplest algebraic form, such as when we have a constant multiplier. If you have the integral of five x squared, you can pull the constant five outside the integral sign, leaving you with five times the integral of x squared. Always remember: simplify first, then integrate. Master these basic forms and algebraic manipulations, and you will build the foundation needed for the more complex substitution methods coming up next.","Welcome back to our journey through Integrals. In our previous session, we looked at the basic algebraic methods of integration. Today, we are moving into one of the most powerful and essential tools in your calculus toolkit: Integration by Substitution. Sometimes, an integral looks incredibly intimidating because it contains a complex function nested inside another function, often accompanied by its own derivative. When we see this pattern, we don't need to struggle with complex expansion; instead, we use the method of substitution to transform a difficult integral into a standard, recognizable form. Let's start with the core logic. Suppose we have an integral of the form: the integral of f of g of x, multiplied by the derivative of g of x, with respect to x. This looks complicated, right? The trick is to introduce a new variable, let's call it t, and set it equal to the inner function, g of x. So, we let t equals g of x. Now, we must remember that we are changing the variable of integration from x to t. To do this correctly, we differentiate both sides of our substitution equation with respect to x. This gives us the derivative of t equals the derivative of g of x, which we can write as dt equals g prime of x, dx. Now, look at our original integral again. The term g prime of x, dx, has been completely replaced by the simple term dt. The complex function f of g of x has now become f of t. Our integral has been transformed from a complex expression in terms of x into a much simpler integral of f of t with respect to t. Once we integrate f of t, we get an antiderivative, let's call it F of t, plus the constant of integration, C. But remember, our original problem was asked in terms of x, not t. So, the very last, and most crucial step, is to substitute the original expression for t back into our result. We replace t with g of x, giving us the final answer: F of g of x plus C. Let's walk through a practical example to see this in action. Imagine we are asked to integrate the expression: the square root of 2x plus 3, with respect to x. Looking at this, we see a linear function, 2x plus 3, inside a square root. The derivative of 2x plus 3 is simply 2, which is a constant. This is a perfect candidate for substitution. Let's set t equals 2x plus 3. Differentiating both sides, we get dt equals 2 dx. To make it easier to substitute, we can rewrite this as one-half dt equals dx. Now, let's substitute these into our integral. The square root of t, multiplied by one-half dt. This is much cleaner! The integral of the square root of t is the integral of t to the power of one-half. Using the power rule, we get t to the power of three-halves divided by three-halves, which simplifies to two-thirds of t to the power of three-halves. Don't forget the constant C. Now, we perform the final step: back-substitution. Replace t with 2x plus 3. Our final answer is two-thirds times the quantity 2x plus 3 raised to the power of three-halves, plus C. This method works whenever you can identify a part of the integrand whose derivative is also present in the integrand, perhaps even differing only by a constant multiplier. It is essentially the reverse of the Chain Rule from differentiation. When you approach a problem, always scan the expression for a function and its derivative. If you see a function like sine of x squared, and there is an x sitting outside, think: 'The derivative of x squared is 2x. I have an x! This is a substitution problem.' By simplifying the complex into the simple, you unlock the ability to solve much more advanced calculus problems. Practice identifying these pairs, and you will master this technique in no time.","Welcome back to our journey through Integrals. In our previous lesson, we mastered the art of substitution. But what happens when the integrand isn't a simple derivative of another function? What if we are faced with a complex trigonometric expression like sine squared of x or a product of different trigonometric functions? This is where our toolkit of trigonometric identities becomes our greatest strength. To integrate trigonometric functions, we don't always look for a direct formula; instead, we look for ways to transform the expression into a form that matches our standard integration table. Let's start with the most common challenge: powers of trigonometric functions. Consider the integral of sine squared of x. There is no direct formula for sine squared. However, if we recall our double angle identities from Class eleven, we know that two sine squared of x equals one minus cosine of two x. By rearranging this, we get sine squared of x equals one half times the quantity one minus cosine of two x. Now, the integral becomes much simpler. We integrate one half, which gives us one half x, and we integrate negative one half cosine of two x, which gives us negative one fourth sine of two x. Always remember to add the constant of integration, C. Next, let's look at cosine squared of x. Using the same logic, cosine squared of x equals one half times the quantity one plus cosine of two x. This transforms a power-based problem into a linear trigonometric problem. Now, what about products of different functions? Suppose you encounter an integral of sine of three x times cosine of two x. Here, we use the product-to-sum formulas. We know that sine A cosine B equals one half times the quantity sine of A plus B plus sine of A minus B. Applying this, sine of three x cosine of two x becomes one half times the quantity sine of five x plus sine of x. Integrating these individual terms is straightforward. Another critical area is dealing with higher powers, like sine cubed of x. When the power is odd, we use a clever trick. We split sine cubed of x into sine squared of x times sine of x. We then replace sine squared of x with one minus cosine squared of x. This leaves us with the integral of sine of x minus the integral of cosine squared of x times sine of x. The first part is a standard integral, and the second part is a perfect candidate for the substitution method we learned earlier, where u equals cosine of x. If the powers are even, such as sine to the fourth power of x, we apply the squaring identity twice to reduce the degree of the polynomial. We also need to be comfortable with the reciprocal identities. Integrating secant squared of x is easy because it is the derivative of tangent x. But integrating secant x itself requires a specific standard formula: it is the natural log of the absolute value of secant x plus tangent x. We must also remember the integrals of cosecant squared, which is negative cotangent x, and the integrals involving secant tangent, which is secant x. The key strategy here is transformation. If the integral looks difficult, ask yourself: 'Can I use a trigonometric identity to rewrite this in a simpler, linear form?' Whether it is using the Pythagorean identities like one plus tan squared of x equals secant squared of x, or the multiple angle formulas, your goal is to move from complex powers to simple, integrable terms. Let's practice these transformations systematically to build your intuition.","Welcome back to our journey through Integrals. In our previous lesson, we mastered substitution, but sometimes, we encounter a rational function—that is, a fraction where both the numerator and the denominator are polynomials—that looks far too complicated to integrate directly. This is where the powerful technique of Partial Fraction Decomposition comes into play. Think of it as the reverse of finding a common denominator. In algebra, when we add two simple fractions, we combine them into one complex fraction. Here, we are going to do the exact opposite: we will take a complex fraction and break it down into a sum of simpler, more manageable fractions. Before we begin, there is one golden rule you must always check: the degree of the numerator must be strictly less than the degree of the denominator. If the numerator's degree is equal to or greater than the denominator's, you must first perform long division to simplify the expression. Once you have a proper rational function, we look at the denominator to decide our strategy. There are four main cases we need to master. Case one involves non-repeated linear factors. If your denominator can be factored into distinct terms like x minus a and x minus b, you can write the fraction as A over x minus a plus B over x minus b. Here, A and B are constants that we need to find. Case two deals with repeated linear factors. If a term like x minus a is squared or cubed in the denominator, you cannot just write one fraction. You must include a term for every power up to that number. For example, if the denominator has x minus a squared, your decomposition will include A over x minus a plus B over x minus a squared. Case three introduces non-repeating irreducible quadratic factors. An irreducible quadratic is a term like x squared plus one that cannot be factored further into real linear terms. When you encounter this, the numerator for that specific fraction must be a linear expression, such as Ax plus B, instead of just a single constant. Finally, case four covers repeated irreducible quadratic factors, where you follow a similar logic to repeated linear factors, but with linear numerators for each term. So, how do we actually find these unknown constants A and B? There are two primary methods. The first is the method of equating coefficients. You multiply the entire equation by the common denominator to clear the fractions, then group the terms by the powers of x, such as x squared, x, and the constant term. By comparing the coefficients on both sides of the equals sign, you create a system of linear equations. The second, often faster method, is the substitution method, also known as the method of choosing convenient values. Since the equation must hold true for all values of x, you can pick specific values for x—usually the roots of the denominator—to make certain terms vanish, allowing you to solve for the constants one by one. Once you have found A, B, and C, you replace the original complex fraction with these simpler parts. Now, instead of a daunting rational function, you are simply integrating basic terms like one over x or simple linear expressions, which we already know how to handle. Let's practice this step-by-step to ensure you can identify the correct case and solve for the constants with precision.","Welcome back to our journey through Integrals. In our previous lessons, we mastered substitution and trigonometric identities. But what happens when we encounter a product of two different types of functions, like x multiplied by sine x? We cannot simply integrate them separately. This brings us to one of the most powerful tools in calculus: Integration by Parts. To understand where this formula comes from, we must look back at what we already know: the Product Rule of differentiation. Recall that if we have two functions, u and v, both of which are differentiable, the derivative of their product, u times v, is equal to u times the derivative of v, plus v times the derivative of u. Mathematically, d of u times v equals u times dv plus v times du. Now, let us perform a little algebraic magic. If we rearrange this equation, we can subtract u times dv from both sides. This gives us d of u times v minus u times dv equals v times du. Now, to find the integral, we integrate both sides of this equation. The integral of the derivative of u times v is simply u times v. Therefore, we arrive at our fundamental formula: the integral of v times du equals u times v minus the integral of u times dv. This is the Integration by Parts formula. In standard notation, we write it as the integral of f of x times g of x dx equals f of x times the integral of g of x dx, minus the integral of the integral of f of x dx times g of x dx. This looks a bit intimidating, so let us simplify how we use it. We always split our integrand into two parts: one function we call u, and the other we call v. The secret to success is choosing the right u. If you pick the wrong u, the integral might actually become more complicated! To make this choice easy, we use a mnemonic called I-L-A-T-E. This acronym tells us the priority order for choosing our function u. I stands for Inverse Trigonometric functions, like arcsin x or arctan x. L stands for Logarithmic functions, such as natural log of x. A stands for Algebraic functions, like x squared or five x. T stands for Trigonometric functions, like sine or cosine. And finally, E stands for Exponential functions, like e to the power of x. The rule is simple: whichever function type appears higher on this list should be your u. For example, if you are integrating x times log x, since Logarithmic comes before Algebraic in ILATE, you must choose u as log x. If you are integrating x times sin x, since Algebraic comes before Trigonometric, you choose u as x. Once you have chosen u, you find its derivative to get du, and you find the integral of the remaining part to get v. Let us do a quick mental check. Suppose we have the integral of x times e to the power of x. Following ILATE, x is Algebraic and e to the power of x is Exponential. Since A comes before E, we set u equals x. Then, du becomes dx, and v becomes the integral of e to the power of x, which is just e to the power of x. Plugging these into our formula, we get x times e to the power of x, minus the integral of e to the power of x dx. This simplifies beautifully to x times e to the power of x minus e to the power of x, plus our constant of integration. Remember, Integration by Parts is essentially the reverse of the Product Rule. Master the ILATE rule, and you will never struggle with choosing your u again. In our next lesson, we will look at special integrals involving square roots and quadratic forms. See you there!","Welcome back. In our previous session, we mastered the art of integration by substitution and parts. Today, we step into a very important territory: Special Integrals. Have you ever encountered an integral where the denominator or the numerator contains a quadratic expression like x squared plus a or x squared minus a, often wrapped inside a square root? These are not solved by simple substitution. Instead, we use a set of standard, predefined formulas that act as our toolkit. Let us look at the first major group. When we have the integral of one divided by the quantity x squared plus a squared, where a is a positive constant, the result is one over two a, times the inverse tangent of x over a, plus a constant of integration. This is a fundamental identity you must memorize. Next, let us consider the case where we have x squared minus a squared in the denominator. The integral of one divided by the quantity x squared minus a squared is one over two a, times the natural logarithm of the absolute value of x plus a, all divided by the quantity x minus a, plus C. Now, what if the sign is flipped? If we have a squared minus x squared in the denominator, the integral is one over two a, times the natural logarithm of the absolute value of a plus x, all divided by the quantity a minus x. Notice the subtle difference in the denominator. Now, let us move to the more complex forms involving square roots. These are the 'Square Root' special integrals. First, consider the integral of one divided by the quantity x squared minus a squared, all under a square root. This results in one over a, times the inverse hyperbolic sine of x over a, or more commonly in your exams, one over a, times the natural logarithm of the quantity x plus the square root of x squared minus a squared, plus C. If we have a squared minus x squared under the square root, the result is one over a, times the inverse sine of x over a. This is a very common pattern in area-under-curve problems. Finally, we have the case of x squared plus a squared under the square root. The integral of one divided by the quantity x squared plus a squared, all under a square root, is one over a, times the inverse tangent of x over a. But wait, there is a more advanced version. When the entire expression is the square root of the quadratic itself, such as the integral of the square root of x squared plus a squared, we use a more complex formula: x divided by two, plus a squared divided by two, times the natural logarithm of x plus the square root of x squared plus a squared. These formulas might look intimidating at first, but they are simply patterns. When you see a quadratic expression, your first step should always be to identify if it matches one of these six or seven standard forms. If it doesn't match perfectly, your goal is to use 'completing the square' method to transform that quadratic into the form of x squared plus a, x squared minus a, or a squared minus x squared. Once you have transformed the expression, you simply map it to the corresponding formula. Practice is the only way to ensure you don't mix up the 'two a' in the denominator or the signs inside the logarithms. Let's dive into some solved examples to see this transformation in action.","Welcome back to our journey through Integrals. In our previous sessions, we mastered the art of finding the antiderivative, or the indefinite integral. But today, we take a massive leap forward. We are moving from finding general functions to finding specific numerical values. This is the world of Definite Integrals. A definite integral is represented with upper and lower limits, like an integral sign with a number at the bottom, let's call it 'a', and a number at the top, let's call it 'b'. Unlike indefinite integrals, we do not add the constant of integration, 'C', here, because we are calculating a specific net area. Now, how do we actually solve these? This brings us to the heart of calculus: The Fundamental Theorem of Calculus. This theorem provides the vital link between differentiation and integration. It states that if we have a continuous function 'f' of 'x', and 'F' is its antiderivative, then the definite integral of 'f' from 'a' to 'b' is simply equal to 'F' of 'b' minus 'F' of 'a'. In simpler terms, you find the integral as you usually do, plug in the upper limit, plug in the lower limit, and subtract the latter from the former. For example, if you are integrating 'x' squared from zero to two, you first find the antiderivative, which is 'x' cubed divided by three. Then, you substitute two to get eight divided by three, and substitute zero to get zero. Subtracting them gives you eight divided by three. It is that straightforward! But what if the function is complex? This is where the Properties of Definite Integrals become your best friends. These properties allow you to manipulate the integral to make it much easier to solve without performing heavy calculations. The first property is the Change of Limits property. If you swap the upper and lower limits, the sign of the integral changes. So, the integral from 'a' to 'b' is equal to the negative of the integral from 'b' to 'a'. The second property is the Additivity property. You can split the interval of integration at any point 'c' that lies between 'a' and 'b'. This means the integral from 'a' to 'b' is equal to the integral from 'a' to 'c' plus the integral from 'c' to 'b'. This is incredibly useful when dealing with piecewise functions or absolute value functions. Third, we have the Constant Multiple property. If there is a constant 'k' multiplied by your function, you can pull that constant outside the integral sign. It doesn't change the integration process; it just waits outside. Fourth, we look at the property of Zero Width. If the upper and lower limits are the same, the integral is always zero, because there is no interval to cover. Finally, let's discuss the property of Linearity. The integral of a sum is the sum of the integrals, and the integral of a difference is the difference of the integrals. These properties aren't just shortcuts; they are the fundamental tools that allow us to break down intimidating mathematical problems into small, manageable pieces. Mastering these will transform how you approach calculus. In our next session, we will dive deeper into advanced symmetry and the famous King's Property to solve even more complex problems. Let's get practicing!","Welcome back to our journey through Integrals. In our previous session, we covered the Fundamental Theorem of Calculus and the basic properties of definite integrals. Today, we are stepping into the advanced territory. We will explore how symmetry, periodicity, and a very special tool called the King's Property can turn a nightmare-level integral into a simple, one-line calculation. Let's start with Symmetry. When we deal with definite integrals, we often encounter functions that are either even or odd. Recall from your differentiation and function chapters that a function f of x is called an even function if f of negative x equals f of x. Examples include cosine or x squared. For an odd function, f of negative x equals negative f of x, like sine or x cubed. Now, look at the definite integral from negative a to positive a of f of x dx. If the function is even, the area on the left side of the y-axis is identical to the area on the right. Therefore, the integral simply becomes two times the integral from zero to a of f of x dx. However, if the function is odd, the area on the left is the exact negative of the area on the right. They cancel each other out perfectly, making the entire integral zero. This is a massive time-saver in exams. Next, let's discuss Periodicity. A function is periodic if there exists a constant T such that f of x plus T equals f of x for all x. The smallest such T is the period. A key property for definite integrals of periodic functions is that the integral over one full period is the same regardless of where you start. More importantly, the integral over an interval of length n times the period is equal to n times the integral over a single period. This allows us to reduce huge limits, like zero to one hundred pi, into much smaller, manageable intervals. Now, let's move to the crown jewel of definite integration: The King's Property. This property is a lifesaver for complex trigonometric integrals. The property states that the integral from a to b of f of x dx is equal to the integral from a to b of f of a plus b minus x dx. Notice that the limits remain the same, but we replace x with the sum of the upper and lower limits minus x. To use this effectively, the strategy is usually to call the original integral I, apply the King's property to get another expression for I, and then add the two equations together. This addition often results in the x terms cancelling out, leaving you with a constant that is much easier to integrate. For example, if you have an integral involving sine of x and cosine of x with limits from zero to pi divided by two, applying the King's property will transform the sine into a cosine, and adding them will give you a constant one. We will now walk through a step-by-step derivation of this property using a substitution method to ensure you understand the 'why' behind the 'how'. Mastering these three concepts—Symmetry, Periodicity, and the King's Property—is what separates a student who struggles with integration from a student who masters it. Let's dive into the practice problems.","Welcome back. In our previous session, we mastered the properties of definite integrals. Now, it is time to see the true power of integration. We are moving from the abstract world of functions to the geometric world of area. Up until now, you have known integration as the reverse of differentiation. But today, we use it as a tool to measure space. Imagine a curve plotted on a Cartesian plane. How do we find the exact area trapped between that curve and the x-axis? We use the definite integral. Let us start with the simplest case: finding the area under a simple curve. Suppose we have a function y equals f of x, which is continuous on the interval from a to b, and the function is non-negative, meaning it stays above or on the x-axis. The area A is defined as the definite integral of f of x with respect to x, evaluated from the lower limit a to the upper limit b. Mathematically, we write this as the integral from a to b of f of x dx. Think of this as summing up an infinite number of infinitely thin rectangles under the curve. For example, if we have the curve y equals x squared from x equals zero to x equals two, we set up the integral of x squared dx from zero to two. Integrating x squared gives us x cubed divided by three. Evaluating this from zero to two, we get eight divided by three minus zero, which is our area. But what if the curve goes below the x-axis? If the function is negative, the integral will give us a negative value. Since area cannot be negative, we take the absolute value of the function. So, the area is the integral from a to b of the absolute value of f of x dx. Now, let us step up the complexity. What happens when we want to find the area between two different curves? Suppose we have two continuous functions, y equals f of x and y equals g of x. If f of x is greater than or equal to g of x throughout the interval from a to b, the area trapped between them is found by integrating the difference. We take the upper function minus the lower function. The formula is the integral from a to b of f of x minus g of x dx. This effectively subtracts the area under the lower curve from the area under the upper curve, leaving only the region sandwiched between them. To solve these problems correctly, you must follow a systematic three-step approach. First, sketch the curves. You cannot solve what you cannot see. Identify the curves and the region of interest. Second, find the points of intersection. Set f of x equal to g of x and solve for x. These intersection points will often serve as your limits of integration, a and b. Third, determine which function is the upper curve and which is the lower curve within that interval. You can do this by picking a test point between the limits. Once you have these three components—the limits, the upper function, and the lower function—you simply set up your integral and compute. Let us consider a quick example. Find the area bounded by the parabola y squared equals x and the line y equals x. First, we find the intersection. Setting x for y squared, we get y squared equals y, which means y equals zero or y equals one. If y is zero, x is zero. If y is one, x is one. Our limits are zero to one. In this interval, for a given y, the curve x equals y squared is to the left, and the line x equals y is to the right. Wait, if we are integrating with respect to y, the area is the integral from zero to one of the right function minus the left function, which is y minus y squared dy. Integrating y gives y squared divided by two, and integrating y squared gives y cubed divided by three. Evaluating from zero to one, we get one half minus one third, which equals one sixth. Remember, you can integrate with respect to x or with respect to y, depending on which is more convenient for the shape. Mastering this requires practice in visualizing the boundaries. In the next video, we will tackle complex word problems using these exact principles.","Welcome back to our final deep dive into the world of Integrals. Up until now, we have mastered the mechanics—the substitution, the parts, and the definite integrals. But today, we move from the 'how' to the 'why'. We are transitioning from solving equations to solving problems. In the real world, math doesn't come to you as an integral sign; it comes to you as a rate of change, a flow, or an accumulation. Let's start with the most common application: Kinematics. Imagine you are an engineer designing a braking system for a high-speed train. You don't just need to know the velocity; you need to know the total distance covered during deceleration. If the velocity, or v of t, is a complex function of time, the total displacement is the definite integral of that velocity function from time zero to time t. But what if the acceleration is changing? That is where the hierarchy of integration comes in. If you have acceleration, integrating it gives you velocity, and integrating velocity gives you displacement. The key in word problems is to identify your limits of integration. Are we looking for the total change from start to finish, or the instantaneous accumulation at a specific moment? Let's look at a second critical area: Rate of Change in Biology and Chemistry. Consider a population of bacteria in a petri dish. The rate of growth might not be constant; it might depend on the current population size. This gives us a differential equation, and to find the total population after five hours, we must integrate that rate function. Similarly, in chemistry, when calculating the concentration of a reactant over time, we integrate the rate of reaction. Now, let's tackle a more complex scenario: Fluid Dynamics and Accumulation. Suppose water is flowing into a conical tank at a variable rate. The volume of water at any time is the integral of the flow rate function. This is a classic modeling problem where you must first express the rate as a function of time, and then apply the Fundamental Theorem of Calculus. A common pitfall in these problems is forgetting the units and the constant of integration if you are dealing with an indefinite model, though in most real-world 'total amount' problems, we use definite integrals with specific time boundaries. Let's discuss the 'Modeling Workflow'. Step one: Identify the rate. Look for keywords like 'rate of change', 'velocity', 'flow rate', or 'marginal cost'. Step two: Set up the integral. Translate the English sentence into a mathematical function. If the problem says 'the rate of change of profit is given by f of x', your integral is the integral of f of x with respect to x. Step three: Determine the limits. This is where most students stumble. If the problem asks for the total change between time a and time b, your limits are a and b. If it asks for the amount at a specific time given an initial condition, you are looking at an initial value problem. Step four: Evaluate and interpret. Once you find the numerical value, ask yourself: does this make sense? If you are calculating the area of a field and get a negative number, you have likely swapped your upper and lower limits. Integration is the tool that allows us to sum up infinite tiny slices to find a whole. Whether it is the work done by a variable force, the center of mass of an object, or the total energy consumed by a city, integration is the language of accumulation. Master this ability to translate words into integrals, and you will realize that calculus is not just a chapter in a textbook, but a lens through which we view the changing world.","Welcome to the final session of our journey through Integrals. We have covered everything from the basic reverse process of differentiation to the complex applications of finding areas under curves. Now, it is time to prepare you for the battlefield: the examination. Before we recap, let's address the most common mistakes that cost students marks. First, the most frequent error is forgetting the constant of integration, the little plus C, in indefinite integrals. In a board exam, this can lead to a loss of marks even if your calculus is perfect. Second, be extremely careful with signs when using the substitution method. When you let u equal x squared, remember that the derivative du equals two x dx. Many students forget to account for that two, or they miss a negative sign when dealing with trigonometric substitutions like u equals cosine x. Third, in Integration by Parts, students often misapply the ILATE rule. Always double-check which function is the 'I' for Inverse, 'L' for Logarithmic, 'A' for Algebraic, 'T' for Trigonometric, and 'E' for Exponential. If you pick the wrong order, the integral becomes much harder or even impossible to solve. Fourth, when dealing with Definite Integrals, students often make calculation errors during the final step of applying the Fundamental Theorem of Calculus. Always write out the upper limit and lower limit clearly before subtracting. Fifth, in Partial Fractions, ensure your decomposition is complete. If you have a repeated linear factor, you must include all terms from the first power up to the power of the repetition. Now, let's talk about time management. Integration problems can be time-consuming. Do not get stuck on a single complex integral for fifteen minutes. If a substitution isn't working, move to the next question and come back later. Use the properties of Definite Integrals, like the King's Property, to simplify expressions before you start integrating. This can save you minutes of tedious algebra. For a quick recap of this chapter: we started with the concept of integration as the anti-derivative. We mastered basic formulas and the vital substitution method. We moved through trigonometric identities, partial fractions, and the ILATE rule for integration by parts. We tackled special forms involving square roots and quadratic expressions. Then, we transitioned to Definite Integrals, learning how to use the Fundamental Theorem of Calculus and powerful properties like symmetry and periodicity. Finally, we applied all these tools to find the area under curves and between two curves. To excel, practice variety. Don't just solve easy problems; solve the ones that combine multiple methods, like a definite integral that requires both substitution and integration by parts. Keep your formula sheet handy and revise it every single day. You have the tools, you have the methods, and now you have the strategy. Go forth and solve with confidence. You are ready."];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-maths-07-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

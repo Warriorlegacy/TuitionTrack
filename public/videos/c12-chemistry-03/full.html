@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Chemical Kinetics, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-chemistry-03-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Speed of Life - Why Chemical Kinetics Matters -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Speed of Life - Why Chemical Kinetics Matters</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Thermodynamics tells us if a reaction is possible; Kinetics tells us how fast.</div>
+              <div id="qx0-p1" class="qe-bullet">• Chemical Kinetics studies reaction rates and their underlying mechanisms.</div>
+              <div id="qx0-p2" class="qe-bullet">• Reaction speeds vary from instantaneous combustion to slow rusting.</div>
+              <div id="qx0-p3" class="qe-bullet">• Kinetics focuses on the 'journey' from reactants to products.</div>
+              <div id="qx0-p4" class="qe-bullet">• Industrial applications rely heavily on controlling reaction speeds.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3782606828,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a matchstick igniting instantly on the left, and a piece of iron slowly turning into reddish-brown rust on the right.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A split-screen 3D animation showing a matchstick igniting instantly on the left, and a piece of iron slowly turning into reddish-brown rust on the right.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Rate of Reaction: Average, Instantaneous, and Units of Rate -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Rate of Reaction: Average, Instantaneous, and Units of Rate</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Rate = Change in Concentration / Change in Time</div>
+              <div id="qx1-p1" class="qe-bullet">• Average Rate: Measured over a finite time interval</div>
+              <div id="qx1-p2" class="qe-bullet">• Instantaneous Rate: Measured at a specific moment (Slope of Tangent)</div>
+              <div id="qx1-p3" class="qe-bullet">• Rate is always expressed as a positive value</div>
+              <div id="qx1-p4" class="qe-bullet">• Standard Units: mol L-1 s-1 (Molarity per second)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2930109709,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D line graph showing concentration decreasing over time, with a secant line representing average rate and a moving tangent line representing instantaneous rate.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D line graph showing concentration decreasing over time, with a secant line representing average rate and a moving tangent line representing instantaneous rate.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Factors Affecting Reaction Rates: Concentration, Temperature, and Catalysts -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Factors Affecting Reaction Rates: Concentration, Temperature, and Catalysts</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Concentration: Higher concentration increases collision frequency.</div>
+              <div id="qx2-p1" class="qe-bullet">• Temperature: Increases kinetic energy and the fraction of effective collisions.</div>
+              <div id="qx2-p2" class="qe-bullet">• Activation Energy: The minimum energy required for a successful collision.</div>
+              <div id="qx2-p3" class="qe-bullet">• Catalyst: Provides an alternative pathway with lower activation energy.</div>
+              <div id="qx2-p4" class="qe-bullet">• Catalysts are not consumed during the chemical reaction.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":4129995033,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: left side shows crowded molecules colliding frequently; right side shows a mountain landscape where a 'catalyst tunnel' allows particles to pass through easily.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen 3D animation: left side shows crowded molecules colliding frequently; right side shows a mountain landscape where a 'catalyst tunnel' allows particles to pass through easily.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Rate Law and Order of Reaction: Determining Order Experimentally -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Rate Law and Order of Reaction: Determining Order Experimentally</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Rate Law: Experimental relationship between rate and reactant concentrations.</div>
+              <div id="qx3-p1" class="qe-bullet">• Rate Law Expression: Rate = k [A]^m [B]^n.</div>
+              <div id="qx3-p2" class="qe-bullet">• Order of Reaction: The sum of exponents (m + n) in the rate law.</div>
+              <div id="qx3-p3" class="qe-bullet">• Method of Initial Rates: Varying concentrations to find exponents m and n.</div>
+              <div id="qx3-p4" class="qe-bullet">• Method of Isolation: Simplifying complex reactions by using excess reactants.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2523397229,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D laboratory setup showing a digital sensor measuring reactant concentration while a graph dynamically updates its slope based on changing concentration values.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D laboratory setup showing a digital sensor measuring reactant concentration while a graph dynamically updates its slope based on changing concentration values.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Molecularity of a Reaction vs. Order: Key Differences and Nuances -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Molecularity of a Reaction vs. Order: Key Differences and Nuances</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Molecularity: Theoretical number of species colliding in an elementary step.</div>
+              <div id="qx4-p1" class="qe-bullet">• Order: Experimental sum of exponents in the rate law equation.</div>
+              <div id="qx4-p2" class="qe-bullet">• Molecularity must be a positive integer (1, 2, or 3); Order can be zero or fractional.</div>
+              <div id="qx4-p3" class="qe-bullet">• Molecularity applies only to elementary steps; Order applies to all reactions.</div>
+              <div id="qx4-p4" class="qe-bullet">• For elementary reactions, Molecularity equals Order; for complex ones, they differ.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":776486483,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows molecules colliding physically (Molecularity); Right side shows a mathematical rate law equation being solved (Order).</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A split-screen 3D animation: Left side shows molecules colliding physically (Molecularity); Right side shows a mathematical rate law equation being solved (Order).</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Integrated Rate Equations: Zero-Order Reactions and Derivations -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Integrated Rate Equations: Zero-Order Reactions and Derivations</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Zero-order: Rate is independent of reactant concentration.</div>
+              <div id="qx5-p1" class="qe-bullet">• Rate Law: Rate = k [A]^0 = k.</div>
+              <div id="qx5-p2" class="qe-bullet">• Integrated Equation: [A]t = [A]0 - kt.</div>
+              <div id="qx5-p3" class="qe-bullet">• Graph: Plot of [A]t vs time is a straight line with slope -k.</div>
+              <div id="qx5-p4" class="qe-bullet">• Units of k for zero-order: mol L^-1 s^-1.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3341871075,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D mathematical animation showing the integration process, transitioning from a differential equation to a linear graph with a downward sloping line.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D mathematical animation showing the integration process, transitioning from a differential equation to a linear graph with a downward sloping line.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Integrated Rate Equations: First-Order Reactions and Derivations -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Integrated Rate Equations: First-Order Reactions and Derivations</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• First-order rate law: Rate = k[A]^1</div>
+              <div id="qx6-p1" class="qe-bullet">• Differential form: -d[A]/dt = k[A]</div>
+              <div id="qx6-p2" class="qe-bullet">• Integrated form: k = (2.303/t) log([A]0/[A]t)</div>
+              <div id="qx6-p3" class="qe-bullet">• Units of k for first-order: s^-1</div>
+              <div id="qx6-p4" class="qe-bullet">• Plot of ln[A] vs time yields a straight line with slope -k</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2143931346,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D blackboard animation where mathematical terms transform into a linear graph showing concentration decay over time.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D blackboard animation where mathematical terms transform into a linear graph showing concentration decay over time.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Half-Life Period: Calculations for Zero and First-Order Kinetics -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Half-Life Period: Calculations for Zero and First-Order Kinetics</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Half-life (t-half): Time taken for concentration to reach half of its initial value.</div>
+              <div id="qx7-p1" class="qe-bullet">• Zero-Order Half-life: t-half = [A-zero] / 2k. Proportional to initial concentration.</div>
+              <div id="qx7-p2" class="qe-bullet">• First-Order Half-life: t-half = 0.693 / k. Independent of initial concentration.</div>
+              <div id="qx7-p3" class="qe-bullet">• Zero-Order: Increasing initial concentration increases the half-life period.</div>
+              <div id="qx7-p4" class="qe-bullet">• First-Order: Half-life remains constant regardless of the starting amount.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":874249959,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a zero-order beaker where half-life stretches as volume increases, versus a first-order beaker where the half-life timer stays constant despite volume changes.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A split-screen 3D animation showing a zero-order beaker where half-life stretches as volume increases, versus a first-order beaker where the half-life timer stays constant despite volume changes.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Temperature Dependence: Arrhenius Equation and Activation Energy -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Temperature Dependence: Arrhenius Equation and Activation Energy</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Temperature increase typically doubles the rate constant for every 10K rise.</div>
+              <div id="qx8-p1" class="qe-bullet">• Arrhenius Equation: k = A * e^(-Ea / RT)</div>
+              <div id="qx8-p2" class="qe-bullet">• Activation Energy (Ea) is the minimum energy required for a reaction to occur.</div>
+              <div id="qx8-p3" class="qe-bullet">• Pre-exponential factor (A) represents collision frequency and orientation.</div>
+              <div id="qx8-p4" class="qe-bullet">• Plotting ln k vs 1/T gives a straight line with slope = -Ea / R.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":1092513189,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing reactant molecules approaching a glowing energy barrier; as temperature rises, more molecules turn bright red and successfully leap over the barrier into product form.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D animation showing reactant molecules approaching a glowing energy barrier; as temperature rises, more molecules turn bright red and successfully leap over the barrier into product form.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Collision Theory: Effective Collisions and Orientation Factor -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Collision Theory: Effective Collisions and Orientation Factor</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Chemical reactions require physical collisions between reactant molecules.</div>
+              <div id="qx9-p1" class="qe-bullet">• An effective collision must meet both energy and orientation requirements.</div>
+              <div id="qx9-p2" class="qe-bullet">• Threshold energy is the minimum kinetic energy required for a reaction.</div>
+              <div id="qx9-p3" class="qe-bullet">• The Orientation Factor (P) accounts for the spatial alignment of molecules.</div>
+              <div id="qx9-p4" class="qe-bullet">• Rate equals Collision Frequency (Z) times Energy Factor times Steric Factor (P).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":348352202,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing two complex molecules colliding at a wrong angle and bouncing off, followed by a second collision at the correct angle with a bright flash representing a successful reaction.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D animation showing two complex molecules colliding at a wrong angle and bouncing off, followed by a second collision at the correct angle with a bright flash representing a successful reaction.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Mechanisms of Reaction: Elementary Steps and Rate Determining Step -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Mechanisms of Reaction: Elementary Steps and Rate Determining Step</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Reaction Mechanism: The sequence of elementary steps in a reaction.</div>
+              <div id="qx10-p1" class="qe-bullet">• Elementary Step: A single molecular event occurring in one stage.</div>
+              <div id="qx10-p2" class="qe-bullet">• Rate Determining Step: The slowest step that controls the overall reaction rate.</div>
+              <div id="qx10-p3" class="qe-bullet">• Reaction Intermediates: Species produced in one step and consumed in another.</div>
+              <div id="qx10-p4" class="qe-bullet">• The overall rate law is determined by the slowest elementary step.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3998720213,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation of a relay race transitioning into a molecular model where one slow collision acts as a bottleneck for a flow of particles.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D animation of a relay race transitioning into a molecular model where one slow collision acts as a bottleneck for a flow of particles.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Problem-Solving Strategies, Common Pitfalls, and Full Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Problem-Solving Strategies, Common Pitfalls, and Full Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Check units of 'k' to immediately identify the order of reaction</div>
+              <div id="qx11-p1" class="qe-bullet">• Always convert temperature to Kelvin when using the Arrhenius Equation</div>
+              <div id="qx11-p2" class="qe-bullet">• First-order half-life is independent of initial concentration</div>
+              <div id="qx11-p3" class="qe-bullet">• Order is experimental; molecularity is theoretical</div>
+              <div id="qx11-p4" class="qe-bullet">• Identify the Rate Determining Step as the slowest step in a mechanism</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2038700253,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a student solving a math problem on one side and a flowing chemical reaction graph on the other, with key formulas floating in the center.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a student solving a math problem on one side and a flowing chemical reaction graph on the other, with key formulas floating in the center.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Chemical Kinetics today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Speed of Life - Why Chemical Kinetics Matters <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Rate of Reaction: Average, Instantaneous, and Units of Rate <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Factors Affecting Reaction Rates: Concentration, Temperature, and Catalysts <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Rate Law and Order of Reaction: Determining Order Experimentally <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Molecularity of a Reaction vs. Order: Key Differences and Nuances <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Integrated Rate Equations: Zero-Order Reactions and Derivations <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Integrated Rate Equations: First-Order Reactions and Derivations <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Half-Life Period: Calculations for Zero and First-Order Kinetics <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Temperature Dependence: Arrhenius Equation and Activation Energy <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Collision Theory: Effective Collisions and Orientation Factor <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Mechanisms of Reaction: Elementary Steps and Rate Determining Step <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Problem-Solving Strategies, Common Pitfalls, and Full Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey into the fascinating world of Chemical Kinetics. Before we dive into the complex equations and mathematical derivations, let us pause and ask a very simple question: Do all chemical reactions happen at the same speed? If you look around you, the answer is a resounding no. Think about the world we live in. When you strike a matchstick, the combustion of wood happens almost instantly, in a matter of seconds. But consider the formation of rust on an iron nail or the ripening of a fruit; these processes take days, weeks, or even months. Even more profound is the biological chemistry happening inside your body right now. Your cells are performing thousands of chemical reactions every single second to keep you alive, from the breakdown of glucose to the synthesis of proteins. This variation in speed is exactly what Chemical Kinetics studies. In thermodynamics, which we studied in previous chapters, we learned about the stability of reactants and products. Thermodynamics tells us 'if' a reaction will occur by looking at the change in Gibbs Free Energy. It tells us about the feasibility and the final equilibrium state. However, thermodynamics is silent about 'how fast' that reaction will actually take place. A reaction might be highly spontaneous and energetically favorable, yet it could be so incredibly slow that it is practically non-existent in our lifetime. For example, the conversion of diamond into graphite is thermodynamically spontaneous, but the rate is so infinitesimally slow that we never see it happening. This is where Chemical Kinetics steps in. Chemical Kinetics is the branch of chemistry that deals with the study of reaction rates, the factors that influence these rates, and the detailed mechanism by which reactants transform into products. We are not just interested in the starting point and the ending point; we are interested in the journey. We want to know: How much reactant is consumed per unit of time? How much product is formed per unit of time? And most importantly, what are the hidden steps, the intermediate stages, that the molecules go through during this transformation? In this chapter, we will learn how to mathematically express these speeds, how temperature can act as a throttle to speed up or slow down a reaction, and how catalysts can provide a shortcut to the finish line. Understanding kinetics is not just an academic exercise; it is the backbone of industrial chemistry. Whether it is manufacturing life-saving drugs, producing fertilizers, or designing more efficient automobile engines, controlling the speed of a reaction is the key to success. So, let us prepare to move beyond the 'what' and the 'why' of chemistry, and start exploring the 'how fast'. In our next session, we will begin our formal study by defining the Rate of Reaction and exploring its different mathematical forms. Let's get started!","Welcome back! In our last session, we introduced the concept of chemical kinetics and why the speed of a reaction is so vital in the real world. Now, let us dive into the mathematical heart of the subject: how exactly do we define and measure the rate of a reaction? Imagine you are watching a race. You can measure the average speed of a runner over the whole track, or you can check their speedometer at one specific split second. Chemical reactions work in a very similar way. Let us start with the most basic definition. The rate of a reaction is defined as the change in the concentration of a reactant or a product per unit time. If we have a general reaction where reactant A turns into product B, the rate can be expressed as the negative change in concentration of A divided by the time interval, or the positive change in concentration of B divided by the time interval. We use a negative sign for reactants because their concentration decreases over time, and we want the rate to always be a positive value. Now, let us distinguish between two crucial types of rates: Average Rate and Instantaneous Rate. The Average Rate is calculated over a significant, finite time interval. If a reaction starts at time t-one and we measure the concentration at time t-two, the average rate is the change in concentration divided by the total time elapsed, which is t-two minus t-one. This gives us a general idea of how fast the reaction is moving over that period. However, chemical reactions are dynamic. The rate is often very fast at the beginning and slows down as reactants are consumed. This is where the Instantaneous Rate becomes essential. The instantaneous rate is the rate of reaction at a specific, precise moment in time. Mathematically, we find this by taking the limit of the average rate as the time interval approaches zero. In calculus terms, the instantaneous rate is simply the first derivative of the concentration with respect to time. If you are looking at a graph of concentration versus time, the instantaneous rate at any point is the slope of the tangent line drawn to the curve at that exact point. If the curve is steep, the rate is high; if the curve flattens out, the rate is low. Now, let us talk about the units of rate. This is a common area where students lose marks in exams. Since the rate is concentration divided by time, the units depend on the units of concentration used. In most standard chemistry problems, concentration is measured in moles per liter, or Molarity. Time is usually measured in seconds, minutes, or hours. Therefore, the standard unit for the rate of reaction is moles per liter per second, which we write as Molarity per second, or M per second. If you are using different units, like grams per liter per minute, that is also mathematically correct, but always ensure your units are consistent. To summarize this section: the rate is the change in concentration over time. The average rate looks at a window of time, while the instantaneous rate looks at a single moment using the slope of a tangent. And always remember, the rate is a positive quantity, regardless of whether you are measuring a reactant or a product. In our next video, we will explore the specific factors that cause these rates to change, such as temperature and concentration.","Welcome back to our journey through Chemical Kinetics. In our previous lesson, we defined what reaction rate actually is. Now, we move to a much more practical question: Why do some reactions happen in a split second, like an explosion, while others take years, like the rusting of iron? What are the 'knobs' we can turn to speed up or slow down a chemical process? There are three primary factors we must master: Concentration, Temperature, and the presence of a Catalyst. Let's start with Concentration. Imagine a crowded room where people are trying to shake hands. If you double the number of people in that room, the chances of two people bumping into each other and shaking hands increases significantly. In chemistry, the same logic applies. For a reaction to occur, reactant molecules must collide. When we increase the concentration of the reactants, we are essentially packing more molecules into the same volume of space. This increases the number of collisions occurring per unit of time. More collisions lead to a higher frequency of effective collisions, which directly increases the rate of the reaction. Generally, for most reactions, as concentration goes up, the rate goes up. Now, let's talk about the most dramatic factor: Temperature. If you have ever noticed how food spoils faster in a warm kitchen than in a refrigerator, you already understand the basics of temperature dependence. When we increase the temperature, two things happen. First, the molecules move faster because they have more kinetic energy. This leads to more frequent collisions. But more importantly, the second effect is much more significant. For a collision to be 'effective'—meaning it actually results in a product—the molecules must collide with a minimum amount of energy called the Activation Energy. At higher temperatures, a much larger fraction of the molecules possesses kinetic energy equal to or greater than this activation energy. It is not just about colliding more often; it is about colliding with much more 'punch.' This exponential increase in the number of molecules capable of overcoming the energy barrier is why even a small rise in temperature can cause a massive jump in the reaction rate. Finally, let's look at the third factor: Catalysts. A catalyst is a substance that increases the rate of a chemical reaction without being consumed in the process. Think of a catalyst as a shortcut on a map. If you are hiking over a high mountain to reach a village on the other side, it takes a lot of energy and time. But if someone builds a tunnel through the mountain, you reach the destination much faster using much less energy. In chemical terms, a catalyst provides an alternative reaction pathway or mechanism. This new pathway has a lower Activation Energy than the original one. Because the energy barrier is now lower, more reactant molecules can successfully cross it at the same temperature, thus speeding up the reaction. It is important to remember that a catalyst does not change the thermodynamics of the reaction—it doesn't change the starting energy or the final energy—it only changes the 'climb' in between. To summarize: Increasing concentration increases collision frequency; increasing temperature increases both collision frequency and the fraction of molecules with sufficient energy; and a catalyst lowers the activation energy barrier. In our next lesson, we will take these concepts and move into the mathematical realm to see how we can actually calculate these rates using the Rate Law.","Welcome back. In our previous session, we looked at the various factors that influence how fast a reaction occurs. Now, we move into the heart of chemical kinetics: the Rate Law. When a chemical reaction occurs, say A plus B yields C, we cannot simply assume that the rate is proportional to the concentration of every reactant based on the balanced equation. This is a common misconception. The relationship between the rate of a reaction and the concentration of the reactants is determined experimentally and is called the Rate Law. Let us write a general expression for a reaction where A and B are reactants. The rate of reaction is proportional to the concentration of A raised to some power 'm' and the concentration of B raised to some power 'n'. Mathematically, we write this as: Rate equals k times concentration of A raised to the power m, times concentration of B raised to the power n. Here, 'k' is a constant known as the rate constant or the specific rate constant. The values of 'm' and 'n' are called the order of reaction with respect to reactants A and B, respectively. The sum of these exponents, m plus n, gives us the overall order of the reaction. It is crucial to remember that m and n do not have to be integers; they can be fractions or even zero. Now, how do we actually find these values in a laboratory? We cannot simply look at a balanced equation. We must perform experiments. Let us look at a classic experimental method: the Method of Initial Rates. Imagine we are studying a reaction where A plus B yields products. In our first experiment, we use a specific concentration of A and B and measure the initial rate. In our second experiment, we keep the concentration of B constant but double the concentration of A. If the rate also doubles, then the reaction is first order with respect to A. If the rate quadruples, it is second order with respect to A. If the rate remains unchanged, it is zero order with respect to A. By comparing how the rate changes as we systematically vary one reactant at a time while keeping others constant, we can mathematically deduce the exponents m and n. Another sophisticated way to determine the order is the Integrated Rate Method, which we will derive in detail in the upcoming lessons. This involves monitoring the concentration of reactants over time and seeing which mathematical model—zero order or first order—best fits the experimental data. We can also use the graphical method. For a zero-order reaction, a plot of concentration versus time gives a straight line. For a first-order reaction, a plot of the natural log of concentration versus time gives a straight line. Finally, there is the method of isolation. In complex reactions with many reactants, we can make the concentration of all reactants except one very large. This way, the concentrations of the other reactants remain effectively constant throughout the reaction, allowing us to focus solely on how the rate depends on the single reactant we are varying. This simplifies a multi-variable problem into a single-variable problem. Understanding the rate law is the first step toward predicting how a reaction will behave under different industrial or biological conditions. In our next segment, we will clarify a very important distinction: the difference between the Order of a reaction and its Molecularity.","In our previous session, we learned how to experimentally determine the order of a reaction using the rate law. But now, a very common question arises in exams and even in research: if we have the order of a reaction, why do we also need the concept of molecularity? At first glance, they might seem like two sides of the same coin, but they are fundamentally different concepts. Let's start by defining Molecularity. Molecularity is a theoretical concept. It refers to the number of reacting species, which can be atoms, ions, or molecules, that must collide simultaneously in an elementary step to bring about a chemical reaction. If a reaction occurs in a single step, we call it an elementary reaction. For an elementary reaction, the molecularity is simply the number of molecules involved. For example, if one molecule of A reacts with one molecule of B to form products, the molecularity is two, or bimolecular. If three molecules collide at once, it is termolecular. However, most chemical reactions are complex, meaning they happen through a series of simple steps called a reaction mechanism. In these complex reactions, the overall molecularity is not well-defined. Now, let's look at the Order of Reaction. Unlike molecularity, the order is an experimental quantity. It is the sum of the powers to which the concentration terms are raised in the rate law equation. If the rate law is written as rate equals k times concentration of A raised to the power m, times concentration of B raised to the power n, then the overall order is m plus n. This value is determined only by performing experiments in a laboratory. Now, let's compare them directly to clear any confusion. First, Molecularity is always a whole number, like one, two, or three. It can never be zero, and it can never be a fraction. This is because you cannot have half a molecule colliding in a single step. On the other hand, the Order of a reaction can be zero, a fraction, or even a negative number. For instance, in a zero-order reaction, the rate is independent of the concentration of the reactants. Second, Molecularity is a theoretical concept derived from the reaction mechanism, while Order is an experimental value derived from the rate law. Third, Molecularity applies only to elementary reactions. For a complex reaction, we talk about the molecularity of each individual step, but the overall reaction doesn't have a single molecularity. However, the Order applies to both elementary and complex reactions. A very important nuance to remember is this: for an elementary reaction, the molecularity and the order are numerically equal. But for a complex reaction, they are almost always different. For example, if a reaction has a slow first step and a fast second step, the order of the overall reaction will be determined by that slow step, which is known as the rate-determining step. This order might not match the total number of molecules present in the balanced chemical equation. So, to summarize: Molecularity is about the 'how many' in a single collision, while Order is about 'how much' the concentration affects the speed. Keep this distinction in mind, as it is a favorite topic for multiple-choice questions in your board exams.","Welcome back. In our previous session, we explored how the rate of a reaction depends on the concentration of reactants through the rate law. But there is a practical problem. If we want to know exactly how much reactant is left after ten minutes, or how long it will take to reach a certain concentration, knowing the rate law isn't enough. We need a mathematical relationship that connects concentration directly to time. This is where Integrated Rate Equations come into play. Today, we focus on the simplest case: Zero-Order Reactions. A zero-order reaction is one where the rate of reaction is completely independent of the concentration of the reactants. This means no matter how much reactant you have, the speed stays constant. This often happens in surface-catalyzed reactions, like the decomposition of ammonia on a tungsten surface, where the reaction rate is limited by the available surface area rather than the amount of gas. Let us derive the equation for a zero-order reaction. Consider a simple reaction where reactant A is converted into products. The rate of this reaction is defined as the negative change in concentration of A over a change in time. For a zero-order reaction, the rate law is expressed as: Rate equals k times concentration of A raised to the power of zero. Since any number raised to the power of zero is one, the rate simply equals k, where k is the rate constant. Now, let us write this in differential form. The rate is equal to negative d-A over dt, which equals k. To solve this, we use the method of separation of variables. We move the d-A to the right side, so we get d-A equals negative k times dt. Now, we integrate both sides. We integrate d-A from the initial concentration, which we call A-zero, to the concentration at time t, which we call A-t. On the right side, we integrate k times dt from time zero to time t. The integral of d-A is A-t minus A-zero. The integral of k times dt is k times t. So, our equation becomes: A-t minus A-zero equals negative k times t. If we rearrange this to solve for A-t, we get the integrated rate equation for a zero-order reaction: A-t equals A-zero minus k times t. This is a linear equation, much like the equation of a straight line, y equals m-x plus c. If we plot the concentration A-t on the y-axis against time t on the x-axis, we will get a straight line. The slope of this line is negative k, and the y-intercept is the initial concentration, A-zero. This is a crucial experimental tool. If you plot your data and get a straight line with a negative slope, you have proven that the reaction is zero-order. The units of the rate constant k for a zero-order reaction are quite unique. Since the rate is concentration divided by time, and in a zero-order reaction the rate equals k, the units for k are simply concentration divided by time. For example, in molarity per second, or mol per liter per second. Let us quickly recap the derivation. We started with the rate law, separated the variables, integrated both sides, and arrived at the final linear form. Understanding this derivation is essential because it forms the foundation for more complex orders of reaction that we will tackle next.","Welcome back. In our previous session, we explored zero-order reactions. Today, we step into the heart of chemical kinetics: First-Order Reactions. In a first-order reaction, the rate of the reaction is directly proportional to the concentration of only one reactant. If we represent the reactant as A, the rate law is expressed as: rate equals k times concentration of A to the power of one. Here, k is the specific rate constant. Now, while the rate law tells us how the rate changes with concentration, it doesn't tell us how the concentration changes with time. To find that, we need the Integrated Rate Equation. Let's derive it together. Consider a simple first-order reaction where reactant A is converted into products. The reaction is: A approaches Products. The differential rate equation is: negative d-A over dt equals k times A. To solve this, we use the method of separation of variables. We move the concentration term to one side and the time term to the other. This gives us: negative d-A over A equals k times dt. To find the concentration at any time t, we must integrate both sides. We integrate the left side from the initial concentration, which we call A-zero, to the concentration at time t, which we call A-t. We integrate the right side from time zero to time t. The integral of one over A is the natural logarithm of A. So, the left side becomes the natural log of A-t minus the natural log of A-zero. On the right side, the integral of k times dt is simply k times t. Using the properties of logarithms, where the difference of two logs is the log of their quotient, we get: natural log of A-t divided by A-zero equals negative k times t. To make this more useful for calculations, we want to get rid of the negative sign. We can do this by inverting the fraction inside the logarithm. This gives us: natural log of A-zero divided by A-t equals k times t. In chemistry, we often prefer common logarithms, or log base ten, over natural logarithms. To convert, we remember that natural log of x is equal to two point three zero-three times log base ten of x. Substituting this, our equation becomes: two point three zero-three times log base ten of A-zero divided by A-t equals k times t. Rearranging this for k, we get: k equals two point three zero-three over t, times log base ten of A-zero divided by A-t. This is the integrated rate equation for a first-order reaction. It is a powerful tool because if you know the initial concentration, the concentration at a specific time, and the rate constant, you can calculate the time taken for the reaction to proceed. Conversely, if you know the time and concentrations, you can find the rate constant. One critical thing to remember is that for a first-order reaction, the units of the rate constant k are always reciprocal seconds, or s to the power of minus one. This is different from zero-order reactions. Let's look at the mathematical relationship again. If you were to plot the natural log of the concentration of A against time, you would get a straight line. The slope of this line would be negative k, and the y-intercept would be the natural log of the initial concentration. This linear relationship is how scientists experimentally confirm if a reaction is indeed first-order. If the plot is a straight line, the reaction follows first-order kinetics. We will use this equation extensively in the next section when we discuss half-life periods.","Welcome back. In our previous lessons, we derived the integrated rate equations for zero-order and first-order reactions. Now, we are going to apply those mathematical tools to a concept that is incredibly practical in both chemistry and medicine: the Half-Life Period. The half-life of a reaction, denoted as t-half, is defined as the time required for the concentration of a reactant to decrease to exactly one-half of its initial value. Imagine you have a container with a concentration of reactant A equal to A-zero. When the time elapses such that the concentration of A becomes A-zero divided by two, that specific time interval is your half-life. It is important to note that the half-life can behave very differently depending on the order of the reaction. Let us first look at Zero-Order Kinetics. Recall our integrated rate equation for a zero-order reaction: concentration of A at time t equals A-zero minus k-zero times t. To find the half-life, we set the concentration at time t to be A-zero divided by two. This gives us the equation: A-zero divided by two equals A-zero minus k-zero times t-half. If we rearrange this by subtracting A-zero from both sides, we get negative A-zero divided by two equals minus k-zero times t-half. By canceling the negative signs and solving for t-half, we arrive at the formula: t-half equals A-zero divided by two-k-zero. Look closely at this result. In a zero-order reaction, the half-life is directly proportional to the initial concentration of the reactant. This means if you double the starting amount of your reactant, the time it takes to consume half of it will also double. The half-life is not constant; it depends on where you start. Now, let us shift our focus to First-Order Kinetics, which is perhaps the most important order to master. The integrated rate equation for a first-order reaction is: natural log of concentration of A at time t equals natural log of A-zero minus k-one times t. Again, to find the half-life, we substitute the concentration at time t with A-zero divided by two. This gives us: natural log of A-zero divided by two equals natural log of A-zero minus k-one times t-half. Using the properties of logarithms, we can rewrite natural log of A-zero divided by two as natural log of A-zero minus natural log of two. So, the equation becomes: natural log of A-zero minus natural log of two equals natural log of A-zero minus k-one times t-half. The natural log of A-zero terms on both sides cancel out, leaving us with: negative natural log of two equals minus k-one times t-half. By canceling the negative signs and rearranging for t-half, we get the famous formula: t-half equals natural log of two divided by k-one. If we use the value of natural log of two, which is approximately zero point six-nine-three, the formula is: t-half equals zero point six-nine-three divided by k-one. Now, compare this to the zero-order result. Notice something striking? In a first-order reaction, the initial concentration, A-zero, does not appear in the final formula at all. This means the half-life of a first-order reaction is constant. It does not matter if you start with one mole or one hundred moles; the time taken to reduce that amount by half remains exactly the same. This is why first-order kinetics is so vital in pharmacology; it allows doctors to predict how long a drug will stay in a patient's system regardless of the initial dose. To summarize: for zero-order, half-life depends on initial concentration and is inversely proportional to the rate constant. For first-order, half-life is independent of initial concentration and depends only on the rate constant. Keep these distinctions in mind, as they are frequent targets in competitive exams.","Welcome back. In our previous sessions, we explored how concentration affects the rate of a reaction. But have you ever noticed how food spoils faster in the heat, or how a car engine performs differently in winter? This is because temperature plays a massive role in chemical kinetics. Generally, for most reactions, a rise in temperature leads to a significant increase in the rate of reaction. A common rule of thumb is that for every ten-degree rise in temperature, the rate constant nearly doubles. But why does this happen? To understand this, we need to look at the Arrhenius Equation. In 1889, Svante Arrhenius proposed a mathematical relationship between the rate constant and temperature. The equation is written as k equals A times e to the power of negative E sub A divided by R T. Let us break this down. Here, k is the rate constant, T is the absolute temperature measured in Kelvin, and R is the universal gas constant. Now, what are A and E sub A? A is known as the Arrhenius factor or the pre-exponential factor. It represents the frequency of collisions with the correct orientation. E sub A is the most crucial part—it is the Activation Energy. Think of Activation Energy as a mountain or a barrier that the reactants must climb over to transform into products. Even if molecules collide, they won't react unless they possess a minimum amount of energy to cross this barrier. This minimum energy is called the Activation Energy. If the kinetic energy of the colliding molecules is less than E sub A, they simply bounce off each other without reacting. When we increase the temperature, we are essentially increasing the average kinetic energy of the molecules. This means a much larger fraction of molecules now possesses energy equal to or greater than the activation energy. This sudden increase in the number of 'effective collisions' is why the rate constant k increases exponentially with temperature. If we take the natural logarithm of both sides of the Arrhenius equation, we get a linear form: ln k equals ln A minus E sub A divided by R T. This is extremely useful for experimentalists. If you plot a graph of ln k on the y-axis against one divided by T on the x-axis, you will get a straight line. The slope of this line is equal to negative E sub A divided by R. By measuring the rate constant at two different temperatures, T one and T two, we can calculate the activation energy using the formula: ln k two minus ln k one equals E sub A divided by R times the quantity one divided by T one minus one divided by T two. This allows us to quantify exactly how much energy is required for a specific reaction to proceed. In summary, temperature doesn't just make molecules move faster; it specifically increases the proportion of molecules capable of overcoming the energy barrier known as Activation Energy. Understanding this relationship is the key to controlling everything from industrial chemical synthesis to the metabolic processes in your own body.","Welcome back. In our previous session, we explored the Arrhenius equation and the concept of activation energy. We know that for a reaction to occur, molecules must overcome an energy barrier. But simply having enough energy isn't always enough. Why is that? To understand this, we must dive into the Collision Theory. According to this theory, for a chemical reaction to take place, the reactant molecules must physically collide with one another. However, not every single collision leads to the formation of products. If every collision resulted in a reaction, chemical processes would be incredibly violent and instantaneous. Instead, we observe that only a small fraction of collisions are 'effective collisions.' An effective collision is one that actually results in a chemical change. For a collision to be effective, it must satisfy two fundamental criteria. The first criterion is the Energy Barrier. As we discussed with activation energy, the colliding molecules must possess a minimum amount of kinetic energy, known as the threshold energy. If the kinetic energy is less than the activation energy, the molecules will simply bounce off each other like billiard balls, unchanged. But even if the molecules have sufficient energy, the collision might still fail. This brings us to our second, and perhaps more crucial, criterion: the Orientation Factor. Imagine you are trying to snap two Lego bricks together. If you approach them side-on or at a random angle, they won't click. You must align them precisely so the studs meet the tubes. Chemical molecules are no different. They are complex three-dimensional structures with specific reactive sites. For a reaction to occur, the molecules must collide in a specific spatial orientation that allows the relevant atoms to come into contact and break old bonds while forming new ones. For example, in a reaction between molecule A and molecule B, if the reactive part of A is on its left side, then molecule B must strike A from that specific direction. If they collide at the wrong angle, the energy is dissipated, and no reaction occurs. To mathematically account for this, we refine our rate equation. In the simple collision model, the rate is proportional to the collision frequency, which we denote as Z. However, to make the theory realistic, we introduce two correction factors. The rate equation becomes: Rate equals Z multiplied by the fraction of collisions with sufficient energy, and multiplied by the steric factor, which we call P. The term 'P' is the orientation or steric factor. It represents the probability that the molecules are oriented correctly. For simple spherical atoms, P is close to one. But for complex organic molecules, P can be very small, sometimes as low as one in a million, because the chance of a perfect alignment is so low. So, to summarize: for a reaction to happen, you need collisions, you need enough energy to cross the activation barrier, and you need the correct geometric orientation. Without all three, the reactants will simply bounce away, leaving the system unchanged. In our next lesson, we will look at how these individual collisions add up to form complex reaction mechanisms.","Welcome back. In our previous lesson, we explored Collision Theory to understand how molecules must collide with enough energy and correct orientation to react. But have you ever wondered if a reaction happens in one single, massive explosion of molecular movement, or if it happens in a series of smaller, organized stages? Most chemical reactions do not occur in a single step. Instead, they follow a sequence of individual events known as a reaction mechanism. Think of it like a relay race. A runner doesn't just teleport from the start to the finish line; they pass a baton through several stages. In chemistry, these individual stages are called elementary steps. An elementary step is a single molecular event where reactants collide and transform into products directly, without any stable intermediates. When we add up all these elementary steps, we get the overall balanced chemical equation. Now, here is a crucial concept: not all steps in a mechanism happen at the same speed. In any multi-step process, there is usually one step that is significantly slower than all the others. We call this the Rate Determining Step. Imagine you are making a sandwich. You can spread the butter in two seconds, but it might take you a full minute to toast the bread. No matter how fast you spread the butter, the total time it takes to make the sandwich is dictated by the slow toasting process. In a chemical reaction, the overall rate of the reaction is equal to the rate of this slowest elementary step. This is a fundamental rule. If you want to speed up a multi-step reaction, you must find a way to speed up that specific bottleneck, the rate determining step. This brings us to a very important term: Reaction Intermediates. During a multi-step mechanism, some species are produced in one elementary step and then immediately consumed in a subsequent step. These species, like the 'baton' in our relay race, do not appear in the final balanced equation because they are not present at the very beginning or the very end. They are transient, often highly reactive, and exist only momentarily during the reaction. Let's look at a classic example. Consider the reaction between Nitrogen Monoxide and Hydrogen to form Nitrogen and Water. The overall equation is: two molecules of Nitrogen Monoxide plus two molecules of Hydrogen yields two molecules of Nitrogen plus two molecules of Water. However, this doesn't happen all at once. The proposed mechanism is: Step one, one molecule of Nitrogen Monoxide reacts with one molecule of Hydrogen to form Nitrogen and Hydrogen Peroxide. This is the first elementary step. Step two, the Hydrogen Peroxide then reacts with another molecule of Nitrogen Monoxide to produce Nitrogen and Water. This is the second elementary step. In this specific mechanism, if we find that the first step is much slower than the second, then the first step is our Rate Determining Step. Because the rate of the overall reaction is governed by this first step, the rate law we derive experimentally will be based solely on the reactants involved in that first slow step. This is why the experimental rate law often looks different from what you might expect if you just looked at the overall balanced equation. To summarize: a reaction mechanism is the step-by-step sequence of elementary steps. An elementary step is a single collision event. The slowest step in the sequence is the Rate Determining Step, and it dictates the overall speed. Intermediates are the short-lived species formed and consumed during these steps. Understanding this allows us to predict how changes in concentration will affect the speed of complex chemical processes.","Welcome to the final stretch of our journey through Chemical Kinetics. We have covered everything from the basic definition of reaction rates to the complex nuances of Collision Theory. Now, it is time to transition from understanding concepts to mastering the exam. To score full marks in this chapter, you need more than just memory; you need a strategic approach to problem-solving. Let us start with the most common pitfall: Unit Confusion. Many students lose marks because they fail to check the units of the rate constant, k. Remember, the unit of k changes depending on the order of the reaction. For a zero-order reaction, it is concentration per unit time. For a first-order reaction, it is simply per unit time, or inverse time. For a second-order reaction, it is inverse concentration per unit time. Always, always check the units of k first; they will tell you the order of the reaction immediately. Another critical area is the Integrated Rate Equations. When solving first-order problems, students often make calculation errors with natural logarithms. Remember that the formula is k equals two point three zero three times log base ten of the ratio of initial concentration to final concentration. Do not forget that the ratio is initial concentration divided by final concentration, not the other way around. When dealing with half-life, remember that for first-order reactions, the half-life is independent of the initial concentration. This is a favorite question for examiners. If a question asks how the half-life changes when the concentration is doubled, and it is a first-order reaction, the answer is: it remains unchanged. However, for zero-order reactions, the half-life is directly proportional to the initial concentration. If you double the concentration, you double the half-life. Now, let us talk about the Arrhenius Equation. When you are given two different temperatures and two different rate constants, ensure both temperatures are converted to Kelvin. Using Celsius is a guaranteed way to get the wrong activation energy. Also, be careful with the sign of the activation energy; it is always a positive value for an endothermic process or a reaction requiring energy to overcome the barrier. Let us do a quick recap of the entire chapter to solidify your foundation. We began with the Rate of Reaction, distinguishing between average and instantaneous rates. We explored how concentration, temperature, and catalysts influence these rates. We moved into the heart of kinetics: the Rate Law, where we learned that the order of reaction is an experimental quantity and can only be determined through data, never from a balanced equation. We clarified the distinction between molecularity, which is a theoretical integer, and order, which can be zero, fractional, or even negative. We derived the integrated rate laws for zero and first-order reactions and used them to calculate half-lives. We then looked at the temperature dependence through the Arrhenius Equation and understood why reactions happen through the lens of Collision Theory, focusing on effective collisions and the orientation factor. Finally, we touched upon reaction mechanisms, identifying the slowest step as the Rate Determining Step. To master this chapter, practice drawing the graphs. Know what a plot of concentration versus time looks like for zero-order, and what a plot of log concentration versus time looks like for first-order. These linear relationships are the keys to finding the rate constant from experimental data. Stay calm, watch your units, and approach every numerical problem step-by-step. You are now ready to tackle any kinetics problem the exam throws at you. Keep practicing, and I will see you in the next chapter."];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-chemistry-03-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Constitutional Design, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c9-civics-02-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Why Do We Need a Constitution? The Foundation of Democracy -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Why Do We Need a Constitution? The Foundation of Democracy</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Rules are essential to prevent chaos and ensure fairness in society.</div>
+              <div id="qx0-p1" class="qe-bullet">• A Constitution prevents the 'tyranny of the majority' over minorities.</div>
+              <div id="qx0-p2" class="qe-bullet">• It defines the powers and limits of government institutions.</div>
+              <div id="qx0-p3" class="qe-bullet">• It provides a framework of trust and coordination for diverse groups.</div>
+              <div id="qx0-p4" class="qe-bullet">• The Constitution reflects the shared values and aspirations of the people.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2497170950,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation of a chaotic football match transitioning into a structured, rule-bound game with a referee and clear boundaries.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D animation of a chaotic football match transitioning into a structured, rule-bound game with a referee and clear boundaries.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): The South African Experience: Apartheid, Struggle, and Nelson Mandela -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">The South African Experience: Apartheid, Struggle, and Nelson Mandela</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Apartheid: A system of legal racial segregation in South Africa</div>
+              <div id="qx1-p1" class="qe-bullet">• The White minority held all political and economic power</div>
+              <div id="qx1-p2" class="qe-bullet">• The African National Congress (ANC) led the resistance</div>
+              <div id="qx1-p3" class="qe-bullet">• Nelson Mandela: A global symbol of the struggle for equality</div>
+              <div id="qx1-p4" class="qe-bullet">• Transition from oppression to a multi-racial democracy</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":2337683890,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D timeline animation showing the transition from segregated maps to a unified, colorful South African flag.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D timeline animation showing the transition from segregated maps to a unified, colorful South African flag.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Towards a New Constitution: Transition from Segregation to Equality -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Towards a New Constitution: Transition from Segregation to Equality</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• The collapse of Apartheid due to internal protests and international pressure.</div>
+              <div id="qx2-p1" class="qe-bullet">• Negotiations between the white minority and the black majority.</div>
+              <div id="qx2-p2" class="qe-bullet">• The shift from a system of segregation to a system of shared power.</div>
+              <div id="qx2-p3" class="qe-bullet">• The goal of creating a multi-racial, democratic nation for all citizens.</div>
+              <div id="qx2-p4" class="qe-bullet">• Principles of compromise and social contract over revenge.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":461410260,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D time-lapse animation showing a divided, grey-toned map of South Africa slowly merging into a vibrant, multi-colored map as hands of different skin tones join together to sign a document.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D time-lapse animation showing a divided, grey-toned map of South Africa slowly merging into a vibrant, multi-colored map as hands of different skin tones join together to sign a document.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): What is a Constitution? Defining the Rules of the Game -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">What is a Constitution? Defining the Rules of the Game</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Constitution: A set of written fundamental rules accepted by all citizens.</div>
+              <div id="qx3-p1" class="qe-bullet">• Function 1: Generates trust and coordination in a diverse society.</div>
+              <div id="qx3-p2" class="qe-bullet">• Function 2: Specifies how the government is formed and who holds power.</div>
+              <div id="qx3-p3" class="qe-bullet">• Function 3: Sets limits on government powers to protect citizen rights.</div>
+              <div id="qx3-p4" class="qe-bullet">• Function 4: Expresses the aspirations and values of the people.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":753415392,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation of a chaotic sports field transforming into an organized stadium as a glowing rulebook descends from the sky, casting a structured grid over the ground.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D animation of a chaotic sports field transforming into an organized stadium as a glowing rulebook descends from the sky, casting a structured grid over the ground.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): The Making of the Indian Constitution: Historical Context and Challenges -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">The Making of the Indian Constitution: Historical Context and Challenges</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• The Constitution was the culmination of decades of the freedom struggle.</div>
+              <div id="qx4-p1" class="qe-bullet">• Colonial rule instilled a desire for the Rule of Law and democratic rights.</div>
+              <div id="qx4-p2" class="qe-bullet">• The trauma of Partition necessitated strong safeguards for minorities.</div>
+              <div id="qx4-p3" class="qe-bullet">• Integrating hundreds of Princely States was a major political challenge.</div>
+              <div id="qx4-p4" class="qe-bullet">• The document aimed to address deep-seated social inequalities and casteism.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":4288184926,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D timeline morphing from colonial British maps into the diverse, fragmented map of 1947 India, showing symbols of struggle like protest banners and the migration of people.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D timeline morphing from colonial British maps into the diverse, fragmented map of 1947 India, showing symbols of struggle like protest banners and the migration of people.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): The Constituent Assembly: Composition, Process, and Deliberations -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">The Constituent Assembly: Composition, Process, and Deliberations</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Constituent Assembly formed in 1946 via the Cabinet Mission Plan.</div>
+              <div id="qx5-p1" class="qe-bullet">• Members were indirectly elected by Provincial Legislative Assemblies.</div>
+              <div id="qx5-p2" class="qe-bullet">• Diverse representation of religions, castes, and social groups.</div>
+              <div id="qx5-p3" class="qe-bullet">• Dr. B.R. Ambedkar chaired the crucial Drafting Committee.</div>
+              <div id="qx5-p4" class="qe-bullet">• Constituent Assembly Debates explain the logic behind every clause.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1040352947,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D time-lapse of a grand assembly hall where diverse figures debate around a large table, transitioning into a library of thick volumes titled 'Constituent Assembly Debates'.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D time-lapse of a grand assembly hall where diverse figures debate around a large table, transitioning into a library of thick volumes titled 'Constituent Assembly Debates'.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Guiding Values of the Indian Constitution: The Preamble Explained -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Guiding Values of the Indian Constitution: The Preamble Explained</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• The Preamble: The 'Identity Card' and soul of the Constitution</div>
+              <div id="qx6-p1" class="qe-bullet">• We, the People: Ultimate authority rests with the citizens</div>
+              <div id="qx6-p2" class="qe-bullet">• Sovereign, Socialist, Secular, Democratic, Republic</div>
+              <div id="qx6-p3" class="qe-bullet">• Objectives: Justice, Liberty, Equality, and Fraternity</div>
+              <div id="qx6-p4" class="qe-bullet">• The Preamble acts as a guiding compass for all Indian laws</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4195642874,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic camera fly-through of a glowing, golden Preamble text that expands into symbolic icons of a scale (Justice), a bird (Liberty), and a handshake (Fraternity).</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D cinematic camera fly-through of a glowing, golden Preamble text that expands into symbolic icons of a scale (Justice), a bird (Liberty), and a handshake (Fraternity).</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Key Philosophies: Sovereignty, Socialism, Secularism, and Democracy -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Key Philosophies: Sovereignty, Socialism, Secularism, and Democracy</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Sovereignty: India is independent and free from external control.</div>
+              <div id="qx7-p1" class="qe-bullet">• Socialism: Reducing wealth inequality and ensuring social justice.</div>
+              <div id="qx7-p2" class="qe-bullet">• Secularism: No official state religion; equal respect for all faiths.</div>
+              <div id="qx7-p3" class="qe-bullet">• Democracy: Government elected by and accountable to the people.</div>
+              <div id="qx7-p4" class="qe-bullet">• These pillars ensure a fair and inclusive political system.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":3468244602,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D golden pillar structure rising from a map of India, with each pillar labeled with one of the four philosophies as it glows.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D golden pillar structure rising from a map of India, with each pillar labeled with one of the four philosophies as it glows.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Key Philosophies: Justice, Liberty, Equality, and Fraternity -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Key Philosophies: Justice, Liberty, Equality, and Fraternity</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Justice: Social, Economic, and Political fairness for all citizens.</div>
+              <div id="qx8-p1" class="qe-bullet">• Liberty: Freedom of thought, expression, belief, faith, and worship.</div>
+              <div id="qx8-p2" class="qe-bullet">• Equality: Absence of special privileges and equal opportunity for all.</div>
+              <div id="qx8-p3" class="qe-bullet">• Fraternity: Promoting brotherhood and the dignity of every individual.</div>
+              <div id="qx8-p4" class="qe-bullet">• Interconnectedness: How these four values sustain a healthy democracy.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4101356287,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D golden scale of justice balancing symbols of a book (Liberty), a group of diverse people (Equality), and joined hands (Fraternity) in a bright, cinematic hall.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D golden scale of justice balancing symbols of a book (Liberty), a group of diverse people (Equality), and joined hands (Fraternity) in a bright, cinematic hall.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Institutional Design: How the Constitution Works in Practice -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Institutional Design: How the Constitution Works in Practice</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Constitution provides procedures for choosing government representatives.</div>
+              <div id="qx9-p1" class="qe-bullet">• It defines the distribution and limits of political power.</div>
+              <div id="qx9-p2" class="qe-bullet">• System of Checks and Balances prevents concentration of authority.</div>
+              <div id="qx9-p3" class="qe-bullet">• Constitutional Amendments allow the document to evolve with time.</div>
+              <div id="qx9-p4" class="qe-bullet">• Institutional design turns abstract values into practical governance.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":954712230,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D mechanical clockwork model where different gears labeled 'Legislature', 'Executive', and 'Judiciary' rotate together, interconnected by golden chains representing 'Checks and Balances'.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D mechanical clockwork model where different gears labeled 'Legislature', 'Executive', and 'Judiciary' rotate together, interconnected by golden chains representing 'Checks and Balances'.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Mistakes, Concept Clarifications, and Critical Thinking Activities -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Mistakes, Concept Clarifications, and Critical Thinking Activities</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Difference between having a Constitution and Constitutionalism</div>
+              <div id="qx10-p1" class="qe-bullet">• Sovereignty vs. Independence: Understanding ultimate authority</div>
+              <div id="qx10-p2" class="qe-bullet">• Indian Secularism: Principled distance vs. total separation</div>
+              <div id="qx10-p3" class="qe-bullet">• The Living Document: Amendments vs. the Basic Structure</div>
+              <div id="qx10-p4" class="qe-bullet">• Critical Thinking: The role of written rules in diverse societies</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2662629709,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a chaotic crowd without rules on one side, and an organized, rule-based democratic assembly on the other.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a chaotic crowd without rules on one side, and an organized, rule-based democratic assembly on the other.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Answer Writing Techniques, PYQs, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Answer Writing Techniques, PYQs, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Use Point-Heading-Explanation technique for 5-mark questions</div>
+              <div id="qx11-p1" class="qe-bullet">• Use exact Preamble keywords like 'Sovereign' and 'Secular'</div>
+              <div id="qx11-p2" class="qe-bullet">• Explain the Constitution as a 'Living Document' that evolves</div>
+              <div id="qx11-p3" class="qe-bullet">• Rapid Recap: From South African struggle to Indian Preamble</div>
+              <div id="qx11-p4" class="qe-bullet">• Focus on the pillars: Justice, Liberty, Equality, and Fraternity</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":99359525,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a student writing structured points on one side and a glowing digital summary of the chapter's key terms on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a student writing structured points on one side and a glowing digital summary of the chapter's key terms on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Constitutional Design today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Why Do We Need a Constitution? The Foundation of Democracy <small>0:00</small></button>
+          <button type="button" data-seek="300">2. The South African Experience: Apartheid, Struggle, and Nelson Mandela <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Towards a New Constitution: Transition from Segregation to Equality <small>10:00</small></button>
+          <button type="button" data-seek="900">4. What is a Constitution? Defining the Rules of the Game <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. The Making of the Indian Constitution: Historical Context and Challenges <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. The Constituent Assembly: Composition, Process, and Deliberations <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Guiding Values of the Indian Constitution: The Preamble Explained <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Key Philosophies: Sovereignty, Socialism, Secularism, and Democracy <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Key Philosophies: Justice, Liberty, Equality, and Fraternity <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Institutional Design: How the Constitution Works in Practice <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Mistakes, Concept Clarifications, and Critical Thinking Activities <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Answer Writing Techniques, PYQs, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey through the world of Civics. Today, we are starting a very important chapter: Constitutional Design. Before we dive into the technicalities, I want you to imagine something. Imagine you are playing a high-stakes football match. There are players, a ball, and two goals. But suddenly, there are no rules. One player picks up the ball with their hands and runs to the goal. Another player decides that the goalpost should be moved ten feet to the left. There is no referee to decide what is fair. What happens to the game? It turns into chaos, right? It becomes a struggle of power where the strongest person wins, and the game itself loses its meaning. This is exactly why societies, just like sports, need a set of fundamental rules. In a country, these rules are called the Constitution. Now, you might ask, why can't we just let people do what they want? Well, a country is not just a piece of land; it is a collection of millions of people with different religions, different languages, different interests, and different ways of living. When these diverse groups live together, conflicts are inevitable. Without a constitution, the group with the most numbers or the most power could simply crush the rights of everyone else. This is what we call the tyranny of the majority. A constitution acts as a shield. It ensures that even if you are in a minority, your rights are protected and cannot be taken away by a simple majority vote. But it does more than just prevent conflict. Think about a democracy. In a democracy, we choose our leaders. But how do we know what those leaders can and cannot do? Can a Prime Minister or a President decide to change the law overnight to stay in power forever? No. The constitution sets the boundaries. It defines the powers of the government, the legislature, the executive, and the judiciary. It tells us how the government will be formed and who will have the authority to make decisions. Most importantly, it expresses the aspirations of the people. It is a document that says, 'This is the kind of society we want to build.' It provides a framework of trust and coordination. It allows people who might disagree on everything else to live together peacefully because they all agree on the basic rules of the game. So, to summarize our starting point: a constitution is not just a thick book of laws. It is the foundation of democracy. It provides trust, limits the power of the government, protects individual rights, and reflects the shared values of a nation. In the upcoming lessons, we will see how this concept played out in the struggle against Apartheid in South Africa and how our own founding fathers crafted the incredible Indian Constitution. Let's get started!","Welcome back. In our previous session, we discussed why nations need a constitution to build trust. Today, we are going to look at one of the most powerful real-world examples of how a constitution can transform a broken, divided society into a unified one. We are traveling to South Africa. To understand their journey, we must first understand a dark period in their history known as Apartheid. Apartheid was not just a policy of segregation; it was a formal, legal system of racial discrimination imposed by the white minority government. Under this system, people were divided based on their skin color. The white minority held all the political power and controlled the best land and resources, while the Black majority, along with people of color, were treated as inferior. This wasn't just social prejudice; it was institutionalized. The government enforced strict laws that dictated where people could live, where they could work, and even whom they could marry. Black South Africans were denied the right to vote and were forced to live in separate, segregated areas called townships. They had no access to quality education, healthcare, or even basic facilities like electricity or clean water in their designated zones. Imagine living in a country where your rights are determined solely by the color of your skin. This was the reality of South Africa for decades. But where there is oppression, there is always resistance. The struggle against apartheid was led by a variety of groups, but the most prominent was the African National Congress, or the A-N-C. This movement brought together people from different backgrounds to fight for equality and human rights. One name that emerged as the face of this struggle was Nelson Mandela. Mandela was a leader who dedicated his entire life to the cause of freedom. Because of his activism and his refusal to accept the unjust laws of the state, he was arrested and sentenced to life imprisonment. He spent twenty-seven long years behind bars, mostly on Robben Island. However, even from prison, Mandela became a global symbol of resistance. The international community began to notice. Countries around the world started imposing sanctions and boycotts against the South African government, putting immense pressure on the white minority regime. The protests within South Africa were also becoming impossible to ignore. The internal unrest, combined with international isolation, eventually forced the government to realize that apartheid was unsustainable. The system began to crumble. In the early nineteen nineties, the government started negotiations to end apartheid and transition to a multi-racial democracy. This was a period of intense tension and uncertainty. Would there be a civil war? Would the white minority flee, leaving the country in chaos? Instead, something miraculous happened. Leaders like Nelson Mandela, upon his release from prison, chose the path of reconciliation rather than revenge. He advocated for a 'Rainbow Nation'—a country where people of all races could live together in peace. The negotiations led to the drafting of a new constitution, one that was built on the principles of equality, democratic values, and social justice. This transition from a regime of segregation to a regime of equality is one of the most significant political achievements of the twentieth century. It shows us that even the deepest wounds of a nation can be healed through dialogue and a shared commitment to a common set of rules. As we move to our next part, we will look closely at how this new constitution was actually drafted and how they moved from segregation to equality.","In our previous session, we looked at the harsh reality of Apartheid in South Africa and the incredible leadership of Nelson Mandela. But today, we move from the struggle to the solution. We are going to explore how a nation, deeply divided by racial hatred, managed to sit at one table and write a new constitution. Imagine a country where the white minority held all the power and the black majority was treated as second-class citizens. For decades, the policy of segregation kept people apart. They had separate schools, separate hospitals, separate buses, and even separate beaches. This was not just social distance; it was a systematic denial of human dignity. As the protests grew stronger and the international community began to isolate the South African government, the apartheid regime realized it could no longer rule by force alone. The transition began with intense negotiations. This was a period of immense tension. The white minority feared that losing power would lead to their economic ruin or even physical harm. On the other hand, the black majority demanded complete equality and the right to vote. How do you build a bridge between such conflicting interests? The answer lay in the spirit of compromise. Instead of seeking revenge, the leaders of the liberation movements, including the African National Congress, decided to seek a common ground. They realized that for a new South Africa to survive, it had to be a country that belonged to everyone—both the oppressors and the oppressed. They decided to move away from a system of 'rule by one group' to a system of 'rule by law.' The negotiations focused on creating a set of rules that would protect the rights of every single citizen, regardless of their skin color. They agreed on a principle of multi-racialism. This meant that the new constitution would not be a tool for the majority to dominate the minority, nor would it be a shield for the minority to oppress the majority. It would be a social contract. The drafting process was revolutionary. They decided to create one of the most progressive constitutions in the world. They didn't just focus on political rights like the right to vote; they also included social and economic rights. They agreed that the new constitution must ensure that no person would ever be discriminated against again. This transition was not just about changing laws; it was about changing hearts and minds. It was about moving from a culture of fear and segregation to a culture of trust and equality. This period taught the world a vital lesson: that even the deepest wounds of injustice can be healed through dialogue, negotiation, and a shared commitment to democratic values. As we move forward, we will see how these principles of negotiation and consensus-building became the bedrock of the new South African nation.","Welcome back. In our previous lessons, we saw how the struggle against apartheid in South Africa led to a new beginning. But now, we must step back from the history books and ask a fundamental question: What exactly is a Constitution? Why do we call it the 'Supreme Law' of a land? Think about a game of football or cricket. Before the players step onto the field, there is a set of rules. These rules decide how many players are on each side, what constitutes a foul, and how a point is scored. Without these rules, the game would descend into chaos, arguments, and perhaps even violence. A Constitution does exactly this for a country. It is a written document that contains a set of fundamental rules that are accepted by all people living together in a country. These rules are not just suggestions; they are the framework that determines how a government is formed and how it functions. Let us break down the functions of a Constitution into four key pillars. First, the Constitution generates a degree of trust and coordination. In a diverse country like India, people belong to different religions, speak different languages, and follow different customs. How can such a diverse group live together peacefully? The Constitution provides a common set of rules that everyone agrees to follow, creating the trust necessary for social coexistence. Second, the Constitution specifies how the government will be constituted. It defines who will have the power to make decisions. For example, it tells us whether the country will be a monarchy or a democracy, and how the leaders will be chosen—through elections or other means. Third, the Constitution sets limits on the powers of the government. This is a crucial point. In a democracy, we do not want a government that becomes a dictatorship. Therefore, the Constitution lays down certain fundamental rights for the citizens that the government can never violate. It acts as a check and balance, ensuring that even the most powerful leader must follow the law. Finally, the Constitution expresses the aspirations of the people about creating a good society. A Constitution is not just a cold, legal document; it is a living document that reflects the values, the dreams, and the vision of the people. It tells us what kind of society we want to build—one based on justice, equality, and liberty. To summarize, a Constitution is the 'Rule Book' of a nation. It provides the structure, limits the power of the state, protects the rights of the individual, and guides the nation toward its collective goals. As we move forward in this chapter, keep this definition in mind: the Constitution is the foundation upon which the entire edifice of a democratic nation is built.","Welcome back. We have understood what a constitution is and how South Africa transitioned from apartheid to democracy. Now, let us turn our focus to our own nation. How did India, a land of immense diversity and a country scarred by the trauma of partition, manage to create one of the most robust constitutions in the world? To understand the making of the Indian Constitution, we cannot look at it as an isolated event that happened in 1946. Instead, we must look at the long historical struggle for independence. The making of our constitution was not a sudden act; it was the culmination of decades of political evolution. Long before 1947, the seeds of constitutionalism were being sown. Many Indians were already participating in organized political movements. For instance, the movement for independence had already developed a consensus on what a democratic India should look like. We must remember that the struggle against British colonial rule was not just about getting the British to leave; it was about defining what kind of country India would become. One of the most critical historical factors was the experience of colonial rule itself. Under British rule, Indians were subjected to laws that were often arbitrary and undemocratic. This experience created a deep-seated desire for a system based on the rule of law, where every citizen is equal before the law. Furthermore, we must address the immense challenges that faced the framers. The first and perhaps most painful challenge was the Partition of India. The country was divided on the basis of religious identities, leading to massive communal violence and the displacement of millions of people. This atmosphere of fear and instability meant that the makers of the constitution had to ensure that the document provided strong safeguards for minorities to prevent such tragedies from ever happening again. The second major challenge was the integration of Princely States. At the time of independence, India was not a single unified territory in the way we see it today. There were hundreds of princely states, ruled by kings and nawabs, who had various agreements with the British. Bringing these diverse and often fiercely independent states into a single, unified democratic union was a monumental task. The third challenge was the sheer diversity of the Indian population. India is a land of countless languages, religions, castes, and cultures. The makers of the constitution had to find a way to create a framework that could accommodate this diversity without compromising on national unity. They had to balance the need for a strong central government to maintain order with the need to respect the regional identities and autonomy of different states. Finally, there was the challenge of social inequality. India was a deeply divided society, plagued by the ancient and oppressive system of caste discrimination and extreme poverty. The constitution could not just be a political document; it had to be a social document. It had to provide a roadmap for social revolution, aiming to dismantle inequalities and ensure justice for all, especially for the marginalized sections of society. So, as we move forward, keep in mind that the Indian Constitution was not written in a vacuum. It was forged in the fire of the freedom struggle, shaped by the trauma of partition, and designed to solve the complex problems of a deeply diverse and unequal society. It was a document born out of necessity, struggle, and a profound vision for a new India.","Welcome back. We have explored the historical context and the immense challenges faced by a newly independent India. Now, we move to the heart of the story: How was this monumental document actually written? This was not the work of a single person, but the result of a massive, collective effort by a body called the Constituent Assembly. Let us first understand who these people were. The Constituent Assembly was a body of elected representatives who were tasked with drafting the Constitution of India. It was formed in 1946, following the recommendations of the Cabinet Mission Plan. Now, you might wonder, was it a direct election by all Indians? Not exactly. At that time, India was under British rule, and universal adult franchise was not yet in place. The members were elected by the members of the Provincial Legislative Assemblies, who themselves were elected on a limited franchise. However, despite this indirect method, the Assembly was incredibly diverse. It included representatives from different languages, castes, religions, and occupations. It wasn't just a group of lawyers; it included social reformers, freedom fighters, and intellectuals. This diversity was crucial because it ensured that the interests of various sections of Indian society were represented. Now, let's look at the process. The Assembly met for the first time in December 1946. The work was not done in a single day or even a single year. It was a long, rigorous, and highly organized process. The Assembly functioned through various committees. One of the most important was the Drafting Committee, chaired by the brilliant legal mind, Dr. B.R. Ambedkar. His role was to take the ideas discussed and weave them into a legal framework. But before the drafting happened, there were endless rounds of discussions. This brings us to the 'Deliberations'. This is perhaps the most important part of the story. Every single clause of the Constitution was debated. There was no room for haste. The members didn't just argue; they provided reasons for their positions. They looked at the constitutions of other countries—like the UK, USA, France, and even Ireland—to see what worked and what didn't. They adapted these global ideas to suit the unique Indian context. This process is known as 'Constituent Assembly Debates'. Every word spoken in the Assembly was recorded and published in multiple volumes. These debates are a goldmine for us today because they explain the 'why' behind every law. Why did we choose a parliamentary system? Why did we emphasize fundamental rights? The answers lie in these debates. The discussions were characterized by a spirit of accommodation and consensus. Even when there were heated disagreements, the goal was always to find a solution that the majority could accept and the minority could live with. This wasn't just about winning an argument; it was about building a nation. After nearly three years of intense work, the Constitution was finally adopted on 26th November 1949, and it came into effect on 26th January 1950. So, remember, the Constitution was not just a legal document handed down to us; it was a living document, born out of intense debate, diverse perspectives, and a shared vision for a free India.","Welcome back. In our previous session, we looked at the incredible journey of the Constituent Assembly and how they debated every single clause. But today, we are going to look at the very soul of that document. If the Constitution is a massive, detailed manual for running a country, then the Preamble is its essence. Think of the Preamble as the 'Identity Card' of the Constitution. It is a short introductory statement that sets out the guiding purpose, the philosophy, and the core values that the entire document seeks to achieve. When you read the Preamble, you aren't just reading words; you are reading the dreams and aspirations of the people of India. Let us look at the opening phrase, which is perhaps the most powerful: 'We, the People of India.' This is not just a formal greeting. It signifies that the ultimate authority of the Constitution does not lie with a king, a foreign power, or even a small group of politicians. It lies with the citizens of India. It means the Constitution was not handed down to us by an external force; it was created and adopted by us, the people, through our representatives. Now, let us dive into the key pillars that define our nation. First, we have the word 'Sovereign.' This means India is an independent country. No external power can dictate terms to the Indian government. We have the absolute right to make our own decisions regarding our internal and external affairs. Next is 'Socialist.' In the Indian context, this doesn't mean the government owns everything, but rather that the state aims to reduce inequality. It seeks to ensure that wealth is not concentrated in a few hands and that every citizen has access to basic opportunities. Then comes 'Secular.' This is a vital pillar. It means that the state has no official religion. Every citizen has the right to practice, profess, and propagate any religion they choose, and the state treats all religions with equal respect. Moving forward, we see 'Democratic.' This refers to a system of government where people elect their rulers through elections. It ensures that the government is accountable to the people. And finally, 'Republic.' This means the Head of State is an elected person and not a hereditary monarch. In India, our President is elected, ensuring that the highest office is open to every citizen. But the Preamble goes even deeper by outlining our objectives: Justice, Liberty, Equality, and Fraternity. Justice means social, economic, and political justice. It means no citizen should be discriminated against based on caste, religion, or gender, and that the gap between the rich and the poor should be bridged. Liberty means the freedom of thought, expression, belief, faith, and worship. It is the freedom to dream and to act on those dreams within the law. Equality means that all citizens are equal before the law, and there should be no special privileges for any section of society. Finally, Fraternity refers to a sense of brotherhood. It is the spirit of common brotherhood that transcends barriers of caste, religion, or region, ensuring the dignity of the individual and the unity and integrity of the nation. These values are not just words on paper; they are the compass that guides our laws, our courts, and our daily lives. In the next part, we will take a closer look at each of these philosophies in even greater detail.","Welcome back. In our previous session, we decoded the Preamble and understood how it serves as the soul of our Constitution. Today, we are going to dive deep into the specific pillars that hold the Indian state together. These are the key philosophies mentioned in the Preamble: Sovereignty, Socialism, Secularism, and Democracy. Let us take them one by one. First, let's talk about Sovereignty. When we say India is a 'Sovereign' nation, it means that India is an independent country. No external power, no foreign government, and no outside authority can dictate terms to the Indian government. We have the supreme right to make our own decisions on all internal and external matters. Whether it is a trade deal with another country or a law passed in our Parliament, the final authority rests with the people of India. Next is Socialism. Now, when you hear the word 'Socialism' in the Indian context, don't think of it in the extreme sense used in some other countries. In India, democratic socialism aims to reduce inequality. It means that wealth is not concentrated in the hands of a few people. The government plays a major role in ensuring that basic resources like education, healthcare, and livelihood are distributed fairly. The goal is to bridge the gap between the rich and the poor and ensure social and economic justice for all citizens. Moving to the third pillar: Secularism. This is a vital concept for a diverse country like ours. A secular state is one that does not have any official state religion. In India, secularism doesn't mean the government is against religion; rather, it means the state maintains a principled distance from all religions. The state treats all religions with equal respect. No citizen can be discriminated against on the grounds of their faith, and every individual has the freedom to practice, profess, and propagate their religion. Finally, we have Democracy. While we often think of democracy simply as 'voting,' in our constitutional philosophy, it goes much deeper. Democracy means a form of government where the rulers are elected by the people. But it is not just about elections; it is about accountability. In a democratic setup, the government is answerable to the citizens. It ensures that the will of the people is the ultimate source of power. It provides for regular elections, the rule of law, and the protection of fundamental rights. Together, these four philosophies—Sovereignty, Socialism, Secularism, and Democracy—form the bedrock of our political identity. They ensure that India remains an independent, fair, and inclusive nation where every voice matters. As we move forward, keep these terms in mind, because they are not just words in a book; they are the living principles that guide how our country functions every single day.","Welcome back. In our previous session, we decoded the political nature of our Constitution, looking at terms like Sovereignty and Secularism. Now, we move into the very heart of the Preamble—the moral and ethical pillars that give our democracy its soul. These are the four ideals: Justice, Liberty, Equality, and Fraternity. Let us start with Justice. In the context of our Constitution, Justice is not just about punishing a criminal in a courtroom. It is much broader. The Preamble promises Social, Economic, and Political Justice. Social Justice means that no citizen should be discriminated against based on their caste, religion, gender, or race. It aims to create a society where everyone is treated with dignity. Economic Justice means reducing the gap between the rich and the poor, ensuring that wealth is not concentrated in a few hands. Political Justice ensures that every citizen has an equal voice in the political process, meaning every person has the right to vote and participate in governance regardless of their status. Next, let us look at Liberty. Liberty does not mean the freedom to do whatever we want, even if it harms others. In a constitutional sense, Liberty means the absence of unreasonable restraints on the actions of individuals, while simultaneously providing opportunities for the development of individual personalities. It is the freedom of thought, expression, belief, faith, and worship. Think of it as a protected space where your mind and spirit can grow without fear of arbitrary state interference. However, Liberty must always coexist with Law. Now, moving to Equality. Equality is the bedrock of a democratic society. It means that all citizens are equal before the law. There are no special privileges for any section of society. The Constitution ensures equality of status and equality of opportunity. This means that every individual, regardless of their background, should have the same chance to excel in education, employment, and social life. It is about removing artificial barriers that prevent people from moving forward. Finally, we have Fraternity. This is perhaps the most vital yet often overlooked concept. Fraternity refers to a sense of brotherhood and emotional unity among the citizens. It is the feeling that we are all part of one single nation, despite our diverse languages, religions, and cultures. Without fraternity, justice and liberty cannot be sustained. If we do not feel a sense of belonging to one another, social conflict will always threaten our democratic fabric. The Constitution seeks to promote fraternity by ensuring the dignity of the individual and the unity and integrity of the Nation. To summarize, these four values are interconnected. You cannot have true Equality without Justice; you cannot have meaningful Liberty without Fraternity; and you cannot maintain Democracy without all four working in harmony. They are not just words printed on a piece of parchment; they are the living promises that define our identity as Indians.","Welcome back. We have explored the values, the philosophies, and the beautiful words of the Preamble. But now, we must ask a very practical question: A Constitution is not just a book of ideals; it is a living document. How does it actually function in a country as vast and diverse as India? How do we ensure that the promises of justice and equality don't just stay on paper, but actually work in real life? This is what we call 'Institutional Design.' Think of a Constitution like the rulebook of a massive, complex game. If the rules are vague, the game falls apart. Therefore, a good Constitution does two things. First, it lays down the procedures for choosing persons to govern the country. Second, it defines who will have how much power and what the limits of that power will be. In India, our Constitution does not just declare our values; it creates the institutions to protect them. It establishes a system of 'Checks and Balances.' This means that power is not concentrated in one single hand. Instead, it is divided among different branches. We have the Legislature, which makes the laws; the Executive, which implements the laws; and the Judiciary, which interprets the laws and ensures justice. Each branch keeps an eye on the others. If the Legislature passes a law that violates the fundamental rights of citizens, the Judiciary has the power to strike it down. This prevents any one branch from becoming a tyranny. Another crucial aspect of institutional design is the concept of 'Amendments.' A Constitution cannot be a static, frozen document. The world changes, society evolves, and new challenges arise. If the Constitution were too rigid, it would break under the pressure of change. If it were too flexible, it would lose its core identity. Our makers designed the Indian Constitution to be a blend of both. It is 'flexible' enough to be amended to meet new needs, but 'rigid' enough to protect its basic structure. These changes are called Constitutional Amendments. This process ensures that the Constitution remains relevant for every new generation. Furthermore, the Constitution provides for 'Procedures.' It tells us how elections are held, how a Prime Minister is chosen, and how a state is governed. It provides a framework for the rights of citizens, ensuring that even the smallest minority has a voice against the majority. Without these institutional arrangements, the lofty ideals of Liberty and Equality would be nothing more than empty slogans. The strength of the Indian Constitution lies not just in its words, but in the strength and independence of the institutions it has built. In the next part, we will look at some common misconceptions and engage in critical thinking activities to test your understanding. For now, remember: A Constitution is a living, breathing mechanism of governance.","Welcome back. We have covered the history, the making, and the beautiful philosophy of our Constitution. But before we move to our final exam masterclass, we need to clear the fog. In Civics, many students lose marks not because they don't know the content, but because they misunderstand the nuances. Let's start with some common mistakes. First, many students confuse 'Constitutionalism' with just having a 'Constitution'. Remember, having a document called a Constitution does not make a country democratic. A dictator could write a book of rules too! The real essence is 'Constitutionalism'—the idea that the government's power is limited by law. If the government can change any rule at its whim, it is not following constitutionalism. Second, don't confuse 'Sovereignty' with 'Independence'. While they are related, sovereignty specifically means that no external power can dictate our internal decisions. We are the ultimate authority. Third, a very common error is misinterpreting 'Secularism'. In the Indian context, secularism does not mean the state is anti-religion or that religion should be absent from public life. It means the state maintains a principled distance from all religions and treats them with equal respect. It is not a 'wall of separation' like in some Western countries, but a 'principled distance'. Now, let's clarify a few tricky concepts. You might wonder, if the Constitution is a 'living document', why can't we just change it whenever we want? This is a crucial distinction. The Constitution provides for 'Amendments', which allow it to evolve with changing times, but it also has a 'Basic Structure' that cannot be destroyed. The core values like democracy and justice are permanent. Now, let's move to some critical thinking activities to sharpen your brain. Activity one: Imagine a society with no written rules, only traditions. What happens when a new group of people joins this society? Would traditions be enough to prevent conflict? This helps you understand why a written Constitution is essential for diverse nations like India. Activity two: Look at the Preamble again. If we were to remove the word 'Republic' from our Constitution, how would our relationship with the Head of State change? Think about the difference between a hereditary monarch and an elected President. Activity three: Consider the concept of 'Equality'. Is equality merely about treating everyone the same, or does it involve providing extra support to those who have been historically disadvantaged? This connects the concept of Equality to the idea of Social Justice. As you prepare for your exams, always ask 'Why' and 'How'. Don't just memorize that the Constituent Assembly met in 1946; ask how the diversity of its members ensured that the voices of different communities were heard. Understanding the 'why' is what turns a student into a citizen. Keep these clarifications in mind, and you will find that the concepts become much clearer and much harder to forget. In our next session, we will dive into the Exam Masterclass to ensure you are ready to score perfectly.","Welcome to the final session of our journey through Constitutional Design. We have traveled from the struggle against apartheid in South Africa to the profound philosophical depths of the Indian Preamble. Now, it is time to transform your knowledge into high-scoring exam answers. To master Civics, you must move beyond simple memorization. When you encounter a five-mark question, do not write a single long paragraph. Instead, use the 'Point-Heading-Explanation' technique. Start with a clear heading, such as 'The Role of the Constituent Assembly,' and then provide two to three sentences of explanation. This makes your answer legible and professional. For questions regarding the Preamble, always use the exact keywords. Do not just say 'everyone is equal'; say 'the Constitution ensures Equality of status and opportunity.' Precision is your best friend in social science. Let us look at some Previous Year Questions, or PYQs, that frequently appear. Question one: 'Why is the Indian Constitution called a living document?' To answer this, you must explain that it is not a static rulebook but can be amended to reflect changing societal needs. Question two: 'Explain the significance of the Preamble.' Here, you should mention that the Preamble contains the philosophy on which the entire Constitution is built. Now, let us do a rapid-fire recap of the entire chapter to cement your learning. We started by asking why we need a constitution—it provides a set of written rules that allow for trust and coordination in a diverse society. We then looked at South Africa, where Nelson Mandela and the ANC fought against the injustice of apartheid to create a rainbow nation based on equality. Moving to India, we saw how our Constitution was born out of a massive struggle for independence and shaped by the vision of leaders like Dr. B.R. Ambedkar. We learned that the Constituent Assembly was not just a group of people, but a body of intense deliberation and consensus-building. We decoded the Preamble, understanding that India is a Sovereign, Socialist, Secular, Democratic, Republic. We explored the pillars of Justice, Liberty, Equality, and Fraternity, which ensure that every citizen can live with dignity. Finally, we understood Institutional Design, which shows how the Constitution distributes power among the Legislature, Executive, and Judiciary to prevent any single branch from becoming too powerful. Remember, a constitution is not just a legal document; it is a social contract. As you prepare for your exams, keep these core values in mind. Don't just study to pass; study to understand how your rights are protected. You are now ready to tackle any question on this chapter. Good luck with your preparations!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c9-civics-02-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

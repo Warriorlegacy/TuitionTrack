@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Differential Equations, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-maths-09-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Real-world Applications, Order, and Degree of Differential Equations -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Real-world Applications, Order, and Degree of Differential Equations</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Differential Equation: An equation involving an unknown function and its derivatives.</div>
+              <div id="qx0-p1" class="qe-bullet">• Real-world use: Modeling population growth, cooling, and physical motion.</div>
+              <div id="qx0-p2" class="qe-bullet">• Order: The order of the highest derivative present in the equation.</div>
+              <div id="qx0-p3" class="qe-bullet">• Degree: The power of the highest-order derivative in polynomial form.</div>
+              <div id="qx0-p4" class="qe-bullet">• Note: Degree is undefined if the equation isn't a polynomial in derivatives.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2096140583,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D glowing graph of a population curve transitioning into a mathematical equation showing dP/dt = kP.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D glowing graph of a population curve transitioning into a mathematical equation showing dP/dt = kP.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Formation of Differential Equations: Eliminating Arbitrary Constants -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Formation of Differential Equations: Eliminating Arbitrary Constants</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Goal: Create a differential equation by removing arbitrary constants.</div>
+              <div id="qx1-p1" class="qe-bullet">• Rule: Number of differentiations = Number of arbitrary constants.</div>
+              <div id="qx1-p2" class="qe-bullet">• Order of the resulting equation equals the number of constants.</div>
+              <div id="qx1-p3" class="qe-bullet">• Step 1: Differentiate the equation with respect to the independent variable.</div>
+              <div id="qx1-p4" class="qe-bullet">• Step 2: Use substitution to eliminate constants from the expression.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2915111486,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing a family of concentric circles expanding outward, transitioning into a mathematical equation where the radius 'a' fades away to leave only x, y, and dy/dx.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D coordinate system showing a family of concentric circles expanding outward, transitioning into a mathematical equation where the radius 'a' fades away to leave only x, y, and dy/dx.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Solutions of Differential Equations: General, Particular, and Concept of Families of Curve -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Solutions of Differential Equations: General, Particular, and Concept of Families of Curve</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Solution: A function that satisfies the differential equation.</div>
+              <div id="qx2-p1" class="qe-bullet">• Family of Curves: A collection of curves defined by arbitrary constants.</div>
+              <div id="qx2-p2" class="qe-bullet">• General Solution: Contains arbitrary constants (n constants for order n).</div>
+              <div id="qx2-p3" class="qe-bullet">• Particular Solution: A specific solution with constants determined by conditions.</div>
+              <div id="qx2-p4" class="qe-bullet">• Initial Conditions: Used to find specific values for arbitrary constants.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1605228475,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing a single parabola moving up and down to form a family, then snapping into one fixed position when a point is highlighted.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D coordinate system showing a single parabola moving up and down to form a family, then snapping into one fixed position when a point is highlighted.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Variable Separable Method: Techniques and Worked Examples -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Variable Separable Method: Techniques and Worked Examples</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Goal: Group all 'y' terms with dy and all 'x' terms with dx</div>
+              <div id="qx3-p1" class="qe-bullet">• Standard Form: dy/g(y) = f(x)dx</div>
+              <div id="qx3-p2" class="qe-bullet">• Always add the constant of integration 'C' immediately after integrating</div>
+              <div id="qx3-p3" class="qe-bullet">• Use initial conditions to find the Particular Solution</div>
+              <div id="qx3-p4" class="qe-bullet">• Watch for division by zero when separating variables</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2556082599,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D chalkboard where terms of an equation physically slide across the screen to group themselves on opposite sides of an equals sign.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D chalkboard where terms of an equation physically slide across the screen to group themselves on opposite sides of an equals sign.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Homogeneous Differential Equations: Substitution and Solving Methods -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Homogeneous Differential Equations: Substitution and Solving Methods</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Definition: dy/dx = f(y/x) where all terms have equal degree</div>
+              <div id="qx4-p1" class="qe-bullet">• Key Substitution: Let y = vx, then dy/dx = v + x(dv/dx)</div>
+              <div id="qx4-p2" class="qe-bullet">• Goal: Transform homogeneous equations into variable separable form</div>
+              <div id="qx4-p3" class="qe-bullet">• Step-by-step: Substitute, Simplify, Separate, and Integrate</div>
+              <div id="qx4-p4" class="qe-bullet">• Final Step: Always substitute v = y/x back into the solution</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2747183254,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D mathematical workspace where a complex fraction morphs into a simplified linear form through a glowing 'v = y/x' portal.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D mathematical workspace where a complex fraction morphs into a simplified linear form through a glowing 'v = y/x' portal.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Reducible to Variable Separable Form: Bernoulli’s Equation and Transformations -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Reducible to Variable Separable Form: Bernoulli’s Equation and Transformations</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Bernoulli's Form: dy/dx + P(x)y = Q(x)y^n</div>
+              <div id="qx5-p1" class="qe-bullet">• Substitution for Bernoulli: Let v = y^(1-n)</div>
+              <div id="qx5-p2" class="qe-bullet">• Transforming to Linear: dv/dx + (1-n)P(x)v = (1-n)Q(x)</div>
+              <div id="qx5-p3" class="qe-bullet">• Shift of Origin: x = X + h, y = Y + k for non-homogeneous lines</div>
+              <div id="qx5-p4" class="qe-bullet">• Always substitute back the original variables at the end</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1706178962,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D chalkboard where a non-linear equation morphs into a linear one through a glowing substitution formula.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D chalkboard where a non-linear equation morphs into a linear one through a glowing substitution formula.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Linear Differential Equations: Integrating Factor and Standard Form -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Linear Differential Equations: Integrating Factor and Standard Form</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Standard Form: dye/dx + P(x)y = Q(x)</div>
+              <div id="qx6-p1" class="qe-bullet">• Linearity: y and dye/dx must be first degree</div>
+              <div id="qx6-p2" class="qe-bullet">• Integrating Factor: I(x) = e raised to the integral of P(x) dx</div>
+              <div id="qx6-p3" class="qe-bullet">• Transformation: LHS becomes d/dx [I(x) * y]</div>
+              <div id="qx6-p4" class="qe-bullet">• General Solution: I(x)y = integral of [Q(x) * I(x)] dx + C</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1244379575,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D floating equation transforms as a glowing 'Integrating Factor' multiplier sweeps across the screen, collapsing the left-hand side into a single derivative term.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D floating equation transforms as a glowing 'Integrating Factor' multiplier sweeps across the screen, collapsing the left-hand side into a single derivative term.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Advanced Solving Techniques: Combining Methods and Complex Substitutions -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Advanced Solving Techniques: Combining Methods and Complex Substitutions</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Mastering the Hybrid Approach: Combining multiple solving methods</div>
+              <div id="qx7-p1" class="qe-bullet">• Transformation via Substitution: Turning non-linear into linear forms</div>
+              <div id="qx7-p2" class="qe-bullet">• Handling Composite Functions: Using v = ax + by + c for simplification</div>
+              <div id="qx7-p3" class="qe-bullet">• Trigonometric Substitutions: Simplifying radical expressions</div>
+              <div id="qx7-p4" class="qe-bullet">• The Strategy: Pattern recognition before choosing a method</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3355100810,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D mathematical landscape where a complex, jagged equation structure is being systematically dismantled by glowing geometric shapes, revealing a smooth, solvable linear equation underneath.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D mathematical landscape where a complex, jagged equation structure is being systematically dismantled by glowing geometric shapes, revealing a smooth, solvable linear equation underneath.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Application of Differential Equations: Growth, Decay, and Population Models -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Application of Differential Equations: Growth, Decay, and Population Models</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Rate of change is proportional to the amount present: dP/dt = kP</div>
+              <div id="qx8-p1" class="qe-bullet">• Growth model: k &gt; 0; Decay model: k &lt; 0</div>
+              <div id="qx8-p2" class="qe-bullet">• General solution: P(t) = P0 * e^(kt)</div>
+              <div id="qx8-p3" class="qe-bullet">• P0 represents the initial quantity at time t = 0</div>
+              <div id="qx8-p4" class="qe-bullet">• Use initial conditions to solve for the constant k</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1984919851,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D time-lapse animation showing a glowing bacterial colony expanding exponentially on one side and a radioactive atom decaying into smaller particles on the other, with the equation P = P0 * e^(kt) floating in the center.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D time-lapse animation showing a glowing bacterial colony expanding exponentially on one side and a radioactive atom decaying into smaller particles on the other, with the equation P = P0 * e^(kt) floating in the center.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Application of Differential Equations: Newton's Law of Cooling and Related Word Problems -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Application of Differential Equations: Newton's Law of Cooling and Related Word Problems</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Newton's Law: Rate of cooling is proportional to the temperature difference</div>
+              <div id="qx9-p1" class="qe-bullet">• Differential Equation: d T / d t = -k (T - S)</div>
+              <div id="qx9-p2" class="qe-bullet">• General Solution: T = S + A * e^(-kt)</div>
+              <div id="qx9-p3" class="qe-bullet">• S = Surrounding temperature; T = Object temperature; k = constant</div>
+              <div id="qx9-p4" class="qe-bullet">• Use two given data points to solve for constants A and k</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1599023674,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D thermal camera view of a steaming coffee mug transitioning from bright red to dark blue as it sits in a cool room, with the mathematical equation floating beside it.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D thermal camera view of a steaming coffee mug transitioning from bright red to dark blue as it sits in a cool room, with the mathematical equation floating beside it.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Degree Ambiguity, Integration Errors, and Sign Mistakes -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Degree Ambiguity, Integration Errors, and Sign Mistakes</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Degree is only defined if the equation is a polynomial in its derivatives.</div>
+              <div id="qx10-p1" class="qe-bullet">• Trigonometric or logarithmic functions containing derivatives make degree undefined.</div>
+              <div id="qx10-p2" class="qe-bullet">• Always add the constant of integration 'C' immediately after integrating.</div>
+              <div id="qx10-p3" class="qe-bullet">• In Linear DE, ensure the sign of 'P' is correct when calculating the Integrating Factor.</div>
+              <div id="qx10-p4" class="qe-bullet">• Verify your final solution by differentiating it to see if it matches the original.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2975921933,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a correct step-by-step derivation on the left and a 'Wrong Way' version on the right, with red 'X' marks appearing over common sign and constant errors.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D split-screen showing a correct step-by-step derivation on the left and a 'Wrong Way' version on the right, with red 'X' marks appearing over common sign and constant errors.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Time Management, PYQs, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Time Management, PYQs, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Time Management: Don't get stuck on word problem formation; move to direct solving.</div>
+              <div id="qx11-p1" class="qe-bullet">• Step Marking: Always write given variables and standard formulas clearly.</div>
+              <div id="qx11-p2" class="qe-bullet">• PYQ Patterns: Focus on Integrating Factor for high-weightage long answers.</div>
+              <div id="qx11-p3" class="qe-bullet">• Recap: Master Variable Separable, Homogeneous, and Linear forms.</div>
+              <div id="qx11-p4" class="qe-bullet">• Final Check: Always include the constant of integration 'C' and verify the degree.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4184486327,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D digital dashboard showing a countdown timer on one side and a floating checklist of chapter topics being ticked off on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A 3D digital dashboard showing a countdown timer on one side and a floating checklist of chapter topics being ticked off on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Differential Equations today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Real-world Applications, Order, and Degree of Differential Equations <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Formation of Differential Equations: Eliminating Arbitrary Constants <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Solutions of Differential Equations: General, Particular, and Concept of Families of Curve <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Variable Separable Method: Techniques and Worked Examples <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Homogeneous Differential Equations: Substitution and Solving Methods <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Reducible to Variable Separable Form: Bernoulli’s Equation and Transformations <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Linear Differential Equations: Integrating Factor and Standard Form <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Advanced Solving Techniques: Combining Methods and Complex Substitutions <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Application of Differential Equations: Growth, Decay, and Population Models <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Application of Differential Equations: Newton's Law of Cooling and Related Word Problems <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Degree Ambiguity, Integration Errors, and Sign Mistakes <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Time Management, PYQs, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey into one of the most powerful tools in mathematics: Differential Equations. Up until now, in your calculus chapters, you have been busy finding derivatives of functions or calculating integrals. But have you ever wondered how scientists predict the spread of a virus, how engineers design the suspension of a car, or how physicists describe the cooling of a cup of tea? They don't just use numbers; they use relationships between quantities and their rates of change. This relationship is what we call a Differential Equation. Simply put, a differential equation is an equation involving an unknown function and its derivatives. For example, if we say the rate of change of population with respect to time is proportional to the population itself, we are describing a differential equation. In mathematical terms, we write this as d P d t equals k times P, where P is the population and k is a constant. This single equation can help us predict the population of a country years into the future. Now, before we learn how to solve them, we must understand how to classify them. The two most fundamental properties are the Order and the Degree. Let's start with the Order. The order of a differential equation is the order of the highest derivative present in the equation. If an equation contains only first derivatives, like d y d x, it is a first-order differential equation. If it contains a second derivative, like d squared y by d x squared, it is a second-order equation. The order is very straightforward—you just look for the highest derivative. Now, let's talk about the Degree. The degree of a differential equation is the power or exponent of the highest-order derivative, provided the equation is expressed as a polynomial in terms of its derivatives. This is a very important condition. To find the degree, you must first ensure that the derivatives are not trapped inside trigonometric functions like sine or cosine, or inside logarithms or exponential functions. If they are, you must use algebraic manipulation to clear them first. For example, consider the equation: d squared y by d x squared plus the sine of d y by d x equals zero. Here, the highest derivative is the second derivative, so the order is two. However, because the first derivative is inside a sine function, we cannot directly assign a degree. But if we had an equation like, the square of d squared y by d x squared plus d y by d x equals five, the highest derivative is the second derivative, and its power is two. Therefore, the order is two and the degree is two. Let's try another one. Suppose we have the equation: d y by d x raised to the power of three plus y equals zero. The highest derivative is the first derivative, so the order is one. The power of that highest derivative is three, so the degree is three. What if the derivative is in the denominator? For instance, d y by d x equals one divided by x. We must rewrite this as d y by d x times x equals one to make it a polynomial in terms of the derivative. Now, the degree is clearly one. Remember, if a differential equation cannot be expressed as a polynomial in its derivatives, the degree is said to be undefined. This often happens when the derivatives are part of an infinite series or transcendental functions that cannot be cleared. To summarize this lesson: a differential equation links a function to its rates of change. The order is the highest derivative present, and the degree is the power of that highest-order derivative, after the equation is cleared of non-polynomial forms. Mastering these two concepts is your first step toward conquering this entire chapter. In our next session, we will dive into how these equations are actually formed by eliminating arbitrary constants. Let's get ready to solve!","Welcome back to our series on Differential Equations. In our previous session, we explored the definition, order, and degree of these equations. Now, we move into a very important constructive process: how to actually form a differential equation from a given mathematical relationship. Think of it this way: usually, in calculus, we start with an equation and find its derivative. But here, we are doing the reverse. We are given a family of curves, represented by an equation containing one or more arbitrary constants, and our goal is to create a differential equation that describes that entire family without using those constants. Let us define the core principle first. If a mathematical relation contains 'n' number of arbitrary constants, we must differentiate the equation 'n' times to eliminate them. These constants, often denoted as 'a', 'b', or 'c', are the parameters that define specific members of a family of curves. For example, if we have a straight line equation like y equals mx plus c, we have two arbitrary constants, 'm' and 'c'. To eliminate them, we need to differentiate twice. Let us walk through a step-by-step example to make this crystal clear. Suppose we are given the equation y equals c times e to the power of x, where 'c' is an arbitrary constant. Our objective is to find the differential equation representing this family. Step one: Differentiate the given equation with respect to x. The derivative of y with respect to x is dy by dx. The derivative of c times e to the power of x is simply c times e to the power of x. So, our first equation is dy by dx equals c times e to the power of x. Now, look closely. We still have the constant 'c' in our equation. We haven't eliminated it yet. Step two: Use the original equation to substitute the constant. We know from our starting equation that y equals c times e to the power of x. Notice that the right-hand side of our derivative is exactly the same as our original equation. Therefore, we can substitute 'y' in place of 'c times e to the power of x'. This gives us the final differential equation: dy by dx equals y. Notice what happened? The constant 'c' is gone. We are left with a relationship between y, x, and the derivative dy by dx. This equation is the differential equation for that family of curves. Let us try a slightly more complex case involving two constants. Consider the equation x squared plus y squared equals a squared, which represents a family of circles centered at the origin with radius 'a'. Here, 'a' is our single arbitrary constant. We differentiate once with respect to x. Using the chain rule, the derivative of x squared is 2x, and the derivative of y squared is 2y times dy by dx. The derivative of the constant a squared is zero. So, we get 2x plus 2y times dy by dx equals zero. We can simplify this by dividing the entire equation by 2, resulting in x plus y times dy by dx equals zero. The constant 'a' has been successfully eliminated. Now, a very important rule to remember for your exams: the number of times you differentiate is strictly determined by the number of arbitrary constants present. If you have one constant, you differentiate once. If you have two constants, you differentiate twice, and so on. The resulting differential equation will always have an order equal to the number of arbitrary constants you eliminated. If you fail to eliminate all constants, you haven't formed the differential equation of the family; you've only found a related derivative. If you differentiate more times than there are constants, you are creating a higher-order equation than necessary. Always aim for the simplest form. In summary, to form a differential equation, differentiate the given relation as many times as there are arbitrary constants, and use algebraic substitution or elimination to remove those constants from the final expression. Mastering this technique is essential because it forms the foundation for understanding how physical laws, like motion or growth, are expressed mathematically. Let's move on to how we solve these equations in the next part.","Welcome back. In our previous sessions, we learned how to form differential equations by eliminating arbitrary constants. Now, we move to the most crucial part of the chapter: how to solve them. When we solve a differential equation, we are essentially looking for a function that satisfies the given relationship between the variable, its derivatives, and the independent variable. But what exactly does a 'solution' look like? Let's start with the concept of a Family of Curves. Imagine a simple equation like the equation of a family of straight lines passing through the origin. In Cartesian coordinates, this is y equals m times x, where m is an arbitrary constant. If you plot this for different values of m, say m equals one, two, or negative one, you don't get just one line; you get a whole collection of lines spreading out from the origin. This collection is what we call a 'Family of Curves'. In differential equations, the solution is rarely a single curve; it is usually an entire family of curves characterized by one or more arbitrary constants. Now, let's categorize these solutions. The first type is the General Solution. When we integrate a differential equation, we naturally introduce one or more arbitrary constants, let's call them C, A, or B. For example, if we have the differential equation dy by dx equals two x, integrating both sides gives us y equals x squared plus C. This equation, y equals x squared plus C, is the General Solution. It represents an infinite family of parabolas, all shifted vertically along the y-axis depending on the value of C. Every single curve in this family satisfies the original differential equation. But what if we are given extra information? Suppose I tell you that this specific curve must pass through the point zero, five. This is what we call an Initial Condition or a Boundary Condition. By plugging x equals zero and y equals five into our general solution, we get five equals zero squared plus C, which means C equals five. Now, our equation becomes y equals x squared plus five. This specific equation is no longer a family; it is a single, unique curve. We call this the Particular Solution. To summarize the distinction: the General Solution contains arbitrary constants and represents a family of curves, while the Particular Solution is obtained by assigning specific values to those constants using given conditions, resulting in a single specific curve. It is important to note that for an ordinary differential equation of order n, the general solution will contain exactly n arbitrary constants. If you have a second-order equation, your general solution will have two constants, like C one and C two. In your exams, you will often be asked to 'find the particular solution'. This is a two-step process. Step one: find the general solution through integration. Step two: use the provided initial conditions to solve for the constants. Mastering this distinction is the key to moving from the theory of formation to the practical art of solving. Let's look at a quick example. Consider the equation dy by dx equals y. Integrating this, we get the natural log of y equals x plus C. Taking the exponential of both sides, we get y equals e to the power of x plus C. This is our General Solution, representing a family of exponential curves. If we are given the condition that when x is zero, y is one, we substitute these values: one equals e to the power of zero plus C. Since e to the power of zero is one, we get one equals one plus C, so C equals zero. The Particular Solution is simply y equals e to the power of x. Understanding this flow—from a differential equation to a family of curves, and finally to a specific curve—is the foundation for all the solving methods we will cover in the upcoming parts of this chapter.","Welcome back. In our previous session, we understood the concept of general and particular solutions. Now, we dive into the most fundamental tool in your toolkit: the Variable Separable Method. This is the first and often most direct way to solve a first-order differential equation. The core logic is simple: if you can rearrange the equation so that all terms involving y and dy are on one side, and all terms involving x and dx are on the other, you have successfully 'separated' the variables. The mathematical form we are looking for is dy over dx equals equal to f of x multiplied by g of y. Once we rewrite this as dy divided by g of y equals f of x multiplied by dx, the problem transforms from a calculus problem into a pure integration problem. Let's look at a standard technique. Suppose we have the equation dy over dx equals x squared plus y squared. Can we separate them? No, because the terms are added. But if the equation was dy over dx equals x squared times y, then we can. We would divide both sides by y and multiply both sides by dx to get dy divided by y equals x squared dx. Now, both sides are ready for integration. Now, let's tackle a worked example to see the precision required. Consider the differential equation dy over dx equals tan x plus sec x. Here, the variables are already somewhat separated in terms of their dependence, but let's look at a more classic case: dy over dx equals a times x to the power of n times y to the power of m. To solve this, we move the y term to the left by dividing and the dx to the right by multiplying. This gives us y to the power of negative m dy equals a times x to the power of n dx. Now, we apply the power rule of integration to both sides. Integrating y to the power of negative m gives y to the power of one minus m divided by one minus m, and integrating a times x to the power of n gives a times x to the power of n plus one divided by n plus one, plus C, where C is our arbitrary constant. Let's try a slightly more complex example involving trigonometric functions. Solve dy over dx equals sin x times cos x. This is straightforward; dy equals sin x times cos x dx. Integrating both sides, the left side becomes y, and the right side, using the substitution method or a trigonometric identity, becomes negative one half times cos squared of x, plus C. Now, pay close attention to the 'Particular Solution' technique. If the question provides an initial condition, such as y equals zero when x equals zero, you must use it. You take your general solution, plug in zero for y and zero for x, and solve for C. This turns your general family of curves into one specific, unique curve. A common mistake students make is forgetting to add the constant of integration immediately after integrating. Do not wait until the end of the simplification to add C; it must be part of the equation from the moment the integral sign disappears. Also, be careful when dividing by functions of y. If you divide by a term like (y minus one), you are technically assuming that y is not equal to one. Always check if the constant value that makes your divisor zero is actually a singular solution to the differential equation. Mastering this method is your gateway to more complex forms like homogeneous and linear equations. Let's practice these steps systematically: separate, integrate, and then apply initial conditions if provided.","Welcome back. In our previous session, we explored the concept of homogeneous functions. Today, we move from theory to action. We will learn how to identify a homogeneous differential equation and use a specific substitution method to transform it into a variable separable form. Let us start with the definition. A differential equation of the first order is called homogeneous if it can be written in the form dy over dx equals f of y over x. This means every term in the expression has the same total degree. For example, if you have dy over dx equals x plus y divided by x, notice that both the numerator and denominator are of degree one. This is a clear signal that we can use our special substitution method. The core strategy is this: we substitute y equals v times x, where v is a function of x. Now, let us see how this changes our derivative. Using the product rule, the derivative of y with respect to x becomes dy over dx equals v plus x times dv over dx. This is a crucial step. Now, let us walk through a complete solved example together. Suppose we have the equation dy over dx equals x plus y divided by x. First, we substitute y with v times x. This turns the right side into x plus v times x, all divided by x. We can factor out x from the numerator, which gives us x times one plus v, all divided by x. The x terms cancel out, leaving us with just one plus v. Now, look at the left side. We replaced dy over dx with v plus x times dv over dx. So, our equation now looks like this: v plus x times dv over dx equals one plus v. Our goal is to separate the variables. We subtract v from both sides. This gives us x times dv over dx equals one. Now, we move x to the denominator of the right side and dv over dx to the other side. We get dv over x equals one over x times dx. Now, both sides are in a form where we can integrate. Integrating dv over x gives us the natural log of absolute v. Integrating one over x times dx also gives us the natural log of absolute x, plus a constant C. So, we have ln absolute v equals ln absolute x plus C. To find the final solution, we must substitute back our original value of v. Since we defined y equals v times x, then v equals y divided by x. Replacing v, we get ln absolute y divided by x equals ln absolute x plus C. To simplify this, we can write the constant C as ln C. This allows us to combine the logarithms. We get ln absolute y divided by x equals ln of C times x. By taking the exponential of both sides, we find that y divided by x equals C times x. Finally, multiplying by x, we get the general solution: y equals C times x squared. This method works for any homogeneous equation. Always remember the three golden steps: first, verify the equation is homogeneous; second, substitute y equals v times x and replace the derivative; third, separate the variables and integrate. Watch out for algebraic errors during the simplification of the fraction, as that is where most students make mistakes. Let us practice this logic in the next set of problems.","Welcome back. In our previous lesson, we mastered Homogeneous equations using the substitution y equals v-x. But what happens when an equation isn't homogeneous, yet it isn't quite in the simple variable separable form either? Today, we tackle equations that are 'reducible' to simpler forms. Specifically, we will focus on Bernoulli’s Equation and certain non-linear transformations. Let's start with the star of this section: Bernoulli’s Equation. A Bernoulli equation is a first-order differential equation that looks almost linear, but it has a little twist. Its standard form is: dy over dx plus P of x times y, equals Q of x times y to the power of n. Notice that y to the power of n term on the right side? If n is zero, it is a simple linear equation. If n is one, it is also linear. But if n is any other integer or real number, it is non-linear. To solve this, we use a clever substitution to 'straighten it out' and make it linear. Step one: Divide the entire equation by y to the power of n. This gives us: y to the power of one minus n, times dy over dx, plus P of x, equals Q of x. Now, look at that first term. We want that to be a single variable. So, we let our new variable, let's call it v, be equal to y to the power of one minus n. Now, we must differentiate v with respect to x. Using the chain rule, dv over dx equals one minus n, times y to the power of negative n, times dy over dx. If we rearrange this, we see that y to the power of negative n, times dy over dx, is equal to one over one minus n, times dv over dx. When we substitute these back into our modified equation, the non-linear term disappears! We are left with a standard linear differential equation in terms of v and x: dv over dx plus the quantity one minus n times P of x, equals the quantity one minus n times Q of x. From here, you simply find the Integrating Factor, which is e to the power of the integral of the new coefficient of v, and solve as usual. Once you find v, don't forget the most crucial final step: substitute back y to the power of one minus n for v to get your final answer in terms of x and y. Let's look at another transformation. Sometimes, an equation isn't Bernoulli, but it can be made homogeneous through a shift of origin. If you see an equation like dy over dx equals a x plus b y plus c, divided by d x plus e y plus f, where the lines do not intersect at the origin, you can use a substitution. We let x equals x-h plus h, and y equals y-k plus k, where h and k are constants. We choose h and k such that they satisfy the original linear equations. This shifts the coordinate system so that the intersection point becomes the new origin, turning the equation into a standard homogeneous form. Once solved in terms of x-h and y-k, you simply replace them to get the general solution. Mastering these transformations is like learning a magic trick; you are essentially changing the perspective of the equation to reveal its hidden simplicity. Practice these two methods carefully, as they are favorites in board examinations.","Welcome back. In our previous session, we explored how to transform complex equations into a simpler variable separable form using Bernoulli's method. Today, we step into one of the most important pillars of calculus: Linear Differential Equations. Not every equation can be solved by simply separating variables, and not every equation is homogeneous. This brings us to a specific structure known as the Standard Form. A first-order differential equation is called a linear differential equation if it can be written in the form: dye over dx plus P of x times y, equals Q of x. Notice two critical things here. First, the dependent variable, y, and its derivative, dye over dx, must both be of the first degree. Second, there should be no products of y and its derivative, and no transcendental functions like sine or logarithm applied to y. In this standard form, P of x and Q of x are functions of x only, or they can even be constants. If you see an equation where y is squared or inside a square root, it is non-linear and this method won't apply directly. Now, how do we solve this? If the equation is already in the form dye over dx plus P of x times y equals Q of x, we cannot simply integrate both sides because of that P of x term attached to y. We need a mathematical tool to 'force' the left side into a single derivative. This tool is called the Integrating Factor, or I of x. The formula for the Integrating Factor is e raised to the power of the integral of P of x with respect to x. Let's break that down. First, identify your P of x. It is the coefficient of y. Then, find its indefinite integral. Finally, take e to the power of that result. Once you have calculated I of x, the solution process becomes a beautiful three-step dance. Step one: Multiply every single term in your standard form equation by the Integrating Factor, I of x. After multiplying, the left-hand side of your equation—which was dye over dx plus P of x times y—automatically transforms into the derivative of the product of the Integrating Factor and y. In mathematical terms, the left side becomes d of I of x times y over dx. Step two: Rewrite the equation as d of I of x times y over dx equals Q of x times I of x. Step three: Integrate both sides with respect to x. The integral of the derivative on the left side simply leaves us with I of x times y. So, the general solution is expressed as: I of x times y equals the integral of Q of x times I of x with respect to x, plus a constant C. Let's look at a quick mental example. Suppose we have dye over dx plus two y equals e to the power of x. Here, P of x is just the constant two, and Q of x is e to the power of x. To find the Integrating Factor, we integrate two to get two x, and then our I of x becomes e raised to the power of two x. We multiply the whole equation by this factor, and the left side becomes the derivative of e to the power of two x times y. Integrating the right side, which is e to the power of two x times e to the power of x, or e to the power of three x, gives us one third of e to the power of three x. Finally, we solve for y to get our general solution. Always remember to check if your equation is in standard form before you start. If there is a coefficient in front of dye over dx, divide the entire equation by that coefficient first to isolate the derivative. This is the most common mistake students make. Master this standard form, and you unlock the ability to solve a vast range of growth and decay models in physics and biology.","Welcome back. So far, we have mastered the standard tools: Variable Separable, Homogeneous equations, and Linear equations using the Integrating Factor. But in higher-level mathematics and competitive exams, differential equations rarely come in such neat, pre-packaged forms. Today, we step into the realm of Advanced Solving Techniques. This is where we stop looking for a single method and start looking for a strategy. The first major skill is the 'Hybrid Approach' or Combining Methods. Imagine you encounter an equation that looks like a Bernoulli equation at first glance, but after a substitution, it transforms into a Homogeneous equation. You don't panic. You simply follow the transformation. For example, if you have a non-linear term that can be simplified by substituting the entire denominator as a new variable, say, let u equal one over y, you might find that the equation suddenly becomes a Linear Differential Equation. This is the essence of combining methods: using one technique to strip away complexity until a standard form emerges. The second, and perhaps more challenging, technique is Complex Substitutions. This is often required when the arguments of trigonometric functions or exponential functions are not simple variables, but are themselves functions of x. Suppose you see an equation involving sine of x plus y. A common mistake is to try and separate the variables immediately. Instead, you should use a substitution like let v equal x plus y. This transforms the differential term d-y into d-v minus d-x, allowing you to rewrite the entire equation in terms of v and x. Another powerful tool is the substitution for equations of the form dy over dx equals f of ax plus by plus c. Here, the standard move is to let v equal ax plus by plus c. When you differentiate this with respect to x, you get d-v over d-x equals a plus b times dy over dx. By substituting dy over dx with one over b times the derivative of v minus a, you convert a complex composite function into a simple Variable Separable equation. We also need to discuss substitutions used in equations involving square roots of quadratic expressions. If you see a term like square root of a squared minus x squared, we use trigonometric substitutions like x equals a sine theta. This isn't just a trick; it's a way to use the identity one minus sine squared theta equals cosine squared theta to collapse the complexity of the equation. Finally, let's talk about the 'Reduction of Order' concept for higher-order equations, though we focus primarily on first-order here. The key takeaway for this advanced stage is 'Pattern Recognition'. Before you pick up your pen to integrate, look at the structure. Is there a repeating block? Is there a composite function? Is there a way to make the equation look like one of the six methods we have already studied? Advanced solving is less about memorizing new formulas and more about the art of transformation. You are essentially a sculptor, chipping away the non-linear or complex parts of the equation until the core, solvable structure is revealed. Let's move to the board to see these transformations in action with a multi-step problem.","Welcome back. In our previous sessions, we mastered the techniques of solving differential equations. Now, we step into the real world to see why these equations are so powerful. Today, we explore how differential equations model change—specifically in growth, decay, and population dynamics. Imagine a colony of bacteria or the radioactive decay of an isotope. In these scenarios, the rate at which a quantity changes is often directly proportional to the amount of the quantity present at that moment. This simple observation is the foundation of our lesson. Let us mathematically represent this. Suppose, let P be the population or the amount of a substance at any time t. The rate of change of P with respect to time t is written as d P comma d t. According to our observation, this rate is proportional to P. So, we write d P comma d t is equal to k times P, where k is a constant of proportionality. This is a first-order, separable differential equation. If k is positive, we have a model for growth, such as a growing population. If k is negative, we have a model for decay, such as radioactive substances losing mass over time. Let us solve this general equation using the variable separable method. We can rewrite d P comma d t equals k P as d P comma over P equals k dt. Now, we integrate both sides. The integral of one over P with respect to P is the natural logarithm of P, or ln of P. The integral of k with respect to t is k times t, plus a constant of integration, let us call it C. So, we have ln of P equals k t plus C. To solve for P, we take the exponential of both sides. This gives us P equals e to the power of k t plus C. We can rewrite e to the power of C as a new constant, let us call it P zero. Thus, the general solution is P equals P zero times e to the power of k t. Here, P zero represents the initial amount at time t equals zero. Let us apply this to a practical growth model. Suppose a population of bacteria doubles every three hours. We need to find the growth constant k and then predict the population after ten hours. First, we know at t equals zero, the population is P zero. At t equals three, the population is two times P zero. Plugging this into our formula, two P zero equals P zero times e to the power of three k. Dividing by P zero, we get two equals e to the power of three k. Taking the natural log of both sides, we get ln of two equals three k. Therefore, k equals one third times ln of two. Now, to find the population at t equals ten, we use our specific formula: P equals P zero times e to the power of ten thirds times ln of two. This can be simplified using exponent rules to P equals P zero times two to the power of ten thirds. Now, let us look at the decay model. In radioactive decay, the amount of substance decreases over time. The equation remains the same, but our constant k will be negative. For example, if a substance has a half-life of fifty years, it means after fifty years, the amount is half of the original. Using our formula, one half P zero equals P zero times e to the power of fifty k. This simplifies to one half equals e to the power of fifty k. Taking the natural log, we get ln of one half, which is negative ln of two, equals fifty k. Thus, k equals negative ln of two divided by fifty. This negative value confirms the decay. Understanding these models is crucial because they form the basis of biology, chemistry, and even finance. Remember, the key is to identify the rate of change, set up the differential equation, solve for the constant using initial conditions, and then apply the specific model to the problem at hand.","Welcome back. In our previous session, we explored population growth and decay models. Today, we shift our focus to a very practical application in thermodynamics: Newton's Law of Cooling. This law provides a mathematical way to describe how the temperature of an object changes as it interacts with its surroundings. Imagine you have a hot cup of tea sitting on a table in a room. As time passes, the tea cools down. But notice something interesting: the tea cools very rapidly at first, and then the rate of cooling slows down as the tea's temperature approaches the room temperature. This is exactly what Newton's Law of Cooling describes. The law states that the rate of change of temperature of an object is directly proportional to the difference between the temperature of the object and the temperature of its surroundings. Let's translate this into a differential equation. Let T be the temperature of the object at any time t, and let S be the constant temperature of the surrounding medium. The rate of change of temperature with respect to time is written as d T comma d t. According to the law, d T comma d t is proportional to the quantity T minus S. Mathematically, we write this as: d T comma d t equals k times open parenthesis T minus S close parenthesis, where k is a positive constant of proportionality. However, since the temperature is decreasing over time, the rate of change is negative. So, we often write it as: d T comma d t equals minus k times open parenthesis T minus S close parenthesis. To solve this, we use the variable separable method, which you learned in Part 4. We rearrange the equation by moving all T terms to one side and all t terms to the other. This gives us: one over open parenthesis T minus S close parenthesis d T equals minus k d t. Now, we integrate both sides. The integral of one over T minus S with respect to T is the natural logarithm of T minus S, and the integral of minus k with respect to t is minus k t plus a constant, let's call it C. So, we have: natural log of open parenthesis T minus S close parenthesis equals minus k t plus C. To solve for T, we take the exponential of both sides. This gives us: T minus S equals e to the power of minus k t plus C. We can rewrite the constant C as e to the power of C, which is just another constant, let's call it A. So, the general solution is: T equals S plus A times e to the power of minus k t. This formula is our primary tool for solving cooling problems. To find the specific values of A and k, we need two pieces of information, which usually come in the form of two different temperature readings at two different times. For example, if a problem says a body is at eighty degrees at time zero and sixty degrees after ten minutes, you use these values to create two equations. First, plug in t equals zero and T equals eighty to find the value of A. Since e to the power of zero is one, you will find that eighty minus S equals A. Second, plug in t equals ten and T equals sixty to solve for the constant k. Once you have A and k, you have a complete model for that specific object. When solving word problems, always be very careful with the units of time and the definition of the surrounding temperature S. A common mistake is to confuse the temperature of the object with the temperature of the room. Always identify S first. Also, remember that the 'rate of cooling' refers to the derivative, not just the temperature difference itself. Let's practice a mental walkthrough: if a metal rod is heated to one hundred degrees and placed in a room at twenty degrees, the initial rate of cooling will be very high because the difference is eighty degrees. As the rod reaches thirty degrees, the difference is only ten degrees, so the cooling slows down significantly. This mathematical model perfectly captures that physical reality. Keep these steps in mind: formulate the differential equation, separate the variables, integrate, and use the given boundary conditions to find your constants. Let's move to the solved examples.","Welcome back. We have covered the methods, the substitutions, and the complex transformations. But even if you know the method, a small slip can lead to the wrong answer. Today, we focus on the 'silent killers' of marks in Differential Equations: Degree Ambiguity, Integration Errors, and Sign Mistakes. Let us start with the most common conceptual trap: Degree Ambiguity. Remember, the degree of a differential equation is only defined when the equation is a polynomial in its derivatives. This means the derivatives, such as dy by dx or d squared y by dx squared, cannot be inside a trigonometric function, inside a logarithm, or in the exponent. For example, if you see an equation where dy by dx is inside a sine function, like sine of dy by dx equals x, you cannot immediately say the degree is one. You must first use trigonometric identities to express the derivative as a standalone term. If you cannot isolate the derivative as a polynomial term, the degree is undefined. Always check this before you start calculating. Next, let us move to the most frequent source of error: Integration Errors. Differential equations are essentially a bridge between differentiation and integration. If your integration is wrong, your entire solution is invalid. A common mistake occurs during the Variable Separable method. Students often forget to integrate both sides correctly when the functions are complex. For instance, when integrating one over x squared plus a, many forget that the result is one over a times arctan of x root a plus C. Another major error is the 'missing constant' trap. In differential equations, the constant of integration, C, is not just an afterthought; it is a fundamental part of the general solution. If you add C at the very end of your algebraic simplification instead of immediately after integration, you will get the wrong particular solution. For example, if you have the integral of one over y equals the integral of x, you must write ln of y equals one half x squared plus C. If you later try to exponentiate both sides, you must get y equals e to the power of one half x squared plus C, not y equals e to the power of one half x squared and then add C at the end. These are mathematically very different. Third, let us address Sign Mistakes, especially in Linear Differential Equations. When using the Integrating Factor method, the standard form is dy by dx plus P times x equals Q. Notice the plus sign. If your equation is dy by dx minus P times x equals Q, you must treat the coefficient as negative P. If you ignore that minus sign when calculating the Integrating Factor, which is e to the power of the integral of P dx, your entire Integrating Factor will be wrong, and your product rule application will fail. Similarly, during the integration of the product of the Integrating Factor and Q, a single sign error in the exponent of the Integrating Factor will propagate through every subsequent step. Always use brackets when substituting your Integrating Factor back into the equation to keep your signs organized. Finally, be careful with the signs during the substitution method in Homogeneous equations. When you substitute y equals vx, remember that dy by dx equals v plus x dy by dx, which is a common mistake—it should be v plus x times dy by dx. Wait, let me correct that: it is dy by dx equals v plus x times dv by dx. If you miss that x in the product rule, your equation will not become homogeneous. Take a breath, check your signs, and always verify if your final solution satisfies the original differential equation. If it does, you are safe.","Welcome to the final stretch of our journey through Differential Equations. We have covered everything from the fundamental concepts of order and degree to the complex mechanics of Linear Differential Equations and Bernoulli’s form. Now, it is time to transition from learning to performing. This masterclass is designed to ensure that your hard work translates into high marks in your board examinations. Let us begin with the strategic aspect: Time Management. In a mathematics paper, Differential Equations often appear in the short answer and long answer sections. A common mistake students make is spending too much time on the initial setup of a word problem. Remember, if you are stuck on the formation of the equation from a word problem, move to a direct solving problem first. Do not let one complex application stall your entire paper. For the long-answer questions, specifically those involving Newton's Law of Cooling or Population Growth, always write down the given variables and the standard formula before you start substituting. This ensures step-marking even if your final integration goes slightly astray. Now, let us talk about Previous Year Questions, or PYQs. Analyzing the last ten years of papers reveals a pattern. The Variable Separable method is a favorite for two-mark questions. Homogeneous equations and Linear Differential Equations, involving the Integrating Factor, are the heavy hitters for four or five-mark questions. You must practice the 'Integrating Factor' calculation until it becomes second nature. If the equation is in the form of d-y over d-x equals p-x plus q-x times y, your integrating factor is e to the power of the integral of p-x with respect to x. This is a high-probability question type. As we move into our Full Chapter Recap, let us mentally trace our path. We started by identifying the order, which is the highest derivative, and the degree, which is the power of that highest derivative. We learned that forming an equation means eliminating arbitrary constants. We mastered the Variable Separable method by grouping all y-terms with d-y and all x-terms with d-x. We tackled Homogeneous equations by using the substitution y equals v-x. We learned to handle equations that are reducible to separable form using Bernoulli’s method. We mastered the Linear Differential Equation by finding the Integrating Factor. We applied all these to real-world models like growth, decay, and cooling. To excel, you must avoid the common pitfalls we discussed earlier: always check if the degree is well-defined, watch your signs during integration, and never forget the constant of integration, C, in your general solution. If a particular solution is asked, use the given initial conditions to find the value of C immediately. Your goal is to treat every problem as a systematic process: Identify the type, choose the method, integrate carefully, and simplify. You have the tools, you have the techniques, and now you have the strategy. Stay calm, read the questions twice, and approach every differential equation with logic and precision. You are ready for the exam. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-maths-09-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

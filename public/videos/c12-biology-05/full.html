@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Molecular Basis of Inheritance, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-biology-05-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Blueprint of Life and Why DNA Matters -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Blueprint of Life and Why DNA Matters</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Inheritance: The transmission of traits from parents to offspring.</div>
+              <div id="qx0-p1" class="qe-bullet">• Genotype vs. Phenotype: Genetic code versus observable traits.</div>
+              <div id="qx0-p2" class="qe-bullet">• DNA: The master blueprint containing instructions for life.</div>
+              <div id="qx0-p3" class="qe-bullet">• Key DNA properties: Chemical stability and high storage capacity.</div>
+              <div id="qx0-p4" class="qe-bullet">• Replication: The ability to copy information for cell division.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":2242134522,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A cinematic 3D zoom from a human face, through skin cells, into the nucleus, ending on a glowing, rotating DNA double helix.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A cinematic 3D zoom from a human face, through skin cells, into the nucleus, ending on a glowing, rotating DNA double helix.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): The Search for Genetic Material: Transforming Principle and Hershey-Chase Experiment -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">The Search for Genetic Material: Transforming Principle and Hershey-Chase Experiment</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Griffith's Experiment: S-strain (virulent) vs R-strain (non-virulent)</div>
+              <div id="qx1-p1" class="qe-bullet">• Transforming Principle: Heat-killed S-strain converts R-strain to S-strain</div>
+              <div id="qx1-p2" class="qe-bullet">• Avery, MacLeod, and McCarty: DNase stops transformation, proving DNA is key</div>
+              <div id="qx1-p3" class="qe-bullet">• Hershey-Chase: Used Phosphorus-32 for DNA and Sulfur-35 for protein</div>
+              <div id="qx1-p4" class="qe-bullet">• Conclusion: Radioactive DNA enters bacteria, confirming it as genetic material</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3212409881,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing Griffith's mice on one side and the Hershey-Chase blender process with glowing radioactive isotopes on the other.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation showing Griffith's mice on one side and the Hershey-Chase blender process with glowing radioactive isotopes on the other.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Structure of Polynucleotide Chain: Nucleosides, Nucleotides, and DNA Double Helix -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Structure of Polynucleotide Chain: Nucleosides, Nucleotides, and DNA Double Helix</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Nucleoside = Nitrogenous Base + Pentose Sugar</div>
+              <div id="qx2-p1" class="qe-bullet">• Nucleotide = Nucleoside + Phosphate Group</div>
+              <div id="qx2-p2" class="qe-bullet">• Phosphodiester bonds link nucleotides via 3' and 5' carbons</div>
+              <div id="qx2-p3" class="qe-bullet">• DNA strands are antiparallel (5' to 3' and 3' to 5')</div>
+              <div id="qx2-p4" class="qe-bullet">• A=T (2 hydrogen bonds) and G triple C (3 hydrogen bonds)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3064288946,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D camera fly-through starting from a single nucleotide, assembling into a long chain, and finally twisting into a rotating double helix showing hydrogen bonds between bases.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D camera fly-through starting from a single nucleotide, assembling into a long chain, and finally twisting into a rotating double helix showing hydrogen bonds between bases.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): DNA Replication: Semi-conservative Mechanism and Enzymatic Machinery -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">DNA Replication: Semi-conservative Mechanism and Enzymatic Machinery</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Meselson and Stahl proved semi-conservative replication using Nitrogen-15</div>
+              <div id="qx3-p1" class="qe-bullet">• Each new DNA molecule has one parental and one new strand</div>
+              <div id="qx3-p2" class="qe-bullet">• Helicase unwinds the helix; SSBs stabilize single strands</div>
+              <div id="qx3-p3" class="qe-bullet">• DNA Polymerase synthesizes DNA only in the 5' to 3' direction</div>
+              <div id="qx3-p4" class="qe-bullet">• Leading strand is continuous; lagging strand forms Okazaki fragments</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":879771819,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic animation of a replication fork opening, showing Helicase unzipping the strands and DNA Polymerase adding nucleotides to both leading and lagging strands.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D cinematic animation of a replication fork opening, showing Helicase unzipping the strands and DNA Polymerase adding nucleotides to both leading and lagging strands.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Transcription: The Process of RNA Synthesis and Transcription Unit Anatomy -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Transcription: The Process of RNA Synthesis and Transcription Unit Anatomy</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Transcription: Copying DNA information into RNA</div>
+              <div id="qx4-p1" class="qe-bullet">• Transcription Unit: Promoter, Structural Gene, and Terminator</div>
+              <div id="qx4-p2" class="qe-bullet">• Template Strand: 3 prime to 5 prime (antisense)</div>
+              <div id="qx4-p3" class="qe-bullet">• Coding Strand: 5 prime to 3 prime (sense)</div>
+              <div id="qx4-p4" class="qe-bullet">• RNA synthesis occurs in the 5 prime to 3 prime direction</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":1838600291,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D rotating DNA helix zooming into a specific segment where RNA polymerase binds to a promoter and slides along the template strand, trailing a single-stranded RNA molecule behind it.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D rotating DNA helix zooming into a specific segment where RNA polymerase binds to a promoter and slides along the template strand, trailing a single-stranded RNA molecule behind it.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Post-Transcriptional Modifications: Splicing, Capping, and Tailing in Eukaryotes -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Post-Transcriptional Modifications: Splicing, Capping, and Tailing in Eukaryotes</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Prokaryotic RNA is ready for translation; Eukaryotic RNA requires processing.</div>
+              <div id="qx5-p1" class="qe-bullet">• Pre-mRNA is the immature primary transcript produced during transcription.</div>
+              <div id="qx5-p2" class="qe-bullet">• 5' Capping: Addition of 7-methyl guanosine to protect RNA and aid ribosome binding.</div>
+              <div id="qx5-p3" class="qe-bullet">• 3' Tailing: Addition of a Poly-A tail to provide stability and assist nuclear export.</div>
+              <div id="qx5-p4" class="qe-bullet">• Splicing: Removal of non-coding introns and joining of coding exons.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":1395773854,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular animation showing a long pre-mRNA strand receiving a cap at the 5' end, a poly-A tail at the 3' end, and a spliceosome cutting out dark-colored introns to join light-colored exons.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D molecular animation showing a long pre-mRNA strand receiving a cap at the 5' end, a poly-A tail at the 3' end, and a spliceosome cutting out dark-colored introns to join light-colored exons.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Genetic Code: Properties, Degeneracy, and the Wobble Hypothesis -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Genetic Code: Properties, Degeneracy, and the Wobble Hypothesis</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Genetic code is a triplet system providing 64 possible codons.</div>
+              <div id="qx6-p1" class="qe-bullet">• The code is nearly universal across all living organisms.</div>
+              <div id="qx6-p2" class="qe-bullet">• Degeneracy: Multiple codons can code for a single amino acid.</div>
+              <div id="qx6-p3" class="qe-bullet">• Stop codons (UAA, UAG, UGA) signal the end of protein synthesis.</div>
+              <div id="qx6-p4" class="qe-bullet">• Wobble Hypothesis: Flexible pairing at the third codon position.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2554621932,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular animation showing an mRNA strand being read by a ribosome, highlighting the triplet grouping and the flexible 'wobble' pairing between the third base of a codon and the tRNA anticodon.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D molecular animation showing an mRNA strand being read by a ribosome, highlighting the triplet grouping and the flexible 'wobble' pairing between the third base of a codon and the tRNA anticodon.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Translation: Protein Synthesis from tRNA to Polypeptide Chain -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Translation: Protein Synthesis from tRNA to Polypeptide Chain</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Translation converts mRNA nucleotide sequences into polypeptide chains</div>
+              <div id="qx7-p1" class="qe-bullet">• tRNA acts as an adapter with an anticodon and an amino acid acceptor end</div>
+              <div id="qx7-p2" class="qe-bullet">• Activation: Amino acids are linked to tRNA using ATP and synthetase enzymes</div>
+              <div id="qx7-p3" class="qe-bullet">• Elongation: Peptide bonds form between amino acids via peptidyl transferase</div>
+              <div id="qx7-p4" class="qe-bullet">• Termination: Stop codons (UAA, UAG, UGA) trigger the release of the protein</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3391074196,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic animation showing a ribosome sliding along an mRNA strand, with tRNAs entering the A-site, forming peptide bonds, and exiting through the E-site as a protein chain grows.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D cinematic animation showing a ribosome sliding along an mRNA strand, with tRNAs entering the A-site, forming peptide bonds, and exiting through the E-site as a protein chain grows.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Regulation of Gene Expression: The Lac Operon Model -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Regulation of Gene Expression: The Lac Operon Model</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Regulation ensures energy efficiency by expressing genes only when needed.</div>
+              <div id="qx8-p1" class="qe-bullet">• The Lac Operon consists of structural genes: lac z, lac y, and lac a.</div>
+              <div id="qx8-p2" class="qe-bullet">• lac z encodes beta-galactosidase; lac y encodes permease; lac a encodes transacetylase.</div>
+              <div id="qx8-p3" class="qe-bullet">• The lac i gene produces a repressor protein that binds to the operator.</div>
+              <div id="qx8-p4" class="qe-bullet">• Lactose acts as an inducer by inactivating the repressor protein.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3164425914,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular animation showing a repressor protein blocking RNA polymerase on a DNA strand, followed by lactose molecules binding to the repressor to release the blockage.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D molecular animation showing a repressor protein blocking RNA polymerase on a DNA strand, followed by lactose molecules binding to the repressor to release the blockage.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Human Genome Project: Goals, Methods, and Findings -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Human Genome Project: Goals, Methods, and Findings</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• HGP: A decade-long international 'Mega Project' launched in 1990</div>
+              <div id="qx9-p1" class="qe-bullet">• Primary Goal: Sequence 3 billion base pairs and identify 20,000-25,000 genes</div>
+              <div id="qx9-p2" class="qe-bullet">• Methods: Hierarchical Sequencing (ESTs) and Whole Genome Shotgun Sequencing</div>
+              <div id="qx9-p3" class="qe-bullet">• Key Finding: Much of the human genome consists of repetitive, non-coding DNA</div>
+              <div id="qx9-p4" class="qe-bullet">• Impact: Revolutionized biotechnology and the study of genetic diseases</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2821797484,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic fly-through of a DNA double helix transforming into a digital stream of A, T, G, and C letters that assemble into a massive, glowing global database map.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D cinematic fly-through of a DNA double helix transforming into a digital stream of A, T, G, and C letters that assemble into a massive, glowing global database map.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): DNA Fingerprinting: Principles, Steps, and Forensic Applications -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">DNA Fingerprinting: Principles, Steps, and Forensic Applications</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• DNA Fingerprinting relies on unique repetitive DNA sequences called satellite DNA.</div>
+              <div id="qx10-p1" class="qe-bullet">• VNTRs (Variable Number Tandem Repeats) serve as the primary genetic markers.</div>
+              <div id="qx10-p2" class="qe-bullet">• The process involves: Extraction, PCR, Restriction Digestion, and Electrophoresis.</div>
+              <div id="qx10-p3" class="qe-bullet">• Southern Blotting transfers DNA fragments to a nylon membrane for probe binding.</div>
+              <div id="qx10-p4" class="qe-bullet">• Applications include forensic identification, paternity testing, and biodiversity studies.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":4043860970,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular animation showing a DNA strand being cut by restriction enzymes, followed by fragments migrating through an agarose gel toward a positive electrode.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D molecular animation showing a DNA strand being cut by restriction enzymes, followed by fragments migrating through an agarose gel toward a positive electrode.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: High-Yield Diagrams, Common Mistakes, and PYQs -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: High-Yield Diagrams, Common Mistakes, and PYQs</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Mastering Diagrams: DNA Helix, Transcription Unit, and Lac Operon</div>
+              <div id="qx11-p1" class="qe-bullet">• Key Distinction: Nucleosides vs. Nucleotides (The Phosphate Factor)</div>
+              <div id="qx11-p2" class="qe-bullet">• Replication Nuances: Leading vs. Lagging strands and Okazaki fragments</div>
+              <div id="qx11-p3" class="qe-bullet">• Common Error: Confusing Inducers and Repressors in the Lac Operon</div>
+              <div id="qx11-p4" class="qe-bullet">• PYQ Strategy: Precise labeling and specific isotope usage in experiments</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":523213688,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a perfectly labeled DNA helix on the left and a checklist of common mistakes appearing on the right.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a perfectly labeled DNA helix on the left and a checklist of common mistakes appearing on the right.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Molecular Basis of Inheritance today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Blueprint of Life and Why DNA Matters <small>0:00</small></button>
+          <button type="button" data-seek="300">2. The Search for Genetic Material: Transforming Principle and Hershey-Chase Experiment <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Structure of Polynucleotide Chain: Nucleosides, Nucleotides, and DNA Double Helix <small>10:00</small></button>
+          <button type="button" data-seek="900">4. DNA Replication: Semi-conservative Mechanism and Enzymatic Machinery <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Transcription: The Process of RNA Synthesis and Transcription Unit Anatomy <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Post-Transcriptional Modifications: Splicing, Capping, and Tailing in Eukaryotes <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Genetic Code: Properties, Degeneracy, and the Wobble Hypothesis <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Translation: Protein Synthesis from tRNA to Polypeptide Chain <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Regulation of Gene Expression: The Lac Operon Model <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Human Genome Project: Goals, Methods, and Findings <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. DNA Fingerprinting: Principles, Steps, and Forensic Applications <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: High-Yield Diagrams, Common Mistakes, and PYQs <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone, and welcome to our deep dive into one of the most fascinating chapters in Biology: The Molecular Basis of Inheritance. Before we look at the complex structures and chemical bonds, we need to ask a fundamental question: What exactly is inheritance? When you look in the mirror and see your father's eyes or your mother's smile, you are witnessing the physical manifestation of molecular information. Inheritance is the process by which traits are passed from parents to offspring. But how is this information stored? How does a single cell know how to build a complex organism like a human being? To understand this, we must look at the 'Blueprint of Life.' Think of a massive construction project, like building a skyscraper. You need a set of highly detailed, precise architectural drawings. If those drawings are lost or corrupted, the building cannot be constructed correctly. In the living world, DNA, or Deoxyribonucleic Acid, serves as that master blueprint. It contains the instructions required for the development, functioning, growth, and reproduction of all known organisms. Now, let's distinguish between 'Genotype' and 'Phenotype,' as this is crucial for our journey. The genotype is the actual genetic makeup of an organism—the internal code written in the language of nucleotides. The phenotype, on the other hand, is the observable physical characteristic, like height or hair color. The genotype dictates the phenotype. But why is DNA the chosen medium for this information? Why not proteins? For a long time, scientists actually thought proteins were the genetic material because they are incredibly diverse, made of twenty different amino acids. However, DNA has specific properties that make it the perfect information carrier. First, it is chemically stable. It can store information for a very long time without breaking down easily. Second, it has a capacity for extremely large information storage due to its long polymer structure. Third, it is capable of replication. This is perhaps the most vital feature. For life to continue, the instructions must be copied accurately every time a cell divides. If a cell divides and the instructions aren't passed on, the lineage ends. In this chapter, we will explore how this molecule is structured, how it replicates itself with incredible precision, and how it is 'read' to create the proteins that actually do the work in our bodies. We will move from the chemical structure of a single nucleotide to the massive complexity of the human genome. By the end of this series, you won't just see DNA as a chemical formula, but as the very software of life. Let's begin our journey into the molecular world.","Welcome back. In our previous session, we established that DNA is the blueprint of life. But have you ever wondered how scientists actually proved it? For a long time, many biologists believed that proteins, being more complex, were the carriers of genetic information. Today, we will trace the historic journey that finally identified DNA as the true genetic material. Our journey begins in the late nineteenth century with Friedrich Griffith. In nineteen twenty-eight, Griffith conducted a landmark experiment using Streptococcus pneumoniae, a bacterium that causes pneumonia. He used two strains: the S-strain, which is virulent or disease-causing because it has a smooth polysaccharide coat, and the R-strain, which is non-virulent or harmless because it lacks this coat. Griffith performed four steps. First, he injected live S-strain bacteria into mice, and the mice died. Second, he injected live R-strain bacteria, and the mice survived. Third, he took heat-killed S-strain bacteria and injected them into mice; again, the mice lived. But then came the surprising fourth step. Griffith mixed heat-killed S-strain bacteria with live R-strain bacteria and injected this mixture into mice. To his astonishment, the mice died. When he recovered the bacteria from the dead mice, he found living S-strain bacteria! This led him to conclude that some 'transforming principle' had transferred from the dead S-strain to the live R-strain, enabling the R-strain to synthesize a smooth coat and become virulent. However, Griffith didn't know what this principle was. Was it protein or DNA? This mystery remained until the work of Avery, MacLeod, and McCarty in nineteen thirty-four. They took Griffith's transforming principle and treated it with various enzymes. They used proteases to destroy proteins, RNases to destroy RNA, and DNases to destroy DNA. They found that only when they used DNase did the transforming activity stop. This provided strong evidence that DNA was the transforming agent. Yet, some scientists remained skeptical, arguing that even a tiny amount of protein contamination could be responsible. The final, definitive proof came in nineteen fifty-two through the Hershey-Chase experiment, often called the Blender Experiment. Alfred Hershey and Martha Chase used the T-even bacteriophage, a virus that infects bacteria. They knew the phage consists of a protein coat and a DNA core. To distinguish between them, they used radioactive isotopes as labels. They used Phosphorus-thirty-two to label the DNA, because DNA contains phosphorus but protein does not. They used Sulfur-thirty-five to label the protein, because proteins contain sulfur but DNA does not. The experiment had two main stages. In the first stage, they allowed the radioactive phages to infect the E. coli bacteria. In the second stage, they used a blender to shake the viral coats off the bacterial surfaces and a centrifuge to separate the heavier bacteria from the lighter viral particles. In the first batch, where the DNA was labeled with Phosphorus-thirty-two, the radioactivity was found inside the bacterial cells, not in the supernatant. In the second batch, where the protein was labeled with Sulfur-thirty-five, the radioactivity remained in the supernatant, outside the cells. This proved conclusively that it was the DNA, not the protein, that entered the bacteria and directed the production of new viruses. Thus, the search was over: DNA is the hereditary material.","Now that we have established DNA as the genetic material, let us look closer at its actual architecture. If you were to zoom into a DNA molecule, you wouldn't see a simple string, but a complex chain of repeating units called polynucleotides. To understand this, we must first look at the building blocks. Every nucleotide is composed of three distinct components: a nitrogenous base, a pentose sugar, and a phosphate group. The nitrogenous bases are divided into two categories. First, we have the purines, which are Adenine and Guanine. These are double-ringed structures. Second, we have the pyrimidines, which are Cytosine, Thymine, and Uracil. Remember, Thymine is found in DNA, while Uracil replaces it in RNA. Now, let's see how these connect. When a nitrogenous base attaches to the first carbon of the pentose sugar, we form a Nucleoside. For example, Adenine plus Ribose becomes Adenosine. If we add a phosphate group to the fifth carbon of that sugar, the nucleoside transforms into a Nucleotide. This nucleotide is the actual monomer of nucleic acids. In a polynucleotide chain, these nucleotides are linked together by a covalent bond called a phosphodiester bond. This bond forms between the three prime carbon of one sugar and the five prime carbon of the next sugar, creating a sugar-phosphate backbone. This backbone provides structural stability, while the bases hang off to the side, ready to carry information. But how do these single strands come together to form the famous double helix? In nineteen fifty-three, James Watson and Francis Crick, utilizing X-ray diffraction data from Rosalind Franklin, proposed the double helix model. This model is defined by several key features. First, the two polynucleotide chains are antiparallel. This means if one strand runs in the five prime to three prime direction, the other runs in the three prime to five prime direction. Second, the two strands are coiled around a common axis. Third, the bases are paired through hydrogen bonds. This is highly specific: Adenine always pairs with Thymine via two hydrogen bonds, and Guanine always pairs with Cytosine via three hydrogen bonds. This base pairing is known as complementary base pairing. Because of this, if you know the sequence of one strand, you can always predict the sequence of the other. Finally, the sugar-phosphate backbone is located on the outside, while the nitrogenous bases are tucked inside the helix, protected from the cellular environment. This structure is not just beautiful; it is functional. The sequence of these bases is what actually encodes the instructions for life. Let's recap: Nucleoside is base plus sugar; Nucleotide is base plus sugar plus phosphate; and the double helix is an antiparallel, complementary structure held together by hydrogen bonds.","Welcome back. In our previous session, we decoded the beautiful double helix structure of DNA. But a crucial question arises: if DNA is the blueprint of life, how does a cell ensure that this blueprint is passed on accurately to the next generation during cell division? This brings us to the process of DNA replication. To understand how this happens, we must first look at the mechanism. For a long time, scientists debated how DNA copies itself. Was it conservative, where the original molecule stays intact and a brand new one is made? Or was it dispersive, where the strands are broken and mixed? The answer came from two landmark experiments. First, Matthew Meselson and Franklin Stahl performed a very elegant experiment using Escherichia coli and heavy nitrogen, isotope Nitrogen-15. They grew bacteria in a medium containing Nitrogen-15, making their DNA heavy. They then transferred these bacteria to a medium with the lighter Nitrogen-14. By using centrifugation, they observed that after one generation, the DNA was of intermediate density, and after two generations, there was both intermediate and light DNA. This proved that replication is semi-conservative. This was later confirmed by the work of Watson and Crick themselves. In a semi-conservative model, the two strands of the parental DNA separate, and each serves as a template for the synthesis of a new complementary strand. This means every new DNA molecule consists of one old parental strand and one newly synthesized strand. Now, let us look at the molecular machinery required to pull this off. Replication is a complex enzymatic process. It begins at specific sites called the Origin of Replication, or Ori. In E. coli, this is a single point, but in eukaryotes, there are multiple origins to speed up the process. The first key player is Helicase. Think of Helicase as a molecular zipper; it unwinds the double helix by breaking the hydrogen bonds between the nitrogenous bases. As the strands unwind, they form a structure known as the replication fork. To prevent the strands from snapping back together, Single-Strand Binding Proteins, or SSBs, coat the separated strands to keep them stable. However, DNA is a very picky molecule. The enzyme responsible for building the new strand, DNA Polymerase, cannot just start from scratch. It can only add nucleotides to an existing chain. This is where Primase comes in. Primase synthesizes a small stretch of RNA called a primer, which provides the necessary three-prime-OH group for DNA Polymerase to begin its work. Now, here is the tricky part: DNA Polymerase can only work in one direction—the five-prime to three-prime direction. Because the two strands of the DNA double helix are antiparallel, they must be replicated differently. One strand, the leading strand, is oriented in a way that DNA Polymerase can follow the replication fork continuously, moving toward it. The other strand, the template for the lagging strand, runs in the opposite direction. On this lagging strand, synthesis must happen in small, discontinuous fragments. These short segments are called Okazaki fragments. As the fork opens further, new primers are laid down, and DNA Polymerase extends these fragments. Eventually, these gaps must be closed. An enzyme called DNA Ligase acts like molecular glue, joining the Okazaki fragments together to create a continuous sugar-phosphate backbone. Finally, we must ensure accuracy. DNA Polymerase also has a proofreading function. If an incorrect base is added, the enzyme can detect the mismatch, remove it, and replace it with the correct one. This ensures that the genetic information remains incredibly stable across generations. So, to summarize: Helicase unwinds, Primase primes, DNA Polymerase builds, and Ligase joins. This coordinated dance ensures the continuity of life.","Welcome back. In our previous lesson, we saw how DNA replicates itself to pass on genetic information. But DNA is like a master blueprint locked inside a high-security vault—the nucleus. To actually build proteins and carry out cellular functions, this information needs to be copied into a portable format. This process of copying genetic information from one strand of DNA into RNA is called Transcription. Now, let us first understand the anatomy of a Transcription Unit. If you look at a segment of DNA that is being transcribed, you will notice it is not just a random stretch. A transcription unit consists of three essential regions: the Promoter, the Structural Gene, and the Terminator. Think of the Promoter as the 'Start' signal. It is located towards the 5 prime end of the coding strand. It is the binding site for the RNA polymerase enzyme. Next, we have the Structural Gene. This is the actual stretch of DNA that holds the code for the RNA molecule we want to synthesize. Finally, we have the Terminator. This is located towards the 3 prime end of the coding strand and acts as the 'Stop' signal, telling the enzyme to detach. Now, here is a crucial detail: DNA is double-stranded, but during transcription, only one strand acts as a template. We call this the Template Strand or the antisense strand. It runs in the 3 prime to 5 prime direction. The other strand, which has the same sequence as the newly formed RNA (except for Thymine being replaced by Uracil), is called the Coding Strand or the sense strand. It runs in the 5 prime to 3 prime direction. This can be confusing, so remember: the RNA polymerase reads the template strand in the 3 prime to 5 prime direction, but it synthesizes the new RNA strand in the 5 prime to 3 prime direction. Let us look at the mechanism. The process begins when the enzyme RNA polymerase binds to the promoter region. It then moves along the template strand, unwinding the DNA helix. As it moves, it reads the nitrogenous bases on the template strand and brings in complementary ribonucleotides. If the template has an Adenine, the enzyme adds a Uracil to the growing RNA chain. If the template has a Cytosine, it adds a Guanine. If the template has a Guanine, it adds a Cytosine. If the template has a Thymine, it adds an Adenine. The enzyme catalyzes the formation of phosphodiester bonds between these nucleotides, building the RNA chain in a 5 prime to 3 prime direction. This continues until the enzyme reaches the Terminator sequence. Once the terminator is reached, the RNA polymerase detaches, and the newly synthesized RNA molecule is released. In prokaryotes, this process is quite straightforward, and the mRNA produced is often ready for translation immediately. However, the exact sequence of events and the complexity of the unit vary slightly in eukaryotes, which we will explore in our next session. For now, focus on the relationship between the template strand, the coding strand, and the direction of synthesis. Remember, the RNA is a mirror image of the template, but a direct copy of the coding strand.","Welcome back. In our previous session, we explored the process of transcription, where DNA serves as a template to create an RNA molecule. However, there is a crucial distinction we must make between prokaryotes and eukaryotes. In bacteria, or prokaryotes, the transcription process is quite direct; as soon as the RNA is synthesized, it is ready to be translated into protein. But in eukaryotes, the journey is more complex. The RNA produced immediately after transcription is not yet functional. We call this initial molecule the primary transcript, or more commonly, pre-messenger RNA, which is pre-mRNA. This pre-mRNA is essentially an immature version of the message that contains extra information that the cell does not actually need for protein synthesis. To transform this pre-mRNA into a mature, functional messenger RNA, the cell must undergo three vital processing steps: Capping, Tailing, and Splicing. Let us look at the first step: Capping. At the five prime end of the pre-mRNA, a specialized structure is added. This is a modified guanine nucleotide, specifically called a 7-methyl guanosine cap. This cap is not just a random addition; it serves two vital purposes. First, it protects the growing RNA strand from being prematurely degraded by enzymes called exonucleases. Second, it acts as a recognition signal for the ribosome, helping it attach to the mRNA during translation. Now, let us move to the second step: Tailing, also known as Poly-adenylation. At the three prime end of the pre-mRNA, a long chain of adenine nucleotides is added. This is known as the poly-A tail. This tail can consist of hundreds of adenine residues. Much like the cap, the poly-A tail provides stability to the molecule and assists in its export from the nucleus into the cytoplasm. Finally, we come to the most intricate step: Splicing. If you look at the structure of eukaryotic genes, you will notice they are not continuous sequences of coding information. They are interrupted by non-coding sequences. We call the coding sequences, which carry the actual instructions for making proteins, 'exons.' The intervening, non-coding sequences that must be removed are called 'introns.' Think of it like a film where some scenes are unnecessary and must be cut out to make a coherent story. During splicing, a complex molecular machine called the spliceosome identifies the boundaries of these introns. The introns are precisely excised, or cut out, and the remaining exons are ligated, or joined together, in a continuous sequence. Once these three steps—Capping at the five prime end, Tailing at the three prime end, and Splicing out the introns—are complete, our molecule is officially transformed. It is no longer pre-mRNA; it is now mature mRNA. This mature mRNA is stable, protected, and carries a continuous coding sequence, making it ready to leave the nucleus and enter the cytoplasm to begin the process of translation. Understanding these modifications is essential because they allow eukaryotes to regulate gene expression with incredible precision, sometimes even allowing one gene to code for multiple different proteins through alternative splicing. Let's review these steps to ensure they are clear.","Welcome back. In our previous session, we explored how transcription converts DNA information into messenger RNA. But how does this sequence of nucleotides actually translate into a sequence of amino acids to build a protein? This is the mystery of the genetic code. Think of the genetic code as a dictionary that translates the language of nucleic acids into the language of proteins. The basic unit of this code is a triplet codon. Since there are four bases in RNA—Adenine, Uracil, Guanine, and Cytosine—and they need to code for twenty different amino acids, a doublet code would only provide four squared, which is sixteen combinations. This is not enough. However, a triplet code provides four raised to the power of three, which equals sixty-four possible codons. This is more than enough to cover all twenty amino acids. Now, let us look at the specific properties of this code. First, the genetic code is nearly universal. This means that a codon like UUU codes for Phenylalanine in bacteria, in plants, and in humans. This universality is a strong piece of evidence for the common evolutionary origin of all living organisms. Second, the code is unambiguous and specific. One particular codon will always code for the same specific amino acid. For example, UUU will always result in Phenylalanine. Third, the code is non-overlapping. When the ribosome reads the mRNA, it reads the bases in consecutive groups of three. It does not skip bases or read the same base twice for different codons. Fourth, the code is comma-less. There are no punctuation marks or spacers between codons; the reading is continuous. Fifth, we must understand the concept of degeneracy. While one codon codes for only one amino acid, a single amino acid can be coded by more than one codon. For instance, the amino acid Leucine is coded by six different codons. This degeneracy acts as a buffer against some mutations. If a base changes but the new codon still codes for the same amino acid, the protein remains unchanged. Now, let us discuss the start and stop signals. Out of the sixty-four codons, three act as stop codons or nonsense codons. These are UAA, UAG, and UGA. They do not code for any amino acid; instead, they signal the end of translation. The initiation codon is AUG, which codes for the amino acid Methionine. Interestingly, AUG also serves as the start codon that sets the reading frame. Finally, we come to a very important concept for competitive exams: the Wobble Hypothesis, proposed by Francis Crick. You might wonder, if there are sixty-four codons but only twenty amino acids, how does a single tRNA molecule sometimes recognize more than one codon? The Wobble Hypothesis explains that while the first two bases of a codon form strict Watson-Crick base pairs with the anticodon of tRNA, the third position is flexible. This 'wobble' or loose pairing allows a single tRNA anticodon to recognize multiple codons that differ only in their third base. This explains why cells do not need sixty-one different types of tRNA molecules. This efficiency is a masterpiece of biological engineering. Understanding these rules is essential before we move into the actual process of translation in our next video.","Welcome back. In our previous lesson, we decoded the language of life—the Genetic Code. We know that mRNA carries the instructions, but how does a cell actually turn these nucleotide sequences into functional, three-dimensional proteins? This process is called Translation. It is the most critical step in the expression of genetic information. Translation occurs in the cytoplasm, specifically on the ribosomes. To understand this, we need to look at the players involved. First, we have the messenger RNA, or mRNA, which acts as the template. Second, we have transfer RNA, or tRNA, which acts as the adapter molecule. Third, we have the ribosome, which is the massive complex of ribosomal RNA and proteins that serves as the site of protein synthesis. Let us look closely at the tRNA. This molecule is unique because it has two critical ends. At one end, it has an amino acid acceptor end, where a specific amino acid is attached. At the other end, it has an anticodon loop. The anticodon is a sequence of three nucleotides that is complementary to a specific codon on the mRNA. This ensures that the correct amino acid is brought to the right place. Now, let us walk through the actual process of translation, which happens in four distinct stages. The first stage is Activation of Amino Acids. Before translation can begin, amino acids must be chemically linked to their corresponding tRNA molecules. This process is catalyzed by enzymes called aminoacyl tRNA synthetases. This step requires energy in the form of ATP. Once the amino acid is attached, we call it an aminoacyl tRNA. The second stage is Initiation. This is where the machinery comes together. The small subunit of the ribosome binds to the mRNA at a specific site. Then, the initiator tRNA, which carries the amino acid methionine, binds to the start codon, which is usually AUG. Finally, the large ribosomal subunit joins the complex. The ribosome now has three functional sites: the P site, the A site, and the E site. The P site is where the growing polypeptide chain is held. The A site, or aminoacyl site, is where the next incoming tRNA arrives. The E site, or exit site, is where empty tRNAs leave the ribosome. The third stage is Elongation. This is a repetitive cycle. A new aminoacyl tRNA, whose anticodon matches the mRNA codon in the A site, enters the ribosome. A peptide bond is then formed between the amino acid in the P site and the new amino acid in the A site. This reaction is catalyzed by the enzyme peptidyl transferase. After the bond is formed, the ribosome moves one codon forward along the mRNA. This movement is called translocation. As the ribosome moves, the tRNA that was in the P site moves to the E site and exits, while the tRNA that was in the A site moves to the P site, now carrying the growing chain. This cycle repeats, adding one amino acid at a time, extending the polypeptide chain. The fourth and final stage is Termination. The elongation process continues until the ribosome encounters a stop codon on the mRNA. There are three stop codons: UAA, UAG, and UGA. Unlike other codons, stop codons do not code for any amino acid. Instead, they are recognized by release factors. When a release factor binds to the stop codon, the bond between the polypeptide chain and the tRNA is hydrolyzed. The completed polypeptide is released, and the entire ribosomal complex dissociates into its subunits. This newly synthesized polypeptide will then undergo folding and post-translational modifications to become a functional protein. From a single mRNA strand, the cell can produce many copies of the same protein, making this process incredibly efficient. Understanding translation is the key to understanding how life's instructions become physical reality.","Welcome back. We have explored how DNA is replicated, transcribed, and translated. But have you ever wondered if a cell uses every single gene it possesses, all the time? The answer is a definitive no. Imagine if your body produced digestive enzymes for milk even when you were eating a salad. That would be a massive waste of energy and resources. Cells are incredibly efficient; they only express specific genes when they are needed. This control mechanism is what we call the regulation of gene expression. To understand this, we look at a classic model proposed by François Jacob and Jacques Monod in 1961: the Lac Operon model. This model was studied in Escherichia coli, or E. coli, a bacterium. In E. coli, the genes required for the metabolism of lactose are regulated by a system called the Lac Operon. The word 'operon' refers to a unit of bacterial DNA containing a cluster of genes under the control of a single promoter. The Lac Operon consists of three structural genes: lac z, lac y, and lac a. Let's break them down. The lac z gene encodes the enzyme beta-galactosidase, which cleaves the disaccharide lactose into glucose and galactose. The lac y gene encodes permease, which increases the permeability of the cell membrane to lactose. Finally, the lac a gene encodes transacetylase. Now, these structural genes are not alone. They are preceded by a promoter, known as the promoter or P, and an operator, known as the operator or O. There is also a regulatory gene called the lac i gene, which is located outside the operon itself. The lac i gene is constantly expressed at a low level and produces a protein called the repressor. In the absence of an inducer like lactose, this repressor protein binds to the operator region. When the repressor is stuck to the operator, it physically blocks the RNA polymerase from moving past the promoter. Consequently, transcription cannot occur, and the structural genes remain silent. This is the 'switched off' state. However, things change when lactose is present in the environment. Lactose acts as an inducer. When lactose enters the cell, a small amount of it binds to the repressor protein. This binding causes a conformational change in the repressor, making it unable to bind to the operator. With the operator now free, the RNA polymerase can move smoothly along the DNA, transcribing the lac z, lac y, and lac a genes into a single polycistronic mRNA. This mRNA is then translated into the three enzymes needed to digest lactose. Once the lactose is completely metabolized and its concentration drops, the repressor protein returns to its original shape, binds to the operator again, and turns the system off. This is a perfect example of a negative regulation mechanism. It ensures that the cell only spends energy producing these specific enzymes when their substrate, lactose, is actually available. This elegant feedback loop is fundamental to how prokaryotes manage their metabolic economy.","Welcome back. We have explored how DNA replicates, transcribes, and translates into proteins. Now, we move from understanding the mechanism to understanding the entire map. Imagine trying to understand a massive library by reading one book at a time. That is what the Human Genome Project, or HGP, set out to do—but for the entire blueprint of a human being. Launched in 1990, this was a decade-long international scientific endeavor, often called a 'Mega Project' because of its enormous scale, cost, and complexity. Let us first look at the objectives. What were scientists actually trying to achieve? The primary goal was to identify all the approximately twenty-thousand to twenty-five thousand genes in human DNA. Beyond just listing genes, the project aimed to determine the sequences of the three billion chemical base pairs that make up human DNA. It also sought to store this information in databases and improve tools for data analysis. Furthermore, they wanted to address the challenges of data storage and transfer, and finally, to transfer this knowledge into biotechnology for better human health. To achieve this, the HGP used two major approaches. The first is the Sequence Alignment Approach, also known as Hierarchical Sequencing. In this method, the genome is broken down into smaller, manageable fragments. These fragments are first cloned into vectors, creating what we call expressed sequence tags or ESTs. These fragments are then mapped to determine their positions, and finally, the actual nucleotide sequence is determined. The second approach is the Whole Genome Shotgun Sequencing method. Here, the entire genome is broken into many small fragments, which are then sequenced directly. Sophisticated computer algorithms are then used to assemble these overlapping fragments back into a continuous sequence, much like putting together a massive jigsaw puzzle. Now, let us discuss the monumental findings of this project. The results changed our fundamental understanding of biology. First, we learned that humans have roughly three billion base pairs. Second, the total number of genes is much lower than we previously estimated—only about twenty to twenty-five thousand. This was a surprise, as we once thought more genes meant more complexity. Third, a significant finding was that repetitive sequences make up a large portion of our genome. These are sequences that repeat many times and do not necessarily code for proteins. Fourth, we discovered that a large amount of the DNA does not code for proteins at all; these are often referred to as non-coding DNA. Fifth, the project revealed that quite a bit of genetic variation exists even among humans, which explains our individual differences. Finally, the HGP provided a roadmap for understanding diseases, allowing us to identify genes responsible for various genetic disorders. This project was not just about reading DNA; it was about understanding the very essence of human identity and providing the foundation for modern personalized medicine.","Welcome back. We have explored the vast landscape of the human genome; now, let us learn how to use that information to identify individuals with absolute precision. This technique is known as DNA Fingerprinting. While we have learned that ninety-nine point nine percent of the DNA sequence is identical in all humans, it is that tiny remaining zero point one percent that makes us unique. This uniqueness lies in the repetitive sequences of DNA. Most of our genome does not code for proteins; instead, it contains repetitive sequences which are separated by non-repetitive sequences. These repetitive sequences are called satellite DNA. When we subject this DNA to density gradient centrifugation, it forms a pattern of bands. Depending on the density, these bands are classified into micro-satellites and mini-satellites. The core principle of DNA fingerprinting relies on these Variable Number Tandem Repeats, or VNTRs. VNTRs are short nucleotide sequences that are repeated many times at specific locations on a chromosome. The number of repeats varies from person to person, creating a unique genetic signature. So, how do we actually perform this in a laboratory? The process follows a very specific set of steps. First, we start with DNA extraction from a biological sample, such as blood, hair follicles, skin cells, or even semen. Second, the extracted DNA is amplified using the Polymerase Chain Reaction, or PCR, to ensure we have enough material for analysis. Third, the DNA is cut into fragments using specific enzymes called restriction endonucleases. These are often referred to as molecular scissors. Fourth, we perform Gel Electrophoresis. In this step, the DNA fragments are separated based on their size as they move through an agarose gel under an electric field. Fifth, the separated fragments are transferred from the fragile gel to a sturdy synthetic membrane, such as nylon, through a process called Southern Blotting. Sixth, we use labeled DNA probes that are complementary to the VNTR sequences. These probes bind specifically to the target DNA through hybridization. Seventh, the hybridized DNA is detected using autoradiography, where the radioactive probes leave a visible pattern of dark bands on an X-ray film. This pattern is the DNA fingerprint. Now, why is this so important? The applications are profound. In forensic science, DNA fingerprinting is the gold standard for identifying criminals by matching DNA from crime scenes to suspects. In paternity and maternity disputes, it can conclusively establish biological relationships. It is also used in biodiversity studies to identify different species and in medical research to study genetic disorders and evolutionary relationships. Remember, while the principle is based on the variation in repetitive DNA, the application is what makes it a cornerstone of modern molecular biology.","Welcome to the final session of our journey through the Molecular Basis of Inheritance. We have covered everything from the double helix to DNA fingerprinting, but knowing the concept is only half the battle. To score full marks in your Board exams, you must master how to present this information. Let's start with the high-yield diagrams. If you look at the screen, you will see the most important ones. First, the DNA Double Helix structure. When drawing this, remember the antiparallel nature. One strand must be five prime to three prime, and the other must be three prime to five prime. A common mistake students make is forgetting to show the hydrogen bonds between base pairs. Remember, Adenine and Thymine have two hydrogen bonds, while Guanine and Cytosine have three. Next, the Transcription Unit. You must clearly label the Promoter, the Structural Gene, and the Terminator. Do not forget to indicate the direction of transcription using an arrow. Another critical diagram is the Lac Operon. Students often confuse the inducer with the repressor. Remember, lactose is the inducer that binds to the repressor, making it inactive so that RNA polymerase can proceed. Now, let's talk about common mistakes that cost marks. Mistake number one is the confusion between Nucleosides and Nucleotides. A nucleoside is just a base plus a sugar, but a nucleotide includes a phosphate group. Always include that phosphate group when discussing the backbone of DNA. Mistake number two is in the Genetic Code. Students often forget that the code is degenerate, meaning one amino acid can be coded by multiple codons, but one codon cannot code for multiple amino acids. This is a frequent multiple-choice question. Mistake number three occurs during DNA Replication. Always specify that replication is semi-discontinuous. You must mention the leading strand, which is continuous, and the lagging strand, which is formed in Okazaki fragments. Now, let's look at some Previous Year Questions, or PYQs, to test your readiness. A very common question asks you to explain the Hershey-Chase experiment. When answering this, do not just say they used radioactive isotopes. You must specify that they used Phosphorus-thirty-two for DNA and Sulfur-thirty-five for proteins. This distinction is what examiners look for. Another frequent question relates to the Human Genome Project. You might be asked about the size of the human genome. Remember the number: approximately three billion base pairs. Another common question is about DNA Fingerprinting. You must be able to list the steps in order: Isolation of DNA, Digestion by restriction endonucleases, Separation by electrophoresis, Blotting, Hybridization using a probe, and Detection. If you miss even one step, you lose marks. Finally, let's look at a tricky question on the Lac Operon: 'What happens when the inducer is absent?' The answer is simple but must be precise: the repressor binds to the operator, preventing RNA polymerase from transcribing the structural genes. As we conclude this chapter, remember that Biology is a subject of precision. Use technical terms like 'phosphodiester bond', 'hydrogen bonding', and 'complementary base pairing' instead of general words. Practice your diagrams until you can draw them with perfect proportions. You have worked hard through this chapter, and with this exam-oriented approach, you are ready to ace your finals. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-biology-05-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

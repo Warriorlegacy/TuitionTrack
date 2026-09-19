@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Evolution, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-biology-06-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Grandeur of Life and the Necessity of Evolution -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Grandeur of Life and the Necessity of Evolution</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Evolution: The gradual transformation of species over generations</div>
+              <div id="qx0-p1" class="qe-bullet">• The Grandeur of Life: Observing immense biological diversity</div>
+              <div id="qx0-p2" class="qe-bullet">• Dynamic Earth: Changing environments necessitate adaptation</div>
+              <div id="qx0-p3" class="qe-bullet">• Survival vs Extinction: The evolutionary pressure to change</div>
+              <div id="qx0-p4" class="qe-bullet">• The Continuity of Life: From simple molecules to complex organisms</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":3958092221,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A cinematic time-lapse starting from a single cell dividing, transitioning into a montage of diverse ecosystems including rainforests, oceans, and deserts.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A cinematic time-lapse starting from a single cell dividing, transitioning into a montage of diverse ecosystems including rainforests, oceans, and deserts.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Origin of Life: Theories, Big Bang, and Chemical Evolution -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Origin of Life: Theories, Big Bang, and Chemical Evolution</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Big Bang Theory: Universe originated from a single, hot, dense singularity.</div>
+              <div id="qx1-p1" class="qe-bullet">• Universe Age: Approximately 20 billion years old and continuously expanding.</div>
+              <div id="qx1-p2" class="qe-bullet">• Early Earth: Formed 4.5 billion years ago with a reducing atmosphere.</div>
+              <div id="qx1-p3" class="qe-bullet">• Reducing Atmosphere: Rich in methane, ammonia, and water vapor; no free oxygen.</div>
+              <div id="qx1-p4" class="qe-bullet">• Chemical Evolution: Inorganic molecules gradually forming complex organic compounds.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2696048067,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic sequence starting with a bright singularity exploding into a vast, expanding dark cosmos filled with swirling gas clouds and forming stars.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D cinematic sequence starting with a bright singularity exploding into a vast, expanding dark cosmos filled with swirling gas clouds and forming stars.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Theories of Biological Evolution: Panspermia, Collision, and Oparin-Haldane -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Theories of Biological Evolution: Panspermia, Collision, and Oparin-Haldane</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Panspermia: Life arrived on Earth via cosmic dust or meteorites.</div>
+              <div id="qx2-p1" class="qe-bullet">• Collision Theory: Celestial impacts triggered biological beginnings.</div>
+              <div id="qx2-p2" class="qe-bullet">• Oparin-Haldane Hypothesis: Life arose from chemical evolution.</div>
+              <div id="qx2-p3" class="qe-bullet">• Reducing Atmosphere: Rich in methane, ammonia, water vapor, and hydrogen.</div>
+              <div id="qx2-p4" class="qe-bullet">• Prebiotic Soup: Accumulation of organic molecules in primitive oceans.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3741302484,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a meteorite hitting Earth on one side, and a bubbling, dark primitive ocean filled with glowing organic molecules on the other.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen 3D animation showing a meteorite hitting Earth on one side, and a bubbling, dark primitive ocean filled with glowing organic molecules on the other.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Experimental Evidence: Miller-Urey Experiment and Prebiotic Soup -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Experimental Evidence: Miller-Urey Experiment and Prebiotic Soup</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Miller-Urey Experiment (1953) provided experimental proof for chemical evolution.</div>
+              <div id="qx3-p1" class="qe-bullet">• Simulated primitive Earth using methane, ammonia, hydrogen, and water vapor.</div>
+              <div id="qx3-p2" class="qe-bullet">• High-voltage electric sparks were used to simulate lightning energy.</div>
+              <div id="qx3-p3" class="qe-bullet">• The experiment successfully produced amino acids from inorganic gases.</div>
+              <div id="qx3-p4" class="qe-bullet">• Confirmed the plausibility of the 'Prebiotic Soup' theory.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":3836526441,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animated laboratory apparatus showing a boiling flask, a gas chamber with electric sparks, and condensing organic droplets forming in a collection tube.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D animated laboratory apparatus showing a boiling flask, a gas chamber with electric sparks, and condensing organic droplets forming in a collection tube.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Theories of Speciation: Lamarckism, Darwinism, and Natural Selection -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Theories of Speciation: Lamarckism, Darwinism, and Natural Selection</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Lamarckism: Theory of Inheritance of Acquired Characters</div>
+              <div id="qx4-p1" class="qe-bullet">• Lamarck's mechanism: Use and disuse of organs</div>
+              <div id="qx4-p2" class="qe-bullet">• Darwinism: Theory of Natural Selection</div>
+              <div id="qx4-p3" class="qe-bullet">• Key Darwinian concepts: Overproduction and Struggle for Existence</div>
+              <div id="qx4-p4" class="qe-bullet">• Survival of the Fittest: Passing favorable variations to offspring</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":728333517,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a giraffe stretching its neck (Lamarck) versus a group of giraffes with varying neck lengths where only the long-necked ones reach food (Darwin).</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A split-screen 3D animation showing a giraffe stretching its neck (Lamarck) versus a group of giraffes with varying neck lengths where only the long-necked ones reach food (Darwin).</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Mechanism of Evolution: Mutation Theory and Saltation -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Mechanism of Evolution: Mutation Theory and Saltation</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Darwinism: Evolution via slow, gradual accumulation of small variations.</div>
+              <div id="qx5-p1" class="qe-bullet">• Hugo de Vries: Proposed the Mutation Theory using Evening Primrose.</div>
+              <div id="qx5-p2" class="qe-bullet">• Mutation vs. Modern Definition: De Vries meant large, sudden changes.</div>
+              <div id="qx5-p3" class="qe-bullet">• Saltation: The concept of evolution occurring through sudden leaps.</div>
+              <div id="qx5-p4" class="qe-bullet">• Discontinuous Variation: Sudden jumps rather than continuous gradualism.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2880666020,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a slow-climbing snail on a ramp, the other shows a frog making sudden, large leaps up a staircase.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A split-screen 3D animation: one side shows a slow-climbing snail on a ramp, the other shows a frog making sudden, large leaps up a staircase.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Hardy-Weinberg Principle: Mathematical Derivation and Equilibrium -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Hardy-Weinberg Principle: Mathematical Derivation and Equilibrium</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Genetic Equilibrium: Constant allele and genotype frequencies over generations</div>
+              <div id="qx6-p1" class="qe-bullet">• Allele frequencies: p (dominant) + q (recessive) = 1</div>
+              <div id="qx6-p2" class="qe-bullet">• Genotype frequencies: p squared (AA) + 2pq (Aa) + q squared (aa) = 1</div>
+              <div id="qx6-p3" class="qe-bullet">• The principle serves as a null hypothesis for evolutionary change</div>
+              <div id="qx6-p4" class="qe-bullet">• Equilibrium requires large population, no mutation, no migration, and random mating</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":215360122,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D particle simulation showing a pool of colored spheres (alleles) combining into pairs (genotypes) following the algebraic expansion of (p+q) squared.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D particle simulation showing a pool of colored spheres (alleles) combining into pairs (genotypes) following the algebraic expansion of (p+q) squared.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Factors Affecting Hardy-Weinberg: Genetic Drift, Gene Flow, and Selection -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Factors Affecting Hardy-Weinberg: Genetic Drift, Gene Flow, and Selection</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Genetic Drift: Random changes in allele frequencies, most impactful in small populations.</div>
+              <div id="qx7-p1" class="qe-bullet">• Founder Effect: A small group starts a new population with limited genetic diversity.</div>
+              <div id="qx7-p2" class="qe-bullet">• Bottleneck Effect: Drastic population reduction due to environmental disasters.</div>
+              <div id="qx7-p3" class="qe-bullet">• Gene Flow: Movement of alleles between populations through migration.</div>
+              <div id="qx7-p4" class="qe-bullet">• Natural Selection: Non-random survival of the fittest (Stabilizing, Directional, Disruptive).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1346537488,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a small group of beetles surviving a storm (Drift), birds flying between islands (Flow), and a graph shifting from a bell curve to a single peak (Selection).</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A split-screen 3D animation showing a small group of beetles surviving a storm (Drift), birds flying between islands (Flow), and a graph shifting from a bell curve to a single peak (Selection).</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Biological Evolution: Evidence from Fossils and Comparative Anatomy -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Biological Evolution: Evidence from Fossils and Comparative Anatomy</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Fossils: Preserved remains in sedimentary layers showing chronological progression.</div>
+              <div id="qx8-p1" class="qe-bullet">• Comparative Anatomy: Studying structural similarities to trace evolutionary history.</div>
+              <div id="qx8-p2" class="qe-bullet">• Homologous Organs: Common ancestry, different functions (Divergent Evolution).</div>
+              <div id="qx8-p3" class="qe-bullet">• Analogous Organs: Different ancestry, similar functions (Convergent Evolution).</div>
+              <div id="qx8-p4" class="qe-bullet">• Vertebrate Forelimbs: A primary example of homology across diverse species.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1922353225,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: left side shows a skeletal limb structure morphing from a primitive fish fin to a human arm; right side shows a bird and a butterfly flying side-by-side to illustrate analogy.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation: left side shows a skeletal limb structure morphing from a primitive fish fin to a human arm; right side shows a bird and a butterfly flying side-by-side to illustrate analogy.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Homologous vs Analogous Organs: Divergent and Convergent Evolution -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Homologous vs Analogous Organs: Divergent and Convergent Evolution</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Homologous Organs: Similar structure, different functions (e.g., human hand vs whale flipper).</div>
+              <div id="qx9-p1" class="qe-bullet">• Divergent Evolution: One ancestral structure evolving into many different forms.</div>
+              <div id="qx9-p2" class="qe-bullet">• Analogous Organs: Different structure, similar functions (e.g., bird wing vs butterfly wing).</div>
+              <div id="qx9-p3" class="qe-bullet">• Convergent Evolution: Unrelated species evolving similar traits due to similar environments.</div>
+              <div id="qx9-p4" class="qe-bullet">• Key Rule: Homology = Common Ancestry; Analogy = Common Adaptation.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2592109302,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows a skeletal limb morphing from a human to a bat; Right side shows a bird and a butterfly flying side-by-side.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation: Left side shows a skeletal limb morphing from a human to a bat; Right side shows a bird and a butterfly flying side-by-side.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Evolutionary Biology: Adaptive Radiation and Phylogenetic Trees -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Evolutionary Biology: Adaptive Radiation and Phylogenetic Trees</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Adaptive Radiation: One ancestor evolving into many species for different niches.</div>
+              <div id="qx10-p1" class="qe-bullet">• Darwin's Finches: Beak variations driven by diverse food sources in Galapagos.</div>
+              <div id="qx10-p2" class="qe-bullet">• Australian Marsupials: A prime example of isolated adaptive radiation.</div>
+              <div id="qx10-p3" class="qe-bullet">• Phylogenetic Trees: Visual maps representing evolutionary relationships.</div>
+              <div id="qx10-p4" class="qe-bullet">• Nodes: Points on a tree representing a common ancestor and speciation events.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":873674821,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D time-lapse animation starting with one bird species splitting into five distinct finch species with varying beak shapes, transitioning into a branching phylogenetic tree diagram.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D time-lapse animation starting with one bird species splitting into five distinct finch species with varying beak shapes, transitioning into a branching phylogenetic tree diagram.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: High-Yield Concepts, Diagram Practice, and PYQs -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: High-Yield Concepts, Diagram Practice, and PYQs</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Distinguish Homologous (Divergent) vs Analogous (Convergent) organs</div>
+              <div id="qx11-p1" class="qe-bullet">• Master Miller-Urey apparatus: Label gases, discharge, and condenser</div>
+              <div id="qx11-p2" class="qe-bullet">• Hardy-Weinberg Equation: p squared plus two p q plus q squared equals one</div>
+              <div id="qx11-p3" class="qe-bullet">• Genetic Drift: Focus on Founder Effect and Bottleneck Effect</div>
+              <div id="qx11-p4" class="qe-bullet">• Natural Selection Types: Stabilizing, Directional, and Disruptive</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2836665828,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a Miller-Urey apparatus on the left and a shifting bell curve graph representing natural selection on the right.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a Miller-Urey apparatus on the left and a shifting bell curve graph representing natural selection on the right.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Evolution today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Grandeur of Life and the Necessity of Evolution <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Origin of Life: Theories, Big Bang, and Chemical Evolution <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Theories of Biological Evolution: Panspermia, Collision, and Oparin-Haldane <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Experimental Evidence: Miller-Urey Experiment and Prebiotic Soup <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Theories of Speciation: Lamarckism, Darwinism, and Natural Selection <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Mechanism of Evolution: Mutation Theory and Saltation <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Hardy-Weinberg Principle: Mathematical Derivation and Equilibrium <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Factors Affecting Hardy-Weinberg: Genetic Drift, Gene Flow, and Selection <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Biological Evolution: Evidence from Fossils and Comparative Anatomy <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Homologous vs Analogous Organs: Divergent and Convergent Evolution <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Evolutionary Biology: Adaptive Radiation and Phylogenetic Trees <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: High-Yield Concepts, Diagram Practice, and PYQs <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Welcome, students, to our journey through one of the most profound chapters in Biology: Evolution. Before we dive into the complex mechanisms of genes and fossils, let us pause and observe the world around us. Look at the sheer variety of life on Earth. From the microscopic bacteria thriving in boiling hydrothermal vents to the massive blue whales navigating the deep oceans, and from the delicate wings of a butterfly to the complex neural networks of the human brain. This incredible diversity is what we call the grandeur of life. But have you ever wondered, how did such immense complexity arise from simple, single-celled beginnings? Why is life not just a collection of static, unchanging entities? The answer lies in the concept of evolution. In biological terms, evolution is not just a change; it is a continuous, gradual process of transformation of species over successive generations. It is the historical process by which living organisms have changed from their ancestral forms. If life were static, if organisms never changed, we would see the exact same life forms today that existed billions of years ago. But the fossil record tells a different story. It tells a story of transition, of adaptation, and of survival. Evolution is a necessity because the environment is never constant. The Earth is a dynamic planet. Temperatures fluctuate, continents shift, oxygen levels rise and fall, and new predators emerge. For life to persist in a changing world, organisms must adapt. This necessity for adaptation is the driving force behind evolutionary change. If a species fails to adapt to its changing environment, it faces the risk of extinction. Therefore, evolution is the bridge between the simplicity of the past and the complexity of the present. It explains how life has climbed the ladder of complexity, moving from simple organic molecules to the sophisticated biological systems we see today. As we progress through this chapter, we will explore the 'how' and the 'why' of this process. We will look at how life began, the experiments that proved chemical evolution, and the mechanisms like natural selection that shape the destiny of species. But for now, keep this central idea in mind: life is a dynamic, ongoing masterpiece, constantly being reshaped by the forces of nature. Understanding evolution is not just about learning facts; it is about understanding our own place in the long, unbroken chain of life that stretches back billions of years. Let us begin our exploration by looking at the very first spark of life.","Welcome back to our journey through Evolution. In our last session, we marveled at the sheer grandeur of life and why evolution is an absolute necessity for survival on a changing planet. Today, we dive into the very beginning: How did it all start? To understand life, we must first understand the universe. The most widely accepted scientific explanation for the origin of the universe is the Big Bang Theory. Imagine, about twenty billion years ago, the entire universe was concentrated in a single, extremely tiny, infinitely hot, and singular point. This is often called a singularity. Suddenly, this point underwent a massive expansion. This wasn't just a simple explosion; it was a rapid expansion of space itself. Since that moment, the universe has been continuously expanding and cooling down. This cooling process is crucial because it allowed matter to form. As the universe cooled, subatomic particles emerged, which later formed atoms, stars, and eventually, galaxies. Now, let's narrow our focus from the cosmic scale to our own planet. Earth was formed about four and a half billion years ago. But here is the catch: early Earth was not the hospitable, blue-and-green paradise we see today. It was a very harsh environment. There was no free oxygen in the atmosphere. Instead, the atmosphere was a 'reducing atmosphere,' meaning it was rich in gases like methane, ammonia, water vapor, and hydrogen, but lacked oxygen. This is a critical detail for your exams. Because there was no oxygen, the processes of oxidation and decay were absent. This allowed organic molecules to accumulate without being broken down. This brings us to the concept of Chemical Evolution. This theory suggests that life did not appear out of nowhere through a miracle, but through a series of gradual chemical changes. It proposes that simple inorganic molecules in the primitive atmosphere reacted to form more complex organic molecules. Think of it as a ladder of complexity: first, simple atoms, then simple molecules like water and methane, then more complex molecules like amino acids and sugars, and eventually, the building blocks of life like proteins and nucleic acids. This transition from non-living matter to living systems is the core of the chemical evolution hypothesis. It suggests that the 'soup' of chemicals on early Earth eventually organized themselves into the first primitive living cells. So, to recap: the Big Bang created the universe, the cooling of the universe allowed matter to form, and the unique, reducing atmosphere of early Earth provided the perfect laboratory for chemical evolution to turn simple gases into the precursors of life. In our next segment, we will look at the specific theories that tried to explain this transition, including Panspermia and the famous Oparin-Haldane hypothesis.","Welcome back, students. In our previous session, we touched upon the vastness of the universe and the Big Bang. Today, we dive deep into the specific theories that attempt to answer one fundamental question: How did life actually begin on Earth? We will explore three major perspectives: Panspermia, the Collision Theory, and the most scientifically accepted model, the Oparin-Haldane hypothesis. Let us start with Panspermia. This is one of the oldest ideas, often referred to as 'cosmozoic theory.' According to Panspermia, life did not originate on Earth itself. Instead, 'seeds' of life or even actual microorganisms were brought here from outer space. These life forms could have been transported via meteorites, comets, or cosmic dust. While this theory explains how life might have arrived, it doesn't actually explain how life was created in the first place; it simply shifts the origin of life to another location in the universe. Moving forward in time, we encounter the Collision Theory. This theory suggests that life's beginnings were triggered by a massive impact. It proposes that a large celestial body, like an asteroid or a comet, collided with the early Earth. This high-energy event might have delivered organic molecules or provided the necessary energy and chemical environment to jumpstart biological processes. Now, let us focus on the most significant turning point in evolutionary biology: the Oparin-Haldane Hypothesis. In the early twentieth century, two scientists, Alexander Oparin and J.B.S. Haldane, independently proposed a theory that moved away from cosmic origins and focused on Earth's own chemistry. This is known as the Theory of Chemical Evolution. They suggested that life arose from non-living organic molecules through a series of complex chemical reactions. Imagine the early Earth: it was a very different place compared to today. The atmosphere was 'reducing' in nature, meaning it lacked free oxygen. Instead, it was rich in gases like methane, ammonia, water vapor, and hydrogen. There was also intense heat from volcanic activity and massive amounts of energy from lightning and ultraviolet radiation. Oparin and Haldane proposed that these primitive gases, under the influence of high energy, reacted to form simple organic molecules like amino acids, sugars, and nitrogenous bases. These small molecules then accumulated in the primitive oceans, creating what scientists call a 'hot dilute soup' or a 'prebiotic soup.' Over millions of years, these simple molecules became more complex, forming polymers like proteins and nucleic acids. Eventually, these molecules organized themselves into the first primitive, self-replicating cells. This transition from simple chemistry to complex biology is the essence of the Oparin-Haldane hypothesis. It provides a logical, step-by-step pathway for life to emerge from inorganic matter. As we move forward in the next part of this series, we will see how this theoretical 'soup' was actually tested in a laboratory setting through one of the most famous experiments in science. Stay tuned.","Welcome back. In our previous session, we discussed the Oparin-Haldane hypothesis, which suggested that life arose from non-living organic molecules through a process of chemical evolution. But how do we move from a theoretical hypothesis to scientific proof? This is where one of the most iconic experiments in the history of biology comes into play: the Miller-Urey experiment. In 1953, Stanley Miller and Harold Urey decided to recreate the conditions of the primitive Earth in a laboratory setting to see if organic molecules could actually form from inorganic precursors. Imagine a laboratory setup designed to mimic the early atmosphere and the oceans. First, they used a large flask filled with water to represent the primitive oceans. They heated this water to produce water vapor, simulating the early hydrological cycle. This vapor was then channeled into a second flask containing a mixture of gases. Now, pay close attention to the composition of these gases, because it is different from our modern atmosphere. They used methane, ammonia, and hydrogen, along with water vapor. They specifically excluded oxygen, because the early Earth's atmosphere was a reducing atmosphere, meaning it lacked free oxygen. To simulate the intense energy from lightning strikes that occurred in the primitive atmosphere, they introduced high-voltage electric sparks into the gas mixture. This setup was continuous; the gases circulated, the water evaporated, and the gases were sparked, creating a closed, dynamic system. After running this experiment for a week, something extraordinary happened. When they analyzed the liquid that had condensed in the flask, they found complex organic compounds. Specifically, they discovered amino acids, which are the fundamental building blocks of proteins. This was a monumental breakthrough. It proved that the 'Prebiotic Soup'—a term used to describe the rich, organic-laden oceans of early Earth—was not just a theoretical idea, but a scientifically plausible reality. The experiment demonstrated that simple inorganic molecules could, under the right energetic conditions, undergo chemical evolution to form the precursors of life. While modern scientists have refined our understanding of the exact atmospheric composition, the Miller-Urey experiment remains the gold standard for proving that life's chemical foundations could emerge spontaneously from the chemistry of the Earth. It bridged the gap between geochemistry and biochemistry, showing us that the transition from non-living matter to the building blocks of life was a matter of chemistry and energy.","Welcome back. In our previous session, we explored the chemical origins of life. Now, we move into the heart of evolutionary biology: how do species actually change over time? To understand this, we must look at the two most influential historical frameworks: Lamarckism and Darwinism. Let us start with Jean-Baptiste Lamarck. In the early nineteenth century, Lamarck proposed the first cohesive theory of evolution. His central idea was the 'Theory of Inheritance of Acquired Characters.' Lamarck believed that an organism could change its body parts during its lifetime based on its environment and the needs of the organism. He suggested that if an organ is used frequently, it becomes more developed, while disuse leads to the degeneration of that organ. The classic example used to explain this is the giraffe. Lamarck argued that ancestral giraffes had short necks. To reach the higher leaves of trees, they constantly stretched their necks. This continuous stretching resulted in a slightly longer neck, and this 'acquired' trait was then passed down to their offspring. Over many generations, this process supposedly led to the long-necked giraffes we see today. While revolutionary for its time, we now know Lamarckism is fundamentally flawed because changes in somatic cells—the body cells—cannot alter the genetic information in germ cells, which are passed to the next generation. Now, let us move to the giant of evolutionary science: Charles Darwin. Darwin’s theory, often called Darwinism, shifted the focus from individual effort to population dynamics. Darwin’s ideas were rooted in his observations during the voyage of the HMS Beagle. He proposed that evolution is driven by 'Natural Selection.' Darwinism is built on several key observations. First, there is 'Overproduction.' Every species has a biological tendency to produce more offspring than the environment can support. Second, there is 'Struggle for Existence.' Because resources like food, space, and mates are limited, individuals must compete. This competition can be intra-specific, meaning between members of the same species, or inter-specific, between different species. Third, Darwin noted 'Variations.' No two individuals in a population are exactly alike. Some variations are favorable, and some are not. This leads to the core mechanism: 'Survival of the Fittest.' In Darwinian terms, 'fitness' does not necessarily mean physical strength; it refers to the ability of an organism to survive and, more importantly, to reproduce in a specific environment. The individuals possessing favorable variations are more likely to survive the struggle for existence. Because they survive, they reproduce and pass these advantageous traits to the next generation. Over vast periods of time, these favorable traits accumulate, leading to the emergence of new species. To summarize the difference: Lamarckism focuses on the 'use and disuse' of organs and the inheritance of acquired traits, whereas Darwinism focuses on 'natural variation' and the 'selection' of those variations by the environment. While Lamarck looked at how an individual adapts, Darwin looked at how a population changes. As we move forward, we will see how modern genetics has refined Darwin's original ideas to give us the complete picture of evolution.","Welcome back. In our previous session, we explored Darwin’s theory of Natural Selection, which suggested that evolution occurs through the gradual accumulation of small, favorable variations. But this raised a critical question: where do these variations actually come from? How does a new trait suddenly appear in a population? To answer this, we must move beyond Darwin and look at the revolutionary ideas proposed by Hugo de Vries. In the early 1900s, Hugo de Vries, working with the evening primrose, proposed what we now call the Mutation Theory. This theory fundamentally challenged Darwinism. While Darwin believed in 'gradualism'—the idea that evolution is a slow, continuous process of tiny changes—de Vries argued that evolution is driven by sudden, large, and discontinuous changes. He called these sudden changes 'mutations.' Now, it is important to distinguish between the modern definition of mutation and de Vries's original concept. Today, we know that mutations are small changes in the DNA sequence that can be either beneficial, neutral, or harmful. However, de Vries used the term 'mutation' to describe much more drastic shifts. He believed that evolution does not happen in a slow, creeping manner, but through sudden leaps. This concept is known as 'Saltation.' Think of it this way: if Darwinian evolution is like walking up a gentle ramp, Saltation is like jumping up several stairs at once. De Vries suggested that these large-scale mutations could create entirely new species in a single step. This is why his theory is often referred to as 'Saltationism.' He argued that these sudden jumps are the primary drivers of speciation, rather than the slow accumulation of minute variations. While modern genetics has refined this—showing us that most mutations are actually small and that large-scale chromosomal changes are rare—de Vries's contribution was monumental. He shifted the focus from the phenotype, or the outward appearance, to the underlying genetic changes. He provided a mechanism for how new characters could be introduced into a population abruptly. So, to summarize the core conflict: Darwinism focuses on gradual, continuous variation, whereas de Vries's Mutation Theory focuses on sudden, discontinuous saltation. Understanding this distinction is crucial for grasping how genetic diversity is injected into the evolutionary timeline. In our next lesson, we will move into the mathematical side of evolution by exploring the Hardy-Weinberg Principle.","Welcome back. In our previous session, we explored the mechanisms of evolution like mutation and saltation. Now, we move from the 'how' of change to the 'mathematics' of stability. How do we actually measure if a population is evolving or staying the same? To answer this, we turn to the Hardy-Weinberg Principle. This principle provides a mathematical model to describe a population that is not evolving. Imagine a large, ideal population where the frequency of alleles and genotypes remains constant from one generation to the next. This state of constancy is what we call Genetic Equilibrium. Now, let us derive this mathematically. Let us consider a single gene locus with two alleles. We will call the dominant allele 'A' and the recessive allele 'a'. In a population, let the frequency of the dominant allele 'A' be represented by the letter 'p', and the frequency of the recessive allele 'a' be represented by the letter 'q'. Since these are the only two alleles present at this locus, their sum must be equal to one. So, our first equation is p plus q equals one. Now, let us look at the genotypes. When these alleles combine during reproduction, three possible genotypes can be formed: homozygous dominant 'AA', heterozygous 'Aa', and homozygous recessive 'aa'. To find the frequency of these genotypes, we use the expansion of the binomial expression, p plus q squared. When we expand p plus q squared, we get p squared, plus two p q, plus q squared. In this mathematical model, p squared represents the frequency of the homozygous dominant genotype 'AA'. The term two p q represents the frequency of the heterozygous genotype 'Aa'. And finally, q squared represents the frequency of the homozygous recessive genotype 'aa'. Therefore, the complete Hardy-Weinberg equation is p squared plus two p q plus q squared equals one. This equation is a powerful tool. If we know the frequency of even one allele or one genotype, we can calculate the others. For example, if we know the frequency of the recessive phenotype in a population, we can find 'q' by taking the square root of 'q squared', and then find 'p' by subtracting 'q' from one. But there is a catch. This equilibrium is not a natural state in the real world. It is an idealized model. For this mathematical stability to hold true, five specific conditions must be met. First, the population must be very large to minimize the impact of chance events. Second, there must be no gene flow, meaning no migration of individuals in or out. Third, there must be no mutations occurring in the gene pool. Fourth, mating must be completely random, with no sexual selection. And fifth, there must be no natural selection acting on the traits. If any of these conditions are violated, the allele frequencies will change, the equilibrium will be disturbed, and evolution will occur. In essence, the Hardy-Weinberg principle acts as a null hypothesis. It tells us what a population looks like when it is NOT evolving, which allows scientists to detect and measure the actual evolutionary forces at work.","Welcome back. In our previous session, we established the mathematical foundation of the Hardy-Weinberg principle, where allele frequencies remain constant in the absence of evolutionary forces. But in the real world, populations are never truly static. Evolution is happening all around us because the equilibrium is constantly being disrupted. Today, we will explore the three primary microevolutionary forces that break this equilibrium: Genetic Drift, Gene Flow, and Natural Selection. Let us start with Genetic Drift. Imagine a small population of beetles living on an island. By pure chance, a heavy storm occurs, and most of the green beetles are washed away, leaving only a few brown beetles behind. This change in allele frequency is not because brown beetles were 'better' or 'stronger,' but simply due to a random event. This is Genetic Drift. It is a change in the frequency of an existing gene variant in a population due to random sampling of organisms. Genetic drift is most impactful in small populations. When a small group of individuals breaks away from a larger population to establish a new colony in an isolated area, we call this the Founder Effect. The new population's gene pool is limited to the alleles carried by these few founders, which may not represent the original population at all. Similarly, if a population undergoes a sudden, drastic reduction in size due to a natural disaster, it is known as a Bottleneck Effect. Even if the population recovers in number, the genetic diversity remains significantly reduced. Now, let us move to our second factor: Gene Flow. While Genetic Drift is about random chance, Gene Flow is about movement. Gene flow, also known as migration, occurs when individuals move into or out of a population. When a group of individuals from one population migrates to another and begins breeding, they introduce new alleles or change the proportions of existing ones. This movement tends to reduce the genetic differences between different populations, making them more genetically similar over time. If migration stops, the populations may begin to diverge. Finally, we come to the most powerful driver of adaptive evolution: Natural Selection. Unlike Genetic Drift, which is random, Natural Selection is non-random. It is the process where organisms with traits better suited to their environment are more likely to survive and reproduce. This process is based on three conditions: variation in traits, heritability of those traits, and differential reproductive success. There are three main types of selection you must remember for your exams. First is Stabilizing Selection. This occurs when the environment favors the intermediate phenotype. Think of human birth weight. If babies are too small, they face health risks; if they are too large, delivery becomes difficult. Therefore, nature selects for the average, middle-ground weight, reducing variation. Second is Directional Selection. This happens when environmental changes favor one extreme phenotype over the others. A classic example is the peppered moth during the Industrial Revolution. As trees became covered in soot, the dark-colored moths had a survival advantage over the light-colored ones, shifting the entire population's trait toward the dark extreme. Third is Disruptive Selection. This is the rarest type, where the environment favors both extremes of a trait while selecting against the intermediate individuals. Imagine a population of birds where only very large seeds and very small seeds are available. Birds with large beaks can crack large seeds, and birds with small beaks can handle small seeds, but birds with medium beaks struggle with both. This can eventually lead to the formation of two distinct species. Understanding these three forces—the randomness of drift, the movement of gene flow, and the pressure of selection—is key to understanding how life evolves at the molecular and population levels.","Welcome back. In our previous session, we explored the mathematical equilibrium of gene frequencies. Now, we shift our focus from the microscopic world of genes to the macroscopic evidence written in the very fabric of life and the earth itself. How do we actually know that evolution has occurred? We don't just rely on theories; we rely on physical evidence. The first major line of evidence is the fossil record. Fossils are the preserved remains or impressions of organisms that lived in the past. Think of them as biological snapshots frozen in time. These fossils are typically found in sedimentary rocks, layered one upon another. The deeper the layer, the older the fossil, and the more primitive the organism. By studying these layers, paleontologists can reconstruct the history of life, observing a clear progression from simple, unicellular organisms in the oldest strata to complex, multicellular organisms in more recent layers. This chronological sequence is one of the strongest proofs of evolutionary change over millions of years. However, fossils alone don't tell the whole story. To understand how different species are related, we must look at Comparative Anatomy. This field examines the structural similarities and differences between organisms. We categorize these observations into two critical types: Homologous and Analogous organs. Let's start with Homology. Homologous organs are those that share a common fundamental structural plan and origin, even if they perform completely different functions in different species. A classic example you will find in your textbook is the forelimbs of vertebrates. Consider the human arm, the wing of a bird, the flipper of a whale, and the foreleg of a horse. At first glance, they look nothing alike. A whale swims, a bird flies, and a human grasps. Yet, if you look at the internal bone structure, you will find the same pattern: a single proximal bone, followed by two bones, then a cluster of wrist bones, and finally the digits. This similarity in underlying anatomy despite different functions is a hallmark of Divergent Evolution. It tells us that these diverse animals all descended from a common ancestor that possessed this basic limb structure, which was then modified over generations to suit different environmental needs. Now, let's look at the opposite phenomenon: Analogy. Analogous organs are structures that perform similar functions but do not share a common evolutionary origin or structural blueprint. A perfect example is the wing of a butterfly and the wing of a bird. Both are used for flight, but the butterfly's wing is a thin membrane supported by veins, while the bird's wing is a complex structure made of bones and feathers. They look and act similarly because they both faced the same environmental challenge—the need to fly—but they evolved these traits independently. This process is known as Convergent Evolution. In convergent evolution, unrelated species evolve similar traits because they live in similar environments or face similar selective pressures. To summarize, homology points to shared ancestry through divergent evolution, while analogy points to shared environmental pressures through convergent evolution. Understanding these two concepts is the key to reading the evolutionary history written in the bodies of living creatures.","Welcome back. In our previous session, we explored how fossils provide a physical timeline of life. Today, we dive deeper into comparative anatomy to understand how organisms are related, not just by what they look like, but by how they are built. To understand evolution, we must distinguish between two critical concepts: Homology and Analogy. Let us start with Homologous Organs. Imagine the forelimbs of a human, a cat, a whale, and a bat. At first glance, they look completely different. A human uses hands for grasping, a cat for walking, a whale for swimming, and a bat for flying. However, if we look beneath the skin at the skeletal structure, a pattern emerges. They all possess the same basic arrangement of bones: the humerus, the radius and ulna, the carpals, metacarpals, and phalanges. This similarity in fundamental structure, despite having different functions, is what we call homology. Why does this happen? It is because these organisms share a common ancestor. They inherited the same basic blueprint, but as they moved into different environments—some to the sea, some to the air, and some to the land—natural selection modified these structures to suit their specific needs. This process of a single ancestral structure evolving into various different forms is known as Divergent Evolution. It is like a single tree trunk branching out into many different limbs. Now, let us look at the opposite phenomenon: Analogous Organs. Consider the wings of a butterfly and the wings of a bird. A butterfly's wing is a thin membrane supported by veins, while a bird's wing is a complex structure made of bones, muscles, and feathers. Structurally, they have absolutely nothing in common. Yet, they serve the exact same purpose: flight. This occurs because both organisms faced similar environmental challenges. They both needed to move through the air to survive, so natural selection favored the development of wings in both lineages. This is called Convergent Evolution. It is the process where unrelated organisms independently evolve similar traits because they live in similar habitats or face similar selective pressures. To summarize the distinction: Homology is about common ancestry and structural similarity with functional difference, leading to Divergent Evolution. Analogy is about different ancestry and structural difference with functional similarity, leading to Convergent Evolution. Understanding this distinction is the key to tracing the evolutionary history of every living thing on Earth.","Welcome back. We have explored how organisms change over time through natural selection and comparative anatomy. Now, we dive into the heart of evolutionary patterns: how one lineage splits into many, and how we map that history. Let us start with a fascinating phenomenon called Adaptive Radiation. Imagine a single ancestral species arriving on a new environment, like a remote archipelago. Initially, there is plenty of food and very little competition. As the population grows, individuals begin to exploit different ecological niches. Some might start eating seeds, others insects, and some might move to the trees. Over many generations, natural selection favors different traits for these different lifestyles. This process, where a single common ancestor evolves into a variety of forms to occupy different ecological niches, is known as Adaptive Radiation. The classic textbook example is Darwin’s Finches in the Galapagos Islands. Darwin observed that these finches, though clearly related, had vastly different beak shapes. Some had thick, heavy beaks for crushing seeds, while others had thin, pointed beaks for catching insects. This wasn't random; it was a direct response to the available food sources on different islands. Another brilliant example is the mammals in Australia. Because Australia was isolated, a single group of ancestral mammals underwent massive adaptive radiation, leading to marsupials that fill roles occupied by placental mammals elsewhere—like the marsupial mole or the Tasmanian wolf. Now, how do scientists organize this complex web of life? We use Phylogenetic Trees, also known as Cladograms. Think of a phylogenetic tree as a visual map of evolutionary history. The 'trunk' represents the common ancestor, and the 'branches' represent the diverging lineages. Where two branches split, we call that a 'node.' A node represents a speciation event—the exact point in time where one ancestral lineage split into two distinct descendant lineages. The closer two species are on the tree, the more recently they shared a common ancestor. For example, humans and chimpanzees share a very recent node compared to humans and birds. We also look at shared derived characters to build these trees. If a group of organisms shares a specific, newly evolved trait—like feathers in birds—we can group them together on a specific branch. This allows us to reconstruct the 'Tree of Life.' By combining the study of adaptive radiation—the 'how' of diversification—with phylogenetic trees—the 'map' of diversification—we gain a complete picture of biological history. We see that evolution is not just a linear progression, but a branching, radiating explosion of life forms, all interconnected by their ancestral roots.","Welcome to our final session on Evolution. We have traveled from the Big Bang to the complexities of Hardy-Weinberg, and now, it is time to sharpen your tools for the board exams. This masterclass is designed to ensure you don't just know the content, but you know how to present it to score maximum marks. Let's start with the high-yield concepts that appear almost every year. First, focus on the distinction between Homologous and Analogous organs. Remember, homology is about common ancestry and divergent evolution, while analogy is about common function and convergent evolution. If a question asks about the pentadactyl limb, always mention it as a classic example of homology. Second, master the Miller-Urey experiment. Do not just memorize the names; you must be able to draw the apparatus. Label the electric discharge, the flask containing methane, ammonia, hydrogen, and water vapor, and the condenser. Mention the specific gases used, as examiners look for those exact terms. Third, the Hardy-Weinberg Principle is a mathematical favorite. You must be able to write the equation: p squared plus two p q plus q squared equals one. Remember that p represents the frequency of the dominant allele and q represents the frequency of the recessive allele. If a question gives you the frequency of a recessive phenotype, you find q by taking the square root, and then you can find p. Fourth, pay close attention to the mechanisms of evolution. Understand the difference between Genetic Drift and Gene Flow. Remember that Genetic Drift is a change in allele frequency due to random chance in small populations, often involving the Founder Effect or Bottleneck Effect. Fifth, study the concept of Adaptive Radiation. Use Darwin's Finches or Australian Marsupials as your primary examples to explain how one ancestor evolves into many species to fill different ecological niches. Now, let's talk about diagram practice. In Biology, a diagram is worth a thousand words. For this chapter, practice the Miller-Urey setup, the phylogenetic trees, and the comparative anatomy diagrams. When drawing, use clear, uncrossed lines for labeling. Always provide a title for your diagram. Finally, let's look at Previous Year Questions, or PYQs. A common pattern in board exams is to ask about the 'Natural Selection' types. You must be able to distinguish between Stabilizing, Directional, and Disruptive selection using a graph of phenotypic distribution. Stabilizing selection favors the average, Directional shifts the mean toward one extreme, and Disruptive favors both extremes, creating two peaks. Another recurring theme is the 'Saltation' theory proposed by Hugo de Vries. Be ready to explain how sudden large mutations differ from Darwinian gradualism. As you revise, don't just read; write. Write the definitions of speciation, write the Hardy-Weinberg equation, and sketch the evolutionary trees. This active recall is what turns a student into an exam topper. You have covered the entire spectrum of evolution, from the chemical soup to the complexity of modern life. Stay confident, stay precise, and keep practicing those diagrams. You are ready."];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-biology-06-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

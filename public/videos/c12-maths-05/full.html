@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Continuity and Differentiability, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-maths-05-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Real-world Applications, Intuition of Continuity, and the Concept of Limits -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Real-world Applications, Intuition of Continuity, and the Concept of Limits</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Real-world examples: Smooth motion and gradual temperature changes</div>
+              <div id="qx0-p1" class="qe-bullet">• Intuition: A continuous function can be drawn without lifting your pen</div>
+              <div id="qx0-p2" class="qe-bullet">• Discontinuity: Occurs when there are holes, jumps, or breaks in a graph</div>
+              <div id="qx0-p3" class="qe-bullet">• The Concept of Limit: Behavior of a function as it approaches a point</div>
+              <div id="qx0-p4" class="qe-bullet">• Limit Notation: The limit of f of x as x approaches a equals L</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":698602770,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animated car driving along a smooth, continuous mountain road that suddenly hits a broken bridge, illustrating the difference between a continuous path and a discontinuity.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D animated car driving along a smooth, continuous mountain road that suddenly hits a broken bridge, illustrating the difference between a continuous path and a discontinuity.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Formal Definition of Continuity: Left-Hand Limit, Right-Hand Limit, and Continuity at a Point -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Formal Definition of Continuity: Left-Hand Limit, Right-Hand Limit, and Continuity at a Point</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Left-Hand Limit: Approach 'a' from values smaller than 'a'</div>
+              <div id="qx1-p1" class="qe-bullet">• Right-Hand Limit: Approach 'a' from values larger than 'a'</div>
+              <div id="qx1-p2" class="qe-bullet">• Condition 1: The function value f(a) must be defined</div>
+              <div id="qx1-p3" class="qe-bullet">• Condition 2: The limit must exist (LHL = RHL)</div>
+              <div id="qx1-p4" class="qe-bullet">• Condition 3: The limit must equal the function value: lim f(x) = f(a)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1621135913,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate plane showing a smooth curve that suddenly jumps to a single floating point, with arrows indicating the approach from both sides.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D coordinate plane showing a smooth curve that suddenly jumps to a single floating point, with arrows indicating the approach from both sides.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Continuity in Intervals and Types of Discontinuity -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Continuity in Intervals and Types of Discontinuity</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Continuity in Open Intervals: Continuous at every point within (a, b)</div>
+              <div id="qx2-p1" class="qe-bullet">• Closed Interval Conditions: Continuous on (a, b) plus left/right limits at endpoints</div>
+              <div id="qx2-p2" class="qe-bullet">• Removable Discontinuity: Limit exists, but does not equal the function value</div>
+              <div id="qx2-p3" class="qe-bullet">• Jump Discontinuity: Left-hand limit and right-hand limit are finite but unequal</div>
+              <div id="qx2-p4" class="qe-bullet">• Infinite Discontinuity: Function approaches infinity at the point of discontinuity</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3411923847,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate plane showing three separate graphs: a line with a hole, a step function, and a curve approaching a vertical asymptote.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D coordinate plane showing three separate graphs: a line with a hole, a step function, and a curve approaching a vertical asymptote.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Algebra of Continuous Functions and Continuity of Composite Functions -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Algebra of Continuous Functions and Continuity of Composite Functions</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Sum and difference of continuous functions are continuous.</div>
+              <div id="qx3-p1" class="qe-bullet">• Product of continuous functions is continuous.</div>
+              <div id="qx3-p2" class="qe-bullet">• Quotient is continuous provided the denominator is non-zero.</div>
+              <div id="qx3-p3" class="qe-bullet">• Composite function f(g(x)) is continuous if f and g satisfy specific conditions.</div>
+              <div id="qx3-p4" class="qe-bullet">• Continuity of f(g(x)) requires g to be continuous at 'c' and f to be continuous at g(c).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1123173193,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing two flowing blue waves (functions) merging into a single continuous golden wave through addition and multiplication operators.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D animation showing two flowing blue waves (functions) merging into a single continuous golden wave through addition and multiplication operators.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Differentiability: Geometric Interpretation, Tangents, and the Limit Definition -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Differentiability: Geometric Interpretation, Tangents, and the Limit Definition</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Differentiability means the graph is smooth and has no sharp corners.</div>
+              <div id="qx4-p1" class="qe-bullet">• Geometric meaning: The derivative is the slope of the tangent line.</div>
+              <div id="qx4-p2" class="qe-bullet">• Limit Definition: f prime of x equals the limit as h approaches zero of [f(x+h)-f(x)] / h.</div>
+              <div id="qx4-p3" class="qe-bullet">• A function is differentiable only if Left-Hand Derivative equals Right-Hand Derivative.</div>
+              <div id="qx4-p4" class="qe-bullet">• Continuity is a necessary but not sufficient condition for differentiability.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1834524540,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing a smooth curve transitioning into a sharp 'V' shape, with a tangent line appearing on the smooth part and failing to stabilize at the sharp corner.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D coordinate system showing a smooth curve transitioning into a sharp 'V' shape, with a tangent line appearing on the smooth part and failing to stabilize at the sharp corner.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Relationship between Continuity and Differentiability: The 'Differentiable implies Continuous' Theorem -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Relationship between Continuity and Differentiability: The 'Differentiable implies Continuous' Theorem</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Theorem: Differentiability at a point implies continuity at that point.</div>
+              <div id="qx5-p1" class="qe-bullet">• Mathematical Goal: Prove that the limit of f(x) as x approaches c equals f(c).</div>
+              <div id="qx5-p2" class="qe-bullet">• The Proof: Use the identity f(x) - f(c) = [(f(x) - f(c))/(x - c)] * (x - c).</div>
+              <div id="qx5-p3" class="qe-bullet">• Crucial Result: The limit of the difference quotient multiplied by zero equals zero.</div>
+              <div id="qx5-p4" class="qe-bullet">• The Converse: Continuity does NOT guarantee differentiability (e.g., sharp corners).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2383334866,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing a smooth curve transitioning into a sharp 'V' shape at the origin to demonstrate the difference between continuity and differentiability.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D coordinate system showing a smooth curve transitioning into a sharp 'V' shape at the origin to demonstrate the difference between continuity and differentiability.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Rules of Differentiation: Power Rule, Product Rule, Quotient Rule, and Constant Multiple Rule -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Rules of Differentiation: Power Rule, Product Rule, Quotient Rule, and Constant Multiple Rule</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Constant Multiple Rule: d/dx [c * f(x)] = c * f'(x)</div>
+              <div id="qx6-p1" class="qe-bullet">• Power Rule: d/dx [x^n] = n * x^(n-1)</div>
+              <div id="qx6-p2" class="qe-bullet">• Product Rule: d/dx [u * v] = u * dv/dx + v * du/dx</div>
+              <div id="qx6-p3" class="qe-bullet">• Quotient Rule: d/dx [u/v] = (v * du/dx - u * dv/dx) / v^2</div>
+              <div id="qx6-p4" class="qe-bullet">• Always apply the rules step-by-step to avoid algebraic errors</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1640377040,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D chalkboard where mathematical formulas glow and transform from limit definitions into simplified rules as the teacher speaks.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D chalkboard where mathematical formulas glow and transform from limit definitions into simplified rules as the teacher speaks.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): The Chain Rule: Differentiating Composite Functions and Step-by-Step Derivations -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">The Chain Rule: Differentiating Composite Functions and Step-by-Step Derivations</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Definition of Composite Functions: f of g of x</div>
+              <div id="qx7-p1" class="qe-bullet">• The Chain Rule Formula: dy/dx = dy/du * du/dx</div>
+              <div id="qx7-p2" class="qe-bullet">• Step 1: Differentiate the outer function</div>
+              <div id="qx7-p3" class="qe-bullet">• Step 2: Multiply by the derivative of the inner function</div>
+              <div id="qx7-p4" class="qe-bullet">• The 'Peeling the Onion' method for multiple layers</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1166376165,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a large translucent sphere (outer function) containing a smaller glowing sphere (inner function), which then splits into two separate mathematical components during differentiation.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D animation showing a large translucent sphere (outer function) containing a smaller glowing sphere (inner function), which then splits into two separate mathematical components during differentiation.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Implicit Differentiation and Logarithmic Differentiation: Techniques and Complex Forms -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Implicit Differentiation and Logarithmic Differentiation: Techniques and Complex Forms</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Implicit Functions: When y is not isolated on one side of the equation.</div>
+              <div id="qx8-p1" class="qe-bullet">• Implicit Differentiation: Differentiate both sides and solve for dy/dx.</div>
+              <div id="qx8-p2" class="qe-bullet">• Logarithmic Differentiation: Use logs to handle variable-to-variable powers.</div>
+              <div id="qx8-p3" class="qe-bullet">• Log Power Rule: log of a raised to b equals b times log of a.</div>
+              <div id="qx8-p4" class="qe-bullet">• Strategy: Simplify using log laws before applying Product and Chain rules.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3942288985,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D mathematical coordinate system showing a circle transforming into a complex algebraic equation, with terms glowing as they are differentiated.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D mathematical coordinate system showing a circle transforming into a complex algebraic equation, with terms glowing as they are differentiated.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Parametric Forms and Second-Order Derivatives: Higher-Order Calculus -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Parametric Forms and Second-Order Derivatives: Higher-Order Calculus</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Parametric form: x and y are expressed as functions of a parameter t</div>
+              <div id="qx9-p1" class="qe-bullet">• Formula for parametric differentiation: dy/dx = (dy/dt) / (dx/dt)</div>
+              <div id="qx9-p2" class="qe-bullet">• Second-order derivative represents the rate of change of the slope</div>
+              <div id="qx9-p3" class="qe-bullet">• Second derivative in parametric form: d2y/dx2 = [d/dt(dy/dx)] / (dx/dt)</div>
+              <div id="qx9-p4" class="qe-bullet">• Physical significance: First derivative is velocity, second is acceleration</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1699174639,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D particle moving along a spiral path on a coordinate plane, with its velocity and acceleration vectors dynamically updating as the parameter t increases.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D particle moving along a spiral path on a coordinate plane, with its velocity and acceleration vectors dynamically updating as the parameter t increases.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Mean Value Theorems: Rolle’s Theorem and Lagrange’s Mean Value Theorem (LMVT) -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Mean Value Theorems: Rolle’s Theorem and Lagrange’s Mean Value Theorem (LMVT)</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Rolle's Theorem: Requires continuity, differentiability, and f(a) = f(b)</div>
+              <div id="qx10-p1" class="qe-bullet">• Rolle's Result: There exists c in (a, b) such that f'(c) = 0</div>
+              <div id="qx10-p2" class="qe-bullet">• LMVT: Requires continuity on [a, b] and differentiability on (a, b)</div>
+              <div id="qx10-p3" class="qe-bullet">• LMVT Formula: f'(c) = [f(b) - f(a)] / (b - a)</div>
+              <div id="qx10-p4" class="qe-bullet">• Geometric Meaning: Tangent is parallel to the secant line connecting endpoints</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2255714097,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing a smooth curve where a horizontal tangent line slides to find the peak, followed by a secant line tilting to show the parallel tangent in LMVT.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D coordinate system showing a smooth curve where a horizontal tangent line slides to find the peak, followed by a secant line tilting to show the parallel tangent in LMVT.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Common Mistakes, NCERT Exemplar Problems, and Final Revision Strategy -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Common Mistakes, NCERT Exemplar Problems, and Final Revision Strategy</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Common Error: Forgetting to check if Left-Hand Limit equals Right-Hand Limit</div>
+              <div id="qx11-p1" class="qe-bullet">• Common Error: Assuming continuity automatically implies differentiability</div>
+              <div id="qx11-p2" class="qe-bullet">• Chain Rule Tip: Always remember to differentiate the inner function</div>
+              <div id="qx11-p3" class="qe-bullet">• Exemplar Focus: Finding unknown constants using continuity conditions</div>
+              <div id="qx11-p4" class="qe-bullet">• Revision Strategy: Solve Exemplar problems and maintain a formula cheat sheet</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3506070621,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D workspace showing a student's notebook on one side and a glowing, digital checklist of common errors on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D workspace showing a student's notebook on one side and a glowing, digital checklist of common errors on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Continuity and Differentiability today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Real-world Applications, Intuition of Continuity, and the Concept of Limits <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Formal Definition of Continuity: Left-Hand Limit, Right-Hand Limit, and Continuity at a Point <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Continuity in Intervals and Types of Discontinuity <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Algebra of Continuous Functions and Continuity of Composite Functions <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Differentiability: Geometric Interpretation, Tangents, and the Limit Definition <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Relationship between Continuity and Differentiability: The 'Differentiable implies Continuous' Theorem <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Rules of Differentiation: Power Rule, Product Rule, Quotient Rule, and Constant Multiple Rule <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. The Chain Rule: Differentiating Composite Functions and Step-by-Step Derivations <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Implicit Differentiation and Logarithmic Differentiation: Techniques and Complex Forms <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Parametric Forms and Second-Order Derivatives: Higher-Order Calculus <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Mean Value Theorems: Rolle’s Theorem and Lagrange’s Mean Value Theorem (LMVT) <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Common Mistakes, NCERT Exemplar Problems, and Final Revision Strategy <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey into one of the most beautiful and fundamental chapters of Calculus: Continuity and Differentiability. Before we dive into the complex formulas, let us ask ourselves: why does this matter? Imagine you are driving a car. Your position changes smoothly over time. You don't suddenly teleport from one kilometer marker to another without passing through the space in between. This smoothness is what we call continuity in the real world. Think about the temperature throughout a day; it doesn't jump from twenty degrees to thirty degrees in a single microsecond. It rises and falls gradually. In physics, the motion of a planet or the flow of electricity follows these continuous patterns. Now, let us build our mathematical intuition. Imagine you are walking along a path on a graph. If you can draw the entire path without ever lifting your pen from the paper, that function is continuous. It is unbroken, smooth, and connected. However, if there is a hole, a sudden jump, or a break where the path disappears, the function is discontinuous. But to understand these breaks, we first need to master a concept called a Limit. A limit is not about what happens exactly at a specific point, but what happens as we get closer and closer to that point. Imagine you are approaching a doorway. You might not step inside the room, but you can get infinitely close to the threshold. In mathematics, we say the limit of a function f of x, as x approaches a value 'a', is 'L'. This means as the value of x gets closer to 'a' from both the left side and the right side, the value of the function gets closer to 'L'. We write this as: the limit of f of x, as x approaches a, equals L. This is a crucial distinction. A function might not even be defined at point 'a'—there might be a literal hole in the graph—but the limit can still exist because the limit only cares about the behavior of the function in the immediate neighborhood of 'a'. Think of it like a bridge that has a missing plank in the middle. Even if you cannot step on that specific spot, you can clearly see where the path is leading you from both sides. If the path from the left leads to the same spot as the path from the right, the limit exists. This concept of 'approaching' is the foundation upon which all of calculus is built. Without limits, we cannot define continuity, and without continuity, we cannot truly understand the rate of change or differentiability, which we will explore later in this chapter. So, as we move forward, always keep this idea in mind: we are not just looking at points; we are looking at the trend, the direction, and the behavior of functions as they approach their limits. Let us prepare to formalize this intuition into rigorous mathematical definitions.","Welcome back, everyone. In our previous session, we explored the intuitive idea of continuity—the idea that a function's graph can be drawn without lifting your pen from the paper. But in mathematics, intuition isn't enough. To prove a function is continuous at a specific point, we need a rigorous, formal definition. This brings us to the heart of calculus: Limits. To understand if a function is continuous at a point, let's call it 'a', we must examine what happens to the function as we approach that point from two different directions. First, we have the Left-Hand Limit. This is the value the function approaches as the input 'x' gets closer and closer to 'a' from the left side, meaning values slightly smaller than 'a'. We denote this as the limit of f of x, as x approaches a from the negative side. Second, we have the Right-Hand Limit. This is the value the function approaches as 'x' gets closer to 'a' from the right side, meaning values slightly larger than 'a'. We denote this as the limit of f of x, as x approaches a from the positive side. Now, here is the golden rule. For a limit to exist at point 'a', the Left-Hand Limit must be equal to the Right-Hand Limit. If they are different, the limit does not exist. However, having a limit is not enough to guarantee continuity. For a function to be formally continuous at a point 'a', three specific conditions must be met. Condition number one: The function f of x must be defined at x equals a. In other words, f of a must exist and be a real number. If there is a hole or an undefined value at 'a', the function is immediately discontinuous. Condition number two: The limit of f of x as x approaches 'a' must exist. As we just discussed, this means the Left-Hand Limit must equal the Right-Hand Limit. Condition number three: The value of the limit must be exactly equal to the value of the function at that point. Mathematically, we write this as: the limit of f of x as x approaches 'a' equals f of a. Let's look at a practical example to solidify this. Suppose we have a piecewise function. For all x less than two, f of x equals x plus one. For x equal to two, f of x equals five. And for all x greater than two, f of x equals x squared minus one. Is this function continuous at x equals two? Let's check. First, find the Left-Hand Limit. As x approaches two from the left, we use the expression x plus one. So, two plus one equals three. Next, find the Right-Hand Limit. As x approaches two from the right, we use the expression x squared minus one. So, two squared minus one is four minus one, which equals three. Since the Left-Hand Limit and Right-Hand Limit both equal three, the limit exists and is equal to three. Now, let's check the third condition. What is the actual value of the function at x equals two? According to our definition, f of two is five. Now, compare the limit to the function value. Our limit is three, but our function value is five. Since three does not equal five, the third condition fails. Therefore, even though the limit exists, the function is discontinuous at x equals two. It has a single point displaced from the path. Remember, continuity is a bridge where the approach from the left, the approach from the right, and the actual value at the point all meet at the exact same height. If any of these three pillars fail, the continuity breaks. Master this definition, because it is the foundation for everything we will do with derivatives later in this chapter.","Welcome back. In our previous lesson, we mastered the formal definition of continuity at a single point. But in calculus, we rarely study functions just at one isolated spot. We usually care about how a function behaves over a range of values, which we call an interval. Today, we will explore continuity in open and closed intervals, and more importantly, we will learn how to classify the different ways a function can 'break' or become discontinuous. Let us start with intervals. A function is said to be continuous in an open interval, say from a to b, if it is continuous at every single point within that interval. Think of it as a smooth path where you can draw the graph without lifting your pen, as long as you stay strictly between a and b. Now, what happens at the boundaries? This brings us to the closed interval, from a to b. For a function to be continuous on a closed interval, three conditions must be met. First, it must be continuous at every point in the open interval between a and b. Second, it must be continuous from the right at the starting point, a. This means the limit as x approaches a from the right must equal the function value at a. Third, it must be continuous from the left at the ending point, b. This means the limit as x approaches b from the left must equal the function value at b. If these conditions are met, the function is continuous on the closed interval. But what if the function fails to be continuous? These breaks are called discontinuities, and they come in three distinct flavors. The first type is Removable Discontinuity. Imagine a smooth line with just one tiny single point missing, or perhaps that point has been moved somewhere else. Mathematically, this happens when the limit of the function exists as x approaches a, but that limit is not equal to the actual value of the function at a, or the function is simply undefined there. We call it 'removable' because we could 'fix' the continuity just by redefining that one single point. The second type is Jump Discontinuity. This is very common in piecewise functions. Here, the limit from the left and the limit from the right both exist as finite numbers, but they are not equal to each other. Imagine you are walking along a path and suddenly you encounter a vertical step or a cliff; you have to jump up or down to continue. Because the left-hand limit and right-hand limit do not meet, the function has a 'jump.' The third and most dramatic type is Infinite Discontinuity. This occurs when the function approaches infinity or negative infinity as x approaches a certain value. You will see this clearly when you have a vertical asymptote, like in the function one divided by x as x approaches zero. The function shoots off toward the top or bottom of the graph, and there is no way to bridge that gap. Understanding these three types—removable, jump, and infinite—is crucial for solving complex problems in your NCERT exercises. Let's keep this momentum going as we move toward the algebra of continuous functions in our next video.","Welcome back, students. In our previous sessions, we explored how to check the continuity of a function at a specific point and within an interval. But what happens when we combine two or more continuous functions? Does the resulting function remain continuous? This is the core of today's lesson: the Algebra of Continuous Functions. Let's start with the fundamental rules. Suppose we have two functions, f of x and g of x, and both are continuous at a given point, let's call it 'a'. If they are continuous, then their sum, f of x plus g of x, will also be continuous at 'a'. Similarly, their difference, f of x minus g of x, is guaranteed to be continuous at 'a'. Now, what about multiplication? If you multiply two continuous functions, the product f of x times g of x is also continuous at that point. And if you divide them, the quotient f of x divided by g of x is continuous at 'a', provided that the denominator, g of a, is not equal to zero. This is a crucial condition! If g of a is zero, we might encounter a discontinuity, like a vertical asymptote. To summarize this algebra: addition, subtraction, multiplication, and division—under the non-zero denominator rule—all preserve continuity. Now, let's move to a more advanced and highly important concept: the continuity of composite functions. A composite function is what we get when we plug one function into another, written as f of g of x. Think of it like a machine within a machine. To determine if this composite function is continuous, we follow a specific logic. If the inner function, g of x, is continuous at a point 'c', and the outer function, f of x, is continuous at the value produced by the inner function, which is g of c, then the entire composite function f of g of x is continuous at 'c'. In mathematical terms, if g is continuous at 'c' and f is continuous at g of c, then the composition f circle g is continuous at 'c'. Let's look at a quick mental example. Suppose g of x is x squared, which is a continuous polynomial, and f of x is the sine function, which is also continuous everywhere. Since the output of x squared is always a real number, and sine is continuous for all real numbers, the composite function, sine of x squared, is continuous for all x. This principle is the backbone of the Chain Rule, which we will cover later in this chapter. Understanding these algebraic properties allows you to analyze complex, multi-layered functions without having to check the limits from the left and right every single time. Instead, you can break them down into simpler parts, verify their continuity, and conclude the continuity of the whole. Remember, continuity is a property that behaves predictably under these operations. Keep these rules in mind as we prepare to transition from the concept of continuity to the much more powerful concept of differentiability in our next video.","Welcome back. In our previous sessions, we explored how a function must be continuous to ensure there are no breaks or jumps in its graph. But being continuous is just the first step. Today, we dive into a deeper concept: Differentiability. Think of it this way: continuity tells us the path is unbroken, but differentiability tells us if the path is smooth. Imagine you are driving a car on a road. A continuous road might have a sharp, sudden turn—like a jagged corner. While you can drive on it without falling into a hole, the sudden change in direction makes it non-smooth. In mathematics, a function is differentiable at a point if its graph is smooth and has a well-defined tangent at that point. Let us look at the geometric interpretation. If we zoom in infinitely close to a point on a smooth curve, the curve begins to look like a straight line. This straight line is our tangent. The slope of this tangent represents the instantaneous rate of change of the function. Now, how do we define this slope mathematically? We use the Limit Definition of a derivative. Consider a function f of x. Let us pick a point x and a point very close to it, which we call x plus h, where h is a very small change. The vertical change between these two points is f of x plus h minus f of x. The horizontal change is simply h. The ratio of these changes, which is f of x plus h minus f of x, all divided by h, gives us the slope of the secant line passing through these two points. To find the exact slope at the single point x, we must make the distance h shrink towards zero. This gives us the formal definition: the derivative of f at x is the limit as h approaches zero of the quantity f of x plus h minus f of x, all divided by h. For this limit to exist, we have a very important condition. The limit must be the same whether we approach zero from the right side or from the left side. We call these the Right-Hand Derivative and the Left-Hand Derivative. The Right-Hand Derivative is the limit as h approaches zero from the positive side, which is f of x plus h minus f of x, all divided by h. The Left-Hand Derivative is the limit as h approaches zero from the negative side, which is f of x minus h minus f of x, all divided by minus h. If the Right-Hand Derivative equals the Left-Hand Derivative, and both are finite, then the function is said to be differentiable at x. If they are not equal, the function is non-differentiable at that point. A classic example of this is the absolute value function, f of x equals absolute value of x, at the point zero. If you graph it, you will see a sharp 'V' shape at the origin. At this sharp corner, the slope coming from the left is negative one, but the slope coming from the right is positive one. Because negative one does not equal positive one, the function is not differentiable at zero, even though it is perfectly continuous. Remember, a function can be continuous but not differentiable, but it can never be differentiable if it is not continuous. This smoothness is what allows us to calculate exact velocities and rates of change in physics and engineering. Let us keep this definition in mind as we move toward the rules of differentiation in our next lesson.","Welcome back. In our previous session, we explored what it means for a function to be differentiable—that is, the existence of a unique tangent at every point. Now, we arrive at one of the most fundamental logical connections in calculus. We are going to investigate the relationship between continuity and differentiability. You might be wondering: if a function is smooth enough to have a derivative, does it necessarily have to be continuous? The short answer is a resounding yes. This is captured in the theorem: 'If a function is differentiable at a point, then it must be continuous at that point.' Let us not just take this as a rule, but let us prove it mathematically using the first principles of limits. To prove this, we need to show that if a function f of x is differentiable at x equals c, then the limit of f of x as x approaches c must equal f of c. This is the very definition of continuity. Let us start with what we know. Since the function is differentiable at c, we know that the limit of the difference quotient exists. Specifically, the limit of f of x minus f of c, all divided by x minus c, as x approaches c, is equal to some finite value, which we call f prime of c. Now, our goal is to prove that the limit of f of x minus f of c is zero. Why zero? Because if the difference between the function value and the value at c vanishes as x approaches c, then the limit of f of x will be exactly f of c. Let us look at the expression f of x minus f of c. We can rewrite this expression using a clever algebraic trick. We multiply and divide it by the term x minus c. So, f of x minus f of c equals the quantity f of x minus f of c divided by x minus c, multiplied by the quantity x minus c. Now, let us apply the limit as x approaches c to both sides of this equation. Using the product rule for limits, we can say the limit of the product is the product of the limits. The first part of our product is the limit of f of x minus f of c divided by x minus c, which, by our initial assumption of differentiability, is simply f prime of c. The second part of our product is the limit of x minus c as x approaches c. As x gets closer and closer to c, the value of x minus c clearly approaches zero. So, we are left with the product of f prime of c and zero. Any finite number multiplied by zero is zero. Therefore, the limit of f of x minus f of c as x approaches c is zero. This implies that the limit of f of x is equal to f of c. And there it is! We have just mathematically demonstrated that differentiability at a point guarantees continuity at that point. However, there is a very important logical nuance here that students often miss in exams. While differentiability implies continuity, the converse is NOT necessarily true. Just because a function is continuous does not mean it is differentiable. Think about the absolute value function, f of x equals absolute value of x, at the point x equals zero. If you graph it, you see a continuous V-shape. You can draw it without lifting your pen, so it is continuous. But at the origin, there is a sharp corner or a cusp. At this corner, you cannot define a single unique tangent; the slope from the left is negative one, and the slope from the right is positive one. Because the limit of the difference quotient does not exist, the function is not differentiable at zero, even though it is perfectly continuous. So, remember this hierarchy: Differentiability is a stronger condition. Every differentiable function is continuous, but not every continuous function is differentiable. In your exam, if a question asks you to prove a function is continuous given it is differentiable, you can state this theorem directly. But if you are asked if a continuous function is differentiable, you must check for sharp corners or vertical tangents. This distinction is the key to mastering calculus.","Welcome back. In our previous session, we explored the deep connection between continuity and differentiability, learning that while every differentiable function is continuous, the reverse is not always true. Now, it is time to move from the theoretical definition of a derivative to the practical tools you will use every single day in calculus. Instead of calculating limits every time we want to find a derivative, we use specific rules. Let us start with the simplest and most fundamental one: the Constant Multiple Rule. Suppose you have a function that is just a constant, say number five. The derivative of a constant is always zero, because a constant value never changes. Now, what if that constant is multiplied by a function? The Constant Multiple Rule states that the derivative of a constant times a function is simply the constant times the derivative of that function. So, if you have five times x squared, you just take the derivative of x squared and then multiply it by five. Next, let us look at the Power Rule, which is the bread and butter of calculus. If you have a function in the form of x raised to the power of n, where n is any real number, the derivative is found by bringing that exponent down to the front as a multiplier and then decreasing the original exponent by exactly one. For example, if we have x raised to the power of four, the derivative is four times x raised to the power of three. This works for fractions and negative numbers too. If you have x raised to the power of negative two, the derivative becomes negative two times x raised to the power of negative three. Now, what happens when two functions are multiplied together? You might be tempted to just multiply their derivatives, but that is a common mistake. Instead, we use the Product Rule. The Product Rule tells us that the derivative of u times v is equal to u times the derivative of v, plus v times the derivative of u. In words, it is the first function times the derivative of the second, plus the second function times the derivative of the first. Let us try a quick mental example: if you are differentiating x squared times sine of x, you take x squared and multiply it by the derivative of sine of x, then add sine of x multiplied by the derivative of x squared. Finally, we have the Quotient Rule, which is used when one function is divided by another. This rule is a bit more complex and requires careful attention to signs. The derivative of u divided by v is equal to v times the derivative of u, minus u times the derivative of v, all divided by the square of v. A helpful way to remember this is: the bottom times the derivative of the top, minus the top times the derivative of the bottom, all over the bottom squared. Always be careful with that minus sign in the numerator; it is where most students make errors. Mastering these four rules—the Constant Multiple Rule, the Power Rule, the Product Rule, and the Quotient Rule—will give you the speed and accuracy needed for the more advanced topics like the Chain Rule that we will cover in the next video. Let us practice these with some examples from your NCERT textbook.","Welcome back. In our previous lesson, we mastered the Product and Quotient rules. But what happens when functions are nested inside one another? Imagine a function within a function, like a Russian Matryoshka doll. In mathematics, we call this a composite function. Today, we unlock the most powerful tool in calculus: The Chain Rule. Let us start with the intuition. Suppose we have a function y which depends on u, and u itself depends on x. If u changes with respect to x, and y changes with respect to u, then y must also change with respect to x. This change is the product of the two rates. Formally, if y equals f of g of x, then the derivative of y with respect to x is equal to the derivative of the outer function f with respect to its inner argument g of x, multiplied by the derivative of the inner function g with respect to x. In mathematical notation, we write this as dy over dx equals dy over du multiplied by du over dx. Let us look at a concrete example. Consider the function y equals sine of x squared. Here, the outer function is the sine function, and the inner function is x squared. To differentiate this, we first differentiate the outer function, which gives us cosine of x squared. Then, we multiply this by the derivative of the inner function, which is the derivative of x squared, which is two x. So, the final answer is two x times cosine of x squared. Notice how we worked from the outside in. Let us try a slightly more complex one involving a power. Suppose we have y equals the quantity of three x plus five raised to the power of four. The outer function is the power of four, and the inner function is three x plus five. First, we bring the power down and decrease it by one, giving us four times the quantity three x plus five raised to the power of three. Next, we multiply by the derivative of the inner part, three x plus five, which is simply three. Multiplying four by three, we get twelve, so the derivative is twelve times the quantity three x plus five raised to the power of three. This step-by-step process is crucial. You must always identify the 'inner' and 'outer' layers clearly. If you have multiple layers, like the sine of the cosine of x, you simply apply the rule repeatedly. You differentiate the outermost layer, then the next layer, and keep going until you reach the innermost variable. This is often called the 'peeling the onion' method. Remember, even though we are discussing complex rates of change, the underlying principle of continuity remains essential; for the chain rule to work smoothly, the inner functions must be differentiable at the corresponding points. As you practice the NCERT exercises, always write down your u and y clearly to avoid losing track of the layers. Master this, and you will be ready for implicit differentiation in our next session.","Welcome back, students. In our previous session, we mastered the Chain Rule, which is the backbone of differentiation. Today, we are moving into more advanced territory: Implicit Differentiation and Logarithmic Differentiation. Up until now, you have mostly dealt with explicit functions, where y is clearly isolated on one side, like y equals x squared plus five. But in the real world, variables are often intertwined in complex equations where y cannot be easily separated. This brings us to Implicit Differentiation. An implicit function is one where the relationship between x and y is expressed through an equation, such as x squared plus y squared equals twenty-five. To differentiate this with respect to x, we treat y as a function of x. This means every time you differentiate a term containing y, you must apply the Chain Rule and multiply by the derivative of y with respect to x, which we write as dy by dx. For example, the derivative of x squared is simply two x, but the derivative of y squared is two y multiplied by dy by dx. By applying this to the entire equation, we can algebraically solve for dy by dx. This technique is essential for finding the slope of curves like circles, ellipses, and hyperbolas. Now, let us level up to Logarithmic Differentiation. Sometimes, you will encounter functions that are incredibly messy, such as a variable raised to the power of another variable, like x raised to the power of sin x. Standard rules like the Power Rule or the Exponential Rule won't work here because both the base and the exponent are changing. To solve this, we use the magic of logarithms. The first step is to take the natural logarithm, or log base e, on both sides of the equation. By using the laws of logarithms, specifically the power rule of logs which states that the log of a term raised to a power is equal to that power multiplied by the log of the term, we can bring the exponent down. This transforms a complex exponential function into a much simpler product of two functions. Once the exponent is brought down, you will see a structure that looks like u multiplied by v. Now, you can simply apply the Product Rule and the Chain Rule to find the derivative. This method is also a lifesaver when you are dealing with functions that are products or quotients of many different terms. Instead of using the Quotient Rule repeatedly, which can lead to massive algebraic errors, you can take the log of both sides first. This turns products into sums and quotients into differences, making the differentiation process much cleaner and less prone to mistakes. Remember the golden rule: always simplify your logarithmic expression fully before you start differentiating. Let's practice these techniques to ensure you can handle even the most intimidating complex forms in your upcoming exams.","Welcome back. In our previous sessions, we mastered how to differentiate functions where y is directly expressed in terms of x. But in the real world, motion is rarely that simple. Imagine a particle moving along a curved path. Its position isn't just a function of time, but its horizontal and vertical coordinates are both changing as time passes. This brings us to our first major topic: Parametric Differentiation. Instead of having y as a function of x, we express both x and y as functions of a third variable, which we call the parameter. Usually, this parameter is denoted by the letter t or theta. For example, let x equals a function of t, and y equals another function of t. To find the derivative of y with respect to x, which is dy over dx, we cannot simply differentiate y and ignore x. We must use the Chain Rule. We calculate the derivative of y with respect to t, dy over dt, and the derivative of x with respect to t, dx over dt. Then, dy over dx is simply dy over dt divided by dx over dt, provided that dx over dt is not equal to zero. Let's look at a quick mental example. If x equals t squared and y equals sin of t, then dx over dt is two t, and dy over dt is cos of t. Therefore, dy over dx is cos of t divided by two t. This technique is incredibly powerful for curves like cycloids or ellipses where the relationship between x and y is messy, but their relationship with time is elegant. Now, let's shift our focus to the next level of calculus: Higher-Order Derivatives. So far, we have been finding the first derivative, which represents the rate of change or the slope of the tangent. But what happens if we differentiate that rate of change again? This is what we call the second-order derivative. If we have a function y, its first derivative is dy over dx. If we differentiate dy over dx with respect to x once more, we get the second derivative, denoted as d squared y over dx squared. This second derivative is crucial because it tells us about the concavity of the curve—whether it is bending upwards like a cup or downwards like a cap. In physics, if y represents position, the first derivative is velocity, and the second derivative is acceleration. Now, a common point of confusion arises when we combine these two concepts. If x and y are given in parametric form, how do we find the second derivative, d squared y over dx squared? It is not as simple as just differentiating dy over dt twice. To find the second derivative, we must differentiate our first derivative, which is dy over dx, with respect to x. Since dy over dx is usually a function of the parameter t, we apply the Chain Rule again. We take the derivative of dy over dx with respect to t, and then divide that entire result by dx over dt. So, the formula is: d squared y over dx squared equals the derivative of dy over dx with respect to t, all divided by dx over dt. Let's visualize this step-by-step. First, find dx over dt and dy over dt. Second, find dy over dx by dividing them. Third, differentiate that result with respect to t. Finally, divide that new result by your original dx over dt. This process ensures we are measuring how the slope itself is changing relative to x. Mastering these two techniques—parametric differentiation and higher-order derivatives—will give you the tools to analyze complex motion and the curvature of any mathematical path. Let's dive into some practice problems to solidify this.","Welcome back. We have mastered the mechanics of differentiation; now, let us explore the profound theoretical conclusions we can draw from it. Today, we discuss the Mean Value Theorems. These theorems act as a bridge between the average rate of change of a function and its instantaneous rate of change. Let us start with Rolle’s Theorem. Imagine a smooth, continuous curve on a graph. For Rolle’s Theorem to apply, three specific conditions must be met. First, the function, let us call it f of x, must be continuous on the closed interval, say, from a to b. Second, the function must be differentiable on the open interval, from a to b. And third, the value of the function at the start point must equal the value at the end point. In other words, f of a equals f of b. If these three conditions are satisfied, Rolle’s Theorem guarantees that there exists at least one point, let us call it c, located strictly between a and b, where the derivative is zero. Mathematically, we write this as f prime of c equals zero. Geometrically, this means that if you start and end at the same height, there must be at least one point on the curve where the tangent line is perfectly horizontal, or parallel to the x-axis. Think of driving a car: if you start your journey at a certain altitude and end at that same altitude, there must have been at least one moment during your trip where you were neither ascending nor descending. Now, let us generalize this. What if the starting and ending heights are different? This brings us to the Lagrange’s Mean Value Theorem, often simply called the Mean Value Theorem or LMVT. The requirements are slightly broader. We still need the function to be continuous on the closed interval, a to b, and differentiable on the open interval, a to b. However, we no longer require f of a to equal f of b. Under these conditions, LMVT states that there exists at least one point c in the open interval, a to b, such that the derivative at that point is equal to the slope of the secant line passing through the endpoints. The formula is f prime of c equals the quantity f of b minus f of a, all divided by the quantity b minus a. This is a powerful statement. It says that at some point, the instantaneous rate of change is exactly equal to the average rate of change over the whole interval. If you drive one hundred kilometers in two hours, your average speed is fifty kilometers per hour. LMVT tells us that at some specific moment during those two hours, your speedometer must have read exactly fifty kilometers per hour. Rolle’s Theorem is actually just a special case of LMVT. When f of a equals f of b, the numerator in the LMVT formula becomes zero, which gives us f prime of c equals zero, leading us right back to Rolle’s. As you solve problems, always check the three conditions first: continuity, differentiability, and the interval boundaries. If even one condition fails, the theorem cannot be applied. Let us move to some practice examples to see these theorems in action.","Welcome to the final segment of our journey through Continuity and Differentiability. You have mastered the rules, the theorems, and the complex derivations. Now, it is time to transition from learning to scoring. In a high-stakes board exam, knowing the concept is only half the battle; the other half is avoiding the traps that even the brightest students fall into. Let us start with the most common mistakes. First, the 'Continuity Trap'. Students often check if the function value exists, but forget to verify if the left-hand limit equals the right-hand limit. Remember, for continuity at a point, the limit must exist and be equal to the function's value. Second, the 'Differentiability Oversight'. Never assume a function is differentiable just because it is continuous. Always check for sharp corners or cusps, like in the modulus function, where the derivative fails at the vertex. Third, in the Chain Rule, many students forget to differentiate the 'inner' function. If you have sine of x squared, you must multiply by the derivative of x squared, which is two x. Do not leave that hanging! Fourth, when performing Logarithmic Differentiation, students often forget to take the natural log of both sides before differentiating. And finally, in Second-Order Derivatives, a common error is failing to apply the product rule when the first derivative itself is a product of two terms. Now, let us look at the NCERT Exemplar problems. These are designed to test your conceptual depth. You will often see problems involving piecewise functions where you must find a constant, like 'k', that makes the function continuous. When solving these, always set the left-hand limit equal to the right-hand limit and solve the resulting algebraic equation. Another favorite Exemplar topic is the application of Rolle’s Theorem and Lagrange’s Mean Value Theorem. When asked to verify these, do not just state they apply. You must explicitly show that the function is continuous on the closed interval, differentiable on the open interval, and that f of a equals f of b for Rolle's. For LMVT, you must find the specific value of 'c' that satisfies the equation: f of b minus f of a equals f prime of c times b minus a. To wrap up this chapter, let us discuss your Final Revision Strategy. Do not just read your notes; solve them. Start with the NCERT textbook exercises to build muscle memory. Then, move to the NCERT Exemplar to challenge your logic. Create a 'Formula Cheat Sheet' specifically for differentiation rules: the product rule, the quotient rule, and the chain rule. Include a small section on the conditions for Mean Value Theorems. Practice sketching graphs for functions like the modulus function or step functions; being able to visualize a 'jump' or a 'hole' will make continuity questions intuitive. Finally, time yourself. Pick five complex differentiation problems and try to solve them within fifteen minutes. This builds the speed and accuracy required for the exam hall. You have worked hard through this chapter. Stay calm, watch your signs, and trust your logic. You are ready."];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-maths-05-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

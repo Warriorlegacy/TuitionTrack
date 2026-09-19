@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Human Health and Disease, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-biology-07-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Why Human Health Matters, Concept of Health, and Disease vs. Discomfort -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Why Human Health Matters, Concept of Health, and Disease vs. Discomfort</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Health is not just the absence of disease.</div>
+              <div id="qx0-p1" class="qe-bullet">• Holistic Health: Physical, Mental, and Social well-being.</div>
+              <div id="qx0-p2" class="qe-bullet">• Disease: A physiological or psychological dysfunction.</div>
+              <div id="qx0-p3" class="qe-bullet">• Discomfort: A subjective sensation of unease or mild pain.</div>
+              <div id="qx0-p4" class="qe-bullet">• Pathogens are external agents that disrupt health.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2768440395,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing a person looking physically fit but stressed (Mental/Social imbalance) versus a person in a state of complete biological and emotional equilibrium.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D split-screen animation showing a person looking physically fit but stressed (Mental/Social imbalance) versus a person in a state of complete biological and emotional equilibrium.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Common Infectious Diseases I: Bacterial and Viral Pathogens -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Common Infectious Diseases I: Bacterial and Viral Pathogens</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Typhoid: Caused by Salmonella typhi; diagnosed via Widal Test</div>
+              <div id="qx1-p1" class="qe-bullet">• Typhoid Symptoms: Sustained high fever, weakness, and stomach pain</div>
+              <div id="qx1-p2" class="qe-bullet">• Pneumonia: Affects alveoli; caused by Streptococcus pneumoniae</div>
+              <div id="qx1-p3" class="qe-bullet">• Pneumonia Pathology: Alveoli fill with fluid or pus, hindering breathing</div>
+              <div id="qx1-p4" class="qe-bullet">• Common Cold: Viral infection of nose/respiratory passage; does not affect lungs</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3391181411,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing healthy air-filled alveoli versus pneumonia-stricken alveoli filled with fluid, alongside a microscopic view of Salmonella typhi bacteria.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation showing healthy air-filled alveoli versus pneumonia-stricken alveoli filled with fluid, alongside a microscopic view of Salmonella typhi bacteria.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Common Infectious Diseases II: Protozoan, Helminthic, and Fungal Diseases -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Common Infectious Diseases II: Protozoan, Helminthic, and Fungal Diseases</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Amoebiasis: Entamoeba histolytica causes intestinal inflammation and bloody stools.</div>
+              <div id="qx2-p1" class="qe-bullet">• Malaria: Plasmodium cycle involves liver cells, RBCs, and haemozoin release.</div>
+              <div id="qx2-p2" class="qe-bullet">• Vector for Malaria: Female Anopheles mosquito transmits sporozoites.</div>
+              <div id="qx2-p3" class="qe-bullet">• Helminthic Diseases: Ascariasis (Ascaris) and Filariasis (Wuchereria bancrofti).</div>
+              <div id="qx2-p4" class="qe-bullet">• Fungal Diseases: Mycoses like Ringworm affect skin, hair, and nails.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":721512298,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing the Plasmodium life cycle in the liver and RBCs on one side, and the lymphatic swelling of Filariasis on the other.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D split-screen animation showing the Plasmodium life cycle in the liver and RBCs on one side, and the lymphatic swelling of Filariasis on the other.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Immunity Fundamentals: Innate vs. Acquired Immunity and Active vs. Passive Immunity -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Immunity Fundamentals: Innate vs. Acquired Immunity and Active vs. Passive Immunity</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Innate Immunity: Non-specific, present from birth, includes physical and chemical barriers.</div>
+              <div id="qx3-p1" class="qe-bullet">• Acquired Immunity: Highly specific, develops after exposure, possesses immunological memory.</div>
+              <div id="qx3-p2" class="qe-bullet">• Innate Barriers: Physical (skin), Physiological (acid/fever), Cellular (WBCs), Biochemical.</div>
+              <div id="qx3-p3" class="qe-bullet">• Active Immunity: Body produces its own antibodies in response to antigens; long-lasting.</div>
+              <div id="qx3-p4" class="qe-bullet">• Passive Immunity: Ready-made antibodies are transferred; immediate but temporary protection.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3731575577,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a generic shield (Innate) vs. a high-tech targeting system (Acquired), followed by a flowchart of antibody production.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A split-screen 3D animation showing a generic shield (Innate) vs. a high-tech targeting system (Acquired), followed by a flowchart of antibody production.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): The Immune System Mechanics: Cells, Organs, and the Role of Antibodies (Structure &amp; Function) -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">The Immune System Mechanics: Cells, Organs, and the Role of Antibodies (Structure &amp; Function)</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Primary Lymphoid Organs: Bone Marrow and Thymus (Maturation sites)</div>
+              <div id="qx4-p1" class="qe-bullet">• Secondary Lymphoid Organs: Spleen, Lymph Nodes, and Tonsils (Action sites)</div>
+              <div id="qx4-p2" class="qe-bullet">• B-lymphocytes: Responsible for Humoral Immunity via Plasma Cells</div>
+              <div id="qx4-p3" class="qe-bullet">• T-lymphocytes: Responsible for Cell-Mediated Immunity</div>
+              <div id="qx4-p4" class="qe-bullet">• Antibody Structure: Y-shaped, two heavy and two light polypeptide chains</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":1663519161,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D medical animation showing a Y-shaped antibody docking perfectly into a specific protein spike on a virus surface, highlighting the variable and constant regions.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D medical animation showing a Y-shaped antibody docking perfectly into a specific protein spike on a virus surface, highlighting the variable and constant regions.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Immunity in Action: Allergy, Autoimmunity, and Immunization Principles -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Immunity in Action: Allergy, Autoimmunity, and Immunization Principles</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Allergy: Hypersensitivity caused by IgE antibodies and histamine release.</div>
+              <div id="qx5-p1" class="qe-bullet">• Allergens: Common triggers like pollen, dust, and specific food proteins.</div>
+              <div id="qx5-p2" class="qe-bullet">• Autoimmunity: Immune system attacking 'self' antigens (e.g., Rheumatoid Arthritis).</div>
+              <div id="qx5-p3" class="qe-bullet">• Vaccination Principle: Utilizing immunological memory to prevent future infection.</div>
+              <div id="qx5-p4" class="qe-bullet">• Mechanism: Vaccines introduce antigens to create long-lived memory cells.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":2397437630,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation: left side shows histamine bursting from a mast cell; right side shows a vaccine introducing a weakened virus to create memory B-cells.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D split-screen animation: left side shows histamine bursting from a mast cell; right side shows a vaccine introducing a weakened virus to create memory B-cells.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Vaccines and Immunization: Mechanism of Action, Types, and Herd Immunity -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Vaccines and Immunization: Mechanism of Action, Types, and Herd Immunity</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Immunological memory: The basis of primary and secondary immune responses.</div>
+              <div id="qx6-p1" class="qe-bullet">• Vaccines: Using antigens to trigger memory cells without causing disease.</div>
+              <div id="qx6-p2" class="qe-bullet">• Types: Live-attenuated, Inactivated, Subunit, Toxoids, and mRNA vaccines.</div>
+              <div id="qx6-p3" class="qe-bullet">• Herd Immunity: Protecting the community by breaking the chain of transmission.</div>
+              <div id="qx6-p4" class="qe-bullet">• Social Impact: Safeguarding vulnerable populations through high vaccination rates.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":253748661,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D medical animation showing a vaccine particle entering a cell, followed by a split-screen comparison of a slow primary response versus a rapid, massive secondary response during a second infection.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D medical animation showing a vaccine particle entering a cell, followed by a split-screen comparison of a slow primary response versus a rapid, massive secondary response during a second infection.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): The Dark Side: AIDS, HIV, and the Lifecycle of the Retrovirus -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">The Dark Side: AIDS, HIV, and the Lifecycle of the Retrovirus</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• AIDS is a clinical condition caused by the HIV retrovirus.</div>
+              <div id="qx7-p1" class="qe-bullet">• HIV uses Reverse Transcriptase to convert RNA into DNA.</div>
+              <div id="qx7-p2" class="qe-bullet">• The virus specifically targets and destroys Helper T-lymphocytes (CD4 cells).</div>
+              <div id="qx7-p3" class="qe-bullet">• Viral DNA integrates into the host genome via the enzyme integrase.</div>
+              <div id="qx7-p4" class="qe-bullet">• Immune deficiency occurs as the CD4 cell count drops significantly.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":930049703,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D medical animation showing an HIV virion docking onto a T-helper cell, releasing RNA, and the subsequent integration of viral DNA into the host cell nucleus.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D medical animation showing an HIV virion docking onto a T-helper cell, releasing RNA, and the subsequent integration of viral DNA into the host cell nucleus.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Cancer: Biology, Types, Causes, Detection, and Treatment -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Cancer: Biology, Types, Causes, Detection, and Treatment</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Cancer: Uncontrolled cell division forming a mass called a tumor.</div>
+              <div id="qx8-p1" class="qe-bullet">• Benign Tumors: Localized growth; do not spread to other parts.</div>
+              <div id="qx8-p2" class="qe-bullet">• Malignant Tumors: Invasive growth with the ability to undergo metastasis.</div>
+              <div id="qx8-p3" class="qe-bullet">• Carcinogens: Physical, chemical, and biological agents that cause cancer.</div>
+              <div id="qx8-p4" class="qe-bullet">• Detection &amp; Treatment: Biopsy, Imaging, Surgery, Radiation, and Chemotherapy.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":2333928531,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing a controlled cell cycle on the left and a rapidly multiplying, invasive malignant tumor spreading through blood vessels on the right.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D split-screen animation showing a controlled cell cycle on the left and a rapidly multiplying, invasive malignant tumor spreading through blood vessels on the right.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Drug and Alcohol Abuse: Classification, Effects on Body Systems, and Addiction Cycle -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Drug and Alcohol Abuse: Classification, Effects on Body Systems, and Addiction Cycle</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Classification: Sedatives, Stimulants, and Hallucinogens</div>
+              <div id="qx9-p1" class="qe-bullet">• Alcohol Effects: Central Nervous System and Liver Cirrhosis</div>
+              <div id="qx9-p2" class="qe-bullet">• Drug Impact: Cardiovascular and Psychological disturbances</div>
+              <div id="qx9-p3" class="qe-bullet">• The Concept of Tolerance: Need for increasing doses</div>
+              <div id="qx9-p4" class="qe-bullet">• Withdrawal Syndrome: Physical and mental symptoms upon cessation</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":4173629302,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D medical animation showing a dopamine molecule binding to a neuron, transitioning into a circular flow diagram representing the Addiction-Tolerance-Withdrawal cycle.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D medical animation showing a dopamine molecule binding to a neuron, transitioning into a circular flow diagram representing the Addiction-Tolerance-Withdrawal cycle.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Drug Abuse Case Studies: Opioids, Cannabinoids, Coca Alkaloids, and Social Impact -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Drug Abuse Case Studies: Opioids, Cannabinoids, Coca Alkaloids, and Social Impact</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Opioids: Derived from Papaver somniferum; act as CNS depressants.</div>
+              <div id="qx10-p1" class="qe-bullet">• Heroin (Diacetylmorphine): Highly addictive; causes respiratory depression.</div>
+              <div id="qx10-p2" class="qe-bullet">• Cannabinoids: Affect the cardiovascular system and brain receptors.</div>
+              <div id="qx10-p3" class="qe-bullet">• Coca Alkaloids (Cocaine): Powerful stimulants from Erythroxylum coca.</div>
+              <div id="qx10-p4" class="qe-bullet">• Social Impact: Leads to family breakdown, crime, and economic loss.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":370106159,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D medical animation showing a neuron being affected by a depressant versus a stimulant, transitioning to a social infographic of community impact.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D medical animation showing a neuron being affected by a depressant versus a stimulant, transitioning to a social infographic of community impact.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Diagram Practice, Keyword Optimization, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Diagram Practice, Keyword Optimization, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Master Antibody Structure: Label Heavy/Light chains and Disulfide bonds</div>
+              <div id="qx11-p1" class="qe-bullet">• Use Flowcharts for Plasmodium and HIV Life Cycles</div>
+              <div id="qx11-p2" class="qe-bullet">• Keyword Focus: Use terms like Metastasis, Sporozoites, and Humoral Immunity</div>
+              <div id="qx11-p3" class="qe-bullet">• Differentiate clearly between Active and Passive Immunity</div>
+              <div id="qx11-p4" class="qe-bullet">• Structure answers using technical terminology and neat diagrams</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1117852244,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen animation: on the left, a hand draws a perfectly labeled antibody; on the right, a rapid-fire montage of key terms like 'Metastasis' and 'Reverse Transcriptase' appearing in bold gold text.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen animation: on the left, a hand draws a perfectly labeled antibody; on the right, a rapid-fire montage of key terms like 'Metastasis' and 'Reverse Transcriptase' appearing in bold gold text.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Human Health and Disease today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Why Human Health Matters, Concept of Health, and Disease vs. Discomfort <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Common Infectious Diseases I: Bacterial and Viral Pathogens <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Common Infectious Diseases II: Protozoan, Helminthic, and Fungal Diseases <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Immunity Fundamentals: Innate vs. Acquired Immunity and Active vs. Passive Immunity <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. The Immune System Mechanics: Cells, Organs, and the Role of Antibodies (Structure &amp; Function) <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Immunity in Action: Allergy, Autoimmunity, and Immunization Principles <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Vaccines and Immunization: Mechanism of Action, Types, and Herd Immunity <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. The Dark Side: AIDS, HIV, and the Lifecycle of the Retrovirus <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Cancer: Biology, Types, Causes, Detection, and Treatment <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Drug and Alcohol Abuse: Classification, Effects on Body Systems, and Addiction Cycle <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Drug Abuse Case Studies: Opioids, Cannabinoids, Coca Alkaloids, and Social Impact <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Diagram Practice, Keyword Optimization, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone, and welcome to our deep dive into one of the most vital chapters in Class 12 Biology: Human Health and Disease. Before we dive into the complex world of pathogens, bacteria, and viruses, we must first ask ourselves a fundamental question: What does it actually mean to be healthy? In our daily lives, we often use the word 'health' casually. We might say, 'I am healthy because I don't have a fever today.' But in biological and medical terms, health is a much more profound and holistic concept. It is not merely the absence of disease. If we define health only as the absence of illness, we ignore the mental, social, and physical state of a human being. According to the World Health Organization, health is a state of complete physical, mental, and social well-being. Think about it. A person might have no visible infections or injuries, but if they are constantly stressed, socially isolated, or mentally exhausted, can we truly call them healthy? No. Physical health involves the efficient functioning of our organs and systems. Mental health involves emotional stability and cognitive clarity. Social health involves our ability to interact harmoniously with our community. All three pillars must be strong for a person to be truly healthy. Now, let's distinguish between two terms that are often confused: Disease and Discomfort. This is a crucial distinction for your exams. A disease is a physiological or psychological dysfunction. It is a condition where the normal functioning of the body is disturbed due to internal or external factors. When a disease occurs, it usually presents specific signs and symptoms. For example, if the Salmonella typhi bacteria enters your body, it causes Typhoid fever. This is a disease because it involves a specific pathogen disrupting your biological processes. On the other hand, discomfort is a subjective feeling. Discomfort is a sensation of unease, pain, or mild irritation that does not necessarily indicate a formal pathological condition. You might feel discomfort because of a lack of sleep, a heavy meal, or even mild weather changes. While discomfort can sometimes be a precursor to a disease, it is not a disease itself. To understand the transition, think of it this way: a slight ache in your stomach after eating too much spicy food is discomfort. But if that ache turns into intense cramping accompanied by fever and vomiting due to a bacterial infection, it has progressed into a disease. Why does this matter to us as students of biology? Because to study human health, we must understand the mechanisms that cause these disruptions. We need to understand how external agents, which we call pathogens, invade our body, and how our internal defense system, known as immunity, responds to them. Throughout this series, we will explore how these pathogens work, how our body fights back, and what happens when that defense system fails. Understanding the difference between being merely 'not sick' and being 'truly healthy' is the first step in mastering the science of medicine and biology. In our next session, we will begin our journey into the specific culprits of disease, starting with bacterial and viral pathogens. Let's get started.","Welcome back to our journey through Human Health and Disease. In our previous session, we established what health truly means. Now, we dive into the microscopic world of invaders. Today, we focus on the first wave of infectious diseases caused by bacteria and viruses. Let's start with Typhoid. This is a life-threatening disease caused by the bacterium Salmonella typhi. It is primarily transmitted through contaminated food and water. When we talk about the symptoms of Typhoid, we look for high fever that persists for several days, weakness, stomach pain, constipation, headache, and sometimes loss of appetite. A crucial detail for your exams is the diagnostic test used for Typhoid, which is the Widal Test. Remember this name, as it is frequently asked in board exams. Moving from bacteria to a respiratory challenge, let's discuss Pneumonia. Pneumonia is an infection that affects the alveoli, which are the tiny air sacs in your lungs. The pathogen responsible for this is often Streptococcus pneumoniae or Haemophilus influenzae. In a healthy person, alveoli are filled with air, but in a person with pneumonia, these air sacs become inflamed and may fill with fluid or pus. This makes breathing difficult and can lead to a high fever and coughing. While pneumonia can be severe, it is important to distinguish it from the common cold. Now, let's look at the Common Cold. While it might seem minor, it is a widespread viral infection. Unlike pneumonia, which affects the lungs and alveoli, the common cold is primarily a disorder of the nose and respiratory passage. It is caused by various viruses, most commonly the Rhino viruses. The symptoms include nasal congestion, sore throat, cough, and a feeling of discomfort. A very important distinction for your competitive exams: the common cold does not affect the lungs or the alveoli, whereas pneumonia does. This distinction is a favorite for multiple-choice questions. To summarize this section, we have seen how Salmonella typhi causes Typhoid, diagnosed by the Widal test; how bacteria like Streptococcus pneumoniae cause pneumonia by filling alveoli with fluid; and how Rhino viruses cause the common cold, which stays in the upper respiratory tract. Understanding these specific pathogens and their target organs is the key to mastering this chapter. In our next lesson, we will shift from bacteria and viruses to protozoan, helminthic, and fungal pathogens.","Welcome back. In our previous session, we covered bacterial and viral pathogens. Now, we move into the third segment of our chapter, focusing on diseases caused by protozoans, helminths, and fungi. These are often transmitted through intermediate hosts or environmental contact. Let's start with the protozoan diseases, specifically Amoebiasis and Malaria. Amoebiasis is caused by the protozoan parasite Entamoeba histolytica. It is primarily transmitted through contaminated food and water. Once inside the human body, this parasite affects the large intestine. The symptoms include stunted growth, abdominal pain, and most characteristically, stools with excess mucus and blood. This blood in the stool is a key diagnostic feature you must remember for your exams. Next, we look at one of the most significant diseases globally: Malaria. Malaria is caused by Plasmodium species, such as Plasmodium vivax, Plasmodium malariae, and Plasmodium falciparum. The transmission cycle is fascinating and complex. The female Anopheles mosquito acts as the vector. When a mosquito bites an infected human, it picks up sporozoites. However, the cycle actually begins when an infected mosquito bites a healthy human, injecting sporozoites into the bloodstream. These sporozoites travel to the liver, where they multiply asexually. After a period, the liver cells rupture, releasing merozoites into the blood. These merozoites then infect the Red Blood Cells, or erythrocytes. As the parasites multiply within the RBCs, the cells eventually burst. This rupture releases a toxic substance called haemozoin. It is this release of haemozoin that causes the characteristic recurring high fever and chills. This cycle is why the fever follows a specific periodic pattern. Now, let's shift our focus to Helminthic diseases. Helminths are parasitic worms. Two major examples we study are Ascariasis and Filariasis. Ascariasis is caused by the intestinal worm Ascaris. It is transmitted through contaminated soil, water, or vegetables. The worms live in the human intestine, causing intestinal blockage, muscular pain, and even deficiency of essential nutrients. Then we have Filariasis, also known as Elephantiasis, caused by Wuchereria bancrofti. This parasite is transmitted by the Culex mosquito. The adult worms reside in the lymphatic vessels, causing chronic inflammation. This leads to massive swelling, typically in the legs or scrotum, which gives the disease its name. Finally, let's discuss fungal diseases, collectively known as Mycoses. Fungal pathogens are quite common and often affect the skin, nails, and hair. Common examples include Ringworm, caused by fungi like Trichophyton, Microsporum, and Epidermophyton. These infections manifest as dry, scaly lesions on the skin. Fungal infections are often spread through direct contact with infected individuals or contaminated surfaces like towels and combs. Understanding these life cycles and the specific causative agents is crucial for your boards. In the next part, we will transition from the pathogens themselves to how our body fights them: the fundamentals of Immunity.","Welcome back to our series on Human Health and Disease. In our previous session, we explored various infectious pathogens like bacteria, viruses, and protozoans. Today, we dive into the very core of our defense mechanism: Immunity. Immunity is the ability of the host to fight disease-causing organisms. It is not just one single process, but a complex network of systems. To understand how we stay healthy, we must first distinguish between the two primary types of immunity: Innate and Acquired. Think of Innate Immunity as your body's first line of defense. It is non-specific, meaning it attacks any foreign invader the same way, and it is present from the moment of birth. You can categorize innate immunity into four barriers. First, there are physical barriers like the skin, which acts as a continuous layer preventing entry, and the mucus coating in our respiratory and digestive tracts that traps microbes. Second, we have physiological barriers. These include temperature, such as the fever that rises to kill pathogens, and pH levels, like the highly acidic gastric juice in our stomach that destroys bacteria. Third, there are cellular barriers, which include specialized white blood cells like neutrophils, which migrate to the site of infection, and macrophages, which engulf and destroy microbes through phagocytosis. Finally, there are biochemical barriers, such as the lysozyme in our tears and saliva that breaks down bacterial cell walls. Now, let's move to the second type: Acquired Immunity. Unlike innate immunity, acquired immunity is highly specific. It is the 'intelligence' of your immune system. It recognizes specific pathogens and develops a targeted response. This type of immunity is characterized by 'memory.' When your body encounters a pathogen for the first time, it learns to recognize it. If that same pathogen attacks again, your body remembers it and launches a much faster and more intense attack. This memory is the fundamental principle behind how vaccines work. Acquired immunity is further divided into two categories based on how the body obtains the antibodies: Active and Passive immunity. Let's look at Active Immunity first. In active immunity, your own body is doing the work. When an antigen, which is a foreign substance, enters your body, your immune system responds by producing its own antibodies. This process takes time—it's not instant—but the protection it provides is long-lasting because your body has created memory cells. An example is when you recover from a natural infection or when you receive a vaccine. On the other hand, we have Passive Immunity. In this case, the body does not produce the antibodies itself. Instead, ready-made antibodies are directly introduced into the body. This is much faster than active immunity, providing immediate protection, but it is temporary because the body hasn't learned how to make them itself. A classic example is the transfer of antibodies from a mother to her fetus through the placenta, or through colostrum, the first milk produced after childbirth. Another example is when a person is injected with pre-formed antibodies, such as anti-tetanus serum, to provide immediate defense after an injury. To summarize: Innate is your born-with, non-specific shield; Acquired is your learned, specific weapon; Active is your body building its own defense; and Passive is receiving a temporary boost of ready-made protection. Understanding these distinctions is crucial before we move on to the actual mechanics of immune cells and organs in our next lesson.","Welcome back. Now that we understand the difference between innate and acquired immunity, let's dive into the actual machinery that makes it happen. Think of the immune system not as a single organ, but as a highly coordinated network of cells and organs working in perfect synchrony. To understand how we fight pathogens, we first need to look at the primary and secondary lymphoid organs. The primary lymphoid organs are the training grounds. This is where lymphocytes, our specialized white blood cells, are produced and matured. The Bone Marrow is the site of production for all blood cells, and here, B-lymphocytes undergo their maturation. The Thymus is another crucial primary organ, where T-lymphocytes migrate to mature and learn to distinguish between 'self' and 'non-self'. Once these cells are trained, they move to the secondary lymphoid organs. These are the battlefields. Lymph nodes, spleen, tonsils, and Peyer's patches in the small intestine are where the actual encounter between an antigen and a lymphocyte occurs. Now, let's zoom in on the stars of the show: the lymphocytes. We have two main types. B-lymphocytes, or B-cells, are responsible for humoral immunity. When they encounter a foreign antigen, they differentiate into plasma cells, which act like tiny factories secreting antibodies. T-lymphocytes, or T-cells, are responsible for cell-mediated immunity. These include Helper T-cells, which coordinate the response, and Cytotoxic T-cells, which directly destroy infected or cancerous cells. But how exactly do these antibodies work? An antibody, also known as an immunoglobulin, is a Y-shaped protein molecule. Let's break down its structure. Each antibody unit is composed of four polypeptide chains: two identical heavy chains and two identical light chains. These chains are held together by disulfide bonds. If you look at the Y-shape, the two arms of the 'Y' contain the antigen-binding sites. These sites are highly variable in structure, which is why one antibody is specific to only one particular antigen. This is the principle of specificity. The base of the 'Y' is known as the constant region, which determines the class of the antibody. When an antibody binds to an antigen, it can neutralize the pathogen, prevent it from entering a cell, or act as a marker, signaling other immune cells like macrophages to come and engulf the invader. This complex interaction between the structure of the antibody and the shape of the antigen is what ensures our body reacts precisely to a specific threat without attacking our own healthy tissues. Understanding this molecular precision is key to understanding how vaccines and treatments work later in this chapter.","Welcome back. In our previous session, we explored the complex architecture of the immune system, including the structure of antibodies and the specialized roles of B and T lymphocytes. Now, it is time to see how this system behaves in real-world scenarios. Sometimes, the immune system reacts too strongly, sometimes it misidentifies the enemy, and sometimes, we intentionally train it to fight. Let us start with a phenomenon many of you have experienced: Allergy. An allergy is an exaggerated or hypersensitive response of the immune system to certain substances that are normally harmless to most people. These substances, such as pollen, dust mites, or certain foods, are called allergens. When an individual is exposed to an allergen, their immune system produces specific antibodies known as Immunoglobulin E, or IgE. These IgE antibodies bind to mast cells located in tissues like the skin, respiratory tract, and gastrointestinal tract. When the allergen enters the body again, it triggers these mast cells to release chemicals like histamine, serotonin, and heparin. This release causes the classic symptoms of an allergic reaction: sneezing, watery eyes, itching, or even more severe conditions like asthma. Moving from an overreaction to a case of mistaken identity, let us discuss Autoimmunity. Under normal circumstances, the immune system can distinguish between 'self' and 'non-self'—meaning it knows the difference between your own cells and a foreign pathogen. However, in autoimmune diseases, this mechanism fails. The body's immune system loses its ability to recognize self-antigens and begins to attack its own tissues. A classic example of this is Rheumatoid Arthritis, where the immune system attacks the lining of the joints, causing inflammation and pain. Other examples include Type 1 Diabetes, where the immune system attacks insulin-producing cells in the pancreas, and Multiple Sclerosis. Finally, let us look at how we can harness the principles of immunity for protection: Immunization and Vaccination. The core principle behind vaccination is the memory function of the acquired immune system. When we are exposed to a pathogen, our B and T cells create memory cells. If the same pathogen attacks again, these memory cells recognize it immediately and launch a rapid response. A vaccine is essentially a way to 'trick' the body into creating these memory cells without causing the actual disease. Vaccines contain weakened or killed pathogens, or even just specific pieces of them, like proteins or inactivated toxins. When a vaccine is administered, the body treats these harmless components as a real threat. It goes through the entire process of antigen presentation, lymphocyte activation, and antibody production. Crucially, it leaves behind a population of long-lived memory B and T cells. This means that if the actual, virulent pathogen ever enters the body in the future, the immune system is already 'primed' and can neutralize the threat before it causes illness. This proactive training of the immune system is the foundation of modern preventive medicine. In our next video, we will dive deeper into the specific types of vaccines and the vital concept of herd immunity.","Welcome back. In our previous session, we explored how the immune system identifies and fights pathogens. Now, we move to a proactive strategy: how we can train our immune system to fight battles even before the actual enemy arrives. This is the science of immunization. When a pathogen enters our body, our immune system undergoes a primary response. It takes time to identify the antigen and produce specific antibodies. However, once the body has encountered a pathogen, it develops a memory. If the same pathogen attacks again, the immune system recognizes it immediately and mounts a much faster and more intense secondary response. This principle of 'immunological memory' is the very foundation of vaccination. A vaccine is essentially a biological preparation that mimics a pathogen. It contains antigens—which could be weakened or killed microbes, or even just fragments of their proteins—that do not cause the disease itself but are sufficient to trigger an immune response. When we are vaccinated, our body goes through that primary response, creating memory B-cells and T-cells. Thus, if the real, virulent pathogen ever enters our system, our 'memory cells' recognize it instantly, and our secondary immune response neutralizes the threat before we even feel sick. Now, let's categorize vaccines into different types. First, we have Live-Attenuated Vaccines. Here, we use a weakened form of the germ. Because these are live, they mimic a natural infection very closely, providing strong, long-lasting immunity. Examples include the BCG vaccine for Tuberculosis or the MMR vaccine. Second, we have Inactivated Vaccines. These use pathogens that have been killed using chemicals, heat, or radiation. They are safer because the pathogen cannot replicate, but they often require multiple doses or booster shots to maintain immunity. Third, we have Subunit or Conjugate Vaccines. Instead of the whole germ, these use only specific pieces—like a protein or a sugar from the cell wall. This is highly targeted and reduces side effects. We also have Toxoid Vaccines. Some bacteria, like Clostridium tetani, don't cause harm directly through their presence, but through the toxins they release. A toxoid vaccine uses a weakened version of that toxin, teaching the body to neutralize the poison rather than the bacteria itself. Finally, there is mRNA technology, a modern breakthrough where we provide the genetic instructions for our own cells to produce a harmless piece of the viral protein, which then triggers the immune response. Beyond individual protection, vaccination has a massive social dimension called Herd Immunity. Imagine a community where most people are vaccinated. The pathogen finds it very difficult to spread because it keeps hitting 'dead ends'—vaccinated individuals who do not become hosts. This creates a protective shield around the entire community. This is crucial for protecting those who cannot be vaccinated, such as newborn babies, elderly people with weak immunity, or individuals with severe allergies to vaccine components. By reaching a certain threshold of vaccinated individuals, we can effectively stop the chain of transmission and even eradicate diseases entirely, just as we did with Smallpox. Understanding this mechanism is not just about biology; it is about public health and our collective responsibility to protect the vulnerable.","Moving forward from our discussion on how the immune system protects us, we now encounter one of its most formidable adversaries. We are entering a territory often called 'the dark side' of immunology: Acquired Immuno Deficiency Syndrome, commonly known as AIDS. It is crucial to understand that AIDS is not the disease itself, but rather a clinical condition resulting from an infection caused by a specific virus called HIV, or Human Immunodeficiency Virus. Now, let's look at the biology of this virus. HIV is a retrovirus. What does that mean? In standard biological processes, DNA is transcribed into RNA. However, a retrovirus reverses this flow. It carries its genetic information in the form of RNA, and once it enters a host cell, it uses a special enzyme called reverse transcriptase to convert its viral RNA into DNA. This is why it is called a retrovirus. The lifecycle of HIV is a sophisticated and devastating process. It begins when the virus enters the human body, typically through exchange of body fluids, contaminated needles, or from mother to child. Once inside, the HIV virus targets a very specific part of our immune system: the Helper T-lymphocytes, also known as T-helper cells or CD4 cells. These cells are the generals of our immune army; without them, the entire system collapses. The first step of the infection is attachment and entry. The virus uses its surface glycoproteins to bind to the receptors on the T-helper cell membrane. Once attached, the viral envelope fuses with the host cell membrane, releasing the viral RNA and the enzyme reverse transcriptase into the host cell's cytoplasm. Now, the real transformation begins. The reverse transcriptase enzyme starts synthesizing a single strand of DNA from the viral RNA template. This newly formed viral DNA then moves into the host cell's nucleus. Here, an enzyme called integrase helps the viral DNA integrate itself into the host cell's own genome. From this point on, the host cell is hijacked. It no longer functions for the body; it functions for the virus. Every time the T-helper cell divides, it replicates the viral DNA along with its own. The host cell's machinery then begins to transcribe this integrated viral DNA back into long strands of viral RNA. These RNA strands are then translated into long polyprotein chains. These chains are then cut into smaller, functional proteins by viral enzymes called proteases. These proteins, along with the new RNA strands, assemble to form new virus particles, or virions, which bud off from the host cell to infect thousands of other healthy T-helper cells. As the number of infected T-helper cells increases, the total count of healthy CD4 cells begins to plummet. This leads to a state of profound immunosuppression. The body becomes unable to fight off even the most minor opportunistic infections or certain types of cancers. This stage, where the immune system is severely compromised, is when the patient is diagnosed with AIDS. It is a slow, progressive destruction of the body's natural defenses. Understanding this lifecycle is not just about biology; it is about understanding why this disease is so difficult to treat and why early detection and prevention are our most powerful tools.","Moving forward from our discussion on immunity, we now enter one of the most complex challenges in modern medicine: Cancer. In a healthy body, cell growth is a highly regulated process. Cells divide, grow, and die in a controlled cycle. However, cancer occurs when this regulation breaks down. It is characterized by the uncontrolled division of cells, leading to the formation of an abnormal mass of tissue called a tumor. Now, it is crucial to distinguish between two types of tumors. First, we have Benign tumors. These are localized; they grow at a specific site and do not spread to other parts of the body. While they can cause issues due to pressure, they are generally less life-threatening. The second, and much more dangerous type, is Malignant tumors. These cells show the property of 'metastasis.' This means they invade neighboring tissues and can travel through the blood or lymphatic system to form secondary tumors in distant organs. Metastasis is the most feared characteristic of cancer. So, what causes this cellular rebellion? We call these causes 'carcinogens.' Carcinogens can be physical agents, like ionizing radiation from X-rays or gamma rays, which can damage our DNA. They can also be chemical agents, such as those found in tobacco smoke or certain industrial chemicals. Even some viruses, known as oncogenic viruses, can trigger cancerous changes. Biological factors, including genetic predispositions passed down through families, also play a significant role. How do doctors detect this silent killer? Early detection is the key to survival. Methods include physical examination and imaging techniques like X-rays, CT scans, and MRI scans, which provide detailed cross-sectional views of the body. For more precise results, a biopsy is performed, where a small piece of the suspected tissue is removed and examined under a microscope to check for abnormal cell structures. Another advanced method is molecular biology techniques, which look for specific genetic markers. Once diagnosed, the battle begins with treatment. The goal is to destroy the cancer cells while minimizing damage to healthy tissue. One primary method is Surgery, where the tumor is physically removed. However, if the cancer has spread, surgery alone isn't enough. This leads us to Radiation Therapy, which uses high-energy rays to kill cancer cells by damaging their DNA. Another powerful tool is Chemotherapy, which uses potent drugs to kill rapidly dividing cells. While effective, chemotherapy can also affect healthy rapidly dividing cells, like those in hair follicles or the gut, leading to side effects like hair loss or nausea. To combat these side effects, scientists developed Immunotherapy, which boosts the body's own immune system to recognize and attack the cancer cells. Finally, targeted drug therapy focuses on specific molecules involved in cancer growth, minimizing collateral damage. Understanding these mechanisms is the first step in mastering this topic for your exams.","Welcome back. We have explored the biological complexities of immunity and life-threatening diseases like AIDS and Cancer. Now, we move into a critical aspect of human health that is often driven by social and psychological factors: Drug and Alcohol Abuse. To understand this, we must first look at how these substances are classified. Drugs are generally categorized based on their effect on the central nervous system. First, we have Sedatives or Depressants, which slow down neural activity, leading to reduced anxiety but impaired coordination. Second, we have Stimulants, which increase alertness and physiological activity, often leading to heightened energy but also extreme nervousness. Third, we have Hallucinogens, which alter perceptions and cause users to see or hear things that are not real. Now, let us look at the devastating effects these substances have on the human body systems. Alcohol abuse is a primary concern. It primarily targets the central nervous system, causing loss of coordination and impaired judgment. Chronic consumption leads to liver cirrhosis, where healthy liver tissue is replaced by scar tissue, eventually causing organ failure. It also affects the gastrointestinal tract and can lead to neurological damage. When we talk about drugs, the impact is even more systemic. Stimulants can cause heart palpitations, high blood pressure, and even cardiac arrest. Hallucinogens can lead to severe psychological disturbances and loss of contact with reality. The most dangerous aspect of all is the cycle of addiction. Addiction, or dependence, is a psychological and physiological state where the user feels an intense craving for the substance. It begins with recreational use, which can quickly transition into habituation. As the body becomes accustomed to the drug, it develops tolerance. Tolerance means that the user requires increasingly larger doses to achieve the same effect that a smaller dose once provided. This creates a dangerous upward spiral. When the user attempts to stop, they experience withdrawal syndrome. Withdrawal is a group of unpleasant physical and mental symptoms such as tremors, anxiety, nausea, sweating, and even seizures. This physical discomfort often drives the user back to the drug, completing the vicious cycle of addiction. It is important to remember that drug abuse is not just a personal choice but a physiological trap that alters brain chemistry and disrupts the delicate balance of our body's homeostatic mechanisms. Understanding this cycle is the first step in prevention and rehabilitation.","Welcome back. In our previous segment, we understood the general classification of drugs and the cycle of addiction. Now, let us dive deep into specific case studies of the most commonly abused substances: Opioids, Cannabinoids, and Coca alkaloids, and examine how they devastate the social fabric. First, let us look at Opioids. These are a group of drugs derived from the opium poppy, Papaver somniferum. When we talk about opioids, we are specifically looking at drugs that act as depressants on the Central Nervous System. A classic example is Morphine, which is used medically as a potent sedative and painkiller. However, when abused, it leads to severe respiratory depression and extreme drowsiness. Another critical opioid is Heroin, also known as Diacetylmorphine. Heroin is highly addictive and works by binding to specific opioid receptors in the brain, causing a sudden rush of euphoria followed by a heavy, lethargic state. The physical toll is immense, often leading to damage to the liver and kidney functions. Moving on to our second category: Cannabinoids. These drugs are primarily derived from the Cannabis plant. Unlike opioids which depress the system, cannabinoids specifically target the receptors in the human brain. They are most commonly known for their effects on the cardiovascular system. When someone consumes cannabinoids, it can lead to altered sensory perception and, crucially, it affects the heart rate and blood pressure. In medical science, controlled doses are used to treat various ailments, but abuse leads to impaired coordination and psychological instability. Third, let us discuss Coca alkaloids, specifically Cocaine. Cocaine is obtained from the leaves of the plant Erythroxylum coca. It is a powerful stimulant. Unlike the depressant nature of opioids, cocaine accelerates the body's functions. It increases dopamine levels in the brain, creating an intense, short-lived feeling of energy and alertness. However, the crash after the high is devastating, often leading to severe depression, paranoia, and extreme anxiety. The long-term use of cocaine can cause significant damage to the nasal septum and the cardiovascular system. Finally, we must address the Social Impact. Drug abuse is never just an individual problem; it is a societal crisis. It leads to the breakdown of family structures, loss of productivity in the workforce, and an increase in criminal activities as addicts seek funds to sustain their dependency. It creates a cycle of poverty and mental health crises that can haunt generations. Understanding these specific substances is vital for both your board exams and for real-world awareness. Pay close attention to the plant names and the specific physiological effects, as these are frequent areas for multiple-choice and short-answer questions.","Welcome to the final stretch of our journey through Human Health and Disease. You have covered the pathogens, the complex mechanisms of immunity, and the societal impacts of drug abuse. Now, it is time to transition from learning to scoring. In the Board Exams, knowing the concept is only half the battle; presenting it is the other half. Let's start with our Diagram Masterclass. In Biology, a diagram is a silent answer. For the immunity section, you must be able to draw the structure of an antibody molecule. Remember to label the two heavy chains, two light chains, the antigen-binding sites at the tips, and the disulfide bonds that hold them together. If you get a question on the life cycle of Plasmodium, do not just write paragraphs. A flowchart showing the infection of the human liver, the rupture of RBCs, and the transmission via the female Anopheles mosquito will fetch you full marks. For the HIV lifecycle, focus on the diagram of the retrovirus showing the RNA genome and the enzyme reverse transcriptase. Now, let's talk Keyword Optimization. Examiners look for specific biological terminology. When discussing Typhoid, do not just say 'stomach infection'; use the term 'Salmonella typhi' and mention 'Widal Test'. When discussing Malaria, use 'Sporozoites', 'Merozoites', and 'Gametocytes'. For Immunity, the distinction between 'Innate' and 'Acquired' must be clear, and when discussing antibodies, use terms like 'Humoral Immunity' for B-cells and 'Cell-Mediated Immunity' for T-cells. If you are writing about Cancer, use 'Metastasis' to describe the spread of malignant cells and 'Contact Inhibition' to explain normal cell behavior. Even in the section on Drug Abuse, use terms like 'Depressants', 'Stimulants', and 'Hallucinogens' to categorize substances. Let's do a rapid-fire Full Chapter Recap to cement your memory. We began with the definition of health as a state of complete physical, mental, and social well-being. We moved through infectious diseases, distinguishing between bacterial pathogens like Pneumonia and viral ones like the Common Cold. We explored Protozoan diseases like Malaria and Amoebiasis, and Fungal infections. We then delved into the core of the chapter: Immunity. We learned about the four types of innate barriers—physical, physiological, cellular, and complement proteins. We mastered the difference between Active Immunity, where your body produces its own antibodies, and Passive Immunity, where pre-formed antibodies are transferred. We looked at the structure of the immune system, the role of lymphocytes, and the mechanics of vaccination and herd immunity. We faced the complexities of AIDS, understanding how HIV attacks Helper T-cells, and the uncontrolled cell division in Cancer. Finally, we addressed the critical issue of drug and alcohol abuse, identifying how opioids, cannabinoids, and cocaine affect the nervous system. As you prepare for your exam, remember: draw neat, labeled diagrams, underline your technical keywords, and structure your answers with headings. You have the knowledge; now, go and present it with precision. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-biology-07-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

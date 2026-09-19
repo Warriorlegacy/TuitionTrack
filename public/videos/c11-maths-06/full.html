@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Permutations and Combinations, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-maths-06-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Power of Counting and Real-World Applications -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Power of Counting and Real-World Applications</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Introduction to the mathematics of counting and possibilities</div>
+              <div id="qx0-p1" class="qe-bullet">• Permutation: Focuses on the importance of arrangement and order</div>
+              <div id="qx0-p2" class="qe-bullet">• Combination: Focuses on the logic of selection without order</div>
+              <div id="qx0-p3" class="qe-bullet">• Real-world uses: Passwords, seating, menus, and security codes</div>
+              <div id="qx0-p4" class="qe-bullet">• Roadmap: From basic counting principles to complex word problems</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1689329296,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D motion graphic showing a chaotic cloud of colorful shapes transforming into organized, structured patterns of numbers and sequences.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D motion graphic showing a chaotic cloud of colorful shapes transforming into organized, structured patterns of numbers and sequences.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Fundamental Principle of Counting: Addition and Multiplication Rules -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Fundamental Principle of Counting: Addition and Multiplication Rules</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Multiplication Principle: Used for sequential events (Event A AND Event B)</div>
+              <div id="qx1-p1" class="qe-bullet">• If event 1 has 'm' ways and event 2 has 'n' ways, total ways = m times n</div>
+              <div id="qx1-p2" class="qe-bullet">• Addition Principle: Used for mutually exclusive choices (Event A OR Event B)</div>
+              <div id="qx1-p3" class="qe-bullet">• If event 1 has 'm' ways and event 2 has 'n' ways, total ways = m plus n</div>
+              <div id="qx1-p4" class="qe-bullet">• Key Tip: 'AND' implies multiplication; 'OR' implies addition</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1949465719,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows a character picking a shirt then trousers (multiplication); Right side shows a character choosing between a bus or a train (addition).</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation: Left side shows a character picking a shirt then trousers (multiplication); Right side shows a character choosing between a bus or a train (addition).</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Factorial Notation: Concept, Properties, and Computational Shortcuts -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Factorial Notation: Concept, Properties, and Computational Shortcuts</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Factorial notation (n!) represents the product of all positive integers from n down to 1.</div>
+              <div id="qx2-p1" class="qe-bullet">• Definition: n factorial = n × (n-1) × (n-2) × ... × 1.</div>
+              <div id="qx2-p2" class="qe-bullet">• Special Case: 0! is defined as 1 to maintain mathematical consistency.</div>
+              <div id="qx2-p3" class="qe-bullet">• Recursive Property: n! = n × (n-1)!</div>
+              <div id="qx2-p4" class="qe-bullet">• Simplification Shortcut: Cancel common factorial terms in fractions to avoid large numbers.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1921605101,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D chalkboard where numbers fly into a sequence, transforming into an exclamation mark, followed by a fraction being simplified through a 'canceling' animation.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D chalkboard where numbers fly into a sequence, transforming into an exclamation mark, followed by a fraction being simplified through a 'canceling' animation.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Permutations: Linear Arrangements and the nPr Formula -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Permutations: Linear Arrangements and the nPr Formula</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Permutation means an arrangement where the order of objects matters.</div>
+              <div id="qx3-p1" class="qe-bullet">• Linear arrangement refers to placing objects in a straight line.</div>
+              <div id="qx3-p2" class="qe-bullet">• The number of ways to arrange 'n' distinct objects is 'n factorial'.</div>
+              <div id="qx3-p3" class="qe-bullet">• The formula for 'n P r' is n! / (n - r)!</div>
+              <div id="qx3-p4" class="qe-bullet">• Use permutations when the sequence or position is significant.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":905225597,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D shelf where books fly into different ordered positions, transitioning into a mathematical formula floating in space.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D shelf where books fly into different ordered positions, transitioning into a mathematical formula floating in space.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Permutations with Repetitions: Identical Objects and Circular Arrangements -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Permutations with Repetitions: Identical Objects and Circular Arrangements</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Permutations of n objects with n1, n2... identical items: n! / (n1! * n2! ...)</div>
+              <div id="qx4-p1" class="qe-bullet">• Example: 'APPLE' has 5! / 2! = 60 unique arrangements.</div>
+              <div id="qx4-p2" class="qe-bullet">• Circular Permutations of n distinct objects: (n - 1)!</div>
+              <div id="qx4-p3" class="qe-bullet">• Fix one object to break rotational symmetry in a circle.</div>
+              <div id="qx4-p4" class="qe-bullet">• Necklace/Garland arrangements: 1/2 * (n - 1)!</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2555945514,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: left side shows letters of 'APPLE' rearranging with identical 'P's fading in/out; right side shows 5 people moving around a rotating circular table.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A split-screen 3D animation: left side shows letters of 'APPLE' rearranging with identical 'P's fading in/out; right side shows 5 people moving around a rotating circular table.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Combinations: Selection Logic and the nCr Formula -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Combinations: Selection Logic and the nCr Formula</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Combination: A selection where the order of objects does not matter.</div>
+              <div id="qx5-p1" class="qe-bullet">• Difference: Permutation is arrangement; Combination is selection.</div>
+              <div id="qx5-p2" class="qe-bullet">• The Formula: nCr = n! / [r! * (n - r)!]</div>
+              <div id="qx5-p3" class="qe-bullet">• Symmetry Property: nCr is equal to nC(n - r).</div>
+              <div id="qx5-p4" class="qe-bullet">• Key Logic: Divide permutations by r! to remove redundant orderings.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1597102653,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D scene showing a group of colored spheres being picked by a mechanical claw into a basket, where the order of picking does not change the contents of the basket.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D scene showing a group of colored spheres being picked by a mechanical claw into a basket, where the order of picking does not change the contents of the basket.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Relationship between Permutations and Combinations: Derivations and Proofs -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Relationship between Permutations and Combinations: Derivations and Proofs</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Permutation is a two-step process: Selection followed by Arrangement</div>
+              <div id="qx6-p1" class="qe-bullet">• The relationship formula: nPr = nCr × r!</div>
+              <div id="qx6-p2" class="qe-bullet">• Deriving nCr: nCr = nPr / r!</div>
+              <div id="qx6-p3" class="qe-bullet">• Final Combination Formula: nCr = n! / [r! × (n - r)!]</div>
+              <div id="qx6-p4" class="qe-bullet">• Example: 4P2 = 4C2 × 2! (12 = 6 × 2)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1757511265,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing 4 colored spheres being selected into a group of 2, then those 2 spheres swapping positions to show the arrangement process.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D animation showing 4 colored spheres being selected into a group of 2, then those 2 spheres swapping positions to show the arrangement process.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Advanced Combinations: Grouping, Division into Groups, and Selection Constraints -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Advanced Combinations: Grouping, Division into Groups, and Selection Constraints</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Grouping: Selecting subsets from a larger set using nCr</div>
+              <div id="qx7-p1" class="qe-bullet">• Division into Groups: Handling labeled vs. unlabeled groups</div>
+              <div id="qx7-p2" class="qe-bullet">• The Overcounting Rule: Dividing by r! for identical group sizes</div>
+              <div id="qx7-p3" class="qe-bullet">• Must-Include Constraints: Reducing both n and r</div>
+              <div id="qx7-p4" class="qe-bullet">• At-Least/At-Most Constraints: Summing mutually exclusive cases</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3388679633,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing 12 colored spheres being partitioned into three distinct labeled boxes versus three identical unlabeled containers.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D animation showing 12 colored spheres being partitioned into three distinct labeled boxes versus three identical unlabeled containers.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Word Problems: Arranging Letters, Digits, and Forming Numbers -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Word Problems: Arranging Letters, Digits, and Forming Numbers</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Order matters in arrangements: Use Permutations (nPr).</div>
+              <div id="qx8-p1" class="qe-bullet">• Handling repetitions: Divide by the factorial of repeating items.</div>
+              <div id="qx8-p2" class="qe-bullet">• Zero Constraint: A multi-digit number cannot start with zero.</div>
+              <div id="qx8-p3" class="qe-bullet">• Constraint Strategy: Always address the most restrictive rule first.</div>
+              <div id="qx8-p4" class="qe-bullet">• Increasing/Decreasing Order: Often requires Combinations (nCr) logic.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"numberline","seed":3647263404,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D digital chalkboard where the word 'MISSISSIPPI' breaks into floating letters that rearrange themselves, while a number line shows '0' being blocked from the first position of a 3-digit number.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D digital chalkboard where the word 'MISSISSIPPI' breaks into floating letters that rearrange themselves, while a number line shows '0' being blocked from the first position of a 3-digit number.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Complex Word Problems: Seating Arrangements and Committee Selection -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Complex Word Problems: Seating Arrangements and Committee Selection</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Seating Together: Use the 'String Method' by treating them as one block.</div>
+              <div id="qx9-p1" class="qe-bullet">• Seating Apart: Total arrangements minus the 'Together' arrangements.</div>
+              <div id="qx9-p2" class="qe-bullet">• Committee Selection: Use nCr for choosing members from distinct groups.</div>
+              <div id="qx9-p3" class="qe-bullet">• The Multiplication Rule: Multiply results when tasks are performed together.</div>
+              <div id="qx9-p4" class="qe-bullet">• At Least/At Most: Break the problem into separate cases and add them.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2811415008,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: left side shows colorful blocks merging and splitting in a row; right side shows icons of men and women being picked into a circular committee frame.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation: left side shows colorful blocks merging and splitting in a row; right side shows icons of men and women being picked into a circular committee frame.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Distinguishing Between Arrangement and Selection -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Distinguishing Between Arrangement and Selection</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• The Golden Rule: Does the order of items change the outcome?</div>
+              <div id="qx10-p1" class="qe-bullet">• Permutation = Arrangement (Order Matters)</div>
+              <div id="qx10-p2" class="qe-bullet">• Combination = Selection (Order Does Not Matter)</div>
+              <div id="qx10-p3" class="qe-bullet">• Keywords for Permutations: Arrange, Row, Rank, Sequence</div>
+              <div id="qx10-p4" class="qe-bullet">• Keywords for Combinations: Select, Choose, Committee, Group</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3144618356,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows letters A and B merging into one group (Selection); Right side shows A and B swapping places to form two distinct sequences (Arrangement).</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation: Left side shows letters A and B merging into one group (Selection); Right side shows A and B swapping places to form two distinct sequences (Arrangement).</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Strategy, Time Management, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Strategy, Time Management, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• The Golden Rule: Ask 'Does the order matter?' before choosing a formula.</div>
+              <div id="qx11-p1" class="qe-bullet">• Time Saver: Always expand and cancel factorials before multiplying.</div>
+              <div id="qx11-p2" class="qe-bullet">• Constraint First: Always arrange restricted items or blocks before the rest.</div>
+              <div id="qx11-p3" class="qe-bullet">• Avoid Double Counting: Build arrangements according to rules rather than subtracting.</div>
+              <div id="qx11-p4" class="qe-bullet">• At Least/At Most: Use the complement method to save time on complex cases.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":4066904869,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a student's messy calculation being transformed into a clean, cancelled factorial equation on the right, while a 'Decision Tree' flowchart floats on the left.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A 3D split-screen showing a student's messy calculation being transformed into a clean, cancelled factorial equation on the right, while a 'Decision Tree' flowchart floats on the left.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Permutations and Combinations today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Power of Counting and Real-World Applications <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Fundamental Principle of Counting: Addition and Multiplication Rules <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Factorial Notation: Concept, Properties, and Computational Shortcuts <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Permutations: Linear Arrangements and the nPr Formula <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Permutations with Repetitions: Identical Objects and Circular Arrangements <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Combinations: Selection Logic and the nCr Formula <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Relationship between Permutations and Combinations: Derivations and Proofs <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Advanced Combinations: Grouping, Division into Groups, and Selection Constraints <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Word Problems: Arranging Letters, Digits, and Forming Numbers <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Complex Word Problems: Seating Arrangements and Committee Selection <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Distinguishing Between Arrangement and Selection <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Strategy, Time Management, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone, and welcome to our journey into one of the most fascinating and practical chapters in Class 11 Mathematics: Permutations and Combinations. Before we dive into complex formulas and mathematical symbols, I want you to pause and think about a simple question. How many different ways can you dress yourself tomorrow morning if you have five different shirts and three different pairs of trousers? Or, if you are at a restaurant, how many different ways can you combine a main course, a side dish, and a drink from a menu? You might be able to calculate these in your head, but as the numbers grow larger, simple counting becomes impossible. This is where the mathematics of counting comes in. In our daily lives, we are constantly making choices and arranging things. Whether it is the sequence of digits in your mobile phone number, the arrangement of players in a cricket team, or the way a computer scientist designs a password to keep your data secure, we are dealing with the principles of counting. This chapter is not just about solving textbook problems; it is about understanding the structure of possibilities. In mathematics, we categorize these problems into two main ideas. The first is 'Arrangement', where the order of things matters. For example, if you are arranging three books on a shelf, the order 'A, B, C' is different from 'C, B, A'. This is what we call a Permutation. The second idea is 'Selection', where the order does not matter. If you are choosing three fruits from a basket to make a fruit salad, choosing an apple, a banana, and an orange is the exact same thing as choosing an orange, a banana, and an apple. This is what we call a Combination. Throughout this series of twelve lessons, we will build a toolkit. We will start with the Fundamental Principle of Counting, which is the bedrock of this entire chapter. We will learn about Factorial notation, which is a shorthand way to write large products. Then, we will master the formulas for Permutations and Combinations, learn how to handle tricky situations like repeating objects, and finally, apply everything to complex word problems involving committees, seating arrangements, and number formations. By the end of this chapter, you won't just be calculating numbers; you will be able to look at a complex real-world scenario and mathematically map out every single possibility. So, let us prepare to expand our logical thinking. Let us begin by mastering the very foundation of how we count.","Welcome back to our journey through Permutations and Combinations. In our last session, we explored why counting is such a powerful tool in mathematics. Today, we are going to master the very foundation of all counting techniques: The Fundamental Principle of Counting. This principle is divided into two distinct rules: the Multiplication Principle and the Addition Principle. Understanding when to multiply and when to add is the single most important skill in this entire chapter. Let's start with the Multiplication Principle, also known as the Fundamental Principle of Counting. Imagine you are planning an outfit. You have three different shirts—red, blue, and green—and two different pairs of trousers—black and grey. How many different outfits can you form? To find the answer, think about the process. First, you must choose a shirt. There are three ways to do this. For every single shirt you choose, you have two choices for the trousers. If you pick the red shirt, you can wear black or grey trousers. That is two outfits. If you pick the blue shirt, you have another two. And the green shirt gives you another two. So, three times two equals six. In general, if one event can occur in m ways and, following this, a second event can occur in n ways, then the total number of ways the two events can occur in sequence is m multiplied by n. We use multiplication when the events are 'dependent' in a sequence, meaning you are performing one task AND then another task. Think of the word 'AND' as a signal to multiply. Now, let's look at the Addition Principle. This is used when we are choosing between mutually exclusive options. Suppose you are going from city A to city B. There are three different bus routes and two different train routes. If you want to travel from A to B, how many total ways can you do it? Here, you cannot take a bus AND a train at the same time for a single journey. You either take a bus OR a train. Since these are separate, independent choices that cannot happen simultaneously, you simply add them. Three bus routes plus two train routes equals five total ways to travel. In general, if one event can occur in m ways and another event can occur in n ways, and these events cannot happen at the same time, then there are m plus n ways to perform one of these events. Think of the word 'OR' as a signal to add. Let's try a slightly more complex example to test your understanding. Suppose a student wants to select one elective subject from a list. There are five options in Science and four options in Commerce. How many ways can the student choose one subject? Since the student is choosing one subject, they are choosing a Science subject OR a Commerce subject. So, we add: five plus four equals nine ways. But, what if the student must choose one Science subject AND one Commerce subject? Now, the student is performing two tasks in sequence. In this case, we multiply: five times four equals twenty ways. To summarize: use the Multiplication Principle when you are performing a series of tasks, one after the other, or when you need to complete both steps to finish the process. Use the Addition Principle when you are choosing between different, non-overlapping categories, where picking one option excludes the others. Mastering this distinction will make the upcoming topics of factorials, permutations, and combinations much easier to grasp.","Welcome back. In our previous session, we explored the Fundamental Principle of Counting, learning how to multiply and add possibilities. Now, as we dive deeper into Permutations and Combinations, we encounter a mathematical shorthand that makes complex calculations incredibly simple. This is called Factorial Notation. Imagine you have three distinct books on a shelf. How many ways can you arrange them? For the first position, you have three choices. For the second, two choices remain. For the last, only one choice is left. Following our multiplication rule, the total arrangements are three times two times one, which equals six. In mathematics, we represent this descending product of all positive integers from a number down to one using an exclamation mark. We call this 'n factorial', written as n factorial. So, three factorial, or three exclamation mark, equals six. Let us look at some basic examples. Zero factorial is a special case; by mathematical convention and to ensure our formulas work correctly, zero factorial is defined as one. One factorial is simply one. Four factorial is four times three times two times one, which equals twenty-four. Five factorial is five times four times three times two times one, which equals one hundred and twenty. Now, let us explore some essential properties that will act as your computational shortcuts. The first property is the recursive property. You can express any factorial in terms of a smaller factorial. For example, five factorial is the same as five times four factorial. More generally, n factorial is equal to n multiplied by the quantity n minus one factorial. This is a powerful tool for simplification. If you are dividing twenty factorial by eighteen factorial, you do not need to calculate these massive numbers. Instead, you write twenty factorial as twenty times nineteen times eighteen factorial. The eighteen factorials in the numerator and denominator cancel each other out, leaving you with just twenty times nineteen, which is three hundred and eighty. This is the essence of computational shortcuts. Another important property involves the relationship between consecutive factorials. If you divide n factorial by the quantity n minus one factorial, the result is simply n. This is because the entire product from n minus one down to one cancels out, leaving only the top term. We also use factorials to handle large-scale divisions. When you see a fraction like one hundred factorial divided by ninety-seven factorial, you should immediately think of expanding the numerator until you reach the denominator. That gives you one hundred times ninety-nine times ninety-eight. Another shortcut is recognizing that factorials grow at an incredibly rapid rate. While three factorial is six, ten factorial is already over three million. This rapid growth is why we rely on the notation rather than writing out the full product every time. As we move forward into the formal formulas for permutations, you will see these factorials appearing constantly. Mastering this notation, understanding the recursive property, and learning how to cancel terms in fractions are the three pillars that will make the rest of this chapter feel much more intuitive. Practice these expansions and simplifications now, as they are the foundation for everything that follows.","Welcome back. In our previous lesson, we mastered factorial notation. Now, it is time to step into the core of this chapter: Permutations. In mathematics, a permutation is simply an arrangement of objects in a specific order. The key word here is 'order'. If you change the position of even one element, you have created a new permutation. Let us look at a simple real-world example. Suppose you have three distinct books: Mathematics, Physics, and Chemistry. If you want to arrange them on a shelf, how many ways can you do it? Let us use the Fundamental Principle of Counting we learned earlier. For the first position on the shelf, you have three choices. Once you place the first book, you have only two choices left for the second position. Finally, for the last position, you have only one choice remaining. According to the multiplication rule, the total number of arrangements is three times two times one, which equals six. These six arrangements are: MPC, MCP, PMC, PCM, CMP, and CPM. Notice that even though the set of books is the same, changing the order gives us a different arrangement. This brings us to the concept of linear arrangements. A linear arrangement is when objects are placed in a straight line. Now, what if we have a larger set? Suppose you have 'n' distinct objects, and you want to arrange all of them in a line. Following our logic, the first position has 'n' choices, the second has 'n minus one', the third has 'n minus two', and so on, until the last object, which has only one choice. This is exactly the definition of 'n factorial'. But what if we don't want to arrange all 'n' objects? What if we have 'n' objects but only want to arrange 'r' of them in a line? This is where the Permutation formula becomes powerful. Let's say we have 10 athletes in a race, but we only care about the Gold, Silver, and Bronze medalists. Here, 'n' is 10 and 'r' is 3. For the Gold medal, there are 10 possibilities. For Silver, there are 9. For Bronze, there are 8. The total arrangements are 10 times 9 times 8, which is 720. We denote this as 'n P r'. The mathematical formula for 'n P r' is 'n factorial divided by the quantity n minus r factorial'. Let's test this formula with our athlete example. '10 P 3' equals 10 factorial divided by the quantity 10 minus 3 factorial. That is 10 factorial divided by 7 factorial. When we expand this, we get 10 times 9 times 8 times 7 factorial, all divided by 7 factorial. The 7 factorials cancel out, leaving us with 10 times 9 times 8, which is 720. It works perfectly! It is important to remember the constraints: 'n' must be a non-negative integer, 'r' must be a non-negative integer, and 'r' cannot be greater than 'n'. If you try to arrange 5 objects out of 3, it is mathematically impossible, so the formula wouldn't apply. To summarize, whenever a problem mentions 'arrangement', 'order', 'sequence', or 'ranking', you are dealing with permutations. Use the 'n P r' formula to quickly calculate the number of ways to arrange a subset of items from a larger group. In the next part, we will look at what happens when some of those objects are not distinct.","Welcome back. In our previous lesson, we mastered the linear arrangement of distinct objects using the n-P-r formula. But what happens when the objects we are arranging are not all unique? What if we have some identical items? Or, what if we aren't arranging them in a straight line, but in a circle? Today, we tackle these two fascinating variations. Let's start with Permutations of Identical Objects. Imagine you have three distinct colored balls: Red, Blue, and Green. You can arrange them in three factorial, which is six different ways. But now, suppose you have three balls, but they are all Red. How many ways can you arrange them? If you swap one Red ball with another, the arrangement looks exactly the same. There is only one unique way. This brings us to a crucial rule. If you have a total of n objects, where n-one objects are of one kind, n-two objects are of a second kind, and so on, the number of distinct permutations is given by n factorial divided by the product of the factorials of the counts of identical objects. For example, let's look at the word 'APPLE'. There are five letters in total. However, the letter 'P' is repeated twice. To find the total arrangements, we take five factorial and divide it by two factorial. That gives us one hundred and twenty divided by two, which is sixty unique arrangements. If we had the word 'MISSISSIPPI', we would take eleven factorial and divide it by four factorial for the four 'I's, four factorial for the four 'S's, and two factorial for the two 'P's. This division effectively 'cancels out' the redundant arrangements caused by identical items. Now, let's shift our focus to a completely different geometry: Circular Permutations. When we arrange objects in a line, the positions are fixed—there is a clear first, second, and last place. But in a circle, like people sitting around a round table, there is no fixed starting point. If everyone moves one seat to the right, the relative positions remain the same. The arrangement is considered identical because the neighbors haven't changed. To account for this rotational symmetry, we must fix one person in a single position to act as a reference point. Once that person is fixed, the remaining n minus one objects can be arranged in a linear fashion. Therefore, the formula for the number of circular permutations of n distinct objects is simply n minus one factorial. For instance, if five friends are sitting at a round table, the number of ways is four factorial, which is twenty-four. However, there is a special case you must remember. If we are arranging objects like beads on a necklace or flowers on a garland, the arrangement can be flipped over. In these cases, clockwise and anti-clockwise arrangements are considered the same. To find the number of ways to arrange beads on a necklace, we take the circular formula and divide it by two. So, for n beads, the formula is one-half times n minus one factorial. To summarize: when objects are identical, we divide by the factorials of the repetitions to remove duplicates. When objects are in a circle, we use n minus one factorial to account for rotational symmetry, and we divide by two if the arrangement can be flipped, like a necklace. Mastering these nuances will allow you to solve even the most complex seating and pattern problems.","Welcome back. In our previous lesson, we mastered the art of arrangement through Permutations. We learned that when order matters, we use nPr. But what happens when the order doesn't matter at all? What if we only care about who or what is chosen, rather than the sequence in which they appear? This brings us to the concept of Combinations. Imagine you are a cricket captain. You have fifteen players in your squad, and you need to select eleven players for a match. Does it matter if you call out Rahul first and then Rohit, or Rohit first and then Rahul? No. The team remains the same. This is the essence of a combination: a selection where order is irrelevant. Let's look at a mathematical example to see why this changes our counting. Suppose we have three letters: A, B, and C, and we want to select two of them. If we were arranging them, we would have AB, BA, BC, CB, AC, and CA. That is six permutations. But if we are just selecting them, AB is the same as BA. BC is the same as CB. AC is the same as CA. In the world of combinations, we don't count the different orders; we only count the unique groups. So, instead of six, we only have three unique selections: {A, B}, {B, C}, and {A, C}. Notice what happened? We took our six permutations and divided them by the number of ways those two selected items could be rearranged. Since two items can be arranged in two factorial, or two times one, which is two, we divided six by two to get three. This logic leads us directly to the general formula for combinations. If we have n distinct objects and we want to select r objects from them, the number of ways is denoted by nCr. The formula is nCr equals n factorial divided by the quantity r factorial times the quantity n minus r factorial. Let's break this down. The numerator, n factorial, represents the total permutations of all objects. The denominator is the key. The r factorial term effectively 'undoes' the ordering of the selected items. Because in a selection, the r items we chose can be shuffled in r factorial ways, but those shuffles don't create a new selection. The n minus r factorial term accounts for the items we did not select. Let's try a numerical example. Suppose we have 10 students and we want to choose a committee of 3. Here, n is 10 and r is 3. Using our formula, 10 C 3 equals 10 factorial divided by the quantity 3 factorial times the quantity 10 minus 3 factorial. This simplifies to 10 factorial divided by the quantity 3 factorial times 7 factorial. To calculate this easily, we can cancel out the 7 factorial from the numerator and denominator. This leaves us with 10 times 9 times 8 divided by 3 times 2 times 1. Multiplying the top gives us 720, and the bottom gives us 6. 720 divided by 6 equals 120. So, there are 120 different ways to form that committee. One very important property to remember is that nCr is always equal to n C (n minus r). This is a beautiful symmetry. Choosing 3 people to be on a committee from a group of 10 is mathematically identical to choosing 7 people to be left out. The number of ways to select is the same as the number of ways to reject. Also, remember that if r is zero, nC0 is always 1, because there is only one way to select nothing. If r is equal to n, nCn is also 1, because there is only one way to select everyone. As we move forward, always ask yourself: 'Does the order of my selection change the outcome?' If the answer is no, you are dealing with combinations.","Welcome back. In our previous lesson, we explored the logic of selection through Combinations and the logic of arrangement through Permutations. Now, we arrive at a crucial turning point in this chapter. Have you ever wondered if these two concepts are truly independent, or if they are actually two sides of the same mathematical coin? The answer is that they are deeply interconnected. Today, we will derive the mathematical bridge that links the number of ways to select objects with the number of ways to arrange them. Let us start with a logical thought experiment. Suppose we have a set of n distinct objects, and we want to perform a two-step process. First, we select r objects from these n objects. The number of ways to do this is what we call nCr, or n combination r. Now, once we have these r selected objects sitting in front of us, what can we do with them? We can arrange them in a line. Since we have r distinct objects, the number of ways to arrange them is r factorial, which is r prime factorial. Now, think about the total process of selecting AND then arranging. This is equivalent to a Permutation, which we call nPr. According to the Fundamental Principle of Multiplication, if one task can be done in 'm' ways and a second task in 'n' ways, the total ways to do both is m multiplied by n. In our case, the first task is selection, which is nCr ways, and the second task is arrangement, which is r factorial ways. Therefore, the total number of permutations, nPr, must be equal to the number of selections, nCr, multiplied by the number of ways to arrange those selections, r factorial. Mathematically, we write this as nPr equals nCr multiplied by r factorial. This is our fundamental relationship. To see how this leads to the formula for nCr, let us rearrange the equation. If we divide both sides by r factorial, we get nCr equals nPr divided by r factorial. Now, let us substitute the known formula for nPr. We know that nPr equals n factorial divided by the quantity n minus r factorial. When we plug this into our relationship, we get nCr equals the quantity n factorial divided by the quantity n minus r factorial, all divided by r factorial. This simplifies beautifully into a single fraction: nCr equals n factorial divided by the product of r factorial and the quantity n minus r factorial. This is the standard formula for combinations that you see in your textbooks. Let us verify this with a concrete example to ensure the logic holds. Suppose we have four distinct letters: A, B, C, and D. We want to find how many ways we can select 2 letters and then arrange them. Using the permutation formula, n is 4 and r is 2. So, 4P2 equals 4 factorial divided by 2 factorial, which is 24 divided by 2, giving us 12 ways. Now, let us use our relationship. First, let's find the number of ways to select 2 letters from 4. Using the combination formula, 4C2 equals 4 factorial divided by the product of 2 factorial and 2 factorial. That is 24 divided by 4, which equals 6. Now, according to our rule, 4P2 should equal 4C2 multiplied by 2 factorial. Let's check: 6 multiplied by 2 is indeed 12. The logic is perfectly consistent. This derivation proves that a permutation is simply a combination that has been ordered. Every permutation can be thought of as a selection followed by a rearrangement. This understanding is vital because, in complex problems, you must first decide if the order matters. If you can break a problem into 'select then arrange,' you have successfully bridged the gap between these two pillars of combinatorics. Understanding this derivation not only helps you memorize the formula but gives you the power to derive it whenever you forget. In the next section, we will move into advanced combinations, looking at how to group objects and handle specific constraints.","Welcome back. In our previous session, we mastered the basic selection process using the nCr formula. But in real-world mathematics, selection is rarely that simple. Today, we move into advanced combinations, where we deal with three specific challenges: grouping objects into smaller sets, dividing a total collection into distinct groups, and handling selection constraints where certain items must or must not be included. Let's start with the concept of Grouping. Imagine you have eight distinct books and you want to select three to take on a trip. This is a simple combination. But what if I ask you to divide these eight books into two groups, one containing five books and the other containing three? To solve this, we first select five books out of eight, which is 8 combination 5. Once those five are chosen, the remaining three books automatically form the second group. So, the number of ways is 8 combination 5 multiplied by 3 combination 3. Since 3 combination 3 is just one, the answer is simply 8 combination 5. Now, let's look at a more complex scenario: Division into multiple groups. Suppose we have twelve distinct players and we want to divide them into three teams of four players each. First, we select four players for the first team from twelve, which is 12 combination 4. Next, we select four players for the second team from the remaining eight, which is 8 combination 4. Finally, the last four players are automatically assigned to the third team, which is 4 combination 4. However, there is a crucial rule here. If the groups are not named or labeled—meaning Team A, Team B, and Team C don't exist, and we just want three piles of four—then the order in which we pick the groups doesn't matter. In this case, we must divide our final result by the factorial of the number of equal-sized groups to avoid overcounting. So, for three equal groups, we divide by 3 factorial. If the groups are distinct, like 'Team Red', 'Team Blue', and 'Team Green', we do not divide. This is a common trap in exams! Now, let's move to Selection Constraints. This is where problems get interesting. There are two main types of constraints: 'Must-include' and 'Must-exclude'. Let's say we have a committee of 5 people to be chosen from 10 candidates, but one specific person, let's call him Mr. Sharma, must always be included. If Mr. Sharma is already in the committee, we no longer need to choose 5 people from 10. We only need to choose the remaining 4 people from the remaining 9 candidates. So, the calculation becomes 9 combination 4. On the flip side, what if Mr. Sharma must be excluded? If he cannot be part of the committee, we are effectively choosing our 5 members from only 9 available candidates. The calculation here is 9 combination 5. What if we have a constraint like 'at least' or 'at most'? This is the most frequent type of question. Suppose we need to select a committee of 5 from 6 men and 4 women, with the constraint that there must be at least 3 women. To solve 'at least' problems, we must break the problem into mutually exclusive cases. Case one: exactly 3 women and 2 men. This is 4 combination 3 multiplied by 6 combination 2. Case two: exactly 4 women and 1 man. This is 4 combination 4 multiplied by 6 combination 1. Since these are separate possibilities, we add the results of Case one and Case two together. Always remember: 'At least' means you sum the possibilities, while 'And' within a case means you multiply the selections. Mastering these logical shifts—from simple selection to structured grouping and constrained choice—is what separates a student from a mathematician. Let's practice these with some examples.","Welcome back. In our previous session, we explored the relationship between permutations and combinations. Today, we move from abstract formulas to practical application. We are going to tackle word problems involving letters, digits, and numbers. This is where many students get confused, but the secret lies in one question: Does the order matter? If we are arranging letters to form a word, or digits to form a number, the order absolutely matters. Therefore, we will primarily use the principles of permutations. Let us start with letters. Suppose we are given the word 'APPLE'. How many different ways can we arrange these letters? If all letters were distinct, like in the word 'MATH', the answer would simply be four factorial, which is twenty-four. But look at 'APPLE'. We have two 'P's. If we swap the first 'P' with the second 'P', the word still looks like 'APPLE'. The arrangement hasn't changed. To correct for this overcounting, we divide the total permutations by the factorial of the number of times each letter repeats. So, for 'APPLE', the total letters are five, and 'P' repeats twice. The formula is five factorial divided by two factorial. This gives us sixty distinct arrangements. What if we have a word like 'MISSISSIPPI'? Here, we have eleven letters, with 'I' repeating four times, 'S' repeating four times, and 'P' repeating twice. The calculation becomes eleven factorial divided by the product of four factorial, four factorial, and two factorial. Now, let us shift our focus to digits and forming numbers. This adds a new layer of complexity: the concept of place value and the restriction on the number zero. Suppose I ask you to form a three-digit number using the digits one, two, and three, without repetition. This is a straightforward permutation of three objects taken three at a time, which is three factorial, or six. But what if we include the digit zero? Let's say we use zero, one, and two to form a three-digit number. Here, we must be careful. A three-digit number cannot start with zero. If zero is in the hundreds place, it becomes a two-digit number. So, for the first position, we only have two choices: one or two. Once the first digit is chosen, we have two digits left for the second position, and one digit left for the third position. Using the Fundamental Principle of Multiplication, the total numbers are two times two times one, which equals four. Now, let's look at problems with constraints. Suppose we want to form a four-digit number using digits zero through nine, where the number must be even. To solve this, always start with the most restrictive condition. For a number to be even, the last digit must be zero, two, four, six, or eight. However, because zero also affects the first digit, we often split this into two cases: Case one, where the number ends in zero, and Case two, where the number ends in two, four, six, or eight. By calculating these cases separately and adding them, we avoid the trap of double-counting or invalidating the first digit. Finally, consider problems involving inequalities. If a question asks for all three-digit numbers where the digits are in increasing order, the logic changes. In an increasing sequence like one-two-three, once you select three distinct digits, there is only one way to arrange them. This means we are actually selecting digits rather than arranging them. So, we use combinations. We choose three digits out of the available set, and the order is automatically fixed. Remember, when the problem implies a specific order is required, use combinations. When the problem asks for all possible arrangements, use permutations. Master these distinctions, and you will master these word problems.","Welcome back. In our previous lesson, we mastered the basics of arranging letters and forming numbers. Today, we step into the real world of application. We are going to tackle two major types of complex word problems: Seating Arrangements with specific constraints and Committee Selection with diverse membership requirements. Let's start with Seating Arrangements. Often, problems won't just ask you to arrange people; they will add conditions like 'two people must sit together' or 'two people must never sit together.' Let's look at the 'Together' constraint first. Imagine five students, A, B, C, D, and E, are to be seated in a row. However, students A and B must always sit next to each other. To solve this, we use the 'String Method' or 'Tie Method.' We treat A and B as a single entity or one single block. Now, instead of five separate individuals, we have the block (AB) and the three remaining students, C, D, and E. This gives us a total of four entities to arrange. The number of ways to arrange four entities is four factorial, which is four times three times two times one, equaling twenty-four. But wait, we aren't done. Inside that single block, A and B can switch places—they can sit as AB or BA. That is two factorial, which is two ways. So, we multiply our results: twenty-four times two equals forty-eight total arrangements. Now, what if A and B must NOT sit together? The easiest way to solve this is the 'Subtraction Method.' We take the total number of ways to arrange five students without any restrictions, which is five factorial, or one hundred and twenty, and subtract the cases where they ARE together, which we just calculated as forty-eight. One hundred and twenty minus forty-eight gives us seventy-two ways where they are separated. Now, let's shift gears to Committee Selection. This is where Combinations, or nCr, become our primary tool. Committee problems are tricky because they often involve different groups, like men and women, or experts and novices, and they impose specific ratios. For example, suppose we have a group of seven men and five women. We need to form a committee of five people such that it contains exactly three men and two women. In this case, we are performing two separate selections. First, we select three men from seven. This is seven combination five, or seven combination three. Using the formula, that is seven factorial divided by the product of three factorial and four factorial, which equals thirty-five. Second, we select two women from five. This is five combination two, which is five factorial divided by the product of two factorial and three factorial, equaling ten. Since we need both the men AND the women to complete the committee, the Fundamental Principle of Multiplication tells us to multiply these two results. Thirty-five times ten gives us three hundred and fifty possible committees. What if the problem says 'at least' or 'at most'? This is a common area for errors. If the problem asks for 'at least two women' in our five-member committee, you must calculate every valid scenario: two women and three men, OR three women and two men, OR four women and one man, OR five women and zero men. You calculate each scenario separately using combinations and then add them together using the Addition Rule. Remember, 'at least' means you sum the possibilities, while 'and' in selection means you multiply the groups. Mastering these two patterns—the String Method for seating and the Case-by-Case method for committees—will allow you to solve almost any complex word problem in this chapter. Let's dive into some practice examples.","Welcome back. We have covered the formulas for permutations and combinations, but now we face the most critical challenge in this chapter. In an exam, the math is often easy, but the interpretation is hard. The biggest mistake students make is choosing the wrong tool: using a permutation formula when they should have used a combination, or vice versa. Let's clear this confusion once and for all. The fundamental question you must ask yourself before picking up your pen is: Does the order of the items matter? If I change the position of two items, does it create a new outcome? If the answer is yes, you are dealing with an arrangement, which means Permutations. If the answer is no, you are dealing with a selection, which means Combinations. Let's look at a classic example. Suppose I have three letters: A, B, and C. If I am asked to select two letters, the possible outcomes are AB, BC, and AC. Notice that if I pick A and then B, it is the exact same group as picking B and then A. The order doesn't change the group. This is a selection, or a combination. But, if I am asked to arrange these letters in a row, then AB and BA are two completely different results. One has A first, the other has B first. This is an arrangement, or a permutation. Here is a mental shortcut: Think of a 'Committee' versus a 'Queue'. When we form a committee of three people from a class, it doesn't matter if Rahul is picked first or third; he is still just a member of that committee. That is a combination. However, if we are assigning roles, like a President, a Secretary, and a Treasurer, then the order matters immensely. If Rahul is President, it is a different scenario than if Rahul is the Treasurer. This is a permutation. Another common pitfall occurs in word problems involving numbers. If a question asks you to 'form a three-digit number' using given digits, you are arranging them. The number one-two-three is not the same as three-two-one. But, if a question asks you to 'choose three digits' to be used in a calculation later, you are simply selecting them. There is a third trap: the 'Overcounting' error. This happens when students try to solve a complex problem by arranging things step-by-step without realizing they have already accounted for the order. For instance, if you select a group of five people and then immediately assign them to five specific seats, you have performed a combination followed by a permutation. Some students try to do this in one messy step and end up multiplying by the wrong factorial. Always break it down: First, select the items. Second, if the problem requires it, arrange them. Let's summarize the rule of thumb. If the problem uses words like 'arrange', 'order', 'sequence', 'rank', or 'row', think Permutations. If the problem uses words like 'select', 'choose', 'group', 'committee', or 'set', think Combinations. Mastering this distinction is the difference between a student who memorizes formulas and a student who truly understands combinatorics. In our next and final session, we will look at exam strategies to ensure you never fall into these traps during the actual test.","Welcome to the final destination of our journey through Permutations and Combinations. We have traveled from the basic Fundamental Principle of Counting all the way to complex committee selections and grouping constraints. Now, it is time to transition from learning concepts to mastering the exam. To succeed in this chapter, you must first master the art of the 'Decision Point.' Whenever you face a word problem, pause for five seconds and ask yourself: Does the order matter? If the order creates a new outcome, you are in the realm of Permutations. If the order is irrelevant and you are only picking a group, you are in the realm of Combinations. This single question is the key to avoiding ninety percent of common mistakes. Let us talk about time management. In a competitive exam, students often get stuck in 'calculation loops.' They spend five minutes calculating a massive factorial like twelve factorial by hand. Do not do this. In the exam, always look for cancellations. Write your formula, expand the factorials partially, and cancel the common terms before you ever touch your pen to multiply. For example, if you have eleven factorial divided by eight factorial, do not calculate eleven factorial. Simply write eleven times ten times nine and stop there. This saves precious minutes. Another strategy is the 'Constraint First' rule. When solving complex word problems—like arranging letters where certain vowels must stay together—always address the restriction first. Arrange the constrained items as a single block, then arrange the remaining items, and finally, multiply by the internal arrangements of that block. If you try to arrange everything at once and then subtract the bad cases, you often end up double-counting. It is almost always safer to build the arrangement according to the rules from the ground up. Now, let us do a lightning-fast recap of our entire chapter. We started with the Multiplication Principle, where we multiply when tasks happen sequentially, and the Addition Principle, where we add when tasks are mutually exclusive. We mastered Factorial notation, the backbone of our calculations. We moved to Permutations, the science of arrangement, including the special cases of identical objects and circular seating. Then, we transitioned to Combinations, the logic of selection, where we learned that nCr is simply nPr divided by r factorial to remove the importance of order. We tackled advanced grouping, where we divided items into specific sizes, and we navigated the tricky waters of word problems involving digits, letters, and constraints. Remember, the biggest pitfall is the confusion between 'at least' and 'at most.' When a problem says 'at least two,' you must calculate the cases for two, three, and so on, or use the complement method: Total cases minus the cases you don't want. As you head into your exams, stay calm. Read the problem twice. Identify if it is an arrangement or a selection. Apply your constraints first. Cancel your factorials early. You have built the logical foundation; now, go and apply it with precision. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-maths-06-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

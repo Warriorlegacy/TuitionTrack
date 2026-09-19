@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Sequences and Series, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-maths-08-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Real-world applications, patterns, and the importance of Sequences and Series -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Real-world applications, patterns, and the importance of Sequences and Series</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Pattern: A predictable regularity or rule in numbers or nature.</div>
+              <div id="qx0-p1" class="qe-bullet">• Sequence: An ordered list of numbers following a specific rule.</div>
+              <div id="qx0-p2" class="qe-bullet">• Series: The sum of the terms of a given sequence.</div>
+              <div id="qx0-p3" class="qe-bullet">• Real-world: Population growth, compound interest, and natural spirals.</div>
+              <div id="qx0-p4" class="qe-bullet">• Goal: To predict future terms and calculate total sums efficiently.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2647653855,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic transition starting from a spinning Fibonacci seashell, morphing into a digital rising bar graph representing bank interest, and finally settling into a clean chalkboard interface.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D cinematic transition starting from a spinning Fibonacci seashell, morphing into a digital rising bar graph representing bank interest, and finally settling into a clean chalkboard interface.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Fundamental Concepts: Definitions of Sequences, Series, Finite vs Infinite, and General Term -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Fundamental Concepts: Definitions of Sequences, Series, Finite vs Infinite, and General Term</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Sequence: An ordered list of numbers where position matters.</div>
+              <div id="qx1-p1" class="qe-bullet">• Series: The sum of the terms of a given sequence.</div>
+              <div id="qx1-p2" class="qe-bullet">• Finite vs Infinite: Sequences that end versus those that continue forever.</div>
+              <div id="qx1-p3" class="qe-bullet">• General Term (a-n): A formula to find any term based on its position 'n'.</div>
+              <div id="qx1-p4" class="qe-bullet">• Sigma Notation: A mathematical shorthand for expressing a series sum.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":514702355,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D digital chalkboard where numbers fly in to form a list (sequence), then '+' signs drop between them to transform the list into a sum (series).</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D digital chalkboard where numbers fly in to form a list (sequence), then '+' signs drop between them to transform the list into a sum (series).</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Arithmetic Progression (AP) I: Definition, common difference, and the nth term formula derivation -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Arithmetic Progression (AP) I: Definition, common difference, and the nth term formula derivation</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Arithmetic Progression (AP): A sequence with a constant difference between terms.</div>
+              <div id="qx2-p1" class="qe-bullet">• Common Difference (d): The fixed value added to each term to get the next.</div>
+              <div id="qx2-p2" class="qe-bullet">• Notation: 'a' represents the first term; 'd' represents the common difference.</div>
+              <div id="qx2-p3" class="qe-bullet">• nth Term Formula: a_n = a + (n - 1)d</div>
+              <div id="qx2-p4" class="qe-bullet">• The number of differences added is always one less than the term position.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2207004167,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D staircase appears where each step is labeled with terms (a, a+d, a+2d) and the height between steps is highlighted as 'd'.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D staircase appears where each step is labeled with terms (a, a+d, a+2d) and the height between steps is highlighted as 'd'.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Arithmetic Progression (AP) II: Sum of n terms, properties, and complex word problems -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Arithmetic Progression (AP) II: Sum of n terms, properties, and complex word problems</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Sum formula 1: S_n = n/2 [a + l]</div>
+              <div id="qx3-p1" class="qe-bullet">• Sum formula 2: S_n = n/2 [2a + (n-1)d]</div>
+              <div id="qx3-p2" class="qe-bullet">• The sum of an AP is always a quadratic in n: An^2 + Bn</div>
+              <div id="qx3-p3" class="qe-bullet">• Property: a_n = S_n - S_{n-1}</div>
+              <div id="qx3-p4" class="qe-bullet">• Symmetry: Sum of equidistant terms is constant</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"numberline","seed":2270586080,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D floating number line where terms of an AP glow and merge into a growing bar graph representing the cumulative sum.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D floating number line where terms of an AP glow and merge into a growing bar graph representing the cumulative sum.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Geometric Progression (GP) I: Definition, common ratio, and the nth term formula derivation -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Geometric Progression (GP) I: Definition, common ratio, and the nth term formula derivation</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Geometric Progression: A sequence where terms have a constant ratio.</div>
+              <div id="qx4-p1" class="qe-bullet">• Common Ratio (r): The fixed multiplier between consecutive terms.</div>
+              <div id="qx4-p2" class="qe-bullet">• General Form: a, ar, ar^2, ar^3, ..., ar^(n-1)</div>
+              <div id="qx4-p3" class="qe-bullet">• nth Term Formula: a_n = a * r^(n-1)</div>
+              <div id="qx4-p4" class="qe-bullet">• Example: If a=2 and r=3, the 6th term is 2 * 3^5 = 486.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1767689678,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a single golden sphere splitting into two, then four, then eight, with the numbers and the formula a_n = a * r^(n-1) floating in the background.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D animation showing a single golden sphere splitting into two, then four, then eight, with the numbers and the formula a_n = a * r^(n-1) floating in the background.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Geometric Progression (GP) II: Sum of n terms, sum of infinite GP, and practical applications -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Geometric Progression (GP) II: Sum of n terms, sum of infinite GP, and practical applications</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Sum of n terms formula: S_n = a(1 - r^n) / (1 - r) for r ≠ 1</div>
+              <div id="qx5-p1" class="qe-bullet">• If r = 1, the sum of n terms is simply n times a</div>
+              <div id="qx5-p2" class="qe-bullet">• Sum of infinite GP: S_infinity = a / (1 - r) only if |r| &lt; 1</div>
+              <div id="qx5-p3" class="qe-bullet">• Divergent series: Sum grows to infinity if |r| ≥ 1</div>
+              <div id="qx5-p4" class="qe-bullet">• Real-world use: Modeling bouncing balls and compound growth</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":668751577,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a sequence of growing golden spheres, transitioning into a mathematical derivation where terms cancel out through a subtraction animation, ending with a bouncing ball simulation.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D animation showing a sequence of growing golden spheres, transitioning into a mathematical derivation where terms cancel out through a subtraction animation, ending with a bouncing ball simulation.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Geometric Mean (GM) and Arithmetic Mean (AM): Definitions, properties, and relationship between them -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Geometric Mean (GM) and Arithmetic Mean (AM): Definitions, properties, and relationship between them</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Arithmetic Mean (AM) of a and b is (a + b) / 2</div>
+              <div id="qx6-p1" class="qe-bullet">• Geometric Mean (GM) of a and b is square root of (a * b)</div>
+              <div id="qx6-p2" class="qe-bullet">• For n numbers, AM is Sum/n and GM is n-th root of Product</div>
+              <div id="qx6-p3" class="qe-bullet">• Fundamental Inequality: AM &gt;= GM for positive real numbers</div>
+              <div id="qx6-p4" class="qe-bullet">• Equality (AM = GM) holds only when all numbers are equal</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3037812961,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a number line with a midpoint (AM) versus a growing geometric volume (GM), transitioning into a comparison graph where the AM curve stays above the GM curve.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A split-screen 3D animation showing a number line with a midpoint (AM) versus a growing geometric volume (GM), transitioning into a comparison graph where the AM curve stays above the GM curve.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Special Series I: Sum of first n natural numbers, squares, and cubes (Sigma notation mastery) -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Special Series I: Sum of first n natural numbers, squares, and cubes (Sigma notation mastery)</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Sigma notation: The mathematical shorthand for summation</div>
+              <div id="qx7-p1" class="qe-bullet">• Sum of first n natural numbers: n(n + 1) / 2</div>
+              <div id="qx7-p2" class="qe-bullet">• Sum of squares of first n natural numbers: [n(n + 1)(2n + 1)] / 6</div>
+              <div id="qx7-p3" class="qe-bullet">• Sum of cubes of first n natural numbers: [n(n + 1) / 2] squared</div>
+              <div id="qx7-p4" class="qe-bullet">• Sigma notation components: Lower limit, upper limit, and general term</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2159966198,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D chalkboard where Sigma symbols glow and transform into expanding stacks of numbered cubes.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D chalkboard where Sigma symbols glow and transform into expanding stacks of numbered cubes.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Special Series II: Advanced applications of summation formulas and pattern recognition -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Special Series II: Advanced applications of summation formulas and pattern recognition</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Decomposing complex terms using the linearity property of Sigma</div>
+              <div id="qx8-p1" class="qe-bullet">• Mastering the Method of Differences (Telescoping Series)</div>
+              <div id="qx8-p2" class="qe-bullet">• Using Partial Fractions to simplify fractional summations</div>
+              <div id="qx8-p3" class="qe-bullet">• Handling index shifts: Sum from m to n = Sum(1 to n) - Sum(1 to m-1)</div>
+              <div id="qx8-p4" class="qe-bullet">• Pattern recognition: Identifying series degree via constant differences</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3728523291,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D chalkboard where complex algebraic terms physically break apart into simpler pieces and 'telescope' inward to cancel each other out.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D chalkboard where complex algebraic terms physically break apart into simpler pieces and 'telescope' inward to cancel each other out.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Common Pitfalls: Identifying errors in series notation, formula misuse, and algebraic mistakes -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Common Pitfalls: Identifying errors in series notation, formula misuse, and algebraic mistakes</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Check Sigma notation limits: Always verify the lower and upper bounds.</div>
+              <div id="qx9-p1" class="qe-bullet">• Infinite GP Condition: Ensure the common ratio 'r' is between -1 and 1.</div>
+              <div id="qx9-p2" class="qe-bullet">• Counting Terms: Remember to add one when calculating 'n' in an AP.</div>
+              <div id="qx9-p3" class="qe-bullet">• Algebraic Expansion: Correctly expand terms like (k+1) squared before summing.</div>
+              <div id="qx9-p4" class="qe-bullet">• Term vs. Sum: Distinguish clearly between a_n and S_n in word problems.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3501915971,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a 'Correct' vs 'Incorrect' calculation path with red 'X' marks appearing over common algebraic errors.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D split-screen showing a 'Correct' vs 'Incorrect' calculation path with red 'X' marks appearing over common algebraic errors.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Exam Techniques: Time management, step-marking strategies, and solving high-order thinking -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Exam Techniques: Time management, step-marking strategies, and solving high-order thinking</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• The Two-Minute Rule: Move on if the pattern isn't clear immediately.</div>
+              <div id="qx10-p1" class="qe-bullet">• Four-Step Presentation: Given, Formula, Substitution, and Final Answer.</div>
+              <div id="qx10-p2" class="qe-bullet">• Maximize Step-Marking: Show every logical transition to secure partial credit.</div>
+              <div id="qx10-p3" class="qe-bullet">• HOTS Strategy: Use pattern recognition to identify AP, GP, or AM-GM links.</div>
+              <div id="qx10-p4" class="qe-bullet">• The Equality Shortcut: If AM equals GM, the terms are identical.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2434574031,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a 'Messy Solution' losing marks vs. a 'Structured Solution' gaining full marks through highlighted steps.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a 'Messy Solution' losing marks vs. a 'Structured Solution' gaining full marks through highlighted steps.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Full chapter recap, rapid-fire formula drill, and previous year question -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Full chapter recap, rapid-fire formula drill, and previous year question</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Quick Recap: AP, GP, and Special Series formulas</div>
+              <div id="qx11-p1" class="qe-bullet">• Rapid-Fire Drill: Essential formulas for instant recall</div>
+              <div id="qx11-p2" class="qe-bullet">• AM-GM Inequality: The fundamental relationship</div>
+              <div id="qx11-p3" class="qe-bullet">• PYQ Analysis: Identifying series types and solving step-by-step</div>
+              <div id="qx11-p4" class="qe-bullet">• Exam Pro-Tips: Avoiding common algebraic traps</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4192454900,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A high-tech digital dashboard where mathematical formulas fly toward the camera and transform into solved equations as a timer counts down.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A high-tech digital dashboard where mathematical formulas fly toward the camera and transform into solved equations as a timer counts down.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Sequences and Series today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Real-world applications, patterns, and the importance of Sequences and Series <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Fundamental Concepts: Definitions of Sequences, Series, Finite vs Infinite, and General Term <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Arithmetic Progression (AP) I: Definition, common difference, and the nth term formula derivation <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Arithmetic Progression (AP) II: Sum of n terms, properties, and complex word problems <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Geometric Progression (GP) I: Definition, common ratio, and the nth term formula derivation <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Geometric Progression (GP) II: Sum of n terms, sum of infinite GP, and practical applications <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Geometric Mean (GM) and Arithmetic Mean (AM): Definitions, properties, and relationship between them <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Special Series I: Sum of first n natural numbers, squares, and cubes (Sigma notation mastery) <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Special Series II: Advanced applications of summation formulas and pattern recognition <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Common Pitfalls: Identifying errors in series notation, formula misuse, and algebraic mistakes <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Exam Techniques: Time management, step-marking strategies, and solving high-order thinking <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Full chapter recap, rapid-fire formula drill, and previous year question <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone, and welcome to our journey into one of the most beautiful and practical chapters in Class 11 Mathematics: Sequences and Series. Before we dive into the complex formulas and algebraic proofs, I want you to take a moment to look around you. Mathematics is not just about numbers on a page; it is the language of patterns. If you look at the petals of a flower, the spiral of a seashell, or even the way interest accumulates in your bank account, you are looking at mathematics in action. But what exactly is a pattern? A pattern is a regularity in the world, a predictable arrangement that follows a specific rule. When we take these patterns and arrange them in a specific order, we create what we call a Sequence. Now, imagine you are saving money. On the first day, you save ten rupees. On the second day, you save fifteen rupees. On the third day, twenty rupees. Do you see the pattern? You are adding five rupees every single day. This predictable progression is a sequence. Now, what happens if we want to know the total amount of money you have saved after thirty days? To find that, we don't just look at the individual daily amounts; we add them all together. This sum of the terms in a sequence is what we call a Series. So, to put it simply: a sequence is an ordered list of numbers, and a series is the sum of those numbers. Let's look at a more complex real-world example: population growth. Suppose a city has a population of one lakh people, and it grows by ten percent every year. The population next year won't just be a random number; it will follow a specific mathematical rule based on the current population. This is a sequence where each term is derived from the previous one through a multiplication rule. Another fascinating example is the concept of compound interest in finance. If you invest a sum of money, the interest you earn in the second year is calculated on the total amount from the first year, including the interest earned. This creates a geometric pattern of growth. Even in nature, consider the Fibonacci sequence, where each number is the sum of the two preceding ones: one, one, two, three, five, eight, and so on. This sequence appears in the arrangement of leaves on a stem and the scales of a pinecone. Why is studying this so important for you as a student? Because sequences and series provide the foundation for calculus, which you will encounter later. They help us model everything from the trajectory of a rocket to the spread of a virus in a population. In this chapter, we will learn how to identify these patterns, how to find a general formula to predict any term in a sequence without listing them all, and how to calculate the sum of massive series using elegant mathematical shortcuts. We will move from the simple, steady growth of Arithmetic Progressions to the rapid, explosive growth of Geometric Progressions. We will explore the relationship between different types of means and master the art of summation using Sigma notation. By the end of this series of lessons, you won't just be solving equations; you will be able to decode the mathematical rhythm of the world around you. Let's get started by defining our fundamental terms formally in the next video.","Welcome back. In our last session, we looked at how patterns appear in nature and mathematics. Now, it is time to ground those observations with precise mathematical definitions. Let us start with the most basic building block: the Sequence. A sequence is simply an ordered list of numbers, where each number is called a term. Unlike a set, in a sequence, the order matters immensely, and repetition is allowed. For example, if I write the numbers two, four, six, and eight, that is a sequence. We usually denote the terms as a sub-one, a-two, a-three, and so on. Now, what happens when we take these terms and place addition signs between them? This brings us to our second concept: the Series. A series is the sum of the terms of a sequence. If our sequence was two, four, six, and eight, then the corresponding series would be two plus four plus six plus eight. It is crucial to distinguish between the two: a sequence is a list, while a series is a summation. Now, let us categorize these based on their length. We have Finite Sequences and Infinite Sequences. A finite sequence has a specific number of terms that comes to an end. For instance, the sequence of even numbers between one and ten is finite. However, an infinite sequence goes on forever, like the sequence of all natural numbers: one, two, three, and so on. We represent the end of an infinite sequence using the infinity symbol. Moving deeper, we need a way to describe these patterns without writing every single number. This is where the General Term comes in. The general term, often denoted as a-n, is a mathematical formula that allows us to find any term in the sequence simply by knowing its position, which we call n. For example, if we have a sequence where every term is just its position multiplied by five, such as five, ten, fifteen, twenty, the general term is simply a-n equals five n. If you want the hundredth term, you don't need to count; you just plug in one hundred for n, and you get five hundred. This formula is the DNA of the sequence; it contains all the information needed to reconstruct the entire list. We also use Sigma notation, which is the Greek letter Sigma, to represent the sum of a series compactly. When you see a Sigma symbol with a starting value at the bottom and an ending value at the top, it is telling you to add up all the terms generated by the general formula from that start to that end. Understanding these fundamentals—the difference between a list and a sum, the distinction between finite and infinite, and the power of the general term—is the foundation upon which we will build Arithmetic and Geometric Progressions in the upcoming lessons.","Welcome back! In our previous session, we explored the general concept of sequences and terms. Now, we step into one of the most important and practical types of sequences in mathematics: the Arithmetic Progression, or AP. Think of an AP as a sequence that moves with a constant, steady rhythm. Imagine you are climbing a staircase where every single step is exactly the same height. That constant height is what makes it an Arithmetic Progression. Formally, we define an Arithmetic Progression as a sequence of numbers in which the difference between any two consecutive terms is always constant. This constant value is what we call the common difference, denoted by the letter 'd'. Let's look at an example. Suppose we have the sequence: five, eight, eleven, fourteen, and so on. If we subtract the first term from the second, eight minus five gives us three. If we subtract the second from the third, eleven minus eight also gives us three. Since this difference remains the same throughout, this is an AP with a common difference of three. It is important to note that the common difference 'd' can be positive, negative, or even zero. If 'd' is positive, the sequence increases; if 'd' is negative, the sequence decreases; and if 'd' is zero, all terms are identical. Now, let's define our notation. We usually denote the first term as 'a' and the common difference as 'd'. To find any specific term in the sequence, we need a general formula. Let's derive it together so you never have to memorize it blindly. Let the first term be 'a'. The second term is the first term plus the difference, so it is 'a plus d'. The third term is the second term plus 'd', which is 'a plus d plus d', or 'a plus two d'. The fourth term would be the third term plus 'd', which gives us 'a plus three d'. Do you see the pattern emerging? For the second term, we added 'd' once. For the third term, we added 'd' twice. For the fourth term, we added 'd' three times. In every case, the number of times we add 'd' is exactly one less than the position of the term. Therefore, if we want to find the 'n-th' term, which we denote as 'a sub n', we take the first term 'a' and add the common difference 'd' a total of 'n minus one' times. This gives us our fundamental formula: 'a sub n' equals 'a plus the quantity n minus one, multiplied by d'. Let's test this. If our first term 'a' is ten and our common difference 'd' is five, what is the twentieth term? Using our formula, we take ten plus the quantity twenty minus one, multiplied by five. That is ten plus nineteen times five. Nineteen times five is ninety-five, and ninety-five plus ten gives us one hundred and five. The twentieth term is one hundred and five. This formula is incredibly powerful because it allows us to jump to any position in a sequence without having to write out every single term manually. Whether you are calculating interest, predicting growth, or solving complex algebraic problems, the nth term formula is your primary tool. In the next part, we will take this a step further and learn how to calculate the sum of these terms.","Welcome back. In our previous lesson, we mastered finding the nth term of an Arithmetic Progression. But what if we don't just want to find a specific term, but the total accumulation of all terms up to that point? This brings us to the Sum of n terms, often denoted as S sub n. Let's derive this intuitively. Imagine an AP starting with the first term, a, and having a common difference, d. The terms are a, a plus d, a plus two d, all the way up to the last term, which we call l, or a plus n minus one d. If we write the sum forward and then write the same sum backward underneath it, something magical happens. When you add each vertical pair, every single pair sums up to the same value: the first term plus the last term, or a plus l. Since there are n such pairs, the total sum is n times the quantity a plus l. But because we added the series twice, we must divide by two. So, our first formula is S sub n equals n divided by two, times the quantity a plus l. Now, if we don't know the last term, we substitute l with a plus n minus one d. This gives us our second, more common formula: S sub n equals n divided by two, times two a, plus n minus one d. Let's look at some powerful properties. First, the sum of the first n terms of an AP is always a quadratic expression in n, specifically of the form An squared plus Bn, where there is no constant term. This is a crucial hint for exams! If you see a sum formula like three n squared plus five n, you immediately know it's an AP. Second, there is a beautiful symmetry in APs. The sum of terms equidistant from the beginning and the end is constant. That is, the first term plus the last term equals the second term plus the second-to-last term, and so on. Third, if you take the sum of the first n terms, the sum of the next n terms, and the sum of the terms after that, these sums themselves form another Arithmetic Progression. Now, let's tackle the real challenge: complex word problems. These aren't just about plugging numbers into formulas; they are about translation. When a problem says 'a person saves ten rupees more every month,' you are looking at an AP where d is ten. When it says 'the total amount accumulated over five years,' you are looking for S sub n where n is sixty. A common high-level trick involves the relationship between the nth term and the sum. Remember that the nth term, a sub n, is equal to S sub n minus S sub n minus one. This is a lifesaver when you are given a sum formula and asked for a specific term. Let's try a mental exercise. If the sum of the first ten terms is fifty and the sum of the first twenty terms is two hundred, how do we find the first term? We set up two simultaneous equations using our S sub n formula, solve for a and d, and we have our answer. Always keep your algebraic signs in check, especially when d is negative, as this represents a decreasing progression. Master these formulas and these logical connections, and you will be able to dismantle even the most intimidating AP problems.","Welcome back to our journey through Sequences and Series. In our previous sessions, we explored the Arithmetic Progression, where each term is found by adding a constant value. But what happens when a sequence grows not by addition, but by multiplication? This brings us to a fascinating concept called the Geometric Progression, or GP for short. Imagine a single cell dividing into two, then those two dividing into four, then eight, and so on. This rapid, multiplicative growth is the essence of a GP. A Geometric Progression is a sequence of numbers where each term after the first is obtained by multiplying the preceding term by a fixed, non-zero number called the common ratio. Let's look at an example. Consider the sequence: two, six, eighteen, fifty-four, and so on. To see if this is a GP, we check the ratio between consecutive terms. Six divided by two is three. Eighteen divided by six is three. Fifty-four divided by eighteen is also three. Since this ratio is constant, we call this constant value 'r', the common ratio. In our example, the first term, which we denote as 'a', is two, and the common ratio 'r' is three. Now, let's mathematically represent the terms. Let the first term be 'a'. The second term is 'a' multiplied by 'r'. The third term is the second term multiplied by 'r', which gives us 'a' times 'r' squared. The fourth term is the third term multiplied by 'r', which gives us 'a' times 'r' cubed. Do you see the pattern emerging? The exponent of 'r' is always one less than the position of the term. This leads us to the derivation of the general formula for the nth term. Let the sequence be represented as 'a', 'ar', 'ar' squared, 'ar' cubed, and so on. If we want to find the term at position 'n', we follow the pattern we just observed. For the first term, n equals one, and the power of r is zero. For the second term, n equals two, and the power of r is one. For the third term, n equals three, and the power of r is two. Therefore, for the nth term, which we denote as 'a sub n', the formula is 'a' multiplied by 'r' raised to the power of 'n minus one'. So, the formula is a sub n equals 'a' times 'r' to the power of 'n minus one'. Let's test this with our previous sequence: two, six, eighteen, fifty-four. Here, 'a' is two and 'r' is three. Suppose we want to find the sixth term without writing out the whole sequence. Using our formula, the sixth term is two multiplied by three raised to the power of five plus one minus one, which is five. Three raised to the power of five is two hundred and forty-three. Two multiplied by two hundred and forty-three gives us four hundred and eighty-six. Let's verify: the fifth term would be fifty-four times three, which is one hundred and sixty-two. The sixth term would be one hundred and sixty-two times three, which is indeed four hundred and eighty-six. It works perfectly! It is important to remember that the common ratio 'r' can be a fraction, a negative number, or even one. If 'r' is between zero and one, the terms will get smaller, creating a decaying sequence. If 'r' is negative, the signs of the terms will alternate between positive and negative. Mastering this nth term formula is your first step toward understanding more complex geometric series and their sums. Let's move on to some practice problems to solidify this concept.","Welcome back! In our previous lesson, we mastered finding the nth term of a Geometric Progression. Today, we move from individual terms to the total sum. Imagine you are saving money, and every month you double the amount you saved the previous month. How much will you have in total after a year? To answer this, we need the formula for the sum of the first n terms of a GP. Let us derive it simply. Suppose we have a GP with first term 'a' and common ratio 'r'. The sum of the first n terms, which we call S sub n, is equal to: a plus ar plus ar squared, all the way up to ar raised to the power of n minus one. Now, if we multiply this entire equation by the common ratio 'r', we get: ar plus ar squared plus ar cubed, up to ar raised to the power of n. If we subtract the second equation from the first, most terms in the middle cancel out! We are left with S sub n minus r times S sub n equals a minus ar raised to the power of n. By factoring out S sub n, we get S sub n of one minus r equals a of one minus r raised to the power of n. Finally, dividing both sides by one minus r, we arrive at our master formula: S sub n equals a times the quantity one minus r to the power of n, divided by one minus r. However, there is a catch. This formula works perfectly when 'r' is not equal to one. If 'r' is equal to one, every term is just 'a', so the sum is simply n times a. Now, what if the common ratio 'r' is a fraction between negative one and positive one? For example, if r is zero point five? As 'n' gets larger and larger, approaching infinity, the term 'r' raised to the power of 'n' becomes incredibly small, practically zero. This brings us to a beautiful concept: the Sum to Infinity. When the absolute value of 'r' is less than one, the sum of an infinite GP converges to a specific number. The formula simplifies beautifully to: S infinity equals a divided by one minus r. If 'r' is greater than or equal to one, the sum just keeps growing forever, and we say the series diverges. Let's look at a practical application. Consider a bouncing ball. A ball is dropped from a height of ten meters. Each time it hits the ground, it bounces back to exactly three-fourths of its previous height. What is the total distance traveled by the ball before it comes to rest? This is a classic infinite GP problem. The downward distances form one GP, and the upward distances form another. By applying our sum to infinity formula, we can calculate the exact total distance. Remember, in word problems, always identify your 'a' and your 'r' first. If the terms are decreasing, your 'r' will likely be a fraction. Master these formulas, and you will unlock the power of exponential growth and decay!","Welcome back. In our previous lesson, we explored the mechanics of Geometric Progressions. Today, we move from sequences to a very powerful concept used in statistics and algebra: Means. Specifically, we will look at the Arithmetic Mean and the Geometric Mean, and most importantly, how they relate to one another. Let's start with the Arithmetic Mean, or A-M. Suppose you have two positive numbers, let's call them 'a' and 'b'. If these two numbers are the first and third terms of an Arithmetic Progression, what would the middle term be? Since in an A-P, the difference between consecutive terms is constant, the middle term must be exactly halfway between 'a' and 'b'. We define this middle term as the Arithmetic Mean. Mathematically, the A-M of two numbers 'a' and 'b' is equal to 'a' plus 'b' divided by two. For more than two numbers, say 'a', 'b', and 'c', the A-M is simply their sum divided by the total count of numbers. It is the average we use in daily life. Now, let's shift our focus to the Geometric Mean, or G-M. Imagine the same two positive numbers, 'a' and 'b', but this time, suppose they are the first and third terms of a Geometric Progression. In a G-P, the ratio between consecutive terms is constant. To find that middle term, we don't add; we multiply. The Geometric Mean of two numbers 'a' and 'b' is defined as the square root of their product, which is 'a' times 'b', all under a square root. If we have 'n' positive numbers, the G-M is the n-th root of their product. For example, for three numbers, it would be the cube root of 'a' times 'b' times 'c'. It is crucial to note that while A-M can be calculated for any set of numbers, the G-M is typically discussed for positive real numbers to avoid issues with even roots of negative products. Now, here is the heart of this lesson: the relationship between A-M and G-M. For any set of positive real numbers, the Arithmetic Mean is always greater than or equal to the Geometric Mean. We write this as A-M is greater than or equal to G-M. This is a fundamental inequality in mathematics. When does the equality hold? The A-M equals the G-M if and only if all the numbers in the set are equal to each other. If the numbers are different, the A-M will always be strictly larger. Let's test this with a quick mental example. Take the numbers 2 and 8. The Arithmetic Mean is 2 plus 8, which is 10, divided by 2, giving us 5. The Geometric Mean is the square root of 2 times 8, which is the square root of 16, giving us 4. Notice that 5 is indeed greater than 4. Let's try numbers that are closer together, like 4 and 6. The A-M is 4 plus 6 divided by 2, which is 5. The G-M is the square root of 4 times 6, which is the square root of 24. Since 5 squared is 25, the square root of 24 is slightly less than 5. Again, A-M is greater. This relationship is not just a theoretical curiosity; it is used in optimization problems, economics, and even in proving complex inequalities in higher mathematics. Understanding this gap between the additive average and the multiplicative average is key to mastering sequences and series. In the next part, we will dive into special series and the power of Sigma notation.","Welcome back. In our previous lesson, we explored the relationship between Arithmetic and Geometric means. Now, we step into a more powerful territory: Special Series. Up until now, we have dealt with sequences where the terms follow a specific linear or exponential pattern. But what happens when we want to find the sum of a series where the terms themselves are powers of numbers? To do this efficiently, we need to master a mathematical shorthand called Sigma notation. The Greek letter Sigma, written as a capital S, stands for 'summation'. When you see a Sigma symbol, it is an instruction to add a sequence of terms. The notation consists of a lower limit, usually starting at index i equals one, an upper limit, which is n, and a general term or formula following the Sigma. For example, if we write Sigma of i from one to n, it simply means we add every integer from one up to n. Let's apply this to our first special series: the sum of the first n natural numbers. This is a simple Arithmetic Progression where the first term is one and the common difference is one. The formula for this sum, denoted as S sub n, is n multiplied by the quantity n plus one, all divided by two. If you want to find the sum of the first ten natural numbers, you just plug in ten, giving you fifty-five. Now, let's increase the complexity. What if the terms are squared? For instance, one squared plus two squared plus three squared, all the way up to n squared. This is the sum of the squares of the first n natural numbers. The formula for this is one-sixth, multiplied by the quantity n, multiplied by the quantity n plus one, multiplied by the quantity two n plus one. This formula is a lifesaver in calculus and advanced algebra. Let's look at a quick example. If n is three, the sum is one squared plus two squared plus three squared, which is one plus four plus nine, equaling fourteen. Using our formula: one-sixth times three, times four, times seven, which is one-sixth of eighty-four, which indeed equals fourteen. Finally, we have the sum of the cubes of the first n natural numbers. This is the sum of one cubed, two cubed, and so on, up to n cubed. There is a beautiful mathematical coincidence here. The sum of the cubes of the first n natural numbers is exactly equal to the square of the sum of the first n natural numbers. In formula terms, it is the entire expression for the sum of n natural numbers, all raised to the power of two. So, it is the quantity n times n plus one, divided by two, all squared. This pattern is quite elegant, isn't it? Mastering these three formulas—for n, for n squared, and for n cubed—along with the Sigma notation, allows you to solve complex summation problems that would otherwise take pages of manual addition. In the next part, we will see how to use these building blocks to tackle even more advanced patterns.","Welcome back. In our previous lesson, we mastered the basic summation formulas for the first n natural numbers, their squares, and their cubes using sigma notation. But in mathematics, formulas are not just tools for calculation; they are keys to unlocking complex patterns. Today, we move from direct application to advanced pattern recognition. Let's start with a challenge. Suppose you encounter a series where the terms are not simple powers, but products of consecutive integers, like one times two, plus two times three, plus three times four, and so on. To solve this, we don't need a new formula; we need to decompose the general term. We write the general term, or the T-sub-n, as n times n plus one. By expanding this, we get n squared plus n. Now, we apply the linearity property of sigma. The sum becomes the sum of n squared plus the sum of n. This is the essence of advanced summation: breaking down a complex term into simpler components that we already know how to sum. Another vital technique is the Method of Differences, often called the Telescoping Method. This is incredibly powerful when you see terms involving fractions where the denominator is a product of terms in an arithmetic progression. For example, consider the sum of one divided by the product of one and two, plus one divided by the product of two and three. If we rewrite the general term as one divided by n times n plus one, we can use partial fractions to express it as one divided by n, minus one divided by n plus one. When we sum these terms from n equals one to k, almost every term cancels out! The negative part of the first term cancels the positive part of the second, and so on. This 'telescoping' effect leaves us with only the very first and the very last parts. This is a high-level skill that turns a daunting summation into a simple subtraction. We also need to look at series involving constant multiples and shifts. If a series is multiplied by a constant, the constant can be pulled outside the sigma. If the index starts from something other than one, say it starts from five, we calculate the sum from one to n and subtract the sum from one to four. This ensures we don't lose marks on boundary errors. Finally, let's talk about recognizing patterns in higher-order polynomials. If the differences between consecutive terms are constant, it's a linear series. If the second differences are constant, it's a quadratic series. If the third differences are constant, it's a cubic series. By identifying the degree of the polynomial, you can predict which summation formula to use. Mastery of these techniques allows you to approach any series, no matter how intimidating it looks, with the confidence of a mathematician. Let's dive into some solved examples to see these principles in action.","Welcome back. We have mastered the formulas for Arithmetic and Geometric Progressions, but knowing the formula is only half the battle. In the examination, even a brilliant student can lose marks due to silly mistakes or conceptual slips. Today, we are going to look at the most common pitfalls in Sequences and Series so you can avoid them. Let us start with the first major trap: Sigma notation errors. Many students misinterpret the limits of summation. For example, if you see Sigma from k equals one to n, the first term is when k is one, not zero. Always check your lower limit. Another common mistake is forgetting that the index variable, like k or n, changes throughout the summation. If you are summing a constant, say the number five, from k equals one to ten, the answer is fifty, not five. You must multiply the constant by the number of terms. Next, let us discuss formula misuse. This is a very frequent error in Geometric Progressions. When calculating the sum of an infinite GP, students often forget the most critical condition: the absolute value of the common ratio, r, must be strictly less than one. If you apply the formula, a over one minus r, when r is greater than or equal to one, you will get a mathematically meaningless result. Always verify the convergence condition before using the infinite sum formula. Another mistake occurs in Arithmetic Progressions when identifying the number of terms, n. When finding the number of terms between two values, students often subtract the first term from the last term and forget to add one. Remember, the number of terms is the difference divided by the common difference, plus one. Now, let us move to algebraic mistakes. In series involving squares or cubes, students often make errors in expanding binomials. For instance, when you have a term like the square of the quantity k plus one, do not just write k squared plus one. You must expand it to k squared plus two k plus one. This expansion is vital for applying the special series formulas we learned earlier. Furthermore, be extremely careful with signs when the common difference or common ratio is negative. If the common ratio is negative one, the terms will alternate in sign. If you miss a single minus sign in your calculation, the entire sum will be incorrect. Lastly, watch out for the distinction between the nth term and the sum of n terms. Students often confuse the formula for the nth term, which is a, plus n minus one, times d, with the sum formula, which is n over two, times the quantity two a plus n minus one, times d. Always read the question carefully to see if it asks for a specific term or the total sum. By staying alert to these specific areas—notation limits, convergence conditions, term counting, binomial expansion, and sign management—you will transform your accuracy from good to excellent. Let's practice these traps in the next segment.","Welcome back. We have covered the formulas, the derivations, and the complex patterns of Sequences and Series. Now, it is time to talk about the most critical part of your board exams and competitive tests: how to actually present your knowledge to score maximum marks. Even if you know that the sum of an infinite geometric progression is a divided by one minus r, you can lose marks if your presentation is messy. Let us start with the first pillar: Time Management. In a mathematics paper, students often fall into the 'Rabbit Hole Trap.' This happens when you encounter a difficult problem involving a complex arithmetic-geometric series and you spend fifteen minutes trying to find a pattern. In an exam, time is your most precious resource. My rule is the 'Two-Minute Rule.' If you cannot identify the type of progression or the required formula within two minutes of reading the question, circle it and move on. Do not let a single high-order thinking question steal the time you need to solve five easy ones. Now, let us discuss Step-Marking Strategies. In NCERT and board examinations, the final answer is only worth a fraction of the total marks. The examiners look for a logical flow. For every problem, follow this four-step structure. Step one: Write down the 'Given' information. If the question says the third term is ten and the seventh term is twenty-two, explicitly write down a-sub-three equals ten and a-sub-seven equals twenty-two. Step two: State the formula you are using. Before plugging in numbers, write 'Using the formula for the n-th term of an Arithmetic Progression, a-sub-n equals a plus n minus one times d.' This tells the examiner you know the theory. Step three: Show the substitution. This is where most students make calculation errors. Write the equation clearly with the numbers replaced. Step four: The final result with units or context. If the question asks for the sum, write 'Therefore, the sum of the first n terms is...' and box your final answer. This structure ensures that even if your final calculation is wrong, you still collect eighty percent of the marks through step-marking. Finally, let us tackle High-Order Thinking Skills, or HOTS. These questions are designed to test if you can connect different concepts. For example, a question might not directly ask for a Geometric Progression, but instead describe a population growth pattern or a bouncing ball. When you see these, do not panic. The key to HOTS is 'Pattern Recognition.' Ask yourself: Is the change constant? If yes, it is an Arithmetic Progression. Is the change a constant ratio? If yes, it is a Geometric Progression. Often, HOTS questions involve the relationship between Arithmetic Mean and Geometric Mean. If a question mentions that the AM of two numbers is equal to their GM, you should immediately recognize that the two numbers must be equal. This is a shortcut that saves time. Another tip for advanced problems: if a series looks intimidating, write out the first four terms manually. Often, the pattern becomes visible once you see the numbers laid out. Remember, mathematics is not just about finding 'x'; it is about the journey of logic you take to get there. Practice these presentation techniques during your home assignments, and you will find that your confidence grows alongside your accuracy. In our next and final video, we will do a full chapter recap and a rapid-fire formula drill to get you exam-ready.","Welcome to the grand finale of our journey through Sequences and Series. You have worked hard through AP, GP, Means, and Special Series. Now, it is time to consolidate everything for your exams. Let's start with a high-speed recap. Remember, a sequence is an ordered list, while a series is the sum of those terms. In Arithmetic Progression, we focus on the common difference, d. The nth term is given by the first term plus the quantity n minus one multiplied by the common difference. The sum of n terms is one half of two times the first term plus the quantity n minus one multiplied by the common difference. Moving to Geometric Progression, we look for the common ratio, r. The nth term is the first term multiplied by the common ratio raised to the power of n minus one. The sum of n terms is the first term multiplied by the quantity one minus r to the power of n, all divided by one minus r, provided r is not equal to one. If the absolute value of r is less than one, we can find the sum to infinity, which is simply the first term divided by one minus r. Don't forget the relationship between means: the Arithmetic Mean is always greater than or equal to the Geometric Mean. Now, let's enter the Rapid-Fire Formula Drill. Get your notebooks ready. Formula one: nth term of AP. First term plus n minus one d. Formula two: Sum of n terms of AP. One half of n times the sum of the first and last terms. Formula three: nth term of GP. a times r to the power of n minus one. Formula four: Sum of infinite GP. a divided by one minus r. Formula five: Sum of first n natural numbers. n times n plus one divided by two. Formula six: Sum of squares of first n natural numbers. n times n plus one times two n plus one divided by six. Formula seven: Sum of cubes of first n natural numbers. The square of the sum of first n natural numbers. Speed through these in your mind! Now, let's tackle a Previous Year Question to see how these concepts blend. The question asks: Find the sum of the series where the terms are the product of the first term and the common ratio, specifically a series like three, six, twelve, twenty-four. First, identify the type. Since six divided by three is two, and twelve divided by six is two, this is a Geometric Progression. Here, the first term a is three, and the common ratio r is two. Since r is greater than one, we use the sum formula for n terms. If the question asks for the sum of the first ten terms, we plug in: three times the quantity one minus two to the power of ten, all divided by one minus two. This simplifies to three times the quantity one minus one thousand twenty-four, divided by negative one, which gives us three thousand and sixty-nine. Always check if the series is AP or GP before applying formulas. Watch out for the 'n minus one' versus 'n' trap in exponents. In the exam, if you forget a formula, try to write out the first few terms to identify the pattern manually. You've got this. Practice these drills until they become second nature. End of chapter."];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-maths-08-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

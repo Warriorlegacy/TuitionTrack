@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Drainage, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c9-geography-03-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Why Drainage Systems Shape Our Civilization and Economy -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Why Drainage Systems Shape Our Civilization and Economy</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Drainage refers to the river system of a specific area.</div>
+              <div id="qx0-p1" class="qe-bullet">• Drainage pattern is the arrangement of streams in a landscape.</div>
+              <div id="qx0-p2" class="qe-bullet">• Ancient civilizations flourished in fertile river valleys.</div>
+              <div id="qx0-p3" class="qe-bullet">• Rivers provide water, fertile soil, and transport routes.</div>
+              <div id="qx0-p4" class="qe-bullet">• River systems are vital for agriculture and hydroelectric power.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3524196612,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D time-lapse animation showing a barren landscape transforming into a lush river valley with a growing ancient settlement as a river carves its path.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D time-lapse animation showing a barren landscape transforming into a lush river valley with a growing ancient settlement as a river carves its path.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Core Concepts: Drainage Basins, Water Divide, and River Systems -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Core Concepts: Drainage Basins, Water Divide, and River Systems</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Drainage Basin: The total land area drained by a single river system.</div>
+              <div id="qx1-p1" class="qe-bullet">• Water Divide: An upland or mountain separating two drainage basins.</div>
+              <div id="qx1-p2" class="qe-bullet">• River System: The main river plus all its tributaries and distributaries.</div>
+              <div id="qx1-p3" class="qe-bullet">• Tributary: A smaller stream that joins and feeds into a larger river.</div>
+              <div id="qx1-p4" class="qe-bullet">• Distributary: A branch that flows away from the main river near the mouth.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":750187455,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D topographical model showing a mountain ridge acting as a water divide, with rain falling on both sides to feed two distinct, interconnected river networks.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D topographical model showing a mountain ridge acting as a water divide, with rain falling on both sides to feed two distinct, interconnected river networks.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): The Himalayan Rivers: Indus River System - Features and Tributaries -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">The Himalayan Rivers: Indus River System - Features and Tributaries</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Indus rises near Lake Mansarovar in Tibet</div>
+              <div id="qx2-p1" class="qe-bullet">• Flows through Ladakh, creating deep mountain valleys</div>
+              <div id="qx2-p2" class="qe-bullet">• Himalayan tributaries: Zanskar, Nubra, Shyok, and Hunza</div>
+              <div id="qx2-p3" class="qe-bullet">• Major Punjab tributaries: Satluj, Beas, Ravi, Chenab, and Jhelum</div>
+              <div id="qx2-p4" class="qe-bullet">• Final destination: Arabian Sea, east of Karachi</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2323678777,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D topographical map of Asia zooming into the Tibetan Plateau, tracing the blue line of the Indus through the Ladakh mountains and into the Indus Plain.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D topographical map of Asia zooming into the Tibetan Plateau, tracing the blue line of the Indus through the Ladakh mountains and into the Indus Plain.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): The Himalayan Rivers: Ganga River System - Course and Significance -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">The Himalayan Rivers: Ganga River System - Course and Significance</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Headwaters: Bhagirathi meets Alaknanda at Devprayag to form the Ganga</div>
+              <div id="qx3-p1" class="qe-bullet">• Major Tributaries: Yamuna, Ghaghara, Gandak, Kosi, and Son</div>
+              <div id="qx3-p2" class="qe-bullet">• The Ganga-Brahmaputra confluence forms the massive Sunderban Delta</div>
+              <div id="qx3-p3" class="qe-bullet">• The river splits into the Bhagirathi-Hooghly and the Padma in Bangladesh</div>
+              <div id="qx3-p4" class="qe-bullet">• Significance: Fertile plains, high population density, and cultural importance</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":812319306,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D topographic map of Northern India showing the river's path from Gangotri to the Bay of Bengal, highlighting the confluence at Devprayag and the Sunderban Delta.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D topographic map of Northern India showing the river's path from Gangotri to the Bay of Bengal, highlighting the confluence at Devprayag and the Sunderban Delta.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): The Himalayan Rivers: Brahmaputra River System - Dynamics and Challenges -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">The Himalayan Rivers: Brahmaputra River System - Dynamics and Challenges</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Originates in Tibet as the Tsangpo, flowing through a cold and dry region.</div>
+              <div id="qx4-p1" class="qe-bullet">• Takes a sharp U-turn at Namcha Barwa to enter India via Arunachal Pradesh.</div>
+              <div id="qx4-p2" class="qe-bullet">• Transforms into a high-volume, sediment-heavy river in the Assam valley.</div>
+              <div id="qx4-p3" class="qe-bullet">• Develops a braided channel pattern due to massive silt deposition.</div>
+              <div id="qx4-p4" class="qe-bullet">• Causes frequent flooding and severe riverbank erosion in Northeast India.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1957893286,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D topographic map animation showing the river's path from the dry Tibetan plateau, through the steep Himalayan gorge, into the wide, braided channels of the Assam valley.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D topographic map animation showing the river's path from the dry Tibetan plateau, through the steep Himalayan gorge, into the wide, braided channels of the Assam valley.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): The Peninsular Rivers: West Flowing vs. East Flowing Patterns -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">The Peninsular Rivers: West Flowing vs. East Flowing Patterns</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Peninsular rivers are seasonal and depend on monsoon rainfall.</div>
+              <div id="qx5-p1" class="qe-bullet">• East-flowing rivers: Mahanadi, Godavari, Krishna, and Kaveri.</div>
+              <div id="qx5-p2" class="qe-bullet">• East-flowing rivers form large, fertile deltas at the Bay of Bengal.</div>
+              <div id="qx5-p3" class="qe-bullet">• West-flowing rivers: Narmada and Tapi, flowing into the Arabian Sea.</div>
+              <div id="qx5-p4" class="qe-bullet">• West-flowing rivers flow through rift valleys and form estuaries.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1660092696,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D topographical map of India showing the plateau tilting east, with blue arrows representing rivers flowing into the Bay of Bengal forming deltas, and narrow arrows flowing through rift valleys into the Arabian Sea forming estuaries.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D topographical map of India showing the plateau tilting east, with blue arrows representing rivers flowing into the Bay of Bengal forming deltas, and narrow arrows flowing through rift valleys into the Arabian Sea forming estuaries.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): The Peninsular Rivers: Detailed Study of Narmada and Tapi Basins -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">The Peninsular Rivers: Detailed Study of Narmada and Tapi Basins</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Narmada rises in the Amarkantak hills, Madhya Pradesh</div>
+              <div id="qx6-p1" class="qe-bullet">• Both Narmada and Tapi flow through tectonic rift valleys</div>
+              <div id="qx6-p2" class="qe-bullet">• Narmada features: Marble Rocks and Dhuandhar Falls</div>
+              <div id="qx6-p3" class="qe-bullet">• Tapi rises in the Satpura ranges, Madhya Pradesh</div>
+              <div id="qx6-p4" class="qe-bullet">• West-flowing rivers form estuaries instead of deltas</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":4246129066,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D topographic map of Central India showing the rift valley depression between the Vindhya and Satpura ranges, with blue animated river lines flowing westwards.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D topographic map of Central India showing the rift valley depression between the Vindhya and Satpura ranges, with blue animated river lines flowing westwards.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): The Peninsular Rivers: Detailed Study of Mahanadi, Godavari, Krishna, and Kaveri -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">The Peninsular Rivers: Detailed Study of Mahanadi, Godavari, Krishna, and Kaveri</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Mahanadi: Originates in Chhattisgarh, flows through Odisha to the Bay of Bengal.</div>
+              <div id="qx7-p1" class="qe-bullet">• Godavari: Known as 'Dakshin Ganga', largest peninsular river, rises in Nasik.</div>
+              <div id="qx7-p2" class="qe-bullet">• Krishna: Rises near Mahabaleshwar; major tributaries include Tungabhadra and Bhima.</div>
+              <div id="qx7-p3" class="qe-bullet">• Kaveri: Rises in Brahmagiri range; receives water from both monsoons.</div>
+              <div id="qx7-p4" class="qe-bullet">• East-flowing rivers form large deltas before entering the Bay of Bengal.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1913769267,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A high-detail 3D topographic map of Peninsular India showing the river paths and deltas in glowing blue lines.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A high-detail 3D topographic map of Peninsular India showing the river paths and deltas in glowing blue lines.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Lakes: Types, Formation, and Ecological Importance in India -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Lakes: Types, Formation, and Ecological Importance in India</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Lakes: Large bodies of water surrounded by land</div>
+              <div id="qx8-p1" class="qe-bullet">• Glacial Lakes: Formed by melting ice in mountain hollows</div>
+              <div id="qx8-p2" class="qe-bullet">• Ox-bow Lakes: Formed by meandering river loops being cut off</div>
+              <div id="qx8-p3" class="qe-bullet">• Lagoons: Saltwater lakes formed by coastal wave action</div>
+              <div id="qx8-p4" class="qe-bullet">• Ecological Role: Flood control, climate regulation, and biodiversity</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":1175076031,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing a glacier carving a hollow, a river forming an ox-bow lake, and a coastal wave creating a lagoon.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D split-screen animation showing a glacier carving a hollow, a river forming an ox-bow lake, and a coastal wave creating a lagoon.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Drainage Patterns: Dendritic, Trellis, Rectangular, and Radial Models -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Drainage Patterns: Dendritic, Trellis, Rectangular, and Radial Models</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Drainage Pattern: The geometric arrangement of streams in a basin.</div>
+              <div id="qx9-p1" class="qe-bullet">• Dendritic Pattern: Tree-like branching in uniform rock areas.</div>
+              <div id="qx9-p2" class="qe-bullet">• Trellis Pattern: Tributaries join the main river at right angles.</div>
+              <div id="qx9-p3" class="qe-bullet">• Rectangular Pattern: Channels follow joints and cracks in bedrock.</div>
+              <div id="qx9-p4" class="qe-bullet">• Radial Pattern: Streams flow outward from a central high point.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":429824290,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D topographic landscape morphing through four stages to show Dendritic, Trellis, Rectangular, and Radial river layouts.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D topographic landscape morphing through four stages to show Dendritic, Trellis, Rectangular, and Radial river layouts.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): River Pollution: Causes, Impact, and National River Conservation Plan (NRCP) -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">River Pollution: Causes, Impact, and National River Conservation Plan (NRCP)</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Major Causes: Industrial effluents, domestic sewage, and agricultural runoff</div>
+              <div id="qx10-p1" class="qe-bullet">• High B-O-D levels lead to oxygen depletion and loss of aquatic life</div>
+              <div id="qx10-p2" class="qe-bullet">• Impacts: Water-borne diseases, loss of biodiversity, and economic damage</div>
+              <div id="qx10-p3" class="qe-bullet">• N-R-C-P: National River Conservation Plan for water quality improvement</div>
+              <div id="qx10-p4" class="qe-bullet">• Key Strategies: Sewage Treatment Plants and the Namami Gange Programme</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2104475160,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a pristine blue river on the left transitioning into a murky, grey-brown river filled with industrial pipes and plastic waste on the right.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a pristine blue river on the left transitioning into a murky, grey-brown river filled with industrial pipes and plastic waste on the right.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Map Work, Diagram Practice, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Map Work, Diagram Practice, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Map Work: Locate Himalayan and Peninsular rivers and major Indian lakes</div>
+              <div id="qx11-p1" class="qe-bullet">• Diagrams: Practice Dendritic, Trellis, Rectangular, and Radial patterns</div>
+              <div id="qx11-p2" class="qe-bullet">• River Features: Differentiate between Deltas and Estuaries in drawings</div>
+              <div id="qx11-p3" class="qe-bullet">• Key Concepts: Review Water Divides, Catchment Areas, and Drainage Basins</div>
+              <div id="qx11-p4" class="qe-bullet">• Exam Tip: Use technical terms like Tributary, Distributary, and Confluence</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":3167177804,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D interface showing an interactive map of India on the left and a rotating 3D model of a Dendritic drainage pattern on the right.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D interface showing an interactive map of India on the left and a rotating 3D model of a Dendritic drainage pattern on the right.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Drainage today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Why Drainage Systems Shape Our Civilization and Economy <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Core Concepts: Drainage Basins, Water Divide, and River Systems <small>5:00</small></button>
+          <button type="button" data-seek="600">3. The Himalayan Rivers: Indus River System - Features and Tributaries <small>10:00</small></button>
+          <button type="button" data-seek="900">4. The Himalayan Rivers: Ganga River System - Course and Significance <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. The Himalayan Rivers: Brahmaputra River System - Dynamics and Challenges <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. The Peninsular Rivers: West Flowing vs. East Flowing Patterns <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. The Peninsular Rivers: Detailed Study of Narmada and Tapi Basins <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. The Peninsular Rivers: Detailed Study of Mahanadi, Godavari, Krishna, and Kaveri <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Lakes: Types, Formation, and Ecological Importance in India <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Drainage Patterns: Dendritic, Trellis, Rectangular, and Radial Models <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. River Pollution: Causes, Impact, and National River Conservation Plan (NRCP) <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Map Work, Diagram Practice, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey through the lifelines of our planet. Today, we are starting a very important chapter in Class 9 Geography: Drainage. Now, before we look at maps and river names, let us understand what the word 'drainage' actually means in a geographical context. In geography, drainage does not just mean the pipes in our houses. It refers to the river system of an area. When we talk about the drainage pattern of a region, we are talking about the arrangement of the streams and rivers in that specific landscape. Think about it—where does the water go when it rains? It doesn't just sit there; it flows, it gathers, and it carves paths through the earth. This process of water moving across the land is what defines a drainage system. But why is this so important for us? Why are we studying this? The answer lies in the history of human civilization. If you look back at the history books, you will notice a pattern. The greatest civilizations in the world did not emerge in the middle of deserts or on top of high mountains. They emerged in river valleys. The Indus Valley Civilization, the Mesopotamian civilization between the Tigris and Euphrates, and the ancient Egyptian civilization along the Nile—all of these flourished because of rivers. Rivers provided three essential things: first, a constant supply of water for drinking and domestic use; second, fertile alluvial soil for agriculture, which allowed humans to move from being hunters to being settled farmers; and third, a natural highway for transportation and trade. Even today, our economy is deeply tied to these water systems. Our massive agricultural sector depends on river irrigation. Our hydroelectric power plants, which provide electricity to our homes and industries, are built on the force of flowing rivers. Many of our major cities are located on the banks of rivers because they facilitate commerce and industry. However, a river system is not just a single line on a map. It is a complex network. It includes the main river, its many smaller tributaries that join it, and the vast area of land that contributes water to that river. In the upcoming lessons, we will explore how these systems differ based on their origin. We will see how the mighty Himalayan rivers, fed by melting glaciers, differ from the seasonal Peninsular rivers. We will study how the shape of the land dictates the direction of the flow and how human activity is impacting these precious resources. So, as we move forward, I want you to stop seeing rivers as just water bodies. Start seeing them as the architects of our landscape and the backbone of our economy. Let us begin our deep dive into the world of Indian drainage systems.","Welcome back. In our previous session, we looked at how rivers shape civilizations. Now, it is time to dive into the technical language of geography. To understand how rivers work, we must first understand three fundamental terms: the Drainage Basin, the Water Divide, and the River System. Let us start with the Drainage Basin. Imagine you are looking down at a landscape from an airplane. You see a large river, and you notice many smaller streams and tributaries flowing into it. The entire area of land that contributes water to a single main river or a river system is called its drainage basin. Think of it like a giant funnel. No matter where a raindrop falls within the boundaries of this funnel, the gravity will eventually pull that water into the main river. The larger the area, the larger the basin. For example, the Ganga basin is one of the largest in the world because it collects water from a massive expanse of land. Now, how do we decide where one basin ends and another begins? This brings us to our second concept: the Water Divide. A water divide is an elevated area, such as a mountain range, a hill, or even a high plateau, that separates two neighboring drainage basins. If a raindrop falls on one side of this ridge, it flows into one river system; if it falls on the other side, it flows into a completely different system. A classic example is the Western Ghats in India. They act as a massive water divide, directing some rivers westward into the Arabian Sea and others eastward into the Bay of Bengal. Finally, let us define the River System. A river does not flow alone. It is part of a complex network. A river system is the main river along with all its tributaries and distributaries. A tributary is a smaller stream that joins the main river, adding to its volume, like the Yamuna joining the Ganga. A distributary, on the other hand, is a branch that flows away from the main river, usually near the mouth, often seen in deltas. When we study a river system, we are not just looking at a single line on a map, but a whole web of water movement. Understanding these three concepts—the basin, the divide, and the system—is crucial because they determine how water is distributed across a continent. It explains why certain regions are lush and river-rich, while others remain dry. As we move forward to study the mighty Himalayan and Peninsular rivers, keep these terms in mind, as they are the building blocks of every river profile we will encounter.","Welcome back. In our previous session, we understood the fundamental concepts of drainage basins and water divides. Now, let us dive into the first of the three major Himalayan river systems: The Indus River System. This is one of the longest rivers in the world, and its journey is truly fascinating. The Indus rises in Tibet, specifically near Lake Mansarovar. From there, it flows westwards for a significant distance. As it enters India, it enters the Ladakh district. If you look at the maps of Ladakh, you will see the Indus flowing through a rugged, mountainous terrain, creating spectacular deep valleys. The Indus is not just a single stream; it is a massive system supported by several powerful tributaries. In the Himalayan region, the Indus is joined by the Zanskar, the Nubra, the Shyok, and the Hunza rivers. These tributaries add immense volume to the main stream as it moves through the cold, high-altitude deserts. After traversing the mountainous stretches of Ladakh, the Indus leaves India and enters Pakistan. Here, the river undergoes a major transformation in its character. As it moves through the plains of Pakistan, it is joined by the five great tributaries of the Punjab region. These are the Satluj, the Beas, the Ravi, the Chenab, and the Jhelum. These five rivers are the lifeline of the Punjab region, and together with the Indus, they form a vast and fertile alluvial plain. The Indus eventually flows southwards and empties into the Arabian Sea, east of Karachi. It is important to note that the Indus Basin is a massive geographical unit. A large portion of this basin lies outside India, specifically in Pakistan, which is why the Indus is an international river system. In India, the Indus Basin covers parts of the Union Territories of Ladakh and the state of Jammu and Kashmir, along with parts of Himachal Pradesh and Punjab. The sheer volume of water carried by the Indus and its tributaries makes this region one of the most agriculturally productive areas in the world, provided there is effective water management. To summarize the flow: it starts in Tibet, cuts through the mountains of Ladakh, is fed by Himalayan tributaries like the Zanskar, enters Pakistan, receives the five major Punjab rivers, and finally reaches the Arabian Sea. Understanding this flow is crucial for grasping how water distribution affects the geopolitics and economy of South Asia. In our next lesson, we will shift our focus to the second great Himalayan system: the Ganga River System.","Now that we have explored the Indus, let us turn our attention to the largest and most significant river system in India: the Ganga River System. The Ganga is not just a river; it is the lifeline of Northern India. The journey of the Ganga begins high up in the Himalayas. The main headwaters of the Ganga are called the Bhagirathi, which rises from the Gangotri Glacier. This stream flows through the mountains until it meets another important stream called the Alaknanda at Devprayag. It is only after this confluence at Devprayag that the river is officially known as the Ganga. From here, the river flows through the plains, gaining massive volume and strength. As it moves towards the east, it is joined by several major tributaries. First, we have the Yamuna, which rises from the Yamunotri Glacier and flows parallel to the Ganga before meeting it at Allahabad, which we now call Prayagraj. The Yamuna is a massive river in its own right, bringing water from the central highlands. Then, we see the contribution of the tributaries coming from the Peninsular uplands. Rivers like the Son join the Ganga from the south. As the river flows through the vast Indo-Gangetic plains, it receives many smaller tributaries from the Himalayan ranges, such as the Ghaghara, the Gandak, and the Kosi. The Kosi is often referred to as the 'Sorrow of Bihar' because of its tendency to change course and cause massive floods. After traveling through the plains of Uttar Pradesh and Bihar, the Ganga eventually enters West Bengal. Here, the river splits into two distinct branches. One branch, the Bhagirathi-Hooghly, flows through the deltaic region of West Bengal. The other branch, the main stream, enters Bangladesh. In Bangladesh, the river is known as the Padma. As it flows through the delta, it meets the Brahmaputra, which is known as the Jamuna in Bangladesh. Together, these massive rivers form the world's largest and most fertile delta, known as the Sunderban Delta. This delta is famous for its mangrove forests and the Royal Bengal Tiger. Now, why is this system so significant? Firstly, the Ganga basin is one of the most fertile regions in the entire world. The perennial nature of the river, fed by both melting glaciers and monsoon rains, ensures a steady supply of water for agriculture. This supports one of the highest population densities on Earth. Secondly, the river system is vital for transportation and provides a source of livelihood for millions through fishing and tourism. Thirdly, the river is deeply embedded in the cultural and spiritual fabric of India. Thousands of people visit the banks of the Ganga for rituals and festivals. However, we must remember that this vast system also faces immense pressure from human activities. The sheer scale of the Ganga River System makes it a complex, dynamic, and essential part of India's geography and economy.","Moving forward from the Ganga system, we now turn our attention to one of the most powerful and voluminous river systems in the world: the Brahmaputra. While the Ganga is known for its spiritual and agricultural significance, the Brahmaputra is defined by its immense energy, its dramatic course changes, and the unique challenges it poses to the regions it traverses. Let us begin by tracing its journey. The Brahmaputra rises in Tibet, east of Mansarovar Lake. In this region, it is known as the Tsangpo. Unlike many other rivers that flow through lush valleys, the Tsangpo flows through a very cold and dry area. Because there is very little rainfall in Tibet, the river carries a relatively small amount of water and a low load of sediment during its Tibetan course. However, as it moves towards the east, it takes a sharp 'U-turn' at Namcha Barwa. This is a crucial geographical feature. After crossing the Great Himalayas, the river enters India in the state of Arunachal Pradesh through a deep gorge. It is here that the river enters the tropical zone, and the landscape changes completely. As it enters the heavy rainfall zones of the Northeast, the river undergoes a massive transformation. The volume of water increases exponentially due to the heavy monsoon rains, and the river begins to carry a massive amount of silt and sediment. In India, it is known as the Brahmaputra. As it flows through the Assam valley, the river becomes very wide and develops a braided channel pattern. This means instead of one single deep channel, the river splits into many smaller channels that weave in and out of each other, separated by temporary islands or sandbars. This braiding is a direct result of the heavy sediment load being deposited by the river. Now, let us discuss the dynamics and the challenges. The Brahmaputra is a river of extremes. During the monsoon season, the sheer volume of water is staggering. This leads to frequent and devastating floods in the Assam valley. These floods are not just a natural phenomenon; they reshape the entire geography of the region every single year. The massive silt deposition causes the riverbed to rise, which in turn makes the river more prone to overflowing its banks. Furthermore, the river is known for its high rate of riverbank erosion. Entire villages, agricultural lands, and even infrastructure are often lost to the shifting currents of the Brahmaputra. This creates a massive socio-economic challenge for the people living in the Brahmaputra basin. We must also consider the international dimension. Since the river originates in Tibet and flows through China, India, and eventually Bangladesh, it is an international river. This means that any dam construction or water diversion projects upstream in Tibet can have significant impacts on the water flow and sediment levels in India and Bangladesh. Understanding the Brahmaputra requires us to look beyond just the water; we must look at the relationship between the high mountains, the heavy rainfall, the massive sediment load, and the human settlements that live in the shadow of this mighty river.","Welcome back. In our previous sessions, we explored the mighty Himalayan rivers. Now, we shift our focus to the Peninsular Plateau. Unlike the perennial Himalayan rivers that are fed by both melting glaciers and rainfall, the Peninsular rivers are seasonal. Their flow is entirely dependent on the monsoon rains. This means during the dry season, even large rivers can have very little water. Now, let's look at a fundamental distinction that defines the geography of South India: the direction of river flow. The Peninsular rivers are broadly divided into two groups based on whether they drain into the Arabian Sea on the west or the Bay of Bengal on the east. This distinction isn't random; it is determined by the slope of the land and the geological structure of the plateau. Let's start with the East Flowing Rivers. Most of the major rivers of the Peninsular plateau, such as the Mahanadi, the Godavari, the Krishna, and the Kaveri, flow towards the east. Why is this? It is because the general slope of the Peninsular plateau is from the west towards the east. As these rivers flow towards the Bay of Bengal, they carry vast amounts of sediment. Because the land is relatively flat as they approach the coast, these rivers perform extensive work, creating large, fertile deltas at their mouths. The Godavari, often called the Dakshin Ganga, is a prime example of this massive eastward flow and delta formation. Now, let's turn our attention to the West. The rivers that flow into the Arabian Sea are quite different in character. The most prominent among these are the Narmada and the Tapi. You might notice a striking difference here. Unlike the east-flowing rivers, these west-flowing rivers do not form large deltas. Instead, they form estuaries. An estuary is a coastal area where freshwater from a river meets the saltwater of the sea, but without the massive buildup of silt that creates a delta. Why do they flow west? This is due to the unique topography. These rivers flow through rift valleys. A rift valley is a lowland region formed by the sinking of the earth's crust between two parallel faults. The Narmada and Tapi have carved their paths through these narrow, fault-driven valleys, which directs them toward the western coast. So, to summarize the comparison: East-flowing rivers are generally longer, have larger drainage basins, and form fertile deltas because they follow the natural eastward tilt of the plateau. West-flowing rivers are shorter, flow through narrow rift valleys, and form estuaries instead of deltas. Understanding this tilt and the presence of rift valleys is key to mastering the drainage patterns of the Indian peninsula. In our next segment, we will dive deep into the specific details of the Narmada and Tapi basins.","Welcome back. In our previous session, we looked at the broad patterns of Peninsular rivers, distinguishing between those that flow east into the Bay of Bengal and those that flow west into the Arabian Sea. Today, we are diving deep into the two most significant west-flowing rivers: the Narmada and the Tapi. Unlike most major Indian rivers that form vast deltas, these two rivers are unique because they flow through rift valleys. Now, what exactly is a rift valley? It is a lowland region formed where the Earth's crust has been pulled apart by tectonic forces. This geological feature dictates the entire course of these rivers. Let us start with the Narmada Basin. The Narmada is perhaps the most iconic west-flowing river of India. It rises in the Amarkantak hills in Madhya Pradesh. This location is very important because the Amarkantak plateau serves as a major water divide in central India. From its source, the Narmada flows towards the west in a rift valley formed due to faulting. As it flows, it creates some of the most breathtaking landscapes in the country. One of the most famous features is the 'Marble Rocks' near Jabalpur. Here, the river flows through a deep, narrow gorge of white marble, creating a spectacular sight. Another remarkable feature is the 'Dhuandhar Falls'. The word 'Dhuandhar' literally means 'smoke cascade,' which describes the sight of the river plunging down with such force that the mist looks like clouds of smoke. The Narmada basin is quite extensive, covering parts of Madhya Pradesh and Gujarat. It is a vital source of water for irrigation and hydroelectric power in these states. Now, let us shift our focus to the Tapi Basin. The Tapi is the second major west-flowing river, and it is often referred to as the 'Twin of the Narmada' because it also flows through a rift valley. However, there are key differences. The Tapi rises in the Satpura ranges, specifically in the Betul district of Madhya Pradesh. While the Narmada is larger, the Tapi is also highly significant for the regions it traverses. The Tapi basin is relatively smaller than the Narmada basin and covers parts of Madhya Pradesh, Gujarat, and Maharashtra. Because these rivers flow through rift valleys, they do not form large, fertile deltas like the Ganga or the Godavari. Instead, they form estuaries. An estuary is a coastal area where freshwater from a river meets and mixes with saltwater from the sea, creating a unique ecosystem. This is a crucial distinction for your exams. To summarize, while both rivers are west-flowing and flow through rift valleys, the Narmada originates in the Amarkantak hills and is characterized by the Marble Rocks and Dhuandhar Falls, whereas the Tapi originates in the Satpura range. Both basins are essential for the economy of Western India, providing water for agriculture and industry, despite the lack of large deltaic plains. Understanding these geological origins helps us understand why these rivers behave differently from the Himalayan systems we studied earlier.","Welcome back. In our previous segment, we distinguished between the west-flowing and east-flowing rivers of the Peninsula. Now, we dive deep into the major east-flowing rivers that drain into the Bay of Bengal. Let us begin with the Mahanadi. The Mahanadi is a significant river system originating in the highlands of Chhattisgarh. It flows through Odisha to reach the Bay of Bengal. This river is vital for the agricultural landscape of the eastern states, providing irrigation and supporting large-scale hydroelectric projects. Next, we move to the largest of all peninsular rivers: the Godavari. Because of its massive length and enormous drainage basin, the Godavari is often referred to as the 'Dakshin Ganga' or the Ganges of the South. It rises from the slopes of the Western Ghats in the Nasik district of Maharashtra. From there, it flows eastwards across the Deccan Plateau. The Godavari basin is incredibly vast, covering parts of Maharashtra, Madhya Pradesh, Odisha, and Andhra Pradesh. Its major tributaries include the Purna, the Wardha, the Pranhita, the Manjra, the Wainganga, and the Penganga. These tributaries significantly increase the river's volume before it empties into the Bay of Bengal. Moving further south, we encounter the Krishna River. The Krishna is the second-largest east-flowing peninsular river. It rises from a spring near Mahabaleshwar in the Western Ghats. The Krishna basin is shared by Maharashtra, Karnataka, and Andhra Pradesh. It is a lifeline for many regions, supporting intense cultivation. Its key tributaries are the Tungabhadra, the Koyna, the Ghataprabha, the Musi, and the Bhima. These rivers join the Krishna at various points, creating a complex and fertile network. Finally, let us study the Kaveri, also known as the Cauvery. The Kaveri rises in the Brahmagiri range of the Western Ghats in the Kodagu district of Karnataka. It flows through much of Karnataka and Tamil Nadu. The Kaveri is unique because it receives water from both the southwest monsoon and the northeast monsoon, making it a perennial source of water compared to some other peninsular rivers. Its major tributaries include the Amravati, the Bhavani, the Hemavati, and the Kabini. The Kaveri delta is one of the most fertile regions in India, often called the 'granary of South India.' As we have seen, these four rivers—Mahanadi, Godavari, Krishna, and Kaveri—are not just water bodies; they are the lifeblood of the southern and eastern peninsular regions, shaping the economy, agriculture, and culture of millions of people.","We have explored the mighty river systems of India, from the perennial Himalayas to the seasonal Peninsular rivers. But our landscape is not just defined by flowing rivers; it is also shaped by the stillness of lakes. A lake is a large body of water that is surrounded by land. While rivers are dynamic and constantly moving, lakes act as reservoirs, storing water and playing a vital role in our environment. Now, let us understand how these lakes are formed and the different types we find across our country. Lakes are not all the same; they are formed through various geological and climatic processes. First, we have lakes formed by the action of glaciers. As glaciers move down mountain slopes, they carve out deep hollows in the earth. When the ice melts, these hollows get filled with water, forming beautiful lakes. You can see many such examples in the Himalayan region, such as the Wular Lake in Jammu and Kashmir. In fact, Wular Lake is one of the largest freshwater lakes in India and is often considered a result of tectonic activity as well. Second, we have lakes formed by river action. When a river flows through a flood plain, it meanders, creating loops. Over time, due to continuous erosion and deposition, a loop may be cut off from the main river channel, forming an ox-bow lake. These are common in the mature stages of rivers like the Ganga. Third, we have lakes formed by tectonic movements. When the earth's crust shifts or sinks due to tectonic forces, large depressions are created. These depressions eventually fill with water to become massive lakes. The Wular Lake we mentioned earlier is a prime example of this tectonic origin. Fourth, we have lakes formed by coastal processes. In coastal areas, when sea waves repeatedly enter a lagoon or a shallow depression near the mouth of a river, they form lagoons. Chilika Lake in Odisha is India's largest saltwater lagoon and is a magnificent example of this. Similarly, Pulicat Lake on the border of Andhra Pradesh and Tamil Nadu is another important lagoon. Fifth, we have lakes formed by human activities. Sometimes, humans build dams across rivers to create large reservoirs for irrigation, electricity, or water supply. While these are man-made, they function like large lakes. Now, why are these lakes so important? Lakes are not just beautiful tourist spots; they are ecological powerhouses. They help to regulate the flow of rivers. During heavy rains, lakes act as natural sponges, absorbing excess water and preventing floods downstream. During the dry season, they release water slowly, helping to maintain river flow. Lakes also help in maintaining the local climate and supporting biodiversity. They provide habitats for various species of fish, birds, and aquatic plants. For many communities, lakes are a source of livelihood through fishing and tourism. However, we must remember that these lakes are fragile. Pollution from industrial waste, sewage, and agricultural runoff can destroy their delicate ecosystems. Protecting our lakes is essential for our water security and environmental health. As we move to our next topic, we will look at the specific patterns that these water bodies and rivers create on the landscape.","Welcome back. In our previous session, we explored the major river systems of India, from the mighty Himalayas to the Peninsular plateau. But have you ever wondered why rivers don't just flow randomly? Why do they follow specific shapes or layouts across the landscape? This is what geographers call 'Drainage Patterns'. A drainage pattern is the geometric arrangement of the streams in a particular drainage basin. It is not accidental; it is determined by the slope of the land, the hardness or softness of the rocks, and the structural control of the earth's crust. Let us look at the four primary models. First, we have the Dendritic Pattern. The word 'dendritic' comes from the Greek word 'dendron', which means a tree. If you look at a tree, you see a main trunk with smaller branches spreading out. Similarly, in a dendritic pattern, the river channels look like the branches of a tree. This pattern develops in areas where the river channel follows the slope of the terrain and the underlying rock is uniform in its resistance to erosion. There is no structural control here; the river simply flows according to the gravity and the gentle slope of the land. You can see this pattern in many large river basins, including parts of the Indo-Gangetic plains. Next, let us move to the Trellis Pattern. This pattern is quite different. In a trellis system, the main river flows in one direction, and its tributaries join it at almost right angles, or ninety degrees. Imagine a garden trellis used for climbing plants. This pattern develops in areas where there is a sequence of parallel ridges and valleys. The main river flows through the valleys, while the smaller tributaries flow along the softer rocks and then turn sharply to join the main stream. This is a clear sign of structural control, where the rock layers are folded or tilted. Third, we have the Rectangular Pattern. At first glance, this might look like the trellis pattern, but there is a key distinction. In a rectangular pattern, the river system follows a path of sharp bends and right-angled turns, but these are not caused by parallel ridges. Instead, they are caused by a network of joints or cracks in the bedrock. When a river flows over a landscape where the rocks have been heavily fractured in a grid-like manner, the water follows these lines of weakness. This results in a pattern that looks like a series of rectangles or squares. It is a very distinct, geometric look. Finally, we study the Radial Pattern. This is perhaps the most visually striking model. A radial pattern occurs when streams flow outward, in different directions, from a central high point. Think of a bicycle wheel where all the spokes meet at the center hub. In geography, this central high point could be a volcano, a dome-shaped mountain, or a central hill. As water falls from this peak, gravity pulls it down in all directions, creating multiple river channels that radiate outward like the spokes of a wheel. An excellent example of this can be seen in the hills of the Chota Nagpur plateau or around certain volcanic peaks. Understanding these patterns is crucial because they tell us the geological history of the land. They tell us whether the rocks are hard or soft, whether the land was once folded, and where the cracks in the earth lie. By identifying these patterns on a map, we can predict how water will move, how erosion will occur, and where we might find valuable mineral resources. In our next video, we will shift our focus to a very critical environmental issue: River Pollution and the steps being taken to save our lifelines.","We have spent this entire chapter understanding the magnificent network of rivers that sustain our subcontinent, from the mighty Himalayas to the vast Peninsular plateau. But as we move from the physical beauty of these river systems to the reality of their current state, we face a sobering truth. Our lifelines are in danger. Today, we discuss the critical issue of river pollution. Why are our rivers turning toxic? The causes are multi-dimensional. First, let us look at industrial effluents. Thousands of factories along riverbanks, especially in the Ganga and Yamuna basins, discharge untreated chemical waste, heavy metals, and toxic sludge directly into the water. This changes the chemical composition of the river. Second, we have domestic sewage. As our urban population explodes, the massive amount of untreated household waste and sewage from cities is dumped into rivers. This increases the Biological Oxygen Demand, or B-O-D, of the water. When B-O-D increases, it means there is more organic matter consuming the dissolved oxygen, leaving very little for aquatic life. Third, we must consider agricultural runoff. To increase crop yields, farmers use massive amounts of chemical fertilizers and pesticides. When it rains, these chemicals wash into the nearby drainage systems and eventually into our rivers, leading to a process called eutrophication, where excessive nutrients cause algae to bloom, choking the river. Now, what is the impact of this pollution? It is not just an environmental issue; it is a human crisis. The first impact is on public health. Polluted water is a breeding ground for water-borne diseases like cholera, typhoid, and dysentery. Second, it destroys aquatic biodiversity. Fish and other river organisms cannot survive in low-oxygen, toxic environments, disrupting the entire food chain. Third, it affects our economy. Contaminated water makes irrigation difficult and ruins the quality of crops, and it also impacts the fishing industry and tourism. So, how do we fight back? The Government of India has taken several steps, the most significant being the National River Conservation Plan, or N-R-C-P. The N-R-C-P was launched with the primary objective of improving the water quality of major rivers through pollution abatement measures. The plan focuses on several key strategies. One, the setting up of Sewage Treatment Plants, or S-T-P-s, in cities located along river banks to ensure that sewage is cleaned before it enters the river. Two, the interception and diversion of drains that carry untreated waste into the river. Three, the development of riverfront development projects to manage urban pressure. Four, and most importantly, the implementation of large-scale projects like the Namami Gange Programme, which is an integrated conservation mission specifically for the Ganga river. This mission goes beyond just cleaning water; it focuses on river rejuvenation, afforestation along the banks, and creating awareness among the public. However, government action alone is not enough. As students and citizens, we must realize that a river is a living entity. Reducing our plastic use, not wasting water, and demanding stricter industrial regulations are steps we can all take. Protecting our drainage systems is not just about geography; it is about ensuring our survival.","Welcome to our final session on the Drainage chapter. We have traveled from the mighty Himalayan peaks to the flowing Peninsular rivers, and now, it is time to prepare you for the examination hall. This masterclass is divided into three critical pillars: Map Work, Diagrammatic Representation, and a Comprehensive Chapter Recap. Let us start with Map Work, which is a high-scoring area in your Geography paper. For the Himalayan river systems, you must be able to locate and label the Indus, the Ganga, and the Brahmaputra. When marking the Indus, remember to trace its course through Ladakh before it enters Pakistan. For the Ganga, ensure you mark its main stem and its major tributaries like the Yamuna, Ghaghara, Gandak, and Kosi. For the Brahmaputra, pay close attention to its entry into India through Arunachal Pradesh as the Dihang. Moving to the Peninsular rivers, you will often be asked to distinguish between west-flowing and east-flowing rivers. Practice marking the Narmada and Tapi on the west coast, and the Godavari, Mahanadi, Krishna, and Kaveri on the east coast. Do not forget the lakes! You must be able to pinpoint Chilika Lake, Sambhar Lake, Pulicat Lake, and Wular Lake on an outline map of India. Now, let us move to the second pillar: Diagram Practice. In Geography, a well-drawn diagram can earn you full marks even if your explanation is brief. You must practice drawing the four major drainage patterns. First, the Dendritic pattern, which looks like the branches of a tree, following the slope of the terrain. Second, the Trellis pattern, where tributaries join the main river at right angles, common in areas with alternating hard and soft rocks. Third, the Rectangular pattern, which develops on strongly jointed rocky terrain. And fourth, the Radial pattern, where rivers flow outward from a central high point, like a volcano or a dome. You should also practice sketching a simple cross-section of a river course, showing the upper, middle, and lower stages, highlighting features like V-shaped valleys in the mountains and deltas at the mouth. Finally, let us conduct a rapid-fire recap of the entire chapter to solidify your memory. We began by defining drainage as the river system of an area and understanding the concept of a water divide, which is an upland separating two drainage basins. We then contrasted the perennial Himalayan rivers, which receive water from both rain and melting snow, with the seasonal Peninsular rivers, which depend entirely on monsoon rainfall. We analyzed the Indus, Ganga, and Brahmaputra systems, noting their massive silt loads and varying courses. We studied the Peninsular rivers, noting how the Narmada and Tapi form estuaries while the others form large deltas. We explored the importance of lakes, both natural and man-made, in regulating water flow and supporting ecosystems. We looked at the different drainage patterns that shape the landscape, and finally, we addressed the critical issue of river pollution and the importance of the National River Conservation Plan. Remember, when answering questions, always use technical terms like 'tributary', 'distributary', 'confluence', and 'catchment area'. If a question asks about the difference between a delta and an estuary, remember that a delta is a landform at the mouth of a river built by sediment, whereas an estuary is a partially enclosed coastal body of water where freshwater meets the sea. Keep your maps neat, your diagrams labeled, and your definitions precise. You are now fully prepared to master this chapter. Good luck with your studies!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c9-geography-03-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

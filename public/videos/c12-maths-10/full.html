@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Vector Algebra, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-maths-10-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Real-world Applications, Intuition, and the Concept of Magnitude -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Real-world Applications, Intuition, and the Concept of Magnitude</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Scalars: Quantities described by magnitude only (e.g., temperature, mass).</div>
+              <div id="qx0-p1" class="qe-bullet">• Vectors: Quantities requiring both magnitude and direction (e.g., force, velocity).</div>
+              <div id="qx0-p2" class="qe-bullet">• Visualizing Vectors: Represented as directed line segments or arrows.</div>
+              <div id="qx0-p3" class="qe-bullet">• Magnitude: The numerical size or length of a vector, denoted as |a|.</div>
+              <div id="qx0-p4" class="qe-bullet">• Magnitude is always a non-negative real number.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":456469279,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen animation: left side shows a thermometer (scalar), right side shows a moving airplane with a velocity arrow (vector).</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A split-screen animation: left side shows a thermometer (scalar), right side shows a moving airplane with a velocity arrow (vector).</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Scalars vs. Vectors: Direction, Representation, and Position Vectors -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Scalars vs. Vectors: Direction, Representation, and Position Vectors</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Scalar: Quantities described by magnitude only (e.g., mass, temperature).</div>
+              <div id="qx1-p1" class="qe-bullet">• Vector: Quantities requiring both magnitude and direction (e.g., force, velocity).</div>
+              <div id="qx1-p2" class="qe-bullet">• Representation: Directed line segments using arrows or bold letters.</div>
+              <div id="qx1-p3" class="qe-bullet">• Magnitude: The length of the vector, denoted by vertical bars |A|.</div>
+              <div id="qx1-p4" class="qe-bullet">• Position Vector: A vector from the origin to a specific point (x, y, z).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3068154412,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a thermometer (scalar) on the left and a moving arrow with a force vector (vector) on the right, transitioning into a 3D Cartesian plane where a vector grows from the origin to a point P.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation showing a thermometer (scalar) on the left and a moving arrow with a force vector (vector) on the right, transitioning into a 3D Cartesian plane where a vector grows from the origin to a point P.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Types of Vectors: Zero, Unit, Collinear, Coplanar, and Equal Vectors -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Types of Vectors: Zero, Unit, Collinear, Coplanar, and Equal Vectors</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Zero Vector: Magnitude is zero, direction is indeterminate.</div>
+              <div id="qx2-p1" class="qe-bullet">• Unit Vector: Magnitude is exactly one; denoted by a 'hat' symbol.</div>
+              <div id="qx2-p2" class="qe-bullet">• Equal Vectors: Identical in both magnitude and direction.</div>
+              <div id="qx2-p3" class="qe-bullet">• Collinear Vectors: Act along the same or parallel lines.</div>
+              <div id="qx2-p4" class="qe-bullet">• Coplanar Vectors: All vectors lie within the same single plane.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1456812825,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing a zero vector at the origin, a unit vector on the x-axis, and three different vectors spread across a single translucent blue plane to demonstrate coplanarity.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D coordinate system showing a zero vector at the origin, a unit vector on the x-axis, and three different vectors spread across a single translucent blue plane to demonstrate coplanarity.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Vector Operations I: Addition, Subtraction, and Geometrical Interpretations -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Vector Operations I: Addition, Subtraction, and Geometrical Interpretations</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Triangle Law: Head-to-tail method for adding two vectors.</div>
+              <div id="qx3-p1" class="qe-bullet">• Parallelogram Law: Resultant is the diagonal from the common origin.</div>
+              <div id="qx3-p2" class="qe-bullet">• Magnitude Formula: r = square root of (a^2 + b^2 + 2ab cos theta).</div>
+              <div id="qx3-p3" class="qe-bullet">• Vector Subtraction: Adding the negative of a vector (a - b = a + (-b)).</div>
+              <div id="qx3-p4" class="qe-bullet">• Geometric Difference: The second diagonal of a parallelogram represents subtraction.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":253671984,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing two vectors forming a parallelogram, with the resultant diagonal glowing in a different color.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D coordinate system showing two vectors forming a parallelogram, with the resultant diagonal glowing in a different color.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Vector Operations II: Scalar Multiplication and Section Formula -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Vector Operations II: Scalar Multiplication and Section Formula</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Scalar multiplication: k times vector a changes magnitude and direction</div>
+              <div id="qx4-p1" class="qe-bullet">• If k &gt; 0, direction remains the same; if k &lt; 0, direction reverses</div>
+              <div id="qx4-p2" class="qe-bullet">• Internal Division: p equals (m times b plus n times a) divided by (m plus n)</div>
+              <div id="qx4-p3" class="qe-bullet">• External Division: p equals (m times b minus n times a) divided by (m minus n)</div>
+              <div id="qx4-p4" class="qe-bullet">• Midpoint Formula: p equals (vector a plus vector b) divided by 2</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3137226862,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing a vector stretching and flipping direction as a scalar changes, followed by a line segment AB with point P sliding between and outside the points.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D coordinate system showing a vector stretching and flipping direction as a scalar changes, followed by a line segment AB with point P sliding between and outside the points.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Components of a Vector: Direction Cosines and Direction Ratios -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Components of a Vector: Direction Cosines and Direction Ratios</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Direction Cosines: l = cos(alpha), m = cos(beta), n = cos(gamma)</div>
+              <div id="qx5-p1" class="qe-bullet">• Fundamental Identity: l^2 + m^2 + n^2 = 1</div>
+              <div id="qx5-p2" class="qe-bullet">• Direction Ratios: Numbers proportional to direction cosines</div>
+              <div id="qx5-p3" class="qe-bullet">• Relationship: l = a / sqrt(a^2 + b^2 + c^2)</div>
+              <div id="qx5-p4" class="qe-bullet">• Direction cosines are unique; direction ratios are not unique</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2559386392,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing a vector A making angles alpha, beta, and gamma with the axes, with l, m, n labels appearing on the axes.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D coordinate system showing a vector A making angles alpha, beta, and gamma with the axes, with l, m, n labels appearing on the axes.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): The Dot Product (Scalar Product): Definition, Properties, and Angle Calculation -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">The Dot Product (Scalar Product): Definition, Properties, and Angle Calculation</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Dot Product (A . B) = |A| |B| cos(theta)</div>
+              <div id="qx6-p1" class="qe-bullet">• The result of a dot product is always a scalar value</div>
+              <div id="qx6-p2" class="qe-bullet">• If A . B = 0, then the vectors are perpendicular (orthogonal)</div>
+              <div id="qx6-p3" class="qe-bullet">• Algebraic form: (x1*x2) + (y1*y2) + (z1*z2)</div>
+              <div id="qx6-p4" class="qe-bullet">• Use cos(theta) = (A . B) / (|A| |B|) to find the angle</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":286678461,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing two vectors A and B with an angle theta between them, transitioning into a component-wise multiplication animation.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D coordinate system showing two vectors A and B with an angle theta between them, transitioning into a component-wise multiplication animation.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Dot Product Applications: Projections of Vectors and Work Done -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Dot Product Applications: Projections of Vectors and Work Done</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Scalar Projection of A on B: (A dot B) / |B|</div>
+              <div id="qx7-p1" class="qe-bullet">• Vector Projection of A on B: [(A dot B) / |B|^2] * B</div>
+              <div id="qx7-p2" class="qe-bullet">• Work Done (W) = Force (F) dot Displacement (S)</div>
+              <div id="qx7-p3" class="qe-bullet">• Work is zero when Force is perpendicular to Displacement</div>
+              <div id="qx7-p4" class="qe-bullet">• Work is maximum when Force and Displacement are parallel</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3208777466,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing vector A casting a shadow onto vector B, transitioning into a block being pulled by a force vector along a displacement path.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D coordinate system showing vector A casting a shadow onto vector B, transitioning into a block being pulled by a force vector along a displacement path.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): The Cross Product (Vector Product): Definition, Geometric Meaning, and Area of Parallelogram -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">The Cross Product (Vector Product): Definition, Geometric Meaning, and Area of Parallelogram</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Cross Product (A x B) results in a vector perpendicular to both A and B.</div>
+              <div id="qx8-p1" class="qe-bullet">• Magnitude: |A x B| = |A| |B| sin(theta).</div>
+              <div id="qx8-p2" class="qe-bullet">• Direction is determined by the Right-Hand Rule.</div>
+              <div id="qx8-p3" class="qe-bullet">• Anti-commutative property: A x B = -(B x A).</div>
+              <div id="qx8-p4" class="qe-bullet">• Magnitude equals the area of the parallelogram formed by A and B.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1095134559,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing two vectors A and B forming a parallelogram, with a third vector emerging perpendicularly from the center via the Right-Hand Rule.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D coordinate system showing two vectors A and B forming a parallelogram, with a third vector emerging perpendicularly from the center via the Right-Hand Rule.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Cross Product Applications: Area of Triangle and Unit Normal Vectors -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Cross Product Applications: Area of Triangle and Unit Normal Vectors</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Area of Triangle ABC = 1/2 * |AB x AC|</div>
+              <div id="qx9-p1" class="qe-bullet">• Cross product magnitude equals parallelogram area</div>
+              <div id="qx9-p2" class="qe-bullet">• Unit Normal Vector (n-hat) = (a x b) / |a x b|</div>
+              <div id="qx9-p3" class="qe-bullet">• The cross product is perpendicular to the plane of a and b</div>
+              <div id="qx9-p4" class="qe-bullet">• Normalization ensures the vector has a magnitude of one</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":873666110,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing points A, B, and C forming a triangle, which then transforms into a parallelogram to visually demonstrate the 1/2 area relationship.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D coordinate system showing points A, B, and C forming a triangle, which then transforms into a parallelogram to visually demonstrate the 1/2 area relationship.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Misconceptions in Dot/Cross Products and Calculation Errors -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Misconceptions in Dot/Cross Products and Calculation Errors</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Dot Product results in a Scalar; Cross Product results in a Vector.</div>
+              <div id="qx10-p1" class="qe-bullet">• Negative Dot Product implies an obtuse angle (greater than 90 degrees).</div>
+              <div id="qx10-p2" class="qe-bullet">• Cross Product is anti-commutative: A x B = -(B x A).</div>
+              <div id="qx10-p3" class="qe-bullet">• Always use the Right-Hand Thumb Rule to verify cross product direction.</div>
+              <div id="qx10-p4" class="qe-bullet">• Projection of A on B requires dividing by the magnitude of B.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3687362986,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a dot product turning into a single number and a cross product producing a new vector perpendicular to two existing ones, with 'Caution' icons appearing over sign errors.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a dot product turning into a single number and a cross product producing a new vector perpendicular to two existing ones, with 'Caution' icons appearing over sign errors.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: High-Weightage Problem Solving and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: High-Weightage Problem Solving and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• High-Weightage: Angle between vectors using Dot Product</div>
+              <div id="qx11-p1" class="qe-bullet">• Area of Parallelogram: Magnitude of the Cross Product</div>
+              <div id="qx11-p2" class="qe-bullet">• Projection of vector a on b: (a dot b) divided by magnitude of b</div>
+              <div id="qx11-p3" class="qe-bullet">• Unit Perpendicular Vector: Cross product divided by its magnitude</div>
+              <div id="qx11-p4" class="qe-bullet">• Quick Recap: Scalars, Components, Dot Product, and Cross Product</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":2973751037,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen showing a complex 3D vector calculation on the left and a summary mind-map growing on the right.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen showing a complex 3D vector calculation on the left and a summary mind-map growing on the right.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Vector Algebra today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Real-world Applications, Intuition, and the Concept of Magnitude <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Scalars vs. Vectors: Direction, Representation, and Position Vectors <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Types of Vectors: Zero, Unit, Collinear, Coplanar, and Equal Vectors <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Vector Operations I: Addition, Subtraction, and Geometrical Interpretations <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Vector Operations II: Scalar Multiplication and Section Formula <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Components of a Vector: Direction Cosines and Direction Ratios <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. The Dot Product (Scalar Product): Definition, Properties, and Angle Calculation <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Dot Product Applications: Projections of Vectors and Work Done <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. The Cross Product (Vector Product): Definition, Geometric Meaning, and Area of Parallelogram <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Cross Product Applications: Area of Triangle and Unit Normal Vectors <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Misconceptions in Dot/Cross Products and Calculation Errors <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: High-Weightage Problem Solving and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone, and welcome to our journey into the world of Vector Algebra. This is one of the most vital chapters in Class 12 Mathematics, not just because it carries significant weight in your board exams, but because it is the very language that describes the physical universe. Before we dive into the formal definitions and the complex formulas, let us first understand why we need vectors. Imagine you are looking at a weather report. It tells you that the temperature today is thirty degrees Celsius. This number, thirty, tells us everything we need to know about the heat. It has magnitude, but it doesn't have a direction. You don't say 'it is thirty degrees towards the North.' This is what we call a scalar quantity. Now, imagine you are a pilot flying an airplane. If your navigator tells you, 'Fly at a speed of five hundred kilometers per hour,' you would immediately ask, 'In which direction?' To reach your destination, you need both the speed and the specific heading or direction. This combination of magnitude and direction is what we call a vector. In physics and engineering, almost everything involves vectors. Think about the force you apply to push a door—the strength of your push matters, but so does the direction in which you push. Think about the velocity of a car, the acceleration of a rocket, or even the magnetic field surrounding a wire. All these require vectors to be described accurately. So, let's build our intuition. A vector is essentially an arrow in space. The length of that arrow represents the magnitude, which is the size or quantity of the thing we are measuring. The way the arrow points represents the direction. In our upcoming lessons, we will represent these vectors using letters with small arrows on top, like 'a vector a'. Now, let's talk about the most fundamental concept of a vector: Magnitude. If we have a vector, we want to know 'how much' of it there is. We denote the magnitude of vector 'a' as the absolute value of 'a', written as vertical bars around the letter, like this: vertical bar a vertical bar. Think of magnitude as the distance between the starting point, which we call the initial point, and the ending point, which we call the terminal point. If you are walking from point A to point B, the magnitude of your displacement is simply the straight-line distance between A and B. It is always a non-negative real number. You can have a very large magnitude, like the velocity of a comet, or a very small magnitude, like the movement of a microscopic particle. However, remember this crucial point: magnitude alone does not make a vector. A scalar has magnitude, but a vector must have both magnitude and a specific direction in space. As we move forward in this series, we will learn how to calculate these magnitudes using coordinates, how to represent them on a Cartesian plane, and how to perform mathematical operations with them. But for now, just hold onto this intuition: a vector is a quantity that tells you both 'how much' and 'which way'. Let's get started.","Welcome back to our journey through Vector Algebra. In our previous session, we explored the intuition behind magnitude and real-world applications. Now, it is time to dive into the fundamental distinction that defines this entire chapter: the difference between a scalar and a vector. Imagine I tell you that the temperature in your classroom is twenty-five degrees Celsius. This information is complete. You don't ask, 'twenty-five degrees in which direction?' This is because temperature is a scalar quantity. A scalar is a physical quantity that is fully described by its magnitude alone. Other examples include mass, time, and distance. However, if I tell you to walk five kilometers, you will immediately be confused. You will ask, 'In which direction?' This is where we encounter vector quantities. A vector is a quantity that requires both a magnitude and a specific direction to be fully defined. Think of velocity or force. If I push a door with ten Newtons of force, the result depends entirely on whether I push it inward or pull it outward. Now, how do we represent these vectors mathematically? We cannot just write a number. To represent a vector, we use a directed line segment. We draw an arrow. The length of this arrow represents the magnitude, and the arrowhead indicates the direction. In your textbooks and exams, we represent a vector using a letter with an arrow on top, like vector A, or by using a boldface letter, A. If we want to denote the magnitude of vector A, we write it as the absolute value of A, written as vertical bars around the letter. Moving on to the formal representation in a coordinate system, we use components. A vector can be written in terms of its horizontal and vertical parts, such as A x-hat plus B y-hat. Now, let us introduce a very crucial concept: the Position Vector. In our previous parts, we talked about vectors as abstract arrows. But in a three-dimensional coordinate system, we need a way to pin a vector to a specific point. This is where the position vector comes in. Suppose we have a point P in space with coordinates x, y, and z. The position vector of point P is the vector that starts from the origin, point O, and ends at point P. We usually denote this as vector OP. Using the unit vectors i, j, and k, which represent the directions along the x, y, and z axes respectively, we can write the position vector of P as x i plus y j plus k. This single vector tells us exactly where point P is located relative to the origin. It combines the distance from the origin with the specific direction required to reach that point. It is important to remember that while a 'vector' can be anywhere in space as long as its length and direction are preserved, a 'position vector' is specifically tied to the origin. Understanding this distinction is vital because, in the upcoming sections, we will use position vectors to calculate the distance between two points and the vectors connecting them. Let's wrap up this segment by remembering: Scalars have only size; Vectors have size and direction; and Position Vectors are the mathematical addresses of points in space relative to the origin.","Welcome back. In our previous lesson, we understood what a vector is and how to represent it using magnitude and direction. Now, just as we have different types of numbers like integers, fractions, and decimals, vectors also come in various specific forms based on their properties. Let us dive into the first type: the Zero Vector, also known as the Null Vector. Imagine you are walking, but your displacement is zero because you ended up exactly where you started. In such a case, the magnitude of the vector is zero, and its direction is indeterminate or undefined. We denote it as a bold zero or a zero with an arrow over it. It is a unique vector that acts as the additive identity in vector algebra. Next, let us look at the Unit Vector. This is a very important concept for later in the chapter. A unit vector is a vector whose magnitude is exactly one. We use unit vectors to specify direction without changing the scale of other quantities. If you have a non-zero vector 'a', you can find its corresponding unit vector by dividing the vector 'a' by its magnitude, which we write as 'a' divided by the magnitude of 'a'. We usually denote unit vectors with a 'hat' symbol, like 'a-hat'. For example, in three-dimensional space, we have three standard unit vectors: 'i-hat' along the x-axis, 'j-hat' along the y-axis, and 'k-hat' along the z-axis. Now, let's talk about the relationship between two or more vectors. First, we have Equal Vectors. Two vectors are said to be equal if and only if they have the same magnitude and the same direction. It is not enough for them to be parallel; they must be identical in both length and orientation. Even if they start at different points in space, if their components are identical, they are equal. Moving on, let us discuss Collinear Vectors. These are vectors that act along the same line or parallel lines. If two vectors are collinear, one can be expressed as a scalar multiple of the other. For example, if vector 'b' is equal to two times vector 'a', then 'a' and 'b' are collinear. They might have different lengths, but they point in the same or exactly opposite directions. Note that collinear vectors are a special case of parallel vectors. Finally, we have a more advanced concept: Coplanar Vectors. Think about a flat sheet of paper. Any two vectors can always lie on a single plane. However, when we deal with three or more vectors, they might not all lie on the same flat surface. If a set of vectors lies in the same plane, they are called coplanar vectors. If you cannot find a single flat surface that contains all of them, they are non-coplanar. Understanding these classifications is crucial because they form the foundation for how we will add, multiply, and find the angles between vectors in the upcoming lessons. Let's keep this momentum going as we move into vector operations.","Welcome back. Now that we understand what a vector is, how do we combine them? In our previous lesson, we looked at the nature of vectors; today, we dive into the mechanics of Vector Addition and Subtraction. Imagine you are walking in a park. If you walk five meters East and then three meters North, your total displacement isn't eight meters in a straight line; it is a specific path from your start to your end. This is the essence of vector addition. Let's start with the most fundamental rule: the Triangle Law of Vector Addition. Suppose we have two vectors, vector a and vector b. To add them, we place the initial point of vector b at the terminal point, or the head, of vector a. This is called the head-to-tail method. The resultant vector, which we call vector r, is the vector drawn from the initial point of vector a to the terminal point of vector b. Mathematically, we write this as vector r equals vector a plus vector b. This law tells us that if two vectors represent two sides of a triangle taken in order, then the third side represents the sum of the two vectors. Now, what if we want to add vectors that start from the same point? This brings us to the Parallelogram Law of Vector Addition. If two vectors, vector a and vector b, are represented by the two adjacent sides of a parallelogram originating from a common point, then the diagonal of the parallelogram passing through that same point represents the resultant vector. This is mathematically identical to the triangle law, just a different way of visualizing it. If the angle between vector a and vector b is theta, the magnitude of the resultant vector r is given by the square root of the quantity: magnitude of a squared, plus magnitude of b squared, plus two times the magnitude of a times the magnitude of b, all multiplied by the cosine of theta. This formula is crucial for calculating the strength of a combined force or velocity. Next, let's look at Vector Subtraction. Subtraction might seem tricky, but it is actually just addition of a negative vector. If we want to find vector a minus vector b, we can think of it as vector a plus negative vector b. The negative of vector b is simply a vector with the same magnitude as b but pointing in the exact opposite direction. Geometrically, if you use the triangle law for vector a and negative vector b, the resultant is the vector connecting the head of vector b to the head of vector a. In a parallelogram where a and b are adjacent sides, the difference vector a minus b is represented by the other diagonal—the one that does not pass through the common origin. So, while the main diagonal is the sum, the secondary diagonal is the difference. Let's recap the geometry: for addition, we follow the direction of flow from one to the next; for subtraction, we look at the gap between the two heads. Understanding these geometric interpretations is vital because, in physics and engineering, vectors aren't just numbers on a page; they are forces, velocities, and displacements acting in space. Master these visual rules, and you will never struggle with the algebraic calculations later.","Welcome back to our journey through Vector Algebra. In our previous lesson, we mastered the art of adding and subtracting vectors using the triangle and parallelogram laws. Today, we move from combining two vectors to scaling them and finding specific points along their paths. Let's start with Scalar Multiplication. Suppose we have a vector, let's call it vector a, and a real number, let's call it k. When we multiply vector a by the scalar k, we create a new vector, k times a. What does this actually do? Geometrically, it changes the magnitude of the vector. If k is greater than one, the vector stretches. If k is between zero and one, the vector shrinks. But there is a crucial detail: the direction. If k is positive, the new vector k times a points in the same direction as vector a. However, if k is negative, the new vector points in the exactly opposite direction. For example, if we have a vector representing a velocity of five meters per second north, and we multiply it by negative two, our new vector represents a velocity of ten meters per second south. It is important to note that if k is zero, the result is always the zero vector. Now, let's look at a very important property: if two vectors are non-zero and one is a scalar multiple of the other, they are collinear. This means they lie on the same line or parallel lines. Moving on to a more advanced application: the Section Formula. Imagine two points in space, point A with position vector a, and point B with position vector b. Suppose there is a point P lying on the line segment joining A and B. This point P divides the line segment AB in a specific ratio, let's call this ratio m to n. We want to find the position vector of point P, which we will call vector p. There are two cases here. First, Internal Division. If point P lies between A and B, the formula for the position vector p is equal to m times vector b, plus n times vector a, all divided by the quantity m plus n. Notice the pattern: the ratio m is multiplied by the 'far' vector b, and the ratio n is multiplied by the 'near' vector a. This is a common place where students make mistakes, so remember to cross-multiply the ratios with the opposite vectors. Second, we have External Division. This happens when point P lies on the line passing through A and B, but outside the segment AB. In this case, the formula for position vector p is equal to m times vector b, minus n times vector a, all divided by the quantity m minus n. The logic remains the same, but the subtraction accounts for the external position. A special case of the section formula is the Midpoint Formula. If P is the midpoint of AB, then the ratio m to n is simply one to one. When you plug one into our internal division formula, you get vector p equals vector a plus vector b, all divided by two. This is a beautiful, simple result. As you practice, remember: always check if the division is internal or external, and always be careful with your signs when dealing with negative scalars or external division. Let's dive into some solved examples to solidify these concepts.","Welcome back. In our previous lesson, we explored how to add and subtract vectors. Now, we are going to dive deeper into the internal structure of a vector. Up until now, we have represented vectors using unit vectors i, j, and k. But what if we want to know exactly how a vector is oriented in three-dimensional space? How much does it tilt towards the x-axis, the y-axis, or the z-axis? To answer this, we introduce two crucial concepts: Direction Cosines and Direction Ratios. Let us start with a vector, let's call it vector A, which has components a sub x, a sub y, and a sub z. The magnitude of this vector, which we denote as magnitude of A, is the square root of a sub x squared plus a sub y squared plus a sub z squared. Now, imagine this vector starts at the origin and makes angles with the positive directions of the x, y, and z axes. Let's call these angles alpha, beta, and gamma. These three angles are the key to understanding direction. The cosines of these angles are what we call the Direction Cosines. Specifically, the cosine of alpha is equal to a sub x divided by the magnitude of A. The cosine of beta is equal to a sub y divided by the magnitude of A. And the cosine of gamma is equal to a sub z divided by the magnitude of A. We usually denote these direction cosines as l, m, and n. So, l equals cosine of alpha, m equals cosine of beta, and n equals cosine of gamma. There is a very important mathematical property you must remember for your exams: the sum of the squares of the direction cosines is always equal to one. That is, l squared plus m squared plus n squared equals one. This is a fundamental identity in vector algebra. Now, you might wonder, if we know the direction cosines, do we need anything else? Well, direction cosines are unique, but they can involve messy square roots and fractions. To make calculations easier, we use Direction Ratios. Direction ratios are any three numbers a, b, and c that are proportional to the direction cosines l, m, and n. This means l is proportional to a, m is proportional to b, and n is proportional to c. In simpler terms, we can say l equals k times a, m equals k times b, and n equals k times c, where k is a non-zero constant. Because they are proportional, any set of numbers that maintains this ratio can serve as direction ratios. For example, if the direction cosines are one over three, two over three, and two over three, the direction ratios could simply be one, two, and two. This makes working with vectors in coordinate geometry much faster. To summarize the relationship: the direction cosines are the normalized versions of the direction ratios. If you have direction ratios a, b, and c, you can find the direction cosines by dividing each ratio by the square root of a squared plus b squared plus c squared. So, l equals a divided by the square root of a squared plus b squared plus c squared, and so on for m and n. This concludes our look at how vectors are oriented in space. In our next video, we will move on to the Dot Product, or the Scalar Product, to see how these components interact when two vectors meet.","Welcome back. In our previous lesson, we learned how to combine vectors through addition and scalar multiplication. But what happens when we want to multiply two vectors together? Today, we dive into one of the most important operations in vector algebra: The Dot Product, also known as the Scalar Product. Now, why is it called a scalar product? Because when you multiply two vectors using this method, the result is not a vector, but a single real number, or a scalar. Let us start with the formal definition. If we have two non-zero vectors, let's call them vector A and vector B, the dot product of A and B is defined as the product of their magnitudes multiplied by the cosine of the angle theta between them. In mathematical terms, we write this as A dot B equals magnitude of A, times magnitude of B, times the cosine of theta. It is important to note that theta must be the angle between the two vectors when they are placed tail-to-tail, ranging from zero to pi radians. Let us look at some fundamental properties that will make your calculations much faster. First, the dot product is commutative. This means A dot B is exactly the same as B dot A. The order does not matter. Second, the dot product is distributive over vector addition. This means A dot (B plus C) is equal to A dot B plus A dot C. It works just like regular algebra. Now, let us look at some special cases that are frequently tested in exams. What happens if two vectors are perpendicular, or orthogonal? If the angle theta is ninety degrees, the cosine of ninety degrees is zero. Therefore, the dot product of two perpendicular vectors is always zero. This is a very powerful tool for checking if two vectors are at right angles to each other. On the other hand, what if the vectors are parallel? If the angle is zero degrees, the cosine is one, and the dot product is simply the product of their magnitudes. If they are anti-parallel, meaning the angle is one hundred and eighty degrees, the cosine is negative one, and the dot product is the negative product of their magnitudes. Now, let us move to the algebraic definition, which is essential for solving coordinate-based problems. If vector A has components x-one, y-one, and z-one, and vector B has components x-two, y-two, and z-two, then the dot product is calculated by summing the products of their corresponding components. That is, x-one times x-two, plus y-one times y-two, plus z-one times z-two. This algebraic method is often much easier to use than the geometric one when you are given coordinates. Finally, let us use these tools to calculate the angle between two vectors. If you are given the components of two vectors, first calculate their dot product using the algebraic formula. Next, calculate the magnitude of each vector using the square root of the sum of the squares of its components. Once you have these values, you can rearrange our definition formula to solve for cosine theta. Cosine theta equals (A dot B) divided by the product of the magnitudes of A and B. Once you find the value of cosine theta, you can find the angle theta using the inverse cosine function. Remember, the dot product tells us how much one vector goes in the direction of another. In our next lesson, we will see how this concept is used to find projections and calculate work done in physics.","Welcome back. In our previous session, we mastered the mathematical definition of the dot product. Now, it is time to see how this scalar value translates into real-world physical measurements. We are going to focus on two critical applications: the projection of one vector onto another, and the concept of Work Done in physics. Let us start with the concept of Projection. Imagine you have two vectors, vector A and vector B, starting from the same origin. If you want to find out how much of vector A lies in the direction of vector B, you are looking for the projection of A on B. Think of this as the shadow cast by vector A onto the line containing vector B, assuming a light source is shining perpendicular to vector B. Mathematically, the scalar projection of vector A on vector B is defined as the magnitude of vector A multiplied by the cosine of the angle theta between them. This is exactly the formula for the dot product of A and B, divided by the magnitude of vector B. So, the formula is: dot product of A and B, divided by the magnitude of B. This gives us a scalar value. If the angle is acute, the projection is positive; if the angle is obtuse, the projection is negative; and if the vectors are perpendicular, the projection is zero. Now, what if we want the vector projection? The vector projection is simply the scalar projection multiplied by the unit vector in the direction of B. Since the unit vector of B is B divided by its magnitude, the formula for the vector projection of A on B is: the dot product of A and B, divided by the square of the magnitude of B, all multiplied by vector B. This results in a vector that points along the direction of B. Let us move to our second major application: Work Done. In physics, work is not just about force and distance; it is about how much force is applied in the direction of displacement. Suppose a constant force, represented by vector F, is applied to an object, causing it to move along a displacement vector, let us call it vector S. The work done, W, is defined as the dot product of the force vector and the displacement vector. So, W equals F dot S. If we expand this, W equals the magnitude of F, multiplied by the magnitude of S, multiplied by the cosine of the angle between them. This explains why work is zero if you carry a heavy box horizontally while walking—because the force of gravity is vertical and your displacement is horizontal, making the angle ninety degrees. It also explains why work is maximum when you push an object in the exact same direction you are moving, as the cosine of zero degrees is one. To summarize, the dot product is our mathematical tool to extract the component of one vector in the direction of another, whether we are talking about geometric shadows or the physical energy transferred through work. Let us look at a few solved examples to solidify these formulas.","Welcome back. In our previous lesson, we explored the Dot Product, which resulted in a scalar. But what happens when we need a product that results in a new vector? This brings us to one of the most powerful tools in vector algebra: The Cross Product, also known as the Vector Product. Unlike the dot product, the cross product of two vectors is a vector that is perpendicular to the plane containing them. Let's start with the formal definition. If we have two non-zero vectors, let's call them vector A and vector B, their cross product is denoted by the symbol A cross B. The magnitude of this resulting vector is equal to the magnitude of A times the magnitude of B, all multiplied by the sine of the angle theta between them. So, the formula is: magnitude of A cross B equals magnitude of A times magnitude of B times sine theta. Now, direction is crucial here. The direction of the cross product is determined by the Right-Hand Rule. If you curl the fingers of your right hand from vector A toward vector B through the smaller angle, your thumb will point in the direction of the cross product. This means the resulting vector is orthogonal, or perpendicular, to both A and B. Because of this, the cross product is anti-commutative. This means A cross B is not equal to B cross A; instead, A cross B equals negative B cross A. The sign change occurs because reversing the order of vectors reverses the direction of your thumb in the right-hand rule. Now, let's look at the geometric meaning. The magnitude of the cross product, which we just defined as A magnitude times B magnitude times sine theta, has a very special physical interpretation. It represents the area of a parallelogram where vectors A and B form two adjacent sides. Imagine vector A as the base of a parallelogram. The height of this parallelogram, if we drop a perpendicular from the tip of vector B to the line of vector A, is equal to the magnitude of B times the sine of theta. Since the area of a parallelogram is base times height, the area is exactly equal to the magnitude of the cross product. If the two vectors are parallel or collinear, the angle theta is zero. Since the sine of zero is zero, the cross product becomes a zero vector. This makes sense geometrically, as two parallel lines cannot form a parallelogram with any area. To calculate the cross product in a coordinate system, we use the determinant method. If vector A has components x-one, y-one, z-one and vector B has components x-two, y-two, z-two, we set up a three-by-three determinant. The first row contains the unit vectors i-cap, j-cap, and k-cap. The second row contains the components of vector A, and the third row contains the components of vector B. By expanding this determinant along the first row, we find the i-cap, j-cap, and k-cap components of our new vector. This method is much faster and less error-prone than using the sine formula when you are working with standard Cartesian coordinates. To summarize: the cross product gives us a vector perpendicular to the original two, its magnitude tells us the area of the parallelogram they span, and we calculate it using a determinant of their components. Let's move on to some practice problems to solidify this.","Welcome back. In our previous session, we explored the definition of the cross product and how it represents the area of a parallelogram. Today, we are going to take that mathematical tool and apply it to two very important geometric problems: finding the area of a triangle and determining the unit normal vector to a plane. Let us start with the triangle. Imagine you have a triangle defined by three points in space, let us call them A, B, and C. To find its area using vectors, we first need to represent two sides of this triangle as vectors. We can do this by calculating vector AB, which is position vector B minus position vector A, and vector AC, which is position vector C minus position vector A. Now, recall from our last lesson that the magnitude of the cross product of two vectors, AB cross AC, is exactly equal to the area of the parallelogram formed by these two vectors. A triangle is essentially exactly half of that parallelogram. Therefore, the area of triangle ABC is equal to one-half times the magnitude of the cross product of vector AB and vector AC. So, the formula is: Area equals one-half times the magnitude of AB cross AC. If you are given the coordinates of the vertices, just find the component forms of the vectors first, perform the determinant method to find the cross product, and then calculate its magnitude. This is much faster than using Heron's formula in three-dimensional space. Now, let us move to our second application, which is a fundamental concept in multivariable calculus and physics: the Unit Normal Vector. When we have two non-collinear vectors, let us call them vector a and vector b, their cross product, a cross b, results in a new vector. This new vector has a very special property: it is perpendicular, or orthogonal, to both vector a and vector b. This means it is perpendicular to the entire plane containing those two vectors. However, the magnitude of this cross product can be anything. In many engineering and physics problems, we don't just need any perpendicular vector; we need a vector that points in the right direction but has a magnitude of exactly one. This is what we call a Unit Normal Vector. To find it, we take the cross product of vector a and vector b, and then we divide that resulting vector by its own magnitude. The formula is: the unit normal vector, often denoted as n-hat, equals the cross product of a and b, divided by the magnitude of the cross product of a and b. Think of it this way: the cross product gives you the direction, and dividing by the magnitude 'normalizes' it, stripping away the scale and leaving you with pure direction. This unit normal vector is crucial when you want to define the orientation of a surface in space. To summarize: for a triangle, use half the magnitude of the cross product of two side vectors. For a unit normal vector, take the cross product and divide by its magnitude. Let's look at an example to solidify this.","Welcome back. We have mastered the formulas for dot and cross products, but in the examination hall, even the brightest students often lose marks due to subtle conceptual slips. Today, we are going to identify these traps so you can avoid them entirely. Let us start with the most frequent error: the nature of the result. Remember, the dot product is a scalar. If you are solving a problem and your final answer for a dot product contains the unit vectors i, j, or k, you have made a fundamental error. The dot product results in a single real number, representing magnitude or work done. On the other hand, the cross product is a vector. A common mistake is forgetting to include the direction or the unit vector in the final result of a cross product. If you calculate the magnitude but forget to state that the result is perpendicular to the plane, your answer is incomplete. Next, let us look at the angle theta. In the dot product formula, cosine of theta, the angle theta must always be between zero and pi radians. Students often get confused when they see a negative dot product. A negative dot product does not mean the angle is invalid; it simply means the angle between the vectors is obtuse, or greater than ninety degrees. Conversely, if the dot product is zero, do not assume there is a calculation error; it is the definitive mathematical proof that the two vectors are orthogonal, or perpendicular. Now, let us address the cross product's direction. The cross product is anti-commutative. This is a huge pitfall. While the dot product of vector A and vector B is the same as B dot A, the cross product of A cross B is NOT the same as B cross A. In fact, B cross A is equal to negative A cross B. If you swap the order of vectors in a cross product without changing the sign, your direction will be exactly opposite to the correct answer. This is where the Right-Hand Thumb Rule is your best friend. Always visualize your fingers curling from the first vector toward the second to find the thumb's direction. Another area where errors creep in is the calculation of the magnitude. When calculating the magnitude of a cross product using the determinant method, students often make sign errors, especially when dealing with negative components. Always double-check your determinant expansion. For example, if you are calculating the area of a triangle using one-half of the magnitude of the cross product, ensure you apply the one-half factor at the very end, after the magnitude is fully computed. Also, be careful with the unit vectors. In the cross product, i cross j is k, but j cross i is negative k. This cyclic order—i to j, j to k, k to i—is crucial. If you go backward, you must add a negative sign. Finally, watch out for unit vector misconceptions. When calculating the projection of vector A onto vector B, students often forget to divide by the magnitude of vector B. The projection of A on B is the dot product of A and B, divided by the magnitude of B. If you forget that denominator, your answer will be a scalar with the wrong dimension. Stay vigilant, check your signs, and always verify if your result is a scalar or a vector.","Welcome to the final session of our Vector Algebra series. We have traveled from the basic definition of magnitude to the complexities of cross products. Now, it is time to transition from learning to performing. In the board exams, Vector Algebra is a high-scoring chapter, often carrying significant weightage in both short and long-answer sections. Let us start our Masterclass by identifying the high-weightage problem types. The first category involves finding the angle between two vectors using the dot product. Remember, the formula is cosine theta equals vector a dot vector b, divided by the product of the magnitudes of a and b. A common trap here is forgetting to take the absolute value when finding the acute angle. The second category is the application of the cross product to find the area of a triangle or a parallelogram. If you are given two adjacent sides as vectors a and b, the area of the parallelogram is the magnitude of the cross product of a and b. For a triangle, simply take half of that magnitude. Always double-check your determinant calculations when computing the cross product; a single sign error in the i, j, or k components will ruin the entire result. The third category involves projection. Students often confuse the projection of vector a on vector b with the scalar projection. Remember, the scalar projection of a on b is the dot product of a and b, divided by the magnitude of b. The vector projection is that scalar value multiplied by the unit vector of b. The fourth category is finding a unit vector perpendicular to two given vectors. This is a classic three-mark question. You must find the cross product of the two vectors first, and then divide that resulting vector by its own magnitude. Now, let us do a rapid-fire recap of the entire chapter to solidify your mental map. We began with the distinction between scalars and vectors, where vectors possess both magnitude and direction. We looked at position vectors, which connect the origin to any point in space. We categorized vectors into zero, unit, collinear, and coplanar types. We mastered vector addition using the triangle and parallelogram laws, and learned how to resolve vectors into rectangular components using direction cosines and direction ratios. We then moved into the two most important operations: the Dot Product, which results in a scalar and is used for finding angles and projections, and the Cross Product, which results in a vector and is used for finding areas and perpendicular vectors. As we conclude, remember the golden rule of vectors: always keep track of your direction. A vector is not just a number; it is a movement in space. Practice the NCERT exemplar problems, especially those involving the section formula and direction cosines, as these are frequent favorites for examiners. You are now ready to tackle any vector problem with confidence. Keep practicing, and I will see you in the next chapter."];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-maths-10-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

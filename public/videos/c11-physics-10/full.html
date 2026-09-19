@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Thermal Properties of Matter, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-physics-10-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Why Thermal Physics Matters, Temperature vs Heat, and Thermometry Fundamentals -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Why Thermal Physics Matters, Temperature vs Heat, and Thermometry Fundamentals</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Thermal Physics: Study of heat, temperature, and energy transfer</div>
+              <div id="qx0-p1" class="qe-bullet">• Temperature: Measure of average kinetic energy of molecules</div>
+              <div id="qx0-p2" class="qe-bullet">• Heat: Total energy transferred due to temperature difference</div>
+              <div id="qx0-p3" class="qe-bullet">• Thermometric Property: A physical property that changes with temperature</div>
+              <div id="qx0-p4" class="qe-bullet">• Kelvin Scale: The absolute SI scale where zero is absolute zero</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3658017902,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a small cup of boiling water vs a large bucket of warm water, with molecular vibrations visualized as glowing spheres.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A split-screen 3D animation showing a small cup of boiling water vs a large bucket of warm water, with molecular vibrations visualized as glowing spheres.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Thermal Expansion: Linear, Areal, and Volumetric Expansion with Derivations and Real-world -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Thermal Expansion: Linear, Areal, and Volumetric Expansion with Derivations and Real-world</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Thermal expansion is caused by increased average particle separation.</div>
+              <div id="qx1-p1" class="qe-bullet">• Linear Expansion: delta L = L zero * alpha * delta T</div>
+              <div id="qx1-p2" class="qe-bullet">• Areal Expansion: delta A = A zero * beta * delta T (where beta = 2 * alpha)</div>
+              <div id="qx1-p3" class="qe-bullet">• Volumetric Expansion: delta V = V zero * gamma * delta T (where gamma = 3 * alpha)</div>
+              <div id="qx1-p4" class="qe-bullet">• Real-world: Expansion joints in railway tracks and bridges prevent structural damage.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":874386349,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a metal rod's molecular lattice vibrating more intensely as temperature rises, causing the rod to physically lengthen.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D animation showing a metal rod's molecular lattice vibrating more intensely as temperature rises, causing the rod to physically lengthen.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Anomalous Expansion of Water and Thermal Stress in Solids -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Anomalous Expansion of Water and Thermal Stress in Solids</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Water reaches maximum density at 4 degrees Celsius</div>
+              <div id="qx2-p1" class="qe-bullet">• Anomalous expansion allows aquatic life to survive in winter</div>
+              <div id="qx2-p2" class="qe-bullet">• Thermal stress occurs when expansion is restricted</div>
+              <div id="qx2-p3" class="qe-bullet">• Formula: Thermal Stress = Young's Modulus * alpha * delta T</div>
+              <div id="qx2-p4" class="qe-bullet">• Thermal stress can cause structural failure in solids</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2345245215,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: left side shows a layered frozen lake with fish at the bottom; right side shows a metal rod between two walls turning red and glowing to represent stress.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen 3D animation: left side shows a layered frozen lake with fish at the bottom; right side shows a metal rod between two walls turning red and glowing to represent stress.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Calorimetry: Specific Heat Capacity, Latent Heat, and the Principle of Calorimetry -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Calorimetry: Specific Heat Capacity, Latent Heat, and the Principle of Calorimetry</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Specific Heat Capacity (c): Q = m * c * delta T</div>
+              <div id="qx3-p1" class="qe-bullet">• Latent Heat (L): Q = m * L (Temperature remains constant)</div>
+              <div id="qx3-p2" class="qe-bullet">• Latent Heat of Fusion vs. Latent Heat of Vaporization</div>
+              <div id="qx3-p3" class="qe-bullet">• Principle of Calorimetry: Heat Lost = Heat Gained</div>
+              <div id="qx3-p4" class="qe-bullet">• Thermal Equilibrium: Reaching a common final temperature</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":4208194056,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a temperature-rising graph for sensible heat and a flat plateau graph for latent heat during a phase change.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A split-screen 3D animation showing a temperature-rising graph for sensible heat and a flat plateau graph for latent heat during a phase change.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Phase Changes: Melting, Boiling, and Heating/Cooling Curves with Worked Examples -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Phase Changes: Melting, Boiling, and Heating/Cooling Curves with Worked Examples</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Phase change occurs at constant temperature</div>
+              <div id="qx4-p1" class="qe-bullet">• Latent Heat of Fusion: Solid to Liquid transition</div>
+              <div id="qx4-p2" class="qe-bullet">• Latent Heat of Vaporization: Liquid to Gas transition</div>
+              <div id="qx4-p3" class="qe-bullet">• Heating curves feature horizontal plateaus during phase changes</div>
+              <div id="qx4-p4" class="qe-bullet">• Always calculate total heat required for phase change first</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2245693406,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A dynamic 2D line graph showing a heating curve with rising slopes and flat plateaus, transitioning into a 3D molecular view of ice melting into water.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A dynamic 2D line graph showing a heating curve with rising slopes and flat plateaus, transitioning into a 3D molecular view of ice melting into water.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Heat Transfer I: Conduction, Thermal Conductivity, and Fourier’s Law of Heat Flow -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Heat Transfer I: Conduction, Thermal Conductivity, and Fourier’s Law of Heat Flow</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Conduction: Heat transfer through direct particle-to-particle contact in solids.</div>
+              <div id="qx5-p1" class="qe-bullet">• Mechanism: Atomic vibrations and free electron movement in metals.</div>
+              <div id="qx5-p2" class="qe-bullet">• Fourier's Law: Heat flow rate is proportional to area and temperature gradient.</div>
+              <div id="qx5-p3" class="qe-bullet">• Formula: Q/t = k * A * (T1 - T2) / L</div>
+              <div id="qx5-p4" class="qe-bullet">• Thermal Conductivity (k): Measure of a material's ability to conduct heat.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":870860579,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D metallic rod with a glowing red hot end and a blue cold end, showing vibrating spheres and moving electrons transferring energy through the lattice.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D metallic rod with a glowing red hot end and a blue cold end, showing vibrating spheres and moving electrons transferring energy through the lattice.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Heat Transfer II: Convection, Natural vs Forced Convection, and Fluid Dynamics -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Heat Transfer II: Convection, Natural vs Forced Convection, and Fluid Dynamics</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Convection: Heat transfer via bulk movement of fluid particles</div>
+              <div id="qx6-p1" class="qe-bullet">• Natural Convection: Driven by buoyancy and density gradients</div>
+              <div id="qx6-p2" class="qe-bullet">• Forced Convection: Driven by external means like fans or pumps</div>
+              <div id="qx6-p3" class="qe-bullet">• Heat Transfer Rate: Depends on the convective heat transfer coefficient 'h'</div>
+              <div id="qx6-p4" class="qe-bullet">• Turbulent flow enhances heat transfer compared to laminar flow</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":603387373,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing a pot of water with slow circular rising bubbles on the left, and a high-speed fan blowing air over a hot metal plate on the right.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D split-screen animation showing a pot of water with slow circular rising bubbles on the left, and a high-speed fan blowing air over a hot metal plate on the right.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Heat Transfer III: Radiation, Stefan-Boltzmann Law, and Wien’s Displacement Law -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Heat Transfer III: Radiation, Stefan-Boltzmann Law, and Wien’s Displacement Law</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Radiation requires no medium and travels at the speed of light.</div>
+              <div id="qx7-p1" class="qe-bullet">• Stefan-Boltzmann Law: E = epsilon * sigma * T^4.</div>
+              <div id="qx7-p2" class="qe-bullet">• Emissivity (epsilon) measures how effectively a surface emits radiation.</div>
+              <div id="qx7-p3" class="qe-bullet">• Wien’s Displacement Law: lambda_max * T = constant.</div>
+              <div id="qx7-p4" class="qe-bullet">• Increasing temperature shifts peak radiation to shorter wavelengths.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2687288482,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D glowing sphere transitioning from dull red to bright white, with a graph overlay showing the spectral peak shifting leftward as temperature rises.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D glowing sphere transitioning from dull red to bright white, with a graph overlay showing the spectral peak shifting leftward as temperature rises.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Blackbody Radiation: Kirchhoff’s Law, Emissivity, and Absorptivity Concepts -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Blackbody Radiation: Kirchhoff’s Law, Emissivity, and Absorptivity Concepts</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Absorptivity (alpha): Fraction of incident radiation absorbed by a surface.</div>
+              <div id="qx8-p1" class="qe-bullet">• Emissivity (epsilon): Ratio of radiation emitted by a surface to a blackbody.</div>
+              <div id="qx8-p2" class="qe-bullet">• Blackbody: An ideal surface where absorptivity and emissivity both equal one.</div>
+              <div id="qx8-p3" class="qe-bullet">• Kirchhoff’s Law: For any body in equilibrium, emissivity equals absorptivity.</div>
+              <div id="qx8-p4" class="qe-bullet">• Relationship: Good absorbers are naturally good emitters of radiation.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2046915358,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a dark matte sphere absorbing 100% of light rays while a shiny silver sphere reflecting them, transitioning to a graph showing the equality of alpha and epsilon.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation showing a dark matte sphere absorbing 100% of light rays while a shiny silver sphere reflecting them, transitioning to a graph showing the equality of alpha and epsilon.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Newton’s Law of Cooling: Mathematical Derivation, Graphical Analysis, and Word Problems -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Newton’s Law of Cooling: Mathematical Derivation, Graphical Analysis, and Word Problems</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Newton's Law: Rate of cooling is proportional to temperature difference</div>
+              <div id="qx9-p1" class="qe-bullet">• Mathematical Form: d-T/dt = -k(T - T-s)</div>
+              <div id="qx9-p2" class="qe-bullet">• Exponential Decay: Temperature decreases exponentially over time</div>
+              <div id="qx9-p3" class="qe-bullet">• Graphical View: T vs t is an exponential curve; Rate vs Delta-T is a straight line</div>
+              <div id="qx9-p4" class="qe-bullet">• Limitation: Most accurate when temperature difference is small</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":344449713,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a steaming cup of coffee cooling down, transitioning into a mathematical graph where the temperature curve decays exponentially towards a horizontal asymptote representing room temperature.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D animation showing a steaming cup of coffee cooling down, transitioning into a mathematical graph where the temperature curve decays exponentially towards a horizontal asymptote representing room temperature.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Conceptual Errors in Thermodynamics and Mathematical Calculation Mistakes -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Conceptual Errors in Thermodynamics and Mathematical Calculation Mistakes</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Heat is energy transfer (Joules); Temperature is kinetic state (Kelvin).</div>
+              <div id="qx10-p1" class="qe-bullet">• During phase changes, temperature is constant; use Latent Heat, not Specific Heat.</div>
+              <div id="qx10-p2" class="qe-bullet">• Maintain sign consistency in the Principle of Calorimetry (Q lost = Q gained).</div>
+              <div id="qx10-p3" class="qe-bullet">• Always convert Celsius to Kelvin when using Stefan-Boltzmann Law.</div>
+              <div id="qx10-p4" class="qe-bullet">• Distinguish between Thermal Conductivity (flow) and Diffusivity (speed of change).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4115878127,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen animation showing a thermometer staying constant during melting ice on one side, and a mathematical equation on the other side where a 'Celsius' value is being struck through and replaced with a 'Kelvin' value.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen animation showing a thermometer staying constant during melting ice on one side, and a mathematical equation on the other side where a 'Celsius' value is being struck through and replaced with a 'Kelvin' value.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: High-Yield Question Patterns, Derivation Tips, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: High-Yield Question Patterns, Derivation Tips, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• High-Yield Patterns: Calorimetry mixtures, Graphical analysis, and Derivations.</div>
+              <div id="qx11-p1" class="qe-bullet">• Derivation Strategy: Labeled diagrams, clear assumptions, and variable definitions.</div>
+              <div id="qx11-p2" class="qe-bullet">• Calorimetry Tip: Always include the heat capacity of the container/calorimeter.</div>
+              <div id="qx11-p3" class="qe-bullet">• Phase Change Key: Horizontal lines on graphs represent Latent Heat processes.</div>
+              <div id="qx11-p4" class="qe-bullet">• Chapter Recap: Expansion, Calorimetry, Conduction, Convection, and Radiation.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3427830493,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen showing a student solving a complex derivation on one side and a high-speed montage of the chapter's key diagrams—expanding rods, cooling curves, and radiating blackbodies—on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen showing a student solving a complex derivation on one side and a high-speed montage of the chapter's key diagrams—expanding rods, cooling curves, and radiating blackbodies—on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Thermal Properties of Matter today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Why Thermal Physics Matters, Temperature vs Heat, and Thermometry Fundamentals <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Thermal Expansion: Linear, Areal, and Volumetric Expansion with Derivations and Real-world <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Anomalous Expansion of Water and Thermal Stress in Solids <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Calorimetry: Specific Heat Capacity, Latent Heat, and the Principle of Calorimetry <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Phase Changes: Melting, Boiling, and Heating/Cooling Curves with Worked Examples <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Heat Transfer I: Conduction, Thermal Conductivity, and Fourier’s Law of Heat Flow <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Heat Transfer II: Convection, Natural vs Forced Convection, and Fluid Dynamics <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Heat Transfer III: Radiation, Stefan-Boltzmann Law, and Wien’s Displacement Law <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Blackbody Radiation: Kirchhoff’s Law, Emissivity, and Absorptivity Concepts <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Newton’s Law of Cooling: Mathematical Derivation, Graphical Analysis, and Word Problems <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Conceptual Errors in Thermodynamics and Mathematical Calculation Mistakes <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: High-Yield Question Patterns, Derivation Tips, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey into the fascinating world of Thermal Properties of Matter. Before we dive into complex equations, let's ask a fundamental question: Why does this subject matter? Think about the simplest things around you. Why does a bridge have small gaps between its joints? Why does your tea cool down if left on a table? Why does ice float on water? The answers to all these questions lie in thermal physics. This branch of physics studies how matter behaves when its internal energy changes. It is the science of heat, temperature, and the energy transfers that drive everything from the weather patterns on Earth to the engines in our cars. Now, let's clear up a very common confusion that even many college students make: the difference between Heat and Temperature. While we often use these words interchangeably in daily life, in physics, they are distinct concepts. Imagine you have a cup of boiling water and a large bucket of lukewarm water. Which one has a higher temperature? The boiling water, because its molecules are vibrating much more vigorously. But which one has more heat? The bucket! This is because heat is a form of energy in transit, and it depends not just on the temperature, but also on the mass and the nature of the substance. To put it formally, Temperature is a macroscopic measure of the average kinetic energy of the molecules in a substance. It tells us the state of hotness or coldness. Heat, on the other hand, is the total energy transferred between two systems due to a temperature difference. Heat always flows spontaneously from a body at a higher temperature to a body at a lower temperature. To measure this temperature, we need a device called a thermometer. But how does a thermometer actually work? It relies on the principle of thermometry, which is the use of a 'thermometric property.' A thermometric property is any physical property of a substance that changes systematically and predictably with temperature. Common examples include the expansion of a liquid like mercury, the change in electrical resistance of a wire, or the pressure of a gas. For a thermometer to be useful, we need to establish a scale. This involves choosing two fixed points. Traditionally, we use the freezing point and the boiling point of pure water at standard atmospheric pressure. On the Celsius scale, the freezing point is zero degrees and the boiling point is one hundred degrees. On the Kelvin scale, which is the absolute SI unit used in all scientific calculations, these points are two hundred and seventy-three point one five Kelvin and three hundred and seventy-three point one five Kelvin, respectively. Remember, the size of one degree Celsius is exactly the same as the size of one Kelvin. The only difference is the starting point, or the zero point. In this chapter, we will build upon these basics to understand how heat moves, how substances expand, and how energy changes the very state of matter. Let's get started.","Welcome back. In our previous session, we established the difference between heat and temperature. Now, let us look at a physical consequence of adding heat to a substance: Thermal Expansion. When we increase the temperature of a solid, liquid, or gas, the kinetic energy of its constituent particles increases. This causes them to vibrate more vigorously, pushing their neighbors further away, which results in an increase in the average distance between particles. This macroscopic increase in size is what we call thermal expansion. Let us start with solids and look at Linear Expansion. Imagine a thin rod of initial length L zero at an initial temperature T zero. When heated to a final temperature T, the length increases by an amount delta L. We observe that this increase is directly proportional to the original length and the change in temperature. Mathematically, delta L equals L zero multiplied by alpha multiplied by the change in temperature, where alpha is a constant called the coefficient of linear expansion. Alpha has the units of per Kelvin or per degree Celsius. Now, let us derive the expression for Areal Expansion. Consider a thin rectangular sheet with initial length L zero and width W zero. The initial area A zero is L zero multiplied by W zero. When heated, both dimensions expand. The new length becomes L zero plus alpha times L zero times delta T, and the new width becomes W zero plus alpha times W zero times delta T. When we multiply these two new dimensions to find the new area A, and then use the binomial theorem to simplify the expression, we find that the change in area, delta A, is approximately equal to A zero multiplied by beta multiplied by delta T. Here, beta is the coefficient of areal expansion. A very important relationship to remember is that beta is approximately equal to two times alpha. Moving on to three-dimensional objects, we encounter Volumetric Expansion. For a solid cube or a sphere, the volume increases when heated. The change in volume, delta V, is given by V zero multiplied by gamma multiplied by delta T, where gamma is the coefficient of volume expansion. Through a similar mathematical derivation involving the expansion of all three dimensions, we find that gamma is approximately equal to three times alpha. So, for most isotropic solids, the relationship is gamma equals three alpha, beta equals two alpha. This is a high-yield point for your exams. Let us look at some real-world applications to see why this matters. Have you ever noticed small gaps left between railway tracks? These are expansion joints. If these gaps were not there, the rails would expand on a hot summer day, exert massive force, and buckle, leading to accidents. Similarly, in large concrete bridges, engineers install expansion joints to allow the structure to breathe with temperature changes. Even in your home, glass tumblers might crack if you pour boiling water into them; this is because the inner surface expands faster than the outer surface, creating internal stress. Understanding these coefficients allows engineers to design everything from precision clocks to massive skyscrapers safely. In the next part, we will discuss a very strange exception to this rule: the anomalous expansion of water.","Welcome back. In our previous segment, we explored how most substances expand when heated and contract when cooled. But nature has a very peculiar exception, and it is one of the most vital phenomena for life on Earth. Today, we look at the anomalous expansion of water and how temperature changes can actually cause physical strain in solids, known as thermal stress. Let's start with water. Usually, when you heat a liquid, its molecules move faster and push further apart, causing expansion. However, water behaves differently between the temperatures of zero degrees Celsius and four degrees Celsius. As you cool water from room temperature, it contracts normally. But, once it reaches four degrees Celsius, something strange happens. Instead of contracting further as it cools toward zero, water begins to expand. This means that water reaches its maximum density at exactly four degrees Celsius. Think about the implications of this. If you have a lake in a freezing climate, the surface water cools down. When it hits four degrees, it becomes densest and sinks to the bottom. As the surface continues to cool toward zero, the water becomes less dense and stays at the top. This creates a layered effect where the bottom of the lake remains at a relatively constant four degrees Celsius, even if the surface is freezing. This is why fish and aquatic life can survive in frozen lakes; the water at the bottom stays liquid! If water behaved like other liquids, lakes would freeze from the bottom up, killing all life within. Now, let's shift our focus from liquids to solids. We know that solids expand when heated. But what happens if a solid is prevented from expanding? Imagine a metal rod fixed tightly between two immovable walls. If we heat this rod, the atoms want to push outward due to increased thermal vibration. However, the walls exert a massive counter-force to keep the rod at its original length. This resistance to expansion creates an internal force within the material. We call this Thermal Stress. To understand this mathematically, let's derive the formula. Suppose a rod of length L and area A is heated by a temperature change of delta T. If it were free to expand, its change in length, or delta L, would be L multiplied by the coefficient of linear expansion, alpha, multiplied by delta T. Since the walls prevent this expansion, the rod is effectively under a compressive stress. Stress is defined as Force divided by Area. The force exerted by the rod can be calculated from Young's Modulus, which is Stress divided by Strain. Strain is the change in length divided by the original length. So, Force divided by Area equals Young's Modulus multiplied by delta L divided by L. If we substitute our formula for delta L, which is L times alpha times delta T, into this equation, the L terms cancel out. We are left with Stress equals Young's Modulus multiplied by alpha multiplied by delta T. This formula is crucial. It tells us that the thermal stress depends on the material's stiffness, its expansion coefficient, and the temperature change. This is why engineers must be extremely careful when building bridges, railway tracks, or even glass windows. If the thermal stress exceeds the strength of the material, the object will crack, bend, or even shatter. For example, if you pour boiling water into a cold glass, the inner surface expands rapidly while the outer surface stays cool. This creates a massive temperature gradient and internal thermal stress that can snap the glass instantly. Understanding these two concepts—the life-saving anomaly of water and the destructive potential of thermal stress—is essential for mastering the thermal properties of matter.","Welcome back. In our previous lesson, we looked at how substances expand when heated. But what happens to the energy itself? Today, we dive into Calorimetry, the science of measuring heat. To understand this, we must first distinguish between two types of heat processes: those that change temperature and those that change the state of matter. Let's start with Specific Heat Capacity. Imagine you have one kilogram of water and one kilogram of iron. If you apply the same amount of heat to both, the iron gets much hotter than the water. Why? Because every substance has a unique ability to store thermal energy. We define Specific Heat Capacity, denoted by the letter small c, as the amount of heat required to raise the temperature of a unit mass of a substance by one degree Celsius or one Kelvin. The mathematical formula is: Heat equals mass times specific heat capacity times the change in temperature. In symbols, that is Q equals m times c times delta T. The unit is Joules per kilogram per Kelvin. This value tells us how 'thermally sluggish' a substance is. Water has a very high specific heat capacity, which is why it's so good at regulating Earth's climate. Now, what happens when we reach a phase change? If you keep heating boiling water, the temperature doesn't rise above one hundred degrees Celsius until all the water has turned into steam. Where is that energy going? It is being used to break the intermolecular bonds rather than increasing the kinetic energy of the molecules. This is where we encounter Latent Heat. The word 'latent' means hidden. This heat is hidden because it doesn't show up on a thermometer. We define Latent Heat, denoted by L, as the heat required to change the phase of a unit mass of a substance without a change in temperature. There are two main types: Latent Heat of Fusion, which is the energy needed to turn a solid into a liquid, and Latent Heat of Vaporization, which is the energy needed to turn a liquid into a gas. The formula here is simpler: Heat equals mass times latent heat, or Q equals m times L. There is no delta T in this equation because the temperature remains constant during the phase change. Now, let's bring these concepts together using the Principle of Calorimetry. This principle is a direct application of the Law of Conservation of Energy. In an isolated system, heat lost by a hot body must equal the heat gained by a cold body. This is often expressed as: Heat lost by hot body equals Heat gained by cold body. When you drop a hot piece of metal into a calorimeter containing water, the metal transfers its thermal energy to the water until they both reach a common temperature, called thermal equilibrium. To solve calorimetry problems, you must be very careful with your steps. First, identify the initial temperatures of all components. Second, determine if any phase changes are occurring. If a substance is melting or boiling, you must include the m times L term in your energy balance. Third, set up your equation: m-one times c-one times delta T-one equals m-two times c-two times delta T-two. Always remember that delta T is final temperature minus initial temperature. If a body is cooling, its delta T will be negative, which is why we often write it as 'mass times specific heat times the difference in temperatures' to keep the values positive on both sides of the equation. Mastering these calculations is the key to solving complex thermal physics problems in your exams.","Welcome back. In our previous session, we explored calorimetry and the concept of latent heat. Today, we move from just measuring heat to understanding how matter actually changes its state. When we add heat to a substance, we often expect its temperature to rise. However, during a phase change, something fascinating happens: the temperature remains constant even though heat is still being supplied. Let us look at the first major transition: melting, or fusion. When a solid reaches its melting point, the energy being added is no longer used to increase the kinetic energy of the molecules—which is why the temperature doesn't rise. Instead, this energy, known as the Latent Heat of Fusion, is used to overcome the intermolecular forces of attraction holding the solid together. Once the entire solid has turned into a liquid, only then will the temperature begin to rise again. The same principle applies to boiling, or vaporization. At the boiling point, the heat supplied is called the Latent Heat of Vaporization. This energy is used to break the bonds completely to allow molecules to escape into the gaseous state. Now, let us visualize this through a Heating Curve. Imagine a graph where the x-axis represents the total heat added and the y-axis represents the temperature. You will see a series of diagonal lines connected by flat, horizontal plateaus. The diagonal lines represent the heating of a single phase—solid, liquid, or gas—where temperature increases. The horizontal plateaus are the phase changes. The first plateau is melting, the second is boiling. If we were to look at a Cooling Curve, the graph would be inverted. As a gas cools, it reaches a plateau where it condenses into a liquid, and later, another plateau where the liquid freezes into a solid. Let us work through a practical example to solidify this. Suppose we have one hundred grams of ice at zero degrees Celsius, and we want to find the temperature of the water after we have added two hundred calories of heat. We know the Latent Heat of Fusion for ice is eighty calories per gram. First, we calculate how much heat is needed to melt all the ice. One hundred grams multiplied by eighty calories per gram equals eight thousand calories. But wait, we have only added two hundred calories. This means the ice has not even finished melting! In this specific case, the temperature remains at zero degrees Celsius because the energy is still being consumed by the phase change process. Let us try another one. Suppose we have one hundred grams of water at zero degrees Celsius and we add ten thousand calories of heat. First, we use eight thousand calories to melt the ice into water at zero degrees. Now, we have two thousand calories left over. We use the formula: Heat equals mass times specific heat capacity times change in temperature. Here, the specific heat of water is one calorie per gram per degree Celsius. So, two thousand equals one hundred times one times the change in temperature. Solving this, the change in temperature is twenty degrees. Therefore, our final temperature is zero plus twenty, which is twenty degrees Celsius. Remember, always check if the heat supplied is enough to complete the phase change before calculating the temperature rise. This distinction is the key to mastering thermal physics.","Welcome back. In our previous lesson, we explored how substances change state through calorimetry. Now, we shift our focus from how much heat a substance contains to how that heat actually moves from one place to another. This process is known as heat transfer. Imagine you have a metal rod, and you heat one end while keeping the other end in ice. You will notice that the heat travels from the hot end to the cold end. This mode of transfer, which occurs primarily in solids through direct contact between particles, is called conduction. In a solid, atoms are held in a fixed lattice structure. When we heat one end, the atoms there gain kinetic energy and vibrate more vigorously. These vibrating atoms then collide with their neighbors, transferring some of their energy. In metals, this process is even faster because of the presence of free electrons that can move rapidly through the lattice, carrying thermal energy with them. To understand this mathematically, let us consider a long, uniform rod of length L and cross-sectional area A. Suppose there is a temperature difference between the two ends. We want to find the rate at which heat flows through this rod. This rate is defined as the heat current, or Q divided by time t. According to Fourier's Law of Heat Flow, the rate of heat transfer is directly proportional to the temperature gradient and the area of cross-section. Let's break this down. The temperature gradient is the change in temperature divided by the distance over which it occurs, which is T-two minus T-one divided by L. To turn this proportionality into an equation, we introduce a constant called the thermal conductivity, denoted by the symbol k. So, the formula for heat current is: Q divided by time equals k, times A, times the absolute value of T-two minus T-one, all divided by L. This is Fourier's Law. The thermal conductivity, k, is a characteristic property of the material. A material with high thermal conductivity, like copper or silver, is called a good conductor because it allows heat to pass through easily. A material with very low thermal conductivity, like wood, air, or fiberglass, is called a thermal insulator or an insulator. Now, let's look at the units. Since heat current is energy per unit time, its SI unit is Watts. Therefore, the unit for thermal conductivity k is Watts per meter-Kelvin. It is important to note that thermal conductivity is not a constant; it can change depending on the temperature of the material. Also, remember that conduction is most effective in solids, especially metals, because the particles are closely packed. In gases, conduction is very poor because the molecules are far apart, making collisions less frequent. As we move through this derivation, keep in mind that we assume the rod is perfectly insulated on its sides, meaning heat only flows along the length of the rod. If heat were escaping from the sides, our formula would not be so simple. Understanding this relationship between temperature gradient, area, and material property is crucial for engineering everything from cooking utensils to the insulation in your house. In the next part, we will see how heat moves through fluids via convection.","Welcome back. In our previous lesson, we explored conduction, where heat travels through a medium via molecular vibrations without the bulk movement of matter. But what happens when the medium itself is a fluid, like a liquid or a gas? This brings us to our third mode of heat transfer: Convection. Unlike conduction, convection involves the actual physical movement of the heated particles from one location to another. This process is fundamentally linked to the density changes within a fluid. Let us look at the mechanism. When a fluid is heated, its molecules gain kinetic energy and move more vigorously, causing the fluid to expand. This expansion leads to a decrease in density in that specific region. Because fluids naturally move from areas of high density to low density, this warmer, lighter fluid rises, creating a current. As it rises, it transfers its thermal energy to the surrounding cooler, denser fluid, which then sinks to take its place. This continuous, circular motion is what we call a convection current. Now, we must distinguish between two types: Natural and Forced convection. Natural convection, also known as free convection, occurs due to these inherent buoyancy forces. Think of a pot of water boiling on a stove or the rising warm air in a room. The movement is spontaneous and driven solely by gravity and temperature gradients. However, in many engineering applications, natural convection is too slow or inefficient. This is where Forced Convection comes in. In forced convection, we use an external source to move the fluid, such as a fan, a pump, or even the wind. Think of a cooling fan in a computer CPU or the air conditioning system in your car. Forced convection significantly increases the rate of heat transfer because it breaks the boundary layer and moves the fluid much faster than buoyancy alone could. To understand the efficiency of this process, we must touch upon a bit of fluid dynamics. The rate of heat transfer in convection is governed by Newton's Law of Cooling in a convective sense, often expressed as the heat flow equals the heat transfer coefficient multiplied by the temperature difference between the surface and the fluid. This heat transfer coefficient, often denoted as 'h', is not a constant like thermal conductivity; instead, it depends heavily on the fluid's velocity, its viscosity, and the geometry of the surface. As the velocity of the fluid increases—whether through natural buoyancy or an external fan—the value of 'h' increases, leading to much faster cooling. We also consider the Reynolds Number, a dimensionless quantity that helps us predict whether the fluid flow is laminar or turbulent. In laminar flow, the fluid moves in smooth, parallel layers, and convection is relatively slow. In turbulent flow, the fluid moves in chaotic, swirling eddies, which dramatically enhances the mixing of hot and cold particles, thereby maximizing the heat transfer rate. So, to summarize: Conduction is about vibration, but Convection is about motion. Natural convection relies on buoyancy and density, while forced convection uses external mechanical energy to speed up the process. Understanding this distinction is crucial for everything from designing efficient car engines to understanding global weather patterns.","Welcome back. In our previous lessons, we explored how heat moves through solids via conduction and through fluids via convection. But what happens when there is a vacuum between two objects? How does the heat from the Sun reach the Earth through the empty space of the solar system? The answer is Radiation. Unlike conduction and convection, radiation does not require a material medium. It is the transfer of energy in the form of electromagnetic waves. This process happens at the speed of light and can occur in a vacuum. Every object that has a temperature above absolute zero emits thermal radiation. This radiation is essentially a stream of photons carrying energy. Now, let us look at the mathematical foundation of this emission. We begin with the Stefan-Boltzmann Law. This law describes the total energy radiated per unit surface area of a blackbody per unit time. It states that the total radiant energy emitted per unit area per unit time, which we call the emissance or power per unit area, is directly proportional to the fourth power of its absolute temperature. Mathematically, we write this as E equals sigma multiplied by T raised to the power of four. Here, sigma, the Stefan-Boltzmann constant, has a value of approximately five point six-seven times ten to the negative eight, measured in joules per second per square meter per Kelvin to the fourth power. If the object is not a perfect blackbody, we introduce a factor called emissivity, denoted by epsilon. The formula then becomes E equals epsilon, sigma, T raised to the fourth. Emissivity is a value between zero and one; a perfect blackbody has an emissivity of one, while a perfect reflector has an emissivity of zero. Now, let us address a very important observation in the history of physics. When we look at the spectrum of radiation emitted by a blackbody, we notice something interesting. As the temperature of the body increases, the intensity of the radiation increases, but the peak wavelength also shifts. This brings us to Wien’s Displacement Law. This law provides a quantitative relationship between the temperature of a blackbody and the wavelength at which it emits maximum radiation. It states that the product of the peak wavelength and the absolute temperature of a blackbody is a constant. We express this as lambda max multiplied by T equals a constant, where lambda max is the wavelength corresponding to the maximum intensity of the radiation. This constant, known as Wien’s constant, is approximately two point eight-nine times ten to the negative three meter-kelvin. To visualize this, think about a piece of iron being heated in a forge. Initially, it glows a dull red. As you increase the temperature, the color shifts to orange, then yellow, and eventually to a brilliant white. This color change is a direct manifestation of Wien’s Law. As the temperature T goes up, the peak wavelength lambda max must go down, moving from the longer red wavelengths toward the shorter blue and white wavelengths. Understanding these two laws—Stefan-Boltzmann for the total energy and Wien’s for the spectral distribution—is crucial for everything from designing thermal insulation to understanding the temperature of distant stars in astronomy. Let's move on to some practice problems to solidify these concepts.","Welcome back. In our previous lesson, we explored the fundamental laws of radiation, including the Stefan-Boltzmann Law and Wien’s Displacement Law. Today, we dive deeper into the nature of how objects absorb and emit energy. To understand this, we must first define two critical properties: Absorptivity and Emissivity. Imagine a surface receiving radiation. The fraction of the incident radiation that is absorbed by the surface is called its absorptivity, denoted by the symbol alpha. Since energy must be conserved, the rest of the radiation is either reflected or transmitted. If we assume the object is opaque, meaning no light passes through it, then the sum of absorptivity and reflectivity must equal one. Now, let's talk about Emissivity, denoted by epsilon. Not all objects emit radiation as efficiently as a perfect blackbody. A blackbody is an ideal surface that absorbs all incident radiation, regardless of frequency or angle. For a blackbody, the absorptivity is exactly one. Emissivity is defined as the ratio of the energy radiated by a particular surface to the energy radiated by a perfect blackbody at the same temperature. Therefore, for a blackbody, emissivity is one, and for all other real surfaces, emissivity is always less than one. This leads us to one of the most beautiful principles in thermal physics: Kirchhoff’s Law of Thermal Radiation. Kirchhoff observed a profound relationship between how a body absorbs energy and how it emits it. He stated that for an arbitrary body in thermal equilibrium with its surroundings, its emissivity is equal to its absorptivity. In simpler terms, a good absorber is a good emitter. If you have a material that is excellent at soaking up heat, it will also be excellent at radiating that heat away. Mathematically, we express this as epsilon equals alpha. This explains why dark-colored objects, which have high absorptivity, also have high emissivity and cool down faster than light-colored objects. Let's look at an extreme case. A perfect blackbody has an absorptivity of one, which means its emissivity must also be one. Conversely, a perfect reflector has an absorptivity of zero, which means its emissivity is also zero. Such a surface would be a perfect insulator against radiation. Understanding these ratios is crucial for engineering applications, from designing thermos flasks to selecting materials for solar heaters. Remember, while the Stefan-Boltzmann law tells us the total power radiated, the emissivity tells us how much of that theoretical maximum a real-world material actually achieves. Let's summarize: Absorptivity is the fraction of energy taken in, Emissivity is the efficiency of emission compared to a blackbody, and Kirchhoff’s Law links them by stating they are equal at thermal equilibrium.","Welcome back. In our previous section, we explored the complex world of radiation and blackbodies. Now, let's move to a more practical, macroscopic observation of heat transfer: Newton's Law of Cooling. Imagine you have a hot cup of tea sitting on a table in a room. As time passes, the tea cools down. But does it cool at a constant rate? No. The rate of cooling actually depends on the temperature difference between the tea and the surroundings. Newton's Law of Cooling states that the rate of change of temperature of an object is directly proportional to the difference in temperature between the object and its surroundings, provided the temperature difference is small. Let's derive this mathematically. Let T be the temperature of the object at any time t, and let T-s be the constant temperature of the surroundings. According to the law, the rate of change of temperature, which is d-T over d-t, is proportional to the negative of the temperature difference, T minus T-s. We use a negative sign because the temperature of the object is decreasing over time. So, d-T over d-t equals minus k times the quantity T minus T-s, where k is a positive constant called the cooling constant. This constant k depends on the nature of the surface, the material, and the surrounding conditions. To solve this differential equation, we can rearrange it as d-T divided by T minus T-s equals minus k times d-t. Now, we integrate both sides. Integrating d-T over T minus T-s gives the natural logarithm of T minus T-s. Integrating minus k times d-t gives minus k-t plus a constant, C. So, we have, natural log of T minus T-s equals minus k-t plus C. To find C, let's say at time t equals zero, the initial temperature is T-zero. Substituting these, we get, C equals natural log of T-zero minus T-s. Putting this back into our equation, we get, natural log of T minus T-s equals minus k-t plus natural log of T-zero minus T-s. By using the properties of logarithms, we can simplify this to: T minus T-s equals T-zero minus T-s, multiplied by e to the power of minus k-t. This is our fundamental equation for cooling. Now, let's look at the graphical analysis. If we plot temperature T against time t, we don't get a straight line. Instead, we get an exponential decay curve. The curve starts at T-zero and approaches the surrounding temperature T-s asymptotically. This means the temperature gets closer and closer to the room temperature but theoretically never quite reaches it in a perfectly continuous mathematical model. If we plot the rate of cooling, which is d-T over d-t, against the temperature difference, T minus T-s, we get a straight line passing through the origin with a negative slope, where the slope is equal to k. This linear relationship is why the law is so powerful for simple calculations. Let's try a quick word problem to solidify this. Suppose a metal block at eighty degrees Celsius is placed in a room at twenty degrees Celsius. If the cooling constant k is zero point zero-five per minute, what will be the temperature of the block after ten minutes? We use our formula: T minus twenty equals eighty minus twenty, multiplied by e to the power of minus zero point zero-five times ten. This simplifies to T minus twenty equals sixty, multiplied by e to the negative zero point five. Since e to the power of negative zero point five is approximately zero point six zero-six, we get T minus twenty equals sixty times zero point six zero-six, which is thirty-six point three-six. Adding twenty to both sides, the temperature T is approximately fifty-six point three-six degrees Celsius. Remember, this law is an approximation. It works best when the temperature difference is not too large, typically less than thirty degrees Celsius, because at higher differences, radiation becomes much more dominant and non-linear. Keep this in mind for your competitive exams.","Welcome back. We have covered the laws, the derivations, and the complex heat transfer mechanisms. But even the brightest students often lose marks not because they don't understand the physics, but because they fall into specific conceptual traps or make avoidable mathematical errors. Let's identify these pitfalls so you can approach your exam with absolute precision. First, let's address the most common conceptual error: the confusion between Heat and Temperature. Remember, heat is energy in transit, measured in Joules, while temperature is a measure of the average kinetic energy of particles, measured in Kelvin or Celsius. Never say 'the heat of the body is fifty degrees.' That is a fundamental error. Always distinguish between the amount of energy transferred and the state of the system. Second, watch out for the 'Phase Change Trap' in calorimetry problems. When a substance is undergoing a phase change, such as ice melting into water, the temperature remains constant. A very common mistake is to apply the formula Q equals m times specific heat times delta T during a phase change. This is wrong. During melting or boiling, you must use the Latent Heat formula, Q equals m times L. If you try to use specific heat while the temperature is stuck at zero degrees Celsius, your entire energy balance equation will fail. Third, let's talk about the sign convention in the Principle of Calorimetry. In the equation Heat Lost equals Heat Gained, ensure you are consistent. If you are using the change in temperature, delta T, as final temperature minus initial temperature, then the heat lost by the hot body will naturally come out as a negative value. Do not manually change the sign and then also use a negative delta T, or you will end up with a double negative and a nonsensical result. Fourth, a major mathematical pitfall occurs in Newton's Law of Cooling. Students often forget that the rate of cooling is proportional to the temperature difference between the object and the surroundings. If the surroundings are not at a constant temperature, the standard formula cannot be applied directly. Also, pay close attention to the units. In thermal expansion problems, if the coefficient of linear expansion is given per degree Celsius, but your temperature change is in Kelvin, don't panic—the magnitude of the change is the same. However, if you are working with absolute temperatures in Stefan-Boltzmann's Law, you MUST convert Celsius to Kelvin. Using Celsius in the formula E equals sigma times A times T to the fourth will lead to a massive calculation error because the power of four amplifies any mistake. Finally, be careful with the distinction between Thermal Conductivity and Thermal Diffusivity. Conductivity tells you how much heat flows, but diffusivity tells you how fast the temperature changes. Mixing these up in a conceptual multiple-choice question is a classic way to lose marks. Always double-check your units—Joules, Kelvins, Watts, and Meters—before you finalize your answer. Precision in units is just as important as precision in logic.","Welcome to the final segment of our journey through Thermal Properties of Matter. We have covered everything from the microscopic behavior of molecules to the macroscopic laws of heat transfer. Now, it is time to transition from learning to performing. This is your Exam Masterclass. To score high in your Class 11 examinations, you must recognize that Physics questions follow specific patterns. First, let us look at the High-Yield Question Patterns. The most frequent questions are numerical problems based on Calorimetry and Heat Transfer. Expect questions where you must calculate the final temperature of a mixture using the Principle of Calorimetry, which states that Heat Lost equals Heat Gained. Remember, always account for the heat capacity of the calorimeter itself! Second, look out for graphical questions. You must be able to interpret Heating and Cooling curves. A horizontal line on a temperature-time graph indicates a phase change, where heat is being used as Latent Heat rather than increasing kinetic energy. Third, derivation-based questions are staples. You must practice the derivation of Fourier’s Law of Heat Conduction and the mathematical derivation of Newton’s Law of Cooling. If you can derive it, you can solve any variation of it. Now, let us talk about Derivation Tips. When you approach a derivation, start by drawing a clear, labeled diagram. For example, if you are deriving the rate of heat flow through a rod, draw the rod with a temperature gradient. Next, clearly state your assumptions, such as 'assume the material is homogeneous' or 'assume steady-state conduction.' This earns you step-marks even if your final formula has a minor error. Always define your variables immediately after the formula. For instance, after writing Q equals m times specific heat times delta T, explicitly state that m is mass, c is specific heat capacity, and delta T is the change in temperature. Finally, let us do a rapid-fire Full Chapter Recap to solidify your memory. We started with Thermometry, distinguishing between Temperature, the degree of hotness, and Heat, the form of energy. We moved to Thermal Expansion, where we learned that solids expand linearly, area-wise, and volumetrically, and we saw the unique anomalous expansion of water between zero and four degrees Celsius. We then mastered Calorimetry, using specific heat capacity for temperature changes and latent heat for phase changes. In the heat transfer section, we explored Conduction through solids via Fourier’s Law, Convection through fluids via molecular movement, and Radiation through electromagnetic waves, governed by the Stefan-Boltzmann Law and Wien’s Displacement Law. We also touched upon Blackbody Radiation and the critical Newton’s Law of Cooling, which relates the rate of cooling to the temperature difference between the body and its surroundings. As you head into your exams, remember: Physics is not about memorizing formulas; it is about understanding the relationship between variables. If the temperature gradient increases, the heat flow increases. If the surface area increases, the rate of radiation increases. Connect the concept to the math, and you will find success. You have worked hard through this chapter, and you are now ready. Good luck with your studies!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-physics-10-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

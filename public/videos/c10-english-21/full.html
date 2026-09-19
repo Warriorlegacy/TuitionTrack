@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>The Thief's Story, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c10-english-21-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Psychology of Transformation and Why This Story Matters -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Psychology of Transformation and Why This Story Matters</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Exploring the core question: Can a person truly change through kindness?</div>
+              <div id="qx0-p1" class="qe-bullet">• Hari Singh: A fifteen-year-old thief using charm as a survival tool.</div>
+              <div id="qx0-p2" class="qe-bullet">• Anil: The embodiment of trust and the catalyst for transformation.</div>
+              <div id="qx0-p3" class="qe-bullet">• The conflict between survival instincts and the human conscience.</div>
+              <div id="qx0-p4" class="qe-bullet">• Why empathy is a more powerful tool for reform than punishment.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1374206094,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a dark, rainy street representing Hari's lonely life, the other a warm, candle-lit room representing Anil's kindness.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A split-screen 3D animation: one side shows a dark, rainy street representing Hari's lonely life, the other a warm, candle-lit room representing Anil's kindness.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Character Analysis: The Dual Nature of Hari Singh and Anil -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Character Analysis: The Dual Nature of Hari Singh and Anil</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Hari Singh: A calculating predator masking a lonely, vulnerable child.</div>
+              <div id="qx1-p1" class="qe-bullet">• Anil: A man of radical trust whose 'carelessness' is actually profound kindness.</div>
+              <div id="qx1-p2" class="qe-bullet">• The Conflict: Predatory instinct versus the transformative power of education.</div>
+              <div id="qx1-p3" class="qe-bullet">• Duality: Hari's struggle between survival and conscience.</div>
+              <div id="qx1-p4" class="qe-bullet">• Foil Relationship: How Anil's stability challenges Hari's chaotic lifestyle.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":917286199,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on the left, a shadowy Hari Singh calculating coins in the dark; on the right, a warm, sunlit Anil writing peacefully at a desk.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation: on the left, a shadowy Hari Singh calculating coins in the dark; on the right, a warm, sunlit Anil writing peacefully at a desk.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Plot Breakdown: The Meeting, The Trust, and The Theft -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Plot Breakdown: The Meeting, The Trust, and The Theft</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• The Meeting: Hari uses flattery and a fake skill to approach Anil.</div>
+              <div id="qx2-p1" class="qe-bullet">• The Trust: Anil provides education and literacy, not just food.</div>
+              <div id="qx2-p2" class="qe-bullet">• The Vulnerability: Anil's casual handling of money creates an opportunity.</div>
+              <div id="qx2-p3" class="qe-bullet">• The Theft: Hari's predatory instincts override his growing conscience.</div>
+              <div id="qx2-p4" class="qe-bullet">• The Conflict: The physical theft triggers a deep psychological crisis.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3812238762,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing Hari's calculating eyes on one side and Anil's trusting smile on the other, transitioning into a dark room where a hand reaches under a mattress.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen 3D animation showing Hari's calculating eyes on one side and Anil's trusting smile on the other, transitioning into a dark room where a hand reaches under a mattress.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Thematic Exploration: Human Values, Trust, and Redemption -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Thematic Exploration: Human Values, Trust, and Redemption</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Core Themes: Human Values, the power of Trust, and the path to Redemption.</div>
+              <div id="qx3-p1" class="qe-bullet">• Anil's Value System: Altruism and education vs. Hari's transactional survivalism.</div>
+              <div id="qx3-p2" class="qe-bullet">• The Paradox of Trust: Why robbing a trusting man is harder than robbing a greedy one.</div>
+              <div id="qx3-p3" class="qe-bullet">• Redemption through Conscience: Transformation driven by guilt and hope, not fear.</div>
+              <div id="qx3-p4" class="qe-bullet">• Key Takeaway: Kindness and education act as catalysts for moral change.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":340163054,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a dark, shadowy silhouette of a thief, the other shows a warm, glowing light representing Anil's kindness, slowly merging as the thief returns the money.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A split-screen 3D animation: one side shows a dark, shadowy silhouette of a thief, the other shows a warm, glowing light representing Anil's kindness, slowly merging as the thief returns the money.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Literary Devices: Imagery, Irony, and Narrative Style -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Literary Devices: Imagery, Irony, and Narrative Style</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Imagery: Using sensory details to mirror Hari's internal psychological state.</div>
+              <div id="qx4-p1" class="qe-bullet">• Situational Irony: The contrast between Anil's carelessness and his profound wisdom.</div>
+              <div id="qx4-p2" class="qe-bullet">• The Irony of Theft: Stealing money leads to the loss of something more valuable: trust.</div>
+              <div id="qx4-p3" class="qe-bullet">• First-Person Narration: Creating intimacy through Hari Singh's internal monologue.</div>
+              <div id="qx4-p4" class="qe-bullet">• Stylistic Impact: How simple language enhances the emotional depth of redemption.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2628951478,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a dark, rainy railway platform with heavy shadows, the other shows a warm, glowing lamp light over a notebook, symbolizing the conflict between crime and conscience.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A split-screen 3D animation: one side shows a dark, rainy railway platform with heavy shadows, the other shows a warm, glowing lamp light over a notebook, symbolizing the conflict between crime and conscience.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Detailed Vocabulary Study: Contextual Meanings and Nuances -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Detailed Vocabulary Study: Contextual Meanings and Nuances</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Flattery: Not just praise, but a calculated tool for manipulation.</div>
+              <div id="qx5-p1" class="qe-bullet">• Appealing: An inviting and kind demeanor that builds trust.</div>
+              <div id="qx5-p2" class="qe-bullet">• Unlined: A face reflecting peace, lacking the stress of deceit.</div>
+              <div id="qx5-p3" class="qe-bullet">• Grasp: A desperate, clutching action representing greed and survival.</div>
+              <div id="qx5-p4" class="qe-bullet">• Redemption: The central theme of returning to a path of morality.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3544399723,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a wrinkled, tense hand grasping a banknote versus a smooth, calm hand writing peacefully in a notebook.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D split-screen showing a wrinkled, tense hand grasping a banknote versus a smooth, calm hand writing peacefully in a notebook.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Deep Dive: The Conflict Between Instinct and Conscience -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Deep Dive: The Conflict Between Instinct and Conscience</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Instinct: The survival-driven urge to exploit trust for immediate gain.</div>
+              <div id="qx6-p1" class="qe-bullet">• Conscience: The moral compass triggered by Anil's kindness and trust.</div>
+              <div id="qx6-p2" class="qe-bullet">• The Railway Station: The physical setting of the internal psychological climax.</div>
+              <div id="qx6-p3" class="qe-bullet">• Short-term Gain vs. Long-term Growth: The core tension in Hari's decision.</div>
+              <div id="qx6-p4" class="qe-bullet">• Redemption: The victory of conscience over predatory instincts.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":965756610,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a dark, shadowy version of Hari driven by greed, the other shows a bright, thoughtful Hari standing under a station lamp.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A split-screen 3D animation: one side shows a dark, shadowy version of Hari driven by greed, the other shows a bright, thoughtful Hari standing under a station lamp.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Textual Analysis: Key Quotes and Their Interpretative Significance -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Textual Analysis: Key Quotes and Their Interpretative Significance</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Analyzing the psychology of robbing a 'careless' man vs. a 'greedy' man.</div>
+              <div id="qx7-p1" class="qe-bullet">• The significance of repetition in 'I hesitated' to show internal conflict.</div>
+              <div id="qx7-p2" class="qe-bullet">• Anil's silent forgiveness: Why silence is more powerful than anger.</div>
+              <div id="qx7-p3" class="qe-bullet">• The shift in identity: From a professional thief to a student of life.</div>
+              <div id="qx7-p4" class="qe-bullet">• Exam Tip: Connect quotes to character transformation for higher marks.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2217532288,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a dark, shadowy thief's silhouette, the other shows a bright, open book being written in, connected by a glowing golden thread of text.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A split-screen 3D animation: one side shows a dark, shadowy thief's silhouette, the other shows a bright, open book being written in, connected by a glowing golden thread of text.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Activity Workshop: Character Sketching and Role-Play Scenarios -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Activity Workshop: Character Sketching and Role-Play Scenarios</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Use the Trait-Evidence-Impact formula for character sketches.</div>
+              <div id="qx8-p1" class="qe-bullet">• Create a T-chart to link character traits with textual evidence.</div>
+              <div id="qx8-p2" class="qe-bullet">• Role-play internal monologues to understand character conflict.</div>
+              <div id="qx8-p3" class="qe-bullet">• Analyze subtext through silent confrontation scenarios.</div>
+              <div id="qx8-p4" class="qe-bullet">• Practice shifting tones to reflect character transformation.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2274031000,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a thought bubble above Hari's head containing two warring figures: a dark shadow representing instinct and a bright light representing conscience.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation showing a thought bubble above Hari's head containing two warring figures: a dark shadow representing instinct and a bright light representing conscience.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Common Mistakes: Misinterpreting Motives and Contextual Errors -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Common Mistakes: Misinterpreting Motives and Contextual Errors</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Avoid labeling Hari Singh as 'evil'; focus on his internal conflict and survival instincts.</div>
+              <div id="qx9-p1" class="qe-bullet">• Do not call Anil 'foolish'; recognize his trust as a conscious choice for reform.</div>
+              <div id="qx9-p2" class="qe-bullet">• Explain the 'why' behind the return: literacy vs. stolen money.</div>
+              <div id="qx9-p3" class="qe-bullet">• Recognize the climax as the silent moment of unspoken forgiveness.</div>
+              <div id="qx9-p4" class="qe-bullet">• Use precise terms: 'reformation' instead of 'complete change'.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3233932065,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a dark, shadowy version of Hari's thoughts versus a bright, scholarly version of his future with Anil.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation showing a dark, shadowy version of Hari's thoughts versus a bright, scholarly version of his future with Anil.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Exam Technique: How to Structure Long and Short Answer Questions -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Exam Technique: How to Structure Long and Short Answer Questions</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Short Answers: Use the 'Direct-to-Detail' formula for precision.</div>
+              <div id="qx10-p1" class="qe-bullet">• Long Answers: Follow the 'P-E-E-L' structure (Point, Evidence, Explanation, Link).</div>
+              <div id="qx10-p2" class="qe-bullet">• Avoid Storytelling: Analyze the 'why' and 'how' instead of just 'what happened'.</div>
+              <div id="qx10-p3" class="qe-bullet">• Vocabulary Power: Use high-value words like 'redemption', 'conscience', and 'magnanimous'.</div>
+              <div id="qx10-p4" class="qe-bullet">• Word Management: Stay within limits—30-40 words for short, 100-120 for long answers.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3439400070,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a 'Short Answer' checklist on the left and a 'Long Answer' architectural blueprint on the right.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a 'Short Answer' checklist on the left and a 'Long Answer' architectural blueprint on the right.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Full Chapter Recap and High-Yield Question Practice -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Full Chapter Recap and High-Yield Question Practice</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Recap: The transformation from predator to a student of life</div>
+              <div id="qx11-p1" class="qe-bullet">• Short Answer Tip: Focus on the 'difficulty of robbing a trusting man'</div>
+              <div id="qx11-p2" class="qe-bullet">• Long Answer Strategy: Use the 'Cause and Effect' structure for themes</div>
+              <div id="qx11-p3" class="qe-bullet">• Critical Insight: Anil's silent forgiveness is the story's turning point</div>
+              <div id="qx11-p4" class="qe-bullet">• Exam Hack: Use keywords like 'metamorphosis' and 'unconditional trust'</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":2914322900,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a student's notebook transforming into a glowing roadmap of key themes and exam tips.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a student's notebook transforming into a glowing roadmap of key themes and exam tips.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix The Thief's Story today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Psychology of Transformation and Why This Story Matters <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Character Analysis: The Dual Nature of Hari Singh and Anil <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Plot Breakdown: The Meeting, The Trust, and The Theft <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Thematic Exploration: Human Values, Trust, and Redemption <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Literary Devices: Imagery, Irony, and Narrative Style <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Detailed Vocabulary Study: Contextual Meanings and Nuances <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Deep Dive: The Conflict Between Instinct and Conscience <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Textual Analysis: Key Quotes and Their Interpretative Significance <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Activity Workshop: Character Sketching and Role-Play Scenarios <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Common Mistakes: Misinterpreting Motives and Contextual Errors <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Exam Technique: How to Structure Long and Short Answer Questions <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Full Chapter Recap and High-Yield Question Practice <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello, students! Welcome to our deep-dive series on Ruskin Bond's masterpiece, 'The Thief's Story.' Before we open our textbooks to the first line of dialogue, we need to ask a much bigger question: Can a person truly change? Can a life built on deception and theft be rewritten by something as simple as kindness? This is not just a story about a boy stealing money; it is a profound psychological study of human transformation. In this chapter, we meet Hari Singh, a fifteen-year-old boy who is a seasoned thief. He isn't just a 'bad kid'; he is a survivor who uses a fake name and a charming smile as tools for his trade. On the other side, we have Anil, a struggling writer who represents something much rarer in Hari's world: unconditional trust. Now, why does this story matter to you, sitting in a classroom today? It matters because it explores the tension between our instincts and our conscience. We often think that people change only through punishment or the law. But Bond suggests a different, more powerful catalyst: empathy. The story explores the idea that while crime is often a response to necessity or habit, redemption is a response to being seen and valued as a human being. As we progress through this twelve-part series, we won't just look at the plot. We will dissect the 'why' behind every action. We will look at how Anil's decision to teach Hari how to write sentences becomes more important than the money he earns. We will examine the internal tug-of-war Hari feels when he stands at the railway station with stolen cash in his pocket. This is a story about the battle between the 'thief' inside us—the part that wants the easy, dishonest way—and the 'human' inside us—the part that craves connection and dignity. By the end of this chapter study, you won't just be prepared for your board exams; you will have a deeper understanding of the complexity of human nature. So, let's prepare to step into the world of Hari Singh and Anil, where a simple act of trust becomes the ultimate turning point in a young life.","Welcome back. In our previous segment, we looked at the psychological foundation of this story. Now, let us dive deep into the heart of the narrative by analyzing the two central figures: Hari Singh and Anil. To understand this story, you must realize that neither character is a simple caricature of 'good' or 'evil.' Instead, they both possess a dual nature that drives the plot forward. Let us start with Hari Singh. Hari is a fifteen-year-old boy, but he carries the weary, calculating mind of a seasoned criminal. His name itself is a pseudonym, a mask he wears to hide his true identity. This is his first layer of duality. On one hand, he is a predator—a thief who views human beings as targets. He studies people not to connect with them, but to exploit their weaknesses. He mentions how it is easy to rob a greedy man, but much harder to rob a careless, trusting man like Anil. This shows his analytical, almost scientific approach to crime. However, there is a second layer to Hari. Beneath the layer of the seasoned thief lies a vulnerable, lonely child who craves something more than just stolen money. He craves education, stability, and perhaps, genuine human connection. His internal conflict arises because his instinct for survival clashes with his growing conscience. He is a boy caught between the life he knows—the life of a thief—and the life he could have—the life of an educated, respected man. Now, let us turn our attention to Anil. Anil is the perfect foil to Hari. If Hari represents chaos and deception, Anil represents order and transparency. Anil is described as a tall, lean fellow, about twenty-five years old, who lives a life of 'easy-going' simplicity. He is a writer, earning money in fits and starts, which tells us he is not driven by material greed. This lack of greed is what makes him so dangerous to a thief like Hari. Anil’s duality lies in his perceived 'carelessness.' To a superficial observer, Anil might seem irresponsible or even naive because he gives a stranger the key to his house and trusts him with his earnings. But if we look closer, we see that his 'carelessness' is actually a profound form of radical trust. Anil is not a fool; he is a man who chooses to believe in the goodness of others. He uses his kindness as a tool for transformation. He doesn't just give Hari food; he gives him the tools for self-improvement by teaching him to write his name and promises to teach him full sentences. This is a crucial point for your exams: Anil’s character is not passive. His kindness is an active, transformative force. The tension in the story exists in the space between Hari's predatory instincts and Anil's unconditional trust. Hari expects to find a victim in Anil, but instead, he finds a mentor. This collision of two different natures—the thief who wants to steal and the man who wants to give—is what ultimately leads to the redemption we see at the end of the story. As you study these characters, don't just see them as 'the thief' and 'the victim.' See them as two souls navigating the complexities of trust and human instinct.","Welcome back. Now that we understand the complex personalities of Hari Singh and Anil, let us dive into the heart of the narrative: the plot itself. This part of the story is a masterclass in tension and psychological shifting. It unfolds in three critical stages: The Meeting, The Trust, and The Theft. Let us begin with The Meeting. Imagine a busy, dusty street. Hari Singh, a fifteen-year-old boy with a fake name and a practiced smile, spots his target. Anil is a twenty-five-year-old writer, tall, lean, and seemingly easy-going. The meeting is not accidental; it is predatory. Hari approaches him, using flattery to lower Anil's guard. He asks, 'Can you cook?' This is a calculated move. He knows that by offering a skill, he can gain entry into a home. Anil’s response is crucial. He doesn't immediately say yes, but he doesn't say no either. He says, 'I can't cook, but maybe I can learn.' This subtle opening is what allows the predator to enter the prey's life. Now, we move to the second stage: The Trust. This is where the story shifts from a crime thriller to a psychological drama. Once Hari starts cooking, even though the first meal is terrible, Anil takes him in. But Anil does something unexpected. He doesn't just give Hari food; he gives him education. He teaches him to write his name, to write whole sentences, and to add numbers. This is the foundation of the transformation we discussed earlier. Anil’s trust is absolute and, in a way, dangerous for a thief. He earns money in fits and starts, writing for magazines. He keeps the money he makes under his mattress. Hari observes this. He sees the money, he sees the lifestyle, and he sees the vulnerability. The trust is built on a series of small, quiet moments—sharing meals, learning to write, and the casual way Anil handles cash. This trust creates a psychological weight on Hari. He is no longer just a thief looking for a meal; he is a guest in a home where he is being taught to be a human being. Finally, we reach the climax: The Theft. The tension peaks on a night when Anil brings home a bundle of notes. He tucks the money under the mattress. For Hari, this is the moment of truth. His old instincts, the 'thief' side of him, take over. He waits until the house is silent. He creeps towards the bed, slides his hand under the mattress, and pulls out the money. The physical act of theft is quick, but the psychological aftermath is heavy. As he runs towards the railway station, the narrative tension is at its highest. He has the money, he has escaped the house, but he is running away from something much larger than Anil. He is running away from the possibility of becoming someone better. This theft is the ultimate test of the trust that was built in the previous stage. It is the moment where Hari's past self clashes violently with the new identity Anil is helping him build. As we move forward, keep this tension in mind: the struggle between the easy path of crime and the difficult path of transformation.","Welcome back. Now that we have understood the sequence of events, it is time to peel back the layers of the story. We aren't just looking at what happened, but why it matters on a human level. The heart of 'The Thief's Story' lies in three profound pillars: Human Values, the fragility of Trust, and the possibility of Redemption. Let us start with Human Values. In this story, we see a clash between two different value systems. On one side, we have Hari Singh, who represents a survivalist, transactional worldview. To him, people are targets, and relationships are tools for exploitation. On the other side, we have Anil, who represents a selfless, altruistic value system. Anil doesn't just give Hari a job; he gives him education, dignity, and a sense of belonging. This brings us to our second pillar: Trust. Trust is the most delicate thread in this narrative. Think about the moment Hari decides to steal. He notes that it is easy to rob a greedy man, but it is 'difficult to rob a careless man' like Anil. Why? Because when you rob a greedy man, he can afford to be robbed, but when you rob a careless, trusting man, you rob him of his faith in humanity. Anil’s trust was not a weakness; it was a transformative force. It was a 'silent' trust. He knew, or perhaps sensed, that Hari was not entirely honest, yet he chose to continue teaching him. This unconditional trust creates a psychological pressure on the thief that a punishment never could. This leads us directly to our final and most beautiful theme: Redemption. Redemption is the act of being saved from error or evil. Many stories end with the criminal being caught and punished by the law. But Ruskin Bond offers us something deeper. He suggests that true transformation comes from within. Hari Singh’s redemption isn't triggered by the police or by the fear of being caught. It is triggered by his own conscience and the realization of what he is losing: the chance to be a 'big, clever, and respected man' through education. The theft was a momentary lapse of instinct, but the return of the money was a triumph of character. Redemption here is not about a single act of being good; it is about the decision to change one's trajectory. When Hari puts the damp notes back under the mattress, he isn't just returning money; he is reclaiming his soul. So, as you prepare your answers, remember: the story isn't about a theft; it is about the power of kindness to rewrite a person's destiny. Always connect the character's actions back to these three themes—Values, Trust, and Redemption—to score those high marks in your long-form answers.","Welcome back. Now that we understand the emotional arc of Hari Singh and Anil, let us look under the hood of Ruskin Bond's writing. To score high in your English exams, you must move beyond 'what' happened and explain 'how' the author makes us feel it. We will focus on three pillars: Imagery, Irony, and Narrative Style. First, let's talk about Imagery. Imagery is the use of vivid language to create mental pictures for the reader. In this story, Bond uses sensory imagery to ground us in the setting. Think about the description of the moonlight or the quietness of the night when Hari is standing on the railway platform. He doesn't just say it was dark; he uses descriptions that evoke a sense of solitude and tension. This imagery serves a purpose: it mirrors Hari's internal state. The darkness of the night reflects the darkness of his intentions, while the sudden realization of his guilt feels like a cold, sharp break from that darkness. Next, we have Irony. Irony is a literary device where there is a contrast between expectation and reality. This story is built on layers of situational irony. The most profound irony lies in the character of Anil. Anil is a writer, a man of words and ideas, yet he is 'careless' with money. Usually, we expect someone who earns money to be protective of it, but Anil's generosity is his defining trait. Then, there is the irony of the theft itself. Hari Singh steals the money to escape his life of crime, but the act of stealing is exactly what threatens to trap him in a life of permanent guilt and isolation. He steals from the one person who actually gave him something worth keeping—trust. The ultimate irony is that Anil likely knows about the theft. When he gives Hari a fifty-rupee note that is still damp from the rain, he doesn't call the police. The irony is that the punishment—the silent forgiveness—is far more powerful than any legal consequence could ever be. Finally, let's examine the Narrative Style. This story is told in the first person. The narrator is Hari Singh himself. This is a crucial stylistic choice. Because we are inside Hari's head, we experience his internal monologue. We see his calculations, his lies, and his sudden, overwhelming pangs of conscience. This 'First-Person Point of View' creates an intimate connection between the reader and the thief. We aren't just watching a criminal; we are experiencing the psychological struggle of a human being trying to choose between his old instincts and a new sense of morality. Bond's style is simple, conversational, and unpretentious, which makes the profound psychological shift feel realistic rather than melodramatic. When you write your answers, don't just say 'the story is interesting.' Instead, say 'the author employs first-person narration to provide an intimate look at the protagonist's moral dilemma.' This is how you elevate your writing from a basic summary to a sophisticated literary analysis.","Welcome back. Now that we have understood the emotional arc of Hari Singh and Anil, it is time to look at the tools Ruskin Bond uses to build this world: the words. In a literature exam, you don't just get marks for knowing the story; you get marks for using the precise vocabulary from the text. Let's dive into the specific nuances of the words used in 'The Thief's Story'. First, let's look at the word 'Flattery'. Hari Singh says, 'I was an experienced and fairly successful hand, and I knew how to flatter.' Now, in common English, flattery can sometimes be seen as a simple compliment. But in the context of a thief, it carries a predatory nuance. It implies a calculated, dishonest attempt to manipulate someone's ego to gain trust. When you write your answers, don't just say Hari was 'nice'; say he used 'calculated flattery' to establish a rapport. Next, let's examine the word 'Appealing'. Hari describes Anil's face as 'appealing'. This doesn't mean Anil was begging. It means his expression was inviting, kind, and easy to approach. This is a crucial distinction. Anil's 'appealing' nature is the catalyst for the entire plot; it is the softness that eventually melts Hari's hardened exterior. Moving on to the word 'Unlined'. The text mentions Anil's face was 'unlined'. In a literal sense, this means he had no wrinkles. But the contextual nuance is much deeper. A face without lines suggests a soul without worry, a person who is at peace and lacks the stress of deceit. This contrasts sharply with Hari Singh, whose life is defined by the constant, jagged tension of crime. Then, we have the word 'Spirited'. When Hari describes the act of stealing or his own movements, there is a sense of being 'spirited'. This suggests a quickness, a lively energy, but in Hari's case, it is a restless, nervous energy. Now, let's look at a very important verb: 'To Grasp'. Hari 'grasps' the money. While 'grasp' can mean to hold something firmly, in this psychological context, it reflects a desperate, clutching action. It isn't just a physical movement; it represents his attempt to grab a chance at a life of easy money, a life without the struggle of learning. Finally, let's discuss the word 'Redemption'. While not explicitly used as a label, the entire ending is an exercise in redemption. Redemption is the act of being saved from error or evil. Hari's decision to return the money is his move from a state of criminality to a state of moral recovery. When discussing the climax in your exams, use the term 'moral redemption' to describe Hari's transformation. Understanding these nuances—the difference between a simple compliment and 'calculated flattery', or a smooth face and an 'unlined' soul—will elevate your writing from basic comprehension to sophisticated literary analysis. Pay close attention to how these words act as emotional cues for the reader.","Welcome back. In our previous segment, we looked at the characters of Hari Singh and Anil. Now, we are going to step into the psychological battlefield of the story. This is the heart of the narrative: the internal tug-of-war between instinct and conscience. To understand this, we first need to define these two opposing forces. Instinct, in the context of Hari Singh, is his survival mechanism. He is a seasoned thief. His instinct tells him that people are targets, that trust is a weakness to be exploited, and that money is the only way to survive. This is a primal, reactive part of his brain. When he sees Anil’s easy-going nature, his instinct doesn't see a friend; it sees an opportunity. It says, 'This man is easy to rob.' This is the 'predator' mode. But then, there is the second force: the conscience. Conscience is that quiet, moral compass that tells us right from wrong. For most of the story, Hari’s conscience is dormant, buried under years of petty crime. However, as he lives with Anil, something shifts. Anil isn't just giving him food; he is giving him dignity through education. This is where the conflict begins. Think of it as a scale. On one side, you have the 'Instinct of the Thief'—the urge to take the money and run to the station. On the other side, you have the 'Conscience of a Human'—the realization that stealing from a trusting man like Anil is not just a crime, but a betrayal of a soul. Let's look at the moment at the railway station. This is the climax of the internal conflict. Hari has the money. He is at the platform. His instinct is screaming at him to board the Lucknow Express. It is a physical pull, a momentum of habit. But suddenly, he stops. Why? Because his conscience has finally woken up. He realizes that if he steals the money, he loses the chance to be 'a big, clever, and respected man' through education. He realizes that stealing from a greedy man is easy, but stealing from a trusting man like Anil is devastating. This is a crucial distinction for your exams. The conflict isn't just about 'right versus wrong'; it is about 'short-term survival versus long-term transformation.' Instinct offers immediate gratification—the cash in his pocket. Conscience offers long-term growth—the ability to write and earn respect. When Hari stands alone on that platform, he is literally caught between two versions of himself: the thief he has been, and the man he could become. This internal struggle is what makes the story a psychological study rather than just a simple crime tale. As you write your answers, remember that Hari's decision to return the money wasn't because he was afraid of the police; it was because his conscience had finally outweighed his instinct. He chose the difficult path of honesty over the easy path of theft. This transition from instinct-driven behavior to conscience-driven behavior is the very definition of redemption.","Welcome back. We have explored the characters and the themes, but now we are going to look at the soul of the story: the words themselves. In a literature exam, quoting the text correctly and explaining its deeper meaning is what separates an average answer from an excellent one. Let us dive into the most significant quotes from 'The Thief's Story'. The first crucial line is: 'It is easy to rob a greedy man, but it is difficult to rob a careless man.' This is a profound psychological observation by Hari Singh. Think about the logic here. A greedy man expects to be robbed; he is constantly on guard, making the theft a high-stakes, stressful game. But Anil? Anil is 'careless' with his money. He leaves it lying around. This carelessness is actually a form of extreme trust. For a thief like Hari, robbing someone who doesn't care about the loss is psychologically jarring. It creates a sense of guilt because there is no 'enemy' to fight, only a friend to betray. Next, let us look at the moment of crisis, when Hari is standing on the railway platform. The text says: 'I hesitated, I hesitated, I hesitated.' Notice the repetition. This isn't just a stylistic choice; it represents the internal tug-of-war between his old instinct to run and his new conscience to stay. The repetition mimics the heartbeat of a man caught between two lives. Then, we have the most transformative quote: 'He knew. But neither his roughness nor his anger showed.' This refers to the moment Anil realizes the money was stolen and returned. This is the climax of the story's emotional arc. Anil doesn't call the police, and he doesn't even confront Hari directly. By choosing silence over confrontation, Anil uses the power of 'unspoken forgiveness.' This silence is more powerful than any lecture. It proves that trust is a more effective tool for reformation than punishment. Finally, let us analyze the closing sentiment: 'I was a thief, but I was also a student.' This realization marks Hari's shift in identity. He is no longer defining himself solely by his criminal skill, but by his potential for growth through education. He realizes that the ability to write whole sentences is worth much more than a few hundred rupees. When you write your answers, do not just state these quotes. Explain them. If you mention the 'careless man,' explain that his carelessness is actually a manifestation of trust. If you mention the 'hesitation,' link it to the conflict between instinct and conscience. This is how you demonstrate deep textual understanding to your examiner.","Welcome back to our interactive workshop session for The Thief's Story. Now that we have analyzed the themes and the text deeply, it is time to step into the shoes of the characters. This part is crucial because, in your board exams, you won't just be asked what happened; you will be asked to analyze 'why' characters acted the way they did. Let us start with our first activity: Character Sketching. When you write a character sketch, do not just list adjectives. Instead, use the 'Trait-Evidence-Impact' formula. For example, if you describe Hari Singh as 'manipulative,' you must provide evidence from the text, such as his changing names to evade the police, and then explain the impact, which is how he builds a false sense of trust with Anil. Let's try this for Anil. A key trait for Anil is 'unconditional trust.' The evidence is that he gave Hari the key to the door and taught him to write. The impact is that this trust becomes the very tool that breaks Hari's criminal instinct. Try creating a T-chart in your notebooks. On one side, write the character's name, and on the other, list three internal traits and three external actions that prove those traits. This is how you build high-scoring long answers. Now, let us move to our second activity: Role-Play Scenarios. Role-playing is not just acting; it is a way to understand subtext—the meaning behind the words. I am going to give you three scenarios. Scenario One: The Moment of Decision. Imagine you are Hari Singh standing on the railway platform. The train is moving, and you have the stolen money in your pocket. Instead of just saying 'I am sad,' think about the internal monologue. Write a dialogue where Hari argues with his conscience. One voice represents his 'thief instinct'—telling him to run—and the other represents his 'human conscience'—telling him to return to Anil. Scenario Two: The Silent Confrontation. Imagine the scene where Anil discovers the money was stolen because the notes were still damp from the rain. However, Anil chooses not to say anything. Role-play a scene where Anil looks at Hari. What is he thinking? How does his silence speak louder than words? This is the irony we discussed earlier. Scenario Three: The Transformation. Imagine a conversation between Hari and Anil one week after the theft. Hari is now learning to write sentences. How does his tone change? Is he still the cunning boy, or is he someone seeking redemption? When you practice these, focus on the 'tone' of your voice. For Hari, his tone should shift from nervous and calculating to hesitant and sincere. For Anil, his tone should remain calm, steady, and forgiving. These exercises help you move beyond rote learning. They help you understand the psychological depth of Ruskin Bond's writing. If you can visualize these characters in motion, you will never struggle to write a character-based question in your exam. Take ten minutes now to draft a short dialogue for Scenario One. Use the vocabulary we learned in Part Six to make your dialogue rich and authentic. We will see you in the next segment where we address common mistakes in interpreting these motives.","Welcome back. In our previous sections, we explored the deep emotional layers of Ruskin Bond's masterpiece. Now, we are going to look at the pitfalls. When students prepare for board exams, they often lose marks not because they didn't read the story, but because they misread the characters' intentions. Let's address the first major mistake: viewing Hari Singh as a purely 'evil' character. If you write in your exam that Hari Singh was a hardened criminal who only pretended to be good, you are missing the core of the story. Hari is not a villain; he is a victim of circumstance and a person struggling with his instincts. The story is about his internal conflict, not his criminal expertise. Avoid using words like 'malicious' or 'wicked' without qualifying them with his struggle for survival. The second mistake involves misinterpreting Anil's character. Many students describe Anil as 'naive' or 'foolish' because he trusted a stranger with his money. This is a contextual error. Anil is not foolish; he is compassionate and perhaps even intuitively aware of Hari's nature. He chooses to trust because he believes in the power of transformation. If you call him 'gullible' in an exam, you are failing to recognize the theme of 'trust as a tool for reform.' The third error is a common one in short-answer questions: failing to explain 'why' Hari Singh returned the money. Don't just say 'he felt guilty.' That is too shallow. You must explain the nuance. He returned the money because he realized that the education Anil was providing him was worth much more than a few hundred rupees. The theft was a momentary lapse of instinct, but the return was a conscious decision of his conscience. He chose the long-term value of dignity and literacy over the short-term gain of stolen cash. Fourthly, watch out for errors regarding the 'climax' of the story. Some students think the story ends when Hari puts the money back under the mattress. However, the true climax is the silent moment of recognition between Anil and Hari. When Anil gives Hari a fifty-rupee note, it is a silent acknowledgment that the theft was discovered, yet the trust is being restored. If you miss this subtext, your analysis of the ending will be incomplete. Finally, be careful with the concept of 'redemption.' Redemption in this story is not a sudden, magical change. It is a slow, painful process of choosing right over wrong. Do not describe Hari as 'completely reformed' by the end; describe him as someone who has 'taken the first step toward reformation.' Precision in your vocabulary is what separates a good answer from a great one. Remember, in English literature exams, the 'why' is always more important than the 'what.' Always link a character's action to their psychological state. Instead of saying 'Hari Singh stole the money,' say 'Driven by the instinct of survival, Hari Singh succumbed to his old habits.' This level of detail shows the examiner that you understand the complexity of the text. Let's move on to the next section where we will master the art of structuring your answers.","Welcome back. We have analyzed the soul of Hari Singh and the kindness of Anil. Now, it is time to translate that deep understanding into marks. In your Class 10 Board Exams, how you present your knowledge is just as important as what you know. Let's break down the two main types of questions you will face for 'The Thief's Story'. First, let's look at Short Answer Questions. These are usually two or three-mark questions. The golden rule here is the 'Direct-to-Detail' formula. Do not write a long introduction. Start by directly addressing the question. If the question asks, 'Why did Hari Singh decide to come back to Anil?', your first sentence should be, 'Hari Singh decided to return to Anil because the weight of his conscience and the desire to learn reading and writing outweighed his greed.' See that? I answered the 'why' immediately. After the direct answer, add one or two sentences of textual evidence. Mention the specific moment—like the realization that Anil was the most trusting person he had ever met. Keep your word count between thirty to forty words. Avoid rambling. Now, let's move to the heavyweights: Long Answer Questions. These are five or six-mark questions that often ask for your opinion or a character evaluation. For these, we use the 'P-E-E-L' formula. P stands for Point. This is your topic sentence. For example, if the question is about the theme of redemption, your point is: 'The story demonstrates that trust and education can reform even a seasoned thief.' E stands for Evidence. Here, you bring in the plot. Talk about the theft of the notes and the subsequent decision to return them. E stands for Explanation. This is where you show your brilliance. Do not just retell the story; explain it. Explain how Anil's non-reactive nature acted as a mirror to Hari's guilt. This is the 'analysis' part that examiners love. Finally, L stands for Link. Connect your paragraph back to the main theme or the question asked. For long answers, your structure should be: Introduction, Body Paragraphs using P-E-E-L, and a Conclusion. A common mistake students make is writing a 'story summary' instead of an 'answer'. If the question asks about Anil's character, do not just list what he did. Instead, use adjectives like 'magnanimous', 'trusting', and 'forgiving' to describe him, and then provide the action as proof. Another tip: use keywords from the text. Instead of saying 'Anil was a good man', say 'Anil's compassion provided a catalyst for Hari's transformation'. This elevates your language from basic to academic. Remember, for short answers, be precise. For long answers, be structured. If you follow these formulas, you aren't just telling a story; you are demonstrating mastery of the text. Let's practice this logic in the next segment.","Welcome back to our final session on 'The Thief's Story'. We have journeyed through the streets of the city and the complex corridors of the human heart. Now, it is time to transition from understanding to scoring. This masterclass is designed to ensure you walk into your examination hall with absolute confidence. Let us begin with a lightning-fast recap. Remember, this story is not just about a theft; it is about the transformative power of trust. We saw Hari Singh, a seasoned fifteen-year-old thief, encounter Anil, a struggling, easy-going writer. The core conflict was not between a criminal and a victim, but between Hari's predatory instinct and his emerging conscience. The climax wasn't the theft of the money, but the decision to return it. Now, let's move to High-Yield Question Practice. I have categorized these into three critical levels. Level One: Short Answer Questions, typically three marks. A common question is: 'Why was it difficult for Hari Singh to rob Anil?' When answering this, do not just say Anil was kind. Use keywords like 'unlined face', 'trusting nature', and 'lack of suspicion'. Explain that robbing a careless man is harder than robbing a greedy one because the victim doesn't even realize he has been robbed, which robs the thief of the satisfaction of a 'successful' crime. Level Two: Value-Based Long Answer Questions, worth five to six marks. A frequent prompt is: 'How does Anil's goodness act as a catalyst for Hari Singh's reformation?' Here, you must structure your answer using the 'Cause and Effect' method. The cause is Anil's unconditional trust and his decision to teach Hari how to write sentences. The effect is the internal struggle Hari faces at the railway station. Conclude by stating that education provided Hari with a vision of a life more dignified than stealing. Level Three: Character-Centric Analysis. You might be asked to compare the two protagonists. Use a comparative structure. While Hari represents the struggle of survival and the darkness of deception, Anil represents the light of empathy and the patience of a mentor. Now, let's address the 'Trap Questions' examiners love to set. One such trap is asking if Anil knew about the theft. The text says Anil knew, indicated by the damp notes, but he chose not to confront Hari. If you write that Anil was 'unaware', you lose marks. Always look for the subtext. Another tip: when discussing the theme of redemption, avoid saying Hari 'became a good boy' overnight. Instead, use sophisticated phrasing like 'Hari underwent a moral metamorphosis triggered by the realization of lost opportunity'. Finally, a quick checklist for your exam: Always mention the author, Ruskin Bond, in your long answers. Use direct quotes like 'It is easy to rob a greedy man' to add weight to your arguments. Keep your handwriting legible and use bullet points for character traits. You have mastered the narrative; now, master the presentation. You are ready. Go forth and ace your exams!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c10-english-21-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Thermodynamics, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-chemistry-05-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Power of Energy, Systems, and Surroundings -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Power of Energy, Systems, and Surroundings</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Thermodynamics: The study of energy transformations and heat/work exchange.</div>
+              <div id="qx0-p1" class="qe-bullet">• System: The specific part of the universe under observation.</div>
+              <div id="qx0-p2" class="qe-bullet">• Surroundings: Everything else in the universe outside the system.</div>
+              <div id="qx0-p3" class="qe-bullet">• Open System: Exchange of both energy and matter with surroundings.</div>
+              <div id="qx0-p4" class="qe-bullet">• Closed System: Exchange of energy only; matter is contained.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1693559712,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing a steaming open cup (Open), a lidded cup (Closed), and a vacuum flask (Isolated) with glowing arrows representing heat and particle movement.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D split-screen animation showing a steaming open cup (Open), a lidded cup (Closed), and a vacuum flask (Isolated) with glowing arrows representing heat and particle movement.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): State Functions, Path Functions, and Extensive vs Intensive Properties -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">State Functions, Path Functions, and Extensive vs Intensive Properties</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• State Functions: Depend only on initial and final states (e.g., P, V, T, U, H)</div>
+              <div id="qx1-p1" class="qe-bullet">• Path Functions: Depend on the route taken (e.g., Work 'w' and Heat 'q')</div>
+              <div id="qx1-p2" class="qe-bullet">• Extensive Properties: Depend on the amount of matter (e.g., Mass, Volume, Enthalpy)</div>
+              <div id="qx1-p3" class="qe-bullet">• Intensive Properties: Independent of the amount of matter (e.g., Temperature, Density)</div>
+              <div id="qx1-p4" class="qe-bullet">• Pro-tip: The ratio of two extensive properties is always an intensive property</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2259426829,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows a mountain climber reaching a peak via two different paths (State vs Path); Right side shows a large tank of water being divided into small cups (Extensive vs Intensive).</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation: Left side shows a mountain climber reaching a peak via two different paths (State vs Path); Right side shows a large tank of water being divided into small cups (Extensive vs Intensive).</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Internal Energy, Work (Pressure-Volume), and Heat (q) -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Internal Energy, Work (Pressure-Volume), and Heat (q)</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Internal Energy (U): Sum of all microscopic kinetic and potential energies.</div>
+              <div id="qx2-p1" class="qe-bullet">• Heat (q): Energy transfer due to temperature difference; q &gt; 0 is endothermic.</div>
+              <div id="qx2-p2" class="qe-bullet">• Work (w): P-V work is defined as w = minus P times delta V.</div>
+              <div id="qx2-p3" class="qe-bullet">• First Law of Thermodynamics: delta U = q + w.</div>
+              <div id="qx2-p4" class="qe-bullet">• Sign Convention: Work done BY the system is negative; work ON the system is positive.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":697447741,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation of a gas-filled cylinder with a moving piston, showing energy arrows for heat entering and work being performed during expansion.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D animation of a gas-filled cylinder with a moving piston, showing energy arrows for heat entering and work being performed during expansion.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Enthalpy (H) and Calorimetry: Measuring Heat Changes -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Enthalpy (H) and Calorimetry: Measuring Heat Changes</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Enthalpy (H) is defined as H = U + PV</div>
+              <div id="qx3-p1" class="qe-bullet">• At constant pressure, change in enthalpy (ΔH) equals heat (qP)</div>
+              <div id="qx3-p2" class="qe-bullet">• Exothermic reactions have negative ΔH; Endothermic have positive ΔH</div>
+              <div id="qx3-p3" class="qe-bullet">• Calorimetry formula: q = m × c × ΔT</div>
+              <div id="qx3-p4" class="qe-bullet">• Specific heat capacity (c) is heat required to raise 1g by 1°C</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1059207564,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a rigid metal bomb calorimeter on the left and a Styrofoam coffee-cup calorimeter on the right, with glowing red heat arrows moving between them and the surroundings.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D split-screen showing a rigid metal bomb calorimeter on the left and a Styrofoam coffee-cup calorimeter on the right, with glowing red heat arrows moving between them and the surroundings.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Thermochemistry: Standard Enthalpies of Formation, Combustion, and Atomization -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Thermochemistry: Standard Enthalpies of Formation, Combustion, and Atomization</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Standard Enthalpy (Delta H-standard) is measured at 1 bar and 25 degrees Celsius.</div>
+              <div id="qx4-p1" class="qe-bullet">• Standard Enthalpy of Formation: 1 mole of compound from its elements in stable states.</div>
+              <div id="qx4-p2" class="qe-bullet">• The standard enthalpy of formation for an element in its stable state is zero.</div>
+              <div id="qx4-p3" class="qe-bullet">• Standard Enthalpy of Combustion: 1 mole of substance burned in excess oxygen.</div>
+              <div id="qx4-p4" class="qe-bullet">• Standard Enthalpy of Atomization: 1 mole of substance broken into gaseous atoms.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2192808067,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular assembly scene where hydrogen and oxygen molecules collide and transform into a single water molecule, with a glowing energy bar showing heat release.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D molecular assembly scene where hydrogen and oxygen molecules collide and transform into a single water molecule, with a glowing energy bar showing heat release.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Hess's Law of Constant Heat Summation and Bond Enthalpies -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Hess's Law of Constant Heat Summation and Bond Enthalpies</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Hess's Law: Total enthalpy change is independent of the reaction path.</div>
+              <div id="qx5-p1" class="qe-bullet">• Enthalpy is a state function; only initial and final states matter.</div>
+              <div id="qx5-p2" class="qe-bullet">• Reversing a reaction reverses the sign of Delta H.</div>
+              <div id="qx5-p3" class="qe-bullet">• Bond Enthalpy: Energy required to break one mole of a bond in gaseous state.</div>
+              <div id="qx5-p4" class="qe-bullet">• Delta H = Sum of bond enthalpies of reactants - Sum of bond enthalpies of products.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3932145916,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a mountain climber taking two different paths to a peak, transitioning into a chemical equation being manipulated like algebraic terms.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D animation showing a mountain climber taking two different paths to a peak, transitioning into a chemical equation being manipulated like algebraic terms.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Spontaneity and the Second Law of Thermodynamics -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Spontaneity and the Second Law of Thermodynamics</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Spontaneous process: Occurs without continuous external intervention.</div>
+              <div id="qx6-p1" class="qe-bullet">• The Second Law: Total entropy of the universe must increase for spontaneity.</div>
+              <div id="qx6-p2" class="qe-bullet">• Delta S of universe = Delta S of system + Delta S of surroundings.</div>
+              <div id="qx6-p3" class="qe-bullet">• Spontaneity is a thermodynamic feasibility, not a measure of reaction rate.</div>
+              <div id="qx6-p4" class="qe-bullet">• Equilibrium occurs when the change in total entropy is zero.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3722922773,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a ball rolling down a hill on one side, and a chemical reaction releasing heat into a surrounding environment on the other, with arrows indicating entropy flow.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D split-screen showing a ball rolling down a hill on one side, and a chemical reaction releasing heat into a surrounding environment on the other, with arrows indicating entropy flow.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Entropy (S): Disorder, Microstates, and the Third Law -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Entropy (S): Disorder, Microstates, and the Third Law</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Entropy (S) measures the degree of disorder or energy dispersal in a system.</div>
+              <div id="qx7-p1" class="qe-bullet">• Microstates (W) are the specific ways energy can be distributed among particles.</div>
+              <div id="qx7-p2" class="qe-bullet">• Boltzmann's Equation: S = k sub B times ln W.</div>
+              <div id="qx7-p3" class="qe-bullet">• Entropy increases from solid to liquid to gas due to increased microstates.</div>
+              <div id="qx7-p4" class="qe-bullet">• Third Law: Entropy of a perfect crystal at zero Kelvin is exactly zero.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2529778462,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D transition showing particles moving from a rigid, ordered crystal lattice to a chaotic, high-velocity gas cloud, with a counter displaying the rising number of microstates (W).</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D transition showing particles moving from a rigid, ordered crystal lattice to a chaotic, high-velocity gas cloud, with a counter displaying the rising number of microstates (W).</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Gibbs Free Energy (G): The Criterion for Spontaneity -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Gibbs Free Energy (G): The Criterion for Spontaneity</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Gibbs Free Energy (G) is a state function used to predict spontaneity.</div>
+              <div id="qx8-p1" class="qe-bullet">• Formula: Delta G = Delta H - T times Delta S.</div>
+              <div id="qx8-p2" class="qe-bullet">• Delta G &lt; 0: Spontaneous process.</div>
+              <div id="qx8-p3" class="qe-bullet">• Delta G &gt; 0: Non-spontaneous process.</div>
+              <div id="qx8-p4" class="qe-bullet">• Delta G = 0: System is at equilibrium.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3120777527,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a chemical reaction on one side and a mathematical balance scale on the other, weighing Enthalpy against Temperature times Entropy.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D split-screen showing a chemical reaction on one side and a mathematical balance scale on the other, weighing Enthalpy against Temperature times Entropy.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Enthalpy, Entropy, and Gibbs: Mathematical Derivations and Relationships -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Enthalpy, Entropy, and Gibbs: Mathematical Derivations and Relationships</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Enthalpy definition: H = U + PV</div>
+              <div id="qx9-p1" class="qe-bullet">• Gibbs Free Energy equation: ΔG = ΔH - TΔS</div>
+              <div id="qx9-p2" class="qe-bullet">• Spontaneity criteria: ΔG &lt; 0 is spontaneous</div>
+              <div id="qx9-p3" class="qe-bullet">• Temperature dependence of ΔH and ΔS signs</div>
+              <div id="qx9-p4" class="qe-bullet">• Link to equilibrium: ΔG° = -RT ln K</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3462297914,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A dynamic 2D graph showing the intersection of ΔH and TΔS curves to determine the sign of ΔG across different temperature ranges.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A dynamic 2D graph showing the intersection of ΔH and TΔS curves to determine the sign of ΔG across different temperature ranges.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Integrated Problem Solving: Word Problems and Calculation Strategies -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Integrated Problem Solving: Word Problems and Calculation Strategies</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Step 1: Decode keywords like isothermal, adiabatic, and reversible.</div>
+              <div id="qx10-p1" class="qe-bullet">• Step 2: Map variables and always convert units (kJ to J, Celsius to Kelvin).</div>
+              <div id="qx10-p2" class="qe-bullet">• Step 3: Write the symbolic equation before substituting numerical values.</div>
+              <div id="qx10-p3" class="qe-bullet">• Step 4: Apply Hess's Law rules: flip signs for reversed reactions.</div>
+              <div id="qx10-p4" class="qe-bullet">• Step 5: Perform a Reality Check to ensure the sign of Delta G matches spontaneity.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1953351883,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a complex word problem on the left being systematically broken down into a checklist of variables and unit conversions on the right.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a complex word problem on the left being systematically broken down into a checklist of variables and unit conversions on the right.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Common Mistakes, Time Management, and Full Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Common Mistakes, Time Management, and Full Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Watch your signs: Heat and Work conventions are critical.</div>
+              <div id="qx11-p1" class="qe-bullet">• Unit Consistency: Always convert Celsius to Kelvin and check J vs kJ.</div>
+              <div id="qx11-p2" class="qe-bullet">• Hess's Law: Reverse equations mean reversing the enthalpy sign.</div>
+              <div id="qx11-p3" class="qe-bullet">• Spontaneity Rule: Delta G must be negative for a spontaneous process.</div>
+              <div id="qx11-p4" class="qe-bullet">• Exam Strategy: Solve direct questions first to manage time effectively.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1909519575,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a 'Correct' vs 'Incorrect' calculation flow, highlighting sign changes and unit conversions in glowing red and green.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a 'Correct' vs 'Incorrect' calculation flow, highlighting sign changes and unit conversions in glowing red and green.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Thermodynamics today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Power of Energy, Systems, and Surroundings <small>0:00</small></button>
+          <button type="button" data-seek="300">2. State Functions, Path Functions, and Extensive vs Intensive Properties <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Internal Energy, Work (Pressure-Volume), and Heat (q) <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Enthalpy (H) and Calorimetry: Measuring Heat Changes <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Thermochemistry: Standard Enthalpies of Formation, Combustion, and Atomization <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Hess's Law of Constant Heat Summation and Bond Enthalpies <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Spontaneity and the Second Law of Thermodynamics <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Entropy (S): Disorder, Microstates, and the Third Law <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Gibbs Free Energy (G): The Criterion for Spontaneity <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Enthalpy, Entropy, and Gibbs: Mathematical Derivations and Relationships <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Integrated Problem Solving: Word Problems and Calculation Strategies <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Common Mistakes, Time Management, and Full Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey into one of the most fundamental and exciting branches of chemistry: Thermodynamics. Now, before we dive into complex equations, let's ask ourselves a simple question: Why does anything happen in the universe? Why does ice melt in a warm room? Why does a piece of wood burn when ignited? The answer lies in the concept of energy. In chemistry, thermodynamics is the study of energy changes, specifically how heat and work are exchanged during chemical reactions and physical processes. It is the science of energy transformations. To study these changes, we first need to define our boundaries. Imagine you are conducting an experiment in a laboratory, perhaps dissolving salt in a beaker of water. In thermodynamics, we divide the entire universe into two distinct parts: the System and the Surroundings. The System is the specific part of the universe that we are focusing our attention on. In our example, the salt and the water inside the beaker constitute the system. Everything else—the beaker itself, the air in the laboratory, the table the beaker is sitting on, and even you, the observer—collectively makes up the Surroundings. The boundary is the real or imaginary surface that separates the system from its surroundings. Now, depending on how the system interacts with its surroundings, we classify systems into three main types. First, we have the Open System. In an open system, both energy and matter can be exchanged with the surroundings. Think of a hot cup of coffee left uncovered on a table. The steam rises into the air, meaning matter is leaving the system, and the coffee cools down, meaning heat energy is being transferred to the surroundings. Second, we have the Closed System. In a closed system, energy can be exchanged with the surroundings, but matter cannot. Imagine that same cup of coffee, but this time, you place a tight lid on it. The heat will still escape through the walls of the cup, but the water and coffee particles are trapped inside. Third, we have the Isolated System. This is an idealization where neither energy nor matter can be exchanged with the surroundings. A perfect example is a thermos flask, or vacuum flask, which is designed to prevent heat transfer and keep the contents contained. While a real-world thermos is not perfectly isolated, it comes very close. In an isolated system, the total energy remains constant. Now, why is this distinction so important? Because every chemical reaction involves a change in energy. When a reaction occurs, the system might release energy into the surroundings, or it might absorb energy from the surroundings. Understanding whether we are dealing with an open, closed, or isolated system allows us to track these energy flows accurately. As we progress through this chapter, we will learn how to mathematically quantify these energy changes using concepts like enthalpy, entropy, and Gibbs free energy. But for today, remember this: the universe is a grand dance of energy, and by defining our system and surroundings, we begin to understand the rules of that dance. Let's get ready to explore the power of energy!","Welcome back to our journey through Thermodynamics. In our last session, we defined what a system and its surroundings are. Now, we need to understand how we actually measure changes within these systems. To do this, we must distinguish between different types of properties. Let's start with a very important distinction: State Functions versus Path Functions. Imagine you are climbing a mountain. You start at the base and reach the summit. Your change in altitude is exactly the same whether you took a steep, direct path or a long, winding trail. In thermodynamics, altitude is a State Function. A state function is a property whose value depends only on the current state of the system—its pressure, temperature, volume, or composition—and not on how the system reached that state. Mathematically, we say that for a state function, the change, denoted by the Greek letter delta, is simply the difference between the final state and the initial state. Examples include internal energy, enthalpy, entropy, and Gibbs free energy. Now, contrast this with the path you took to climb that mountain. The total distance you walked or the amount of energy your legs expended depends entirely on the route. This is a Path Function. In thermodynamics, work and heat are path functions. They do not belong to the system at any specific moment; instead, they describe the process of moving from one state to another. You cannot say a system 'has' five Joules of heat; you can only say that five Joules of heat were transferred during a process. Now, let's move to our second major classification: Extensive versus Intensive properties. This distinction is based on whether a property depends on the amount of matter present in the system. Extensive properties are those that change when you change the size or amount of the substance. Think about mass or volume. If you have one liter of water and you add another liter, you now have two liters. The volume has doubled. Therefore, mass, volume, total energy, and enthalpy are all extensive properties. On the other hand, Intensive properties are independent of the amount of matter. If you take a cup of water from a large bucket, the temperature of the water in the cup is the same as the temperature in the bucket. Other examples include density, pressure, temperature, and molarity. A very useful trick to remember this is that the ratio of two extensive properties often results in an intensive property. For example, if you divide mass, which is extensive, by volume, which is also extensive, you get density, which is intensive. This is a fundamental concept because it allows us to derive intensive properties like molar volume or molar enthalpy from extensive ones. Understanding these classifications is crucial because, as we move forward into calculating work and heat, you must always ask yourself: 'Am I looking at a property of the state, or a property of the process?' and 'Does this value change if I double my sample size?' Mastering this distinction is your first step toward solving complex thermodynamic equations.","Welcome back. In our previous session, we distinguished between state functions and path functions. Now, let us dive into the actual energy terms that make thermodynamics work. First, let's talk about Internal Energy, denoted by the symbol U. Imagine a container filled with gas molecules. These molecules are constantly moving, rotating, and vibrating. They possess kinetic energy from their motion and potential energy from the forces between them. The sum of all these microscopic energies—translational, rotational, vibrational, and intermolecular—is what we call the Internal Energy of the system. It is important to remember that we can never measure the absolute value of internal energy; we can only measure the change in internal energy, which we write as delta U. Now, how does this internal energy change? It changes when we transfer energy across the system boundary, either as heat or as work. Let us look at Heat, represented by the symbol q. Heat is the energy transferred between a system and its surroundings due to a temperature difference. If the system absorbs heat, we say the process is endothermic, and q is positive. If the system releases heat, it is exothermic, and q is negative. Next, let us discuss Work, denoted by the symbol w. In chemistry, the most common type of work is Pressure-Volume work, also known as expansion or compression work. Imagine a gas trapped in a cylinder with a movable piston. If the gas expands, it pushes the piston upward, doing work on the surroundings. If the surroundings compress the gas, work is done on the system. Mathematically, work is defined as the integral of pressure with respect to volume. For a process occurring at constant external pressure, P, the work done is equal to negative P times the change in volume. We write this as w equals minus P delta V. Why the negative sign? This is a crucial convention in thermodynamics. When a gas expands, the change in volume, delta V, is positive. Since the system is doing work and losing energy to the surroundings, the work value must be negative. Conversely, when a gas is compressed, delta V is negative, making the work value positive, meaning energy is being added to the system. Now, let us combine these concepts into the First Law of Thermodynamics. The First Law is essentially the law of conservation of energy applied to thermodynamic systems. It states that energy can neither be created nor destroyed, only converted from one form to another. The total change in the internal energy of a system is equal to the sum of the heat exchanged and the work done on or by the system. This gives us our fundamental equation: delta U equals q plus w. Let's test this with an example. If a system absorbs 500 Joules of heat and does 200 Joules of work on the surroundings, what is the change in internal energy? Since heat is absorbed, q is positive 500. Since work is done by the system, w is negative 200. Therefore, delta U equals 500 minus 200, which equals 300 Joules. The internal energy has increased. If the signs were reversed, the energy would decrease. Understanding these signs is the key to mastering all subsequent calculations in this chapter. Remember: heat in is positive, heat out is negative; work done on the system is positive, work done by the system is negative. This equation, delta U equals q plus w, is the heartbeat of thermodynamics.","Welcome back. In our previous session, we explored internal energy, work, and heat. But in a real laboratory setting, most chemical reactions don't happen in a rigid, closed container where volume is constant. Instead, they happen in open beakers or test tubes, where the pressure remains constant, usually at atmospheric pressure. This brings us to a crucial concept: Enthalpy. Think of Enthalpy, denoted by the capital letter H, as the total heat content of a system at constant pressure. Mathematically, we define it as H equals U plus P times V, where U is internal energy, P is pressure, and V is volume. Now, why do we bother with this extra P-V term? Because when a reaction occurs at constant pressure, the system might expand or contract, doing work on the surroundings or having work done on it. Enthalpy accounts for both the change in internal energy and the energy used for this expansion work. The change in enthalpy, delta H, is what we actually measure in the lab. At constant pressure, the change in enthalpy is exactly equal to the heat exchanged, which we write as delta H equals q sub P. This is a beautiful simplification for chemists! If a reaction releases heat, delta H is negative, and we call it an exothermic reaction. If it absorbs heat, delta H is positive, and it is an endothermic reaction. Now, how do we actually measure this heat? We use a technique called Calorimetry. A calorimeter is a device used to measure the amount of heat transferred during a chemical or physical process. The most common type you will encounter is the coffee-cup calorimeter, which is essentially a constant-pressure calorimeter. It consists of a Styrofoam cup, which is an excellent insulator, to prevent heat from escaping to the surroundings. To calculate the heat absorbed or released, we use the fundamental equation: q equals m times c delta T. Let's break this down. 'm' is the mass of the substance, 'c' is the specific heat capacity—which is the amount of heat required to raise the temperature of one gram of a substance by one degree Celsius—and 'delta T' is the change in temperature, which is final temperature minus initial temperature. Let's walk through a practical example together. Suppose you dissolve one hundred grams of sodium hydroxide in water inside a calorimeter. The initial temperature of the water was twenty-five degrees Celsius, and after the dissolution, the temperature rose to thirty-five degrees Celsius. The specific heat capacity of water is approximately four point one eight joules per gram degree Celsius. To find the heat released, we first calculate delta T, which is thirty-five minus twenty-five, giving us ten degrees Celsius. Now, we plug the values into our formula: q equals one hundred grams times four point one eight joules per gram degree Celsius times ten degrees Celsius. This gives us four thousand one hundred eighty joules. Since the temperature increased, the reaction released heat, so the enthalpy change, delta H, for this process would be negative four thousand one hundred eighty joules. Another important concept in calorimetry is the distinction between constant-volume and constant-pressure calorimetry. In a constant-volume calorimeter, often called a bomb calorimeter, we measure the change in internal energy, delta U. In our constant-pressure coffee-cup calorimeter, we are measuring the change in enthalpy, delta H. It is vital to remember that delta H and delta U are not the same, though they are related by the equation delta H equals delta U plus delta P times delta V. In most liquid-phase reactions, the change in volume is so small that delta H is nearly equal to delta U, but for gas-phase reactions, the difference is significant. Understanding these heat measurements is the foundation for everything we will do in thermochemistry, so make sure you are comfortable with this q equals m-c-delta-T calculation before we move forward.","Welcome back. In our previous lesson, we explored how to measure heat changes using calorimetry. Now, we move into the heart of thermochemistry: understanding specific types of enthalpy changes that allow us to predict the energy profile of any chemical reaction. In thermochemistry, we don't just ask 'how much heat is released,' but specifically 'what kind of heat is it?' To standardize these measurements globally, we use the term 'Standard Enthalpy,' denoted as Delta H-standard. This refers to enthalpy changes occurring at a standard pressure of one bar and a specified temperature, usually twenty-five degrees Celsius. Let us first discuss the Standard Enthalpy of Formation, written as Delta H-f of a substance. This is defined as the enthalpy change when one mole of a compound is formed from its constituent elements in their most stable physical states under standard conditions. For example, if we want to find the enthalpy of formation for liquid water, we look at the reaction where one mole of water is produced from one mole of oxygen gas and two moles of hydrogen gas, both in their standard states. A very important rule to remember for your exams is that the standard enthalpy of formation of any element in its most stable form, like oxygen gas or solid carbon, is exactly zero. This provides us with a universal reference point. Next, let us look at the Standard Enthalpy of Combustion, or Delta H-c. This is the enthalpy change when one mole of a substance is completely burned in excess oxygen under standard conditions. Combustion reactions are almost always exothermic, meaning the enthalpy change will be negative. When you see a combustion value, it tells you exactly how much energy is released per mole of fuel burned. This is crucial in industrial chemistry and fuel efficiency studies. Now, let us move to a slightly more abstract concept: the Standard Enthalpy of Atomization, written as Delta H-a. This is the enthalpy change required to completely separate one mole of a substance into its individual gaseous atoms. For a simple diatomic molecule like hydrogen gas, the enthalpy of atomization is the energy needed to break the H-H bond to produce two moles of hydrogen atoms in the gaseous state. This is essentially the reverse of the bond formation process. Why do we need all these different types of enthalpy? Because in a laboratory, it is often impossible to measure the enthalpy of a complex reaction directly. However, if we know the standard enthalpies of formation for all reactants and products, we can use them to calculate the overall enthalpy of the reaction. This bridge between individual component data and total reaction energy is what makes thermochemistry so powerful. As we move forward, keep these definitions clear in your mind, because they are the building blocks for Hess's Law, which we will cover in the next part.","Welcome back. In our previous session, we learned how to measure enthalpy changes using calorimetry. But what happens when a reaction is too slow, too dangerous, or simply impossible to perform in a lab? This is where the brilliance of Hess's Law comes into play. Think of enthalpy as a state function. Because enthalpy depends only on the initial and final states of a system, and not on the path taken, the total enthalpy change for a reaction is the same whether the reaction occurs in one single step or in a series of multiple steps. This is Hess's Law of Constant Heat Summation. Mathematically, if a reaction can be expressed as the sum of several intermediate steps, the enthalpy change for the overall reaction will be the sum of the enthalpy changes of those individual steps. Imagine you are climbing a mountain. Whether you take a steep, direct path to the summit or a long, winding trail, your change in altitude remains exactly the same. Enthalpy works the same way. We use this law to calculate enthalpy changes for reactions that are difficult to measure directly by using known thermochemical equations. We can treat these equations like algebraic expressions. If you reverse a reaction, you must change the sign of the enthalpy change from positive to negative or vice versa. If you multiply the coefficients of a reaction by a factor, say two, you must also multiply the enthalpy change by that same factor. Now, let us move from the macroscopic view of reactions to the microscopic view: Bond Enthalpies. Every chemical bond holds atoms together like a tiny spring. To break a bond, energy must be absorbed from the surroundings; this is an endothermic process. Conversely, when a bond is formed, energy is released into the surroundings; this is an exothermic process. Bond enthalpy, or bond dissociation enthalpy, is defined as the amount of energy required to break one mole of a particular bond in a gaseous molecule to form gaseous atoms. It is important to note that bond enthalpies are usually given for substances in the gaseous state. To calculate the enthalpy change of a reaction using bond enthalpies, we use a specific logic. Since breaking bonds requires energy and forming bonds releases energy, the enthalpy change of a reaction is equal to the sum of the bond enthalpies of the reactants minus the sum of the bond enthalpies of the products. In formula terms, Delta H equals the sum of energy required to break reactant bonds minus the sum of energy released during the formation of product bonds. Be careful here: this is a subtraction of two positive values. If the energy required to break the bonds in the reactants is greater than the energy released when forming the products, the reaction is endothermic. If the energy released during bond formation is greater, the reaction is exothermic. Let us keep this relationship in mind as we prepare to dive into the concept of spontaneity in our next lesson.","Welcome back. In our previous lessons, we explored how energy moves through work and heat. But now, we face a fundamental question: Why do some processes happen on their own, while others require constant energy input? Why does a ball roll down a hill, but never spontaneously rolls up? This brings us to the concept of Spontaneity. A spontaneous process is one that occurs on its own under a specific set of conditions without the need for continuous external intervention. Think of ice melting in a warm room or a gas expanding to fill a vacuum. These are spontaneous. However, the First Law of Thermodynamics, which we studied earlier, only tells us about the conservation of energy. It doesn't tell us the direction in which a process will occur. To understand the direction of change, we must turn to the Second Law of Thermodynamics. The Second Law provides the criterion for spontaneity. It states that for any spontaneous process, the total entropy of the universe must increase. Now, let's clarify a very important distinction. When we talk about a chemical reaction, we usually focus on the system—the reactants and products. But the universe is the combination of the system and its surroundings. So, the Second Law says that the change in entropy of the universe, which is the change in entropy of the system plus the change in entropy of the surroundings, must be greater than zero for a process to be spontaneous. Mathematically, we write this as Delta S of the universe is greater than zero. If Delta S of the universe is equal to zero, the process is at equilibrium. If Delta S of the universe is less than zero, the process is non-spontaneous, meaning it won't happen unless we force it. You might wonder, if a system becomes more ordered, like water freezing into ice, how can the entropy increase? This is where the surroundings come in. When water freezes, it releases heat into the surroundings. This heat increases the thermal motion of the molecules in the surroundings, thereby increasing the entropy of the surroundings. Even though the entropy of the water—the system—decreases, the increase in the entropy of the surroundings is large enough that the total entropy of the universe still increases. This is the beauty of the Second Law. It shows us that spontaneity is not just about the system; it is about the total impact on the universe. It is important to remember that spontaneity is not about speed. A process can be spontaneous but very slow, like the rusting of iron. Spontaneity tells us if a process is thermodynamically feasible, not how fast it happens. To predict spontaneity, we cannot always measure the surroundings, so we need a way to look at the system alone. This leads us to our next major topic: Entropy. Let's prepare to dive deep into the microscopic view of disorder.","Welcome back. In our previous lesson, we explored the Second Law of Thermodynamics, which tells us that the universe is constantly moving toward a state of greater disorder. But what exactly is this 'disorder' in scientific terms? Today, we define a specific property called Entropy, denoted by the capital letter S. Think of entropy as a measure of the randomness or the dispersal of energy in a system. When energy is concentrated in one place, entropy is low. When that energy spreads out, entropy increases. To understand this deeply, we must move beyond the simple word 'disorder' and look at the concept of microstates. Imagine you have two particles in two boxes. If both particles are in the first box, there is only one way to arrange them. This is a highly ordered state with low entropy. But if one particle can be in the first box and the other in the second, or vice versa, we have more possible arrangements. In statistical mechanics, a microstate is a specific way in which the energy of a system can be distributed among its particles. The total number of these possible microstates is represented by the Greek letter Omega, or W. Ludwig Boltzmann gave us a famous mathematical relationship for this: the entropy S is equal to the Boltzmann constant, k sub B, multiplied by the natural log of Omega. So, the formula is S equals k sub B times ln W. This tells us that as the number of possible microstates increases, the entropy increases. Let's apply this to phases of matter. Consider a solid, a liquid, and a gas. In a solid, particles are locked in a rigid lattice; they can only vibrate, meaning there are very few microstates available. Thus, solids have low entropy. In a liquid, particles can slide past each other, increasing the number of possible positions and arrangements, so entropy is higher. In a gas, particles move rapidly and randomly throughout the entire volume, creating a massive number of microstates. Therefore, gases have the highest entropy. We can also see this through temperature changes. When you add heat to a system, the kinetic energy of the particles increases, allowing them to access more energy levels and more microstates, which increases entropy. Now, let's look at the mathematical change in entropy, which we call Delta S. For a reversible process at a constant temperature, the change in entropy is calculated as Delta S equals the heat added to the system, q sub rev, divided by the absolute temperature, T. It is crucial to remember that we must always use Kelvin for temperature. For example, if you add one hundred Joules of heat to a system at three hundred Kelvin, the change in entropy is one hundred divided by three hundred, which is zero point three three Joules per Kelvin. Now, let's discuss the Third Law of Thermodynamics. This law provides a baseline for our entropy measurements. It states that the entropy of a perfectly crystalline substance at absolute zero temperature, which is zero Kelvin, is exactly zero. Why? Because at absolute zero, in a perfect crystal, there is no thermal motion and every single particle is in its lowest possible energy state. There is only one single microstate available—the ground state. Since W equals one, and the natural log of one is zero, the entropy S becomes zero. This law is incredibly important because it allows us to calculate the absolute entropy of substances at any other temperature, not just the change in entropy. Without the Third Law, we would only be able to measure differences, but with it, we can determine the actual entropy value of a chemical species. To summarize: entropy is the measure of energy dispersal, it is mathematically linked to the number of microstates via Boltzmann's equation, and the Third Law gives us a starting point of zero at absolute zero for perfect crystals. In our next lesson, we will bring all of this together using Gibbs Free Energy to predict if a reaction will actually happen.","Welcome back. In our previous lesson, we explored Entropy and the Second Law of Thermodynamics, which tells us that for a process to be spontaneous, the total entropy of the universe must increase. But there is a practical problem here. To predict if a reaction will occur, we shouldn't have to measure the entropy change of the entire universe—the system and the surroundings combined. It is much easier if we can predict spontaneity by looking only at the system itself. This is where Josiah Willard Gibbs comes to the rescue with a concept called Gibbs Free Energy. Let us define it. Gibbs Free Energy, denoted by the capital letter G, is a state function. We define the change in Gibbs Free Energy, or Delta G, as the enthalpy change of the system, Delta H, minus the product of the absolute temperature, T, and the change in entropy, Delta S. So, the formula is Delta G equals Delta H minus T times Delta S. This single equation is incredibly powerful because it combines both enthalpy and entropy into one single value that tells us the direction of a process. Now, let us analyze what the value of Delta G tells us about spontaneity. There are three distinct cases. First, if Delta G is negative, or less than zero, the process is spontaneous. This means the reaction can occur on its own under the given conditions without any external assistance. In this case, the system is actually doing work. Second, if Delta G is positive, or greater than zero, the process is non-spontaneous. This does not mean the reaction can never happen; it simply means the reaction will not proceed in the forward direction on its own. To make such a reaction occur, we must constantly supply energy from the surroundings. Third, if Delta G is exactly zero, the system is in a state of equilibrium. At equilibrium, there is no net change in the concentrations of reactants or products, and the system has reached its lowest possible free energy state. Now, let us look at how the signs of Enthalpy and Entropy interact to determine the sign of Delta G. This is a very common area for exam questions. Imagine a reaction where both Enthalpy and Entropy changes are negative. This means the reaction is exothermic and leads to increased order. In this case, Delta G will always be negative, regardless of the temperature. Such reactions are spontaneous at all temperatures. Conversely, if both Delta H and Delta S are positive, meaning the reaction is endothermic and increases disorder, Delta G will only be negative if the temperature is high enough to make the T times Delta S term larger than Delta H. If the temperature is low, Delta G remains positive and the reaction is non-spontaneous. What if they have opposite signs? If Delta H is negative and Delta S is positive, the reaction is spontaneous at all temperatures. But if Delta H is positive and Delta S is negative, the reaction is only spontaneous at very low temperatures. By using this equation, we can predict the behavior of chemical systems without ever needing to calculate the entropy of the surroundings. We have effectively moved the 'universe' into a single term that describes the system. In the next part, we will dive into the mathematical derivations to see exactly how we arrive at this beautiful relationship.","Welcome back. In our previous segment, we explored the conceptual definitions of Enthalpy, Entropy, and Gibbs Free Energy. Now, it is time to move from concepts to the rigorous mathematical framework that binds them together. This is the heart of chemical thermodynamics. Let us start with the fundamental relationship between Enthalpy and Internal Energy. Recall that Enthalpy, denoted by capital H, is defined as the sum of Internal Energy, U, and the product of Pressure, P, and Volume, V. Mathematically, we write this as H equals U plus PV. When a process occurs at constant pressure, the change in enthalpy, delta H, is equal to the heat exchanged, q sub P. This is a crucial bridge between our theoretical energy states and measurable heat. Now, let us look at the Second Law of Thermodynamics through the lens of Entropy. The total entropy change of the universe is the sum of the entropy change of the system and the entropy change of the surroundings. For a process to be spontaneous, the total entropy change, delta S total, must be greater than zero. But calculating the entropy of the entire universe is practically impossible in a laboratory setting. This is where Josiah Willard Gibbs provided us with a mathematical masterstroke. He derived a way to predict spontaneity using only the properties of the system itself. Let us derive the Gibbs-Helmholtz relationship. We start with the definition of Gibbs Free Energy, G, which is G equals H minus T times S, where T is the absolute temperature in Kelvin. When we consider a change in state at constant temperature, the change in Gibbs Free Energy, delta G, is given by delta G equals delta H minus T delta S. This single equation is the most important formula in this chapter. Let us analyze its components. Delta H represents the enthalpy change, or the heat content change. T delta S represents the energy associated with the change in disorder. The sign of delta G tells us everything about the direction of a reaction. If delta G is negative, the reaction is exergonic and spontaneous. If delta G is positive, the reaction is endergonic and non-spontaneous. If delta G is zero, the system is at equilibrium. Now, let us look at how the signs of delta H and delta S interact to determine spontaneity. There are four distinct mathematical scenarios. Scenario one: If delta H is negative and delta S is positive, then delta G will always be negative, regardless of the temperature. These reactions are spontaneous at all temperatures, like many combustion processes. Scenario two: If delta H is positive and delta S is negative, delta G will always be positive. These reactions are non-spontaneous at all temperatures. Scenario three: If both delta H and delta S are positive, the term T delta S grows as temperature increases. Therefore, at high temperatures, T delta S might become larger than delta H, making delta G negative. These reactions are spontaneous only at high temperatures. Scenario four: If both delta H and delta S are negative, the term T delta S decreases as temperature increases. At low temperatures, the magnitude of delta H dominates, making delta G negative. These reactions are spontaneous only at low temperatures. Finally, let us touch upon the relationship between the standard Gibbs Free Energy change and the equilibrium constant, K. At equilibrium, delta G is zero. This leads to the derivation where delta G standard equals minus R T ln K, where R is the universal gas constant and ln is the natural logarithm. This connects the macroscopic thermodynamics of energy to the microscopic reality of chemical equilibrium. Understanding these mathematical links allows us to predict not just if a reaction will happen, but under what specific temperature conditions it will occur.","Welcome back. We have covered the theory, the laws, and the complex derivations of thermodynamics. Now, it is time to bridge the gap between knowing the formulas and solving the actual problems you will face in your exams. Thermodynamics problems can feel overwhelming because they often mix multiple concepts like enthalpy, entropy, and Gibbs free energy in a single question. The secret to success is not just memorizing formulas, but developing a systematic strategy. Let us start with the first and most crucial step: The Decoding Phase. When you read a word problem, do not rush to pick a formula. Instead, act like a detective. Identify your system and your surroundings. Is the process occurring at constant pressure or constant volume? This single distinction determines whether you use Delta H or Delta U. Look for keywords. If the problem mentions 'isothermal,' it means temperature remains constant. If it says 'adiabatic,' it means no heat is exchanged. If it says 'reversible,' you must use the logarithmic integration formula for work, whereas 'irreversible' usually implies a simple pressure-volume calculation. Once you have decoded the text, move to the second step: The Variable Mapping Phase. Write down every single value given in the problem with its correct symbol. For example, write 'Delta H equals minus ninety-two point two kilojoules per mole' and 'Temperature equals two hundred ninety-eight Kelvin.' This is where most students make mistakes. Always check your units. This is the most common trap in thermodynamics. If your enthalpy is in kilojoules, but your entropy is in joules per Kelvin, you cannot subtract them directly. You must convert kilojoules to joules by multiplying by one thousand. Always convert your temperature to Kelvin immediately. If the problem gives you Celsius, add two hundred seventy-three point one five. Now, let us look at the third step: The Equation Selection and Execution Phase. Do not just plug numbers into a formula. Write the symbolic equation first. For example, write 'Delta G equals Delta H minus T times Delta S.' Then, substitute your values. If you are solving a problem involving Hess's Law, remember that you are essentially performing algebraic addition of chemical equations. If you need to reverse a reaction, you must flip the sign of the enthalpy change. If you multiply a reaction by a coefficient, you must multiply the enthalpy by that same coefficient. The fourth step is the Reality Check. Once you get a numerical answer, ask yourself: Does this make sense? If you calculated a positive Delta G for a reaction that is described as spontaneous, you have made a calculation error. If your calculated heat capacity is a negative number, something is wrong. Finally, let us discuss the strategy for multi-step problems. Many high-level problems require you to find entropy first, then use it to find Gibbs free energy, and finally determine the equilibrium constant. In these cases, work in a linear chain. Do not try to jump to the final answer. Solve for the intermediate variable, write it down, and use it as a building block for the next step. Remember, thermodynamics is a cumulative subject. Every calculation you perform is a link in a chain. Master the art of unit conversion, the discipline of variable mapping, and the logic of the reality check, and you will find that these complex word problems become much more manageable. Let us practice a few examples to solidify these strategies.","Welcome to our final session on Thermodynamics. We have traveled from the basic definitions of systems and surroundings all the way to the complex mathematical relationships of Gibbs Free Energy. Now, it is time to prepare you for the exam hall. To score high, you must avoid the traps that even the brightest students fall into. The first and most common mistake is the sign convention error. Remember, in thermodynamics, the sign is everything. If the system is doing work, work is negative, W is negative. If work is done on the system, W is positive. Similarly, if the system absorbs heat, q is positive, and if it releases heat, q is negative. Always check if the question asks for the change in internal energy or the heat transferred. Another major pitfall is confusing extensive and intensive properties. Students often try to apply formulas for molar enthalpy to total enthalpy without converting. Always check your units. Are you working with Joules or kiloJoules? Are you working with moles or grams? A single unit error will lead to a completely wrong answer. Third, be careful with Hess's Law. When you reverse a chemical equation, you must reverse the sign of the enthalpy change. If you multiply a reaction by two, you must multiply the enthalpy change by two as well. Fourth, in entropy and spontaneity problems, do not forget the temperature. The Gibbs Free Energy equation, Delta G equals Delta H minus T times Delta S, is highly sensitive to the value of T. Always convert Celsius to Kelvin immediately. Now, let us do a lightning recap of the entire chapter. We started with the distinction between systems and surroundings and the types of properties. We defined Internal Energy and how it changes through heat and work. We moved to Enthalpy, the heat content at constant pressure, and learned how to calculate it using calorimetry. We mastered Hess's Law, which tells us that the total enthalpy change is independent of the path taken. We then explored the Second Law, introducing Entropy as a measure of disorder and microstates. Finally, we reached the ultimate criterion for spontaneity: Gibbs Free Energy. If Delta G is negative, the process is spontaneous. If Delta G is zero, the system is at equilibrium. If Delta G is positive, the process is non-spontaneous. For time management during your exam, I recommend a three-step approach. First, scan the paper. Identify the direct formula-based questions and solve them immediately to build confidence. Second, tackle the multi-step problems, like Hess's Law or Gibbs calculations, in the middle of your session. Save the complex, long-form derivations or word problems for the final stretch. Always leave five minutes at the end to re-check your sign conventions and unit conversions. Thermodynamics is not just about memorizing formulas; it is about understanding the flow of energy and the direction of change. Practice the NCERT back-exercise problems multiple times, as they form the foundation of most exam questions. You have worked hard through this series, and you are now ready to master this chapter. Good luck with your studies!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-chemistry-05-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

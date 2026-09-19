@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Our Environment, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c10-science-13-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Why Ecosystems Matter and the Interconnectedness of Life -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Why Ecosystems Matter and the Interconnectedness of Life</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Definition: An ecosystem is a functional unit of living and non-living components.</div>
+              <div id="qx0-p1" class="qe-bullet">• Interconnectedness: Organisms interact with each other and their physical surroundings.</div>
+              <div id="qx0-p2" class="qe-bullet">• The Web of Life: No organism exists in isolation; everything is part of a system.</div>
+              <div id="qx0-p3" class="qe-bullet">• Ecosystem Services: Provides essential resources like oxygen, food, and water.</div>
+              <div id="qx0-p4" class="qe-bullet">• Human Impact: Understanding ecosystems helps us address environmental challenges.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3160545970,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A cinematic 3D zoom-out starting from a single green leaf, expanding to show a forest, then a mountain range, and finally the Earth wrapped in a glowing web of interconnected energy lines.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A cinematic 3D zoom-out starting from a single green leaf, expanding to show a forest, then a mountain range, and finally the Earth wrapped in a glowing web of interconnected energy lines.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Ecosystem Components: Biotic and Abiotic Factors with Diagrammatic Representation -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Ecosystem Components: Biotic and Abiotic Factors with Diagrammatic Representation</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Abiotic Factors: Non-living elements like sunlight, temperature, water, and soil.</div>
+              <div id="qx1-p1" class="qe-bullet">• Biotic Factors: Living components categorized by their role in energy flow.</div>
+              <div id="qx1-p2" class="qe-bullet">• Producers (Autotrophs): Organisms like plants that create food via photosynthesis.</div>
+              <div id="qx1-p3" class="qe-bullet">• Consumers (Heterotrophs): Organisms that depend on others for energy (Herbivores/Carnivores).</div>
+              <div id="qx1-p4" class="qe-bullet">• Decomposers (Saprotrophs): Fungi and bacteria that recycle nutrients from dead matter.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2916960950,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing a vibrant forest ecosystem on one side and a detailed breakdown of its chemical/physical elements like sunlight and soil particles on the other, connected by flowing energy arrows.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D split-screen animation showing a vibrant forest ecosystem on one side and a detailed breakdown of its chemical/physical elements like sunlight and soil particles on the other, connected by flowing energy arrows.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Food Chains and Food Webs: Energy Flow and Trophic Levels -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Food Chains and Food Webs: Energy Flow and Trophic Levels</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Food Chain: A linear sequence of organisms through which energy flows.</div>
+              <div id="qx2-p1" class="qe-bullet">• Food Web: A complex network of interconnected food chains in an ecosystem.</div>
+              <div id="qx2-p2" class="qe-bullet">• Trophic Levels: The functional steps or levels in a food chain.</div>
+              <div id="qx2-p3" class="qe-bullet">• Unidirectional Flow: Energy moves only from producers to consumers, never back.</div>
+              <div id="qx2-p4" class="qe-bullet">• Energy Loss: Most energy is lost as heat at each successive trophic level.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3510252458,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D ecosystem transition starting from a single linear chain of a plant, grasshopper, and frog, which then expands into a complex, glowing web of interconnected animals.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D ecosystem transition starting from a single linear chain of a plant, grasshopper, and frog, which then expands into a complex, glowing web of interconnected animals.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): The 10% Law: Quantitative Analysis of Energy Transfer and Mathematical Examples -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">The 10% Law: Quantitative Analysis of Energy Transfer and Mathematical Examples</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Ten Percent Law: Proposed by Raymond Lindeman</div>
+              <div id="qx3-p1" class="qe-bullet">• Only 10% of energy is transferred to the next trophic level</div>
+              <div id="qx3-p2" class="qe-bullet">• 90% of energy is lost as heat or used for metabolic processes</div>
+              <div id="qx3-p3" class="qe-bullet">• Energy decreases significantly as we move up the food chain</div>
+              <div id="qx3-p4" class="qe-bullet">• Mathematical Example: 1000J -&gt; 100J -&gt; 10J -&gt; 1J</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":569871134,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D glowing energy pyramid where bright light flows upward through levels, shrinking in intensity and volume at every step.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D glowing energy pyramid where bright light flows upward through levels, shrinking in intensity and volume at every step.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Biological Magnification: Accumulation of Harmful Chemicals in Food Chains -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Biological Magnification: Accumulation of Harmful Chemicals in Food Chains</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Non-biodegradable chemicals cannot be broken down by organisms.</div>
+              <div id="qx4-p1" class="qe-bullet">• Chemicals enter the food chain through producers or primary consumers.</div>
+              <div id="qx4-p2" class="qe-bullet">• Concentration increases at each successive trophic level.</div>
+              <div id="qx4-p3" class="qe-bullet">• Top consumers (including humans) face the highest chemical concentration.</div>
+              <div id="qx4-p4" class="qe-bullet">• Biological Magnification: Increase in chemical concentration in a food chain.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3235564106,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D flowing food chain animation showing tiny red dots representing chemicals increasing in density from plankton to small fish, then large fish, and finally a large bird.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D flowing food chain animation showing tiny red dots representing chemicals increasing in density from plankton to small fish, then large fish, and finally a large bird.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Decomposers: The Role of Saprotrophs in Nutrient Cycling and Ecosystem Balance -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Decomposers: The Role of Saprotrophs in Nutrient Cycling and Ecosystem Balance</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Decomposers (Saprotrophs) break down dead organic matter into simple inorganic substances.</div>
+              <div id="qx5-p1" class="qe-bullet">• Key examples of decomposers include bacteria and fungi.</div>
+              <div id="qx5-p2" class="qe-bullet">• Nutrient Cycling: Returning minerals to soil, water, and air for reuse by producers.</div>
+              <div id="qx5-p3" class="qe-bullet">• Decomposers prevent the accumulation of organic waste in the ecosystem.</div>
+              <div id="qx5-p4" class="qe-bullet">• Environmental factors like temperature and moisture regulate decomposition rates.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3359418931,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D time-lapse animation showing a fallen leaf on forest soil being gradually broken down by microscopic glowing bacteria and fungi, with arrows showing nutrients moving from the leaf into the soil and then being absorbed by the roots of a nearby growing plant.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D time-lapse animation showing a fallen leaf on forest soil being gradually broken down by microscopic glowing bacteria and fungi, with arrows showing nutrients moving from the leaf into the soil and then being absorbed by the roots of a nearby growing plant.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Environmental Problems: Ozone Layer Depletion, Causes, and Chemical Reactions -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Environmental Problems: Ozone Layer Depletion, Causes, and Chemical Reactions</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Ozone is a triatomic molecule represented as O-three.</div>
+              <div id="qx6-p1" class="qe-bullet">• The Ozone layer in the stratosphere absorbs harmful UV radiation.</div>
+              <div id="qx6-p2" class="qe-bullet">• Chlorofluorocarbons (C-F-Cs) are the primary cause of depletion.</div>
+              <div id="qx6-p3" class="qe-bullet">• Chlorine atoms act as catalysts in the destruction of ozone.</div>
+              <div id="qx6-p4" class="qe-bullet">• One chlorine atom can destroy thousands of ozone molecules.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3387884926,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing UV rays hitting the stratosphere, a C-F-C molecule breaking apart to release a chlorine atom, and that atom repeatedly attacking O-three molecules to turn them into O-two.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D animation showing UV rays hitting the stratosphere, a C-F-C molecule breaking apart to release a chlorine atom, and that atom repeatedly attacking O-three molecules to turn them into O-two.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Waste Management: Biodegradable vs. Non-biodegradable Substances -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Waste Management: Biodegradable vs. Non-biodegradable Substances</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Biodegradable: Broken down by microorganisms like bacteria and fungi.</div>
+              <div id="qx7-p1" class="qe-bullet">• Non-biodegradable: Persistent substances that cannot be decomposed naturally.</div>
+              <div id="qx7-p2" class="qe-bullet">• Examples: Organic waste (biodegradable) vs. Plastics and metals (non-biodegradable).</div>
+              <div id="qx7-p3" class="qe-bullet">• Environmental Impact: Accumulation leads to pollution and food chain disruption.</div>
+              <div id="qx7-p4" class="qe-bullet">• Management Strategy: The Three R's—Reduce, Reuse, and Recycle.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":3309084725,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing organic waste turning into dark soil on the left, and a plastic bottle remaining unchanged while surrounded by accumulating debris on the right.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A split-screen 3D animation showing organic waste turning into dark soil on the left, and a plastic bottle remaining unchanged while surrounded by accumulating debris on the right.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Impact of Human Activities on the Environment: Pollution and Resource Depletion -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Impact of Human Activities on the Environment: Pollution and Resource Depletion</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Pollution: Introduction of harmful substances called pollutants into the environment.</div>
+              <div id="qx8-p1" class="qe-bullet">• Air Pollution: Caused by fossil fuel combustion, releasing CO2, SO2, and NOx.</div>
+              <div id="qx8-p2" class="qe-bullet">• Water Pollution: Caused by sewage, pesticides, and industrial effluents.</div>
+              <div id="qx8-p3" class="qe-bullet">• Soil Pollution: Result of excessive chemical fertilizers and pesticide use.</div>
+              <div id="qx8-p4" class="qe-bullet">• Resource Depletion: Over-exploitation of water, minerals, and forests beyond regeneration.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":944932394,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a lush, balanced forest on the left transitioning into a grey, industrial landscape with smog, polluted rivers, and deforested hills on the right.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation showing a lush, balanced forest on the left transitioning into a grey, industrial landscape with smog, polluted rivers, and deforested hills on the right.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Activity Analysis: Interpreting NCERT Lab Activities and Observations -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Activity Analysis: Interpreting NCERT Lab Activities and Observations</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Biodegradable vs Non-biodegradable: Observing decomposition via microbial action</div>
+              <div id="qx9-p1" class="qe-bullet">• Energy Flow Data: Interpreting the 10% Law through quantitative decreases</div>
+              <div id="qx9-p2" class="qe-bullet">• Biological Magnification: Observing chemical concentration increase up the food chain</div>
+              <div id="qx9-p3" class="qe-bullet">• Ozone Depletion Trends: Interpreting atmospheric data and chemical impacts</div>
+              <div id="qx9-p4" class="qe-bullet">• Three-Step Analysis: Identify variables, describe changes, and provide reasons</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3334066432,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a decaying compost pile on the left and intact plastic waste on the right, transitioning into a data graph showing increasing chemical levels in a food chain.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation showing a decaying compost pile on the left and intact plastic waste on the right, transitioning into a data graph showing increasing chemical levels in a food chain.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Clarifying Misconceptions and Solving Word Problems -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Clarifying Misconceptions and Solving Word Problems</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• 10% Law: Energy decreases at each transfer; count steps carefully.</div>
+              <div id="qx10-p1" class="qe-bullet">• Biological Magnification: Concentration increases at higher trophic levels.</div>
+              <div id="qx10-p2" class="qe-bullet">• Biodegradable: Requires microbial action to break down.</div>
+              <div id="qx10-p3" class="qe-bullet">• Ozone Depletion: UV rays trigger chlorine to catalyze ozone breakdown.</div>
+              <div id="qx10-p4" class="qe-bullet">• Food Webs: Changes in one species create ripple effects across the web.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":784719841,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a correct energy pyramid calculation, the other shows a chemical accumulation animation in a food chain.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation: one side shows a correct energy pyramid calculation, the other shows a chemical accumulation animation in a food chain.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: High-Yield Questions, Diagram Practice, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: High-Yield Questions, Diagram Practice, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• High-Yield: 10% Law calculations and Biological Magnification concepts</div>
+              <div id="qx11-p1" class="qe-bullet">• Diagram Practice: Labeled Food Chains and energy flow arrows</div>
+              <div id="qx11-p2" class="qe-bullet">• Key Concept: Difference between Biodegradable and Non-biodegradable waste</div>
+              <div id="qx11-p3" class="qe-bullet">• Ozone Layer: Impact of CFCs and chemical depletion processes</div>
+              <div id="qx11-p4" class="qe-bullet">• Quick Recap: Energy flow, Decomposers, and Ecosystem balance</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":6467333,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a student solving a math problem on one side and a glowing, interconnected food web on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a student solving a math problem on one side and a glowing, interconnected food web on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Our Environment today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Why Ecosystems Matter and the Interconnectedness of Life <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Ecosystem Components: Biotic and Abiotic Factors with Diagrammatic Representation <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Food Chains and Food Webs: Energy Flow and Trophic Levels <small>10:00</small></button>
+          <button type="button" data-seek="900">4. The 10% Law: Quantitative Analysis of Energy Transfer and Mathematical Examples <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Biological Magnification: Accumulation of Harmful Chemicals in Food Chains <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Decomposers: The Role of Saprotrophs in Nutrient Cycling and Ecosystem Balance <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Environmental Problems: Ozone Layer Depletion, Causes, and Chemical Reactions <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Waste Management: Biodegradable vs. Non-biodegradable Substances <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Impact of Human Activities on the Environment: Pollution and Resource Depletion <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Activity Analysis: Interpreting NCERT Lab Activities and Observations <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Clarifying Misconceptions and Solving Word Problems <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: High-Yield Questions, Diagram Practice, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our first session on the chapter 'Our Environment'. Before we dive into the technical definitions and complex cycles, let us take a moment to look around us. Look at a garden, a forest, or even a small pond in your neighborhood. What do you see? You see plants, insects, birds, tiny microbes, the soil, the sunlight, and the air. None of these things exist in isolation. Everything you see is part of a grand, intricate, and beautifully organized system. This system is what we call an ecosystem. Now, you might ask, 'Why should we care about ecosystems? Why do they matter?' The answer is simple: because we are part of them. Every breath you take, every drop of water you drink, and every morsel of food you eat is a gift from the ecosystem. An ecosystem is not just a collection of living things; it is a functional unit where living organisms interact among themselves and with their non-living surroundings. Think of it like a giant, living machine where every part, no matter how small, has a specific job to do. If one part fails, the whole machine can stumble. This brings us to the most fundamental concept of this chapter: the interconnectedness of life. In nature, there is no such thing as a 'lonely' organism. A tree is not just a tree; it is a home for birds, a source of oxygen for humans, a provider of shade, and a base for soil microbes. The sunlight provides energy to the tree, the tree converts that energy into food, and that food eventually reaches us. This flow of energy and the cycling of materials create a delicate balance. When we talk about 'the environment,' we aren't just talking about the scenery outside; we are talking about the complex web of relationships that sustains life on Earth. In this chapter, we will explore how energy moves from the sun to the smallest bacteria, how chemicals move through food chains, and most importantly, how human activities are currently disrupting these vital connections. Understanding ecosystems is the first step toward understanding how we can protect our planet. As we move forward in this series, we will break down these systems into their components, study how energy is lost at every step, and look at the serious challenges like ozone depletion and waste management. But for today, I want you to carry one thought with you: everything in nature is connected. From the largest blue whale in the ocean to the tiniest bacteria in the soil, every organism plays a role in the magnificent dance of life. Let us begin our journey into the heart of our environment.","Welcome back. In our previous session, we established that an ecosystem is a functional unit where living organisms interact with their surroundings. Now, let us dive deeper into the actual building blocks of any ecosystem. To understand how nature works, we must categorize everything in an environment into two fundamental groups: Biotic factors and Abiotic factors. Think of an ecosystem as a grand play on a stage. The actors performing the scenes are the biotic components, while the stage, the lights, the props, and the weather are the abiotic components. Let us start with the Abiotic factors. The word 'abiotic' comes from the Greek word 'a', meaning without, and 'bios', meaning life. These are the non-living physical and chemical elements of an ecosystem. They determine which kind of life can exist in a particular area. For instance, a desert has very different abiotic factors compared to a tropical rainforest. Key abiotic factors include sunlight, which is the primary energy source; temperature, which influences metabolic rates; water and humidity; soil composition; and gases like oxygen, carbon dioxide, and nitrogen. Without these non-living elements, life simply cannot be sustained. Now, let us turn our attention to the Biotic factors. These are the living components of the ecosystem. This includes everything from the tiniest bacteria to the largest blue whale. However, in science, we don't just group all living things together; we categorize them based on how they obtain their energy and how they interact with the flow of nutrients. We divide biotic components into three main functional groups. The first group is the Producers, also known as Autotrophs. These are organisms, primarily green plants and certain algae, that can synthesize their own food using sunlight, water, and carbon dioxide through the process of photosynthesis. They are the foundation of every ecosystem because they bring energy into the living world. The second group is the Consumers, or Heterotrophs. These organisms cannot make their own food and must rely on producers or other animals for energy. We further classify consumers into levels. Primary consumers are herbivores, like a deer or a grasshopper, that eat plants directly. Secondary consumers are carnivores that eat herbivores, such as a frog eating a grasshopper. Tertiary consumers are top predators, like a lion or an eagle, that eat other carnivores. Finally, we have the third crucial group: the Decomposers, or Saprotrophs. These include fungi and bacteria. Their role is vital because they break down dead organic matter from both plants and animals, returning essential nutrients back into the soil. This completes the cycle. Now, let us visualize this. Imagine a central diagram. In the middle, we have a lush green forest. On one side, we see the Abiotic elements: the sun shining down, clouds providing rain, and the soil beneath the trees. On the other side, we see the Biotic elements: the trees acting as producers, a rabbit eating the grass as a primary consumer, a fox hunting the rabbit as a secondary consumer, and tiny mushrooms on a fallen log acting as decomposers. Notice the arrows in your mind. The sun provides energy to the plants; the plants provide food to the rabbit; the rabbit provides food to the fox; and when the fox dies, the decomposers break it down, sending nutrients back into the abiotic soil. This continuous loop of interaction between the living and the non-living is what makes an ecosystem a stable, self-sustaining unit. Understanding this division is essential because if you change one abiotic factor, like increasing the temperature, it will immediately impact the biotic factors, like the survival of certain plant species. This interconnectedness is the heart of environmental science.","Welcome back. In our previous lesson, we looked at how biotic and abiotic factors interact to form an ecosystem. Now, let's dive into the heart of how these living organisms actually interact to survive. How does energy move from a blade of grass to a hungry lion? This movement happens through feeding relationships. Let's start with the simplest concept: the Food Chain. A food chain is a linear sequence of organisms where each organism eats the one below it and is, in turn, eaten by the one above it. Imagine a small field. It starts with green plants, which we call producers. These plants capture solar energy to make food. Next, a grasshopper comes along and eats the grass. The grasshopper is a primary consumer. Then, a frog eats the grasshopper, making the frog a secondary consumer. Finally, a snake eats the frog, and a hawk might eat the snake. This sequence—Producer, Primary Consumer, Secondary Consumer, and Tertiary Consumer—is what we call a Food Chain. But wait, is nature really that simple and linear? In a real ecosystem, a frog doesn't just eat grasshoppers; it might eat flies or beetles too. And a hawk doesn't just eat snakes; it might eat mice or small birds. When we connect many different food chains together through these overlapping feeding relationships, we create a complex, web-like structure called a Food Web. A food web is much more stable than a single food chain because if one species disappears, the consumers have alternative food sources. Now, let's talk about the organization of these organisms. We categorize them into levels called Trophic Levels. The term 'trophic' comes from the Greek word for nourishment. The first trophic level is always occupied by producers, like plants and algae. The second level consists of herbivores or primary consumers. The third level consists of carnivores or secondary consumers, and the fourth level consists of top carnivores. It is important to remember that energy flows in only one direction: from the sun to producers, and then up through the various trophic levels. This is known as unidirectional energy flow. Energy cannot flow backwards from a lion to a plant. As we move from one trophic level to the next, the amount of available energy decreases significantly. This brings us to a crucial concept that we will calculate in detail in our next video. In every step of the food chain, most of the energy is lost as heat to the environment or used by the organism for its own life processes like digestion, growth, and movement. Only a tiny fraction is stored as biomass to be passed to the next level. This concept explains why food chains are usually limited to only three or four levels; eventually, there simply isn't enough energy left to support another level of consumers. So, to recap: a food chain is a single path of energy, a food web is a network of interconnected chains, and trophic levels are the functional steps in these pathways. Understanding this flow is essential to understanding how life is sustained on Earth.","Welcome back. In our previous segment, we explored how food chains connect different organisms through trophic levels. But have you ever wondered why food chains are rarely longer than four or five steps? Why don't we see massive predators that eat other massive predators in a never-ending chain? The answer lies in a fundamental principle of ecology known as the Ten Percent Law. This law was proposed by the scientist Raymond Lindeman. It explains the quantitative aspect of energy flow within an ecosystem. Let's look at the core concept. When energy flows from one trophic level to the next, only about ten percent of the energy stored in one level is transferred to the next level. This means that ninety percent of the energy is lost during the transfer. But where does this ninety percent go? It isn't simply destroyed, because energy cannot be destroyed. Instead, most of it is used by the organism for its own life processes. Think about what an organism does to stay alive: it breathes, it moves, it grows, and it repairs cells. These are metabolic activities. During these processes, energy is converted into heat and dissipated into the environment. Additionally, some energy is lost as undigested food or waste products. Because of this massive loss at every step, the amount of available energy decreases drastically as we move up the food chain. This is why the number of organisms and the total biomass usually decrease at higher trophic levels. Let's look at a mathematical example to make this crystal clear. Imagine a simple grassland ecosystem. We start with the primary producers, which are the green plants. Suppose these plants capture one thousand Joules of solar energy through photosynthesis. Now, a primary consumer, like a grasshopper, eats these plants. According to the Ten Percent Law, the grasshopper will only receive ten percent of that one thousand Joules. So, the grasshopper gets one hundred Joules. Next, let's introduce a secondary consumer, like a frog, that eats the grasshopper. The frog will receive ten percent of the energy available in the grasshopper. Ten percent of one hundred Joules is ten Joules. Finally, let's look at a tertiary consumer, like a snake, that eats the frog. The snake will receive ten percent of ten Joules, which is just one Joule. Look at the progression: one thousand, then one hundred, then ten, and finally just one. By the time we reach the fourth level, the energy is extremely limited. This mathematical decline is the reason why top predators, like lions or eagles, are fewer in number and require much larger territories to find enough food to sustain their energy needs. If the energy transfer were one hundred percent efficient, food chains could be infinitely long. But because of this ninety percent loss at every single step, the energy pyramid narrows sharply at the top. This concept is crucial for understanding ecosystem stability and why protecting the base of the food chain, the producers, is so vital for all life on Earth. In the next part, we will discuss what happens when this energy flow is disrupted by harmful chemicals through a process called biological magnification.","Welcome back. In our previous lesson, we discussed the ten percent law and how energy decreases as we move up the trophic levels. But what happens when we talk about substances that do not disappear? What happens when we introduce harmful chemicals into an ecosystem? This brings us to a very critical concept called Biological Magnification. Now, let's imagine a scenario. Suppose a farmer uses a chemical pesticide to protect his crops from insects. These pesticides, like DDT, are non-biodegradable. This means that once they enter the soil or water, microorganisms cannot break them down. They stay in the environment for a very long time. When it rains, these chemicals wash into nearby water bodies. Now, let's follow the journey of these chemicals through a food chain. First, tiny organisms like plankton in the water absorb these chemicals from the environment. Because the chemicals are non-biodegradable, they cannot be excreted or metabolized by the plankton. So, the chemicals stay inside their bodies. Next, small fish come along and eat a large number of these plankton. Each fish is now accumulating the chemicals from every single plankton it has consumed. The concentration of the chemical in the fish is now higher than it was in the plankton. Following this, larger fish eat many of these small fish. The concentration keeps increasing. Finally, we reach the top of the food chain, such as a fish-eating bird or even a human being. By the time the chemical reaches the top consumer, its concentration has increased tremendously. This phenomenon, where the concentration of harmful, non-biodegradable chemicals increases at every successive trophic level, is known as Biological Magnification. It is important to note that while energy decreases as we move up the food chain, these harmful chemicals do the exact opposite—their concentration increases. This is why top predators, including humans, are often the most at risk from chemical pollution. Even if the amount of pesticide in the water seems tiny and harmless, the cumulative effect through the food chain can lead to toxic levels in the bodies of top consumers. This is a serious environmental concern that highlights how our use of chemicals can have unintended, far-reaching consequences on the entire biological community.","Welcome back. In our previous segment, we explored how energy moves through food chains and how harmful chemicals can accumulate through biological magnification. But have you ever wondered what happens to the dead organisms once they leave the food chain? If every fallen leaf, every dead animal, and every piece of organic waste just stayed where it fell, the Earth would quickly become buried under layers of debris, and more importantly, life would grind to a halt. This brings us to one of the most vital, yet often invisible, components of our ecosystem: the Decomposers. Decomposers are organisms that break down the complex organic matter from dead plants and animals into simpler, inorganic substances. You might have heard them referred to as saprotrophs. These include a vast array of organisms, most notably bacteria and fungi. Think of them as the Earth's natural recycling crew. Their process is quite fascinating. When an organism dies, decomposers secrete digestive enzymes onto the organic matter. These enzymes break down complex molecules like proteins, carbohydrates, and fats into much simpler forms like minerals, nitrogen, and carbon dioxide. Once these substances are simplified, they are released back into the soil, water, or air. This is the essence of nutrient cycling. Let's look at the cycle: Producers take inorganic nutrients from the soil to build their bodies. Consumers eat these producers. When both producers and consumers die, decomposers step in. They break down the remains and return those same inorganic nutrients back to the soil. This ensures that the soil remains fertile and that producers can start the cycle all over again. Without this continuous loop, the essential nutrients like nitrogen, phosphorus, and potassium would remain locked up in dead bodies, unavailable to the living. This process is what maintains the ecosystem balance. It prevents the accumulation of organic waste and ensures the sustainability of life. In a healthy ecosystem, the rate of decomposition is balanced with the rate of production. However, it is important to note that decomposers are highly sensitive to environmental changes. Factors like temperature, moisture, and oxygen levels significantly affect how quickly they can work. For instance, in very cold or extremely dry environments, decomposition slows down significantly, which is why organic matter can be preserved for thousands of years in glaciers or deserts. In your exams, remember that decomposers occupy a unique position. While we often place them at the end of a food chain, they are actually connected to every single trophic level because they process waste from every level. They are the bridge between the biotic and abiotic components of the ecosystem. To summarize this part: Decomposers, like bacteria and fungi, break down dead organic matter into simple inorganic nutrients. This process, known as decomposition, facilitates nutrient cycling, allowing life to persist by recycling essential elements back into the environment. They are the ultimate cleaners and recyclers of our planet.","Welcome back. In our previous segment, we discussed how harmful chemicals accumulate through biological magnification. Today, we shift our focus to a specific, critical environmental crisis: the depletion of the Ozone layer. To understand this, we first need to understand what ozone is. While oxygen, which we breathe, is a diatomic molecule represented as O-two, ozone is a triatomic molecule represented as O-three. It is a highly reactive gas found primarily in the stratosphere, which is a layer of the Earth's atmosphere located about fifteen to thirty-five kilometers above the surface. The ozone layer acts as a protective shield for our planet. It absorbs the majority of the harmful ultraviolet radiation, specifically UV-B rays, emitted by the sun. Without this shield, these high-energy rays would reach the Earth's surface, causing severe biological damage such as skin cancer, cataracts in humans, and damage to the immune systems of various organisms, as well as disrupting the growth of phytoplankton in our oceans. So, why is this protective layer thinning? The primary culprits are man-made chemicals known as Chlorofluorocarbons, or C-F-Cs. These were widely used in the twentieth century in refrigerators, air conditioners, and aerosol spray cans because they are non-toxic and stable at ground level. However, their stability becomes a problem when they drift up into the stratosphere. Once C-F-Cs reach the upper atmosphere, they are broken down by intense solar ultraviolet radiation. This process, called photodissociation, releases highly reactive chlorine atoms. Now, let's look at the chemistry behind the destruction. When a chlorine atom is released, it reacts with an ozone molecule. The chemical reaction can be described as follows: one chlorine atom plus one ozone molecule yields one chlorine monoxide molecule and one molecule of regular oxygen. In chemical notation, we write this as: Cl plus O-three yields Cl-O plus O-two. Here is the most dangerous part: the chlorine monoxide molecule is also unstable. It can react with a free oxygen atom to release the chlorine atom back into the atmosphere. The reaction is: Cl-O plus O yields Cl plus O-two. Notice what happened? The chlorine atom was used in the first reaction, but it is regenerated in the second reaction. This means a single chlorine atom acts as a catalyst. It is not consumed in the reaction; instead, it can go on to destroy thousands more ozone molecules in a repetitive cycle. This catalytic cycle is why even small amounts of C-F-Cs can cause massive damage to the ozone layer. This depletion is not uniform; it is most significant over the polar regions, particularly Antarctica, leading to what we commonly call the ozone hole. Recognizing this threat led to international cooperation, such as the Montreal Protocol, which aimed to phase out the production of ozone-depleting substances. Understanding this chemical mechanism is vital for your exams, as you may be asked to explain the role of C-F-Cs or write the chemical equations involved in ozone destruction.","Welcome back. In our previous section, we discussed how decomposers play a vital role in nutrient cycling. But what happens when the waste produced by humans cannot be broken down by these very decomposers? This brings us to a critical distinction in environmental science: the difference between biodegradable and non-biodegradable substances. Let us start by defining biodegradable substances. These are materials that can be broken down into simpler, non-toxic substances by the action of biological agents like bacteria, fungi, and other microorganisms. Think about the organic waste you find in your kitchen—vegetable peels, fruit scraps, leftover food, or even paper. When these are disposed of in a compost pit, microorganisms secrete enzymes that decompose these complex organic molecules into simpler nutrients like carbon dioxide, water, and minerals. This process is natural, cyclical, and essential for maintaining soil fertility. However, there is a catch. If we produce biodegradable waste at a rate much higher than the decomposers can process it, it leads to massive piles of garbage, which can cause foul smells and become breeding grounds for pathogens. Now, let us look at the opposite category: non-biodegradable substances. These are materials that cannot be broken down, or are broken down only very slowly, by biological processes. Why does this happen? It is because these substances often have chemical structures that microorganisms do not possess the enzymes to attack. The most common examples are plastics, glass, metals, and certain synthetic chemicals like DDT. Unlike organic waste, these substances persist in the environment for hundreds or even thousands of years. They do not disappear; they simply accumulate. This accumulation leads to several environmental crises. First, they clog drainage systems, leading to urban flooding. Second, they pollute our soil and water bodies. When plastic enters the ocean, it doesn't vanish; it breaks down into tiny particles called microplastics, which are then ingested by marine life. This is a direct link to our previous discussion on biological magnification, where these non-biodegradable toxins enter the food chain. To manage this growing crisis, we follow the principle of the three R's: Reduce, Reuse, and Recycle. Reducing means minimizing the amount of waste we generate in the first place—for example, avoiding single-use plastics. Reusing means finding new ways to use items instead of throwing them away, like using an old glass jar for storage. Recycling involves processing waste materials into new products, such as turning old newspapers into recycled paper or melting down scrap metal to make new tools. Effective waste management is not just about cleaning up; it is about changing our consumption patterns to ensure that the balance of our ecosystem is not disrupted by the substances we leave behind. Remember, while nature can handle organic waste through decomposition, it cannot handle the sheer volume of synthetic materials we produce. Understanding this distinction is the first step toward becoming responsible citizens of the planet.","Welcome back. We have already discussed how energy flows and how chemicals accumulate through biological magnification. Now, we must address the core reason why these natural balances are being disrupted: human activities. While ecosystems are designed to be self-sustaining through nutrient cycling, human intervention has introduced elements that the system cannot process. This brings us to the critical issue of pollution and resource depletion. Let us first define pollution. Pollution is the introduction of harmful substances, known as pollutants, into the environment. These pollutants can be natural, like volcanic ash, or man-made, like industrial chemicals. We categorize pollution based on the medium it affects: air, water, soil, and noise. Air pollution is primarily driven by the combustion of fossil fuels in vehicles and factories, releasing carbon monoxide, sulfur dioxide, and nitrogen oxides. This doesn't just affect breathing; it contributes to the greenhouse effect and acid rain. Water pollution occurs when untreated sewage, agricultural runoff containing pesticides, and industrial effluents are discharged into water bodies. This leads to eutrophication, where excess nutrients cause algal blooms, depleting oxygen and killing aquatic life. Soil pollution is often a direct consequence of the excessive use of chemical fertilizers and pesticides in modern agriculture. While these increase crop yield, they destroy the soil's natural fertility and kill beneficial microorganisms, essentially turning living soil into a mere substrate. Now, let's look at the other side of the coin: resource depletion. Every ecosystem relies on specific resources—water, minerals, forests, and fossil fuels. In a natural cycle, these are replenished. However, human demand has shifted from sustainable use to over-exploitation. We are consuming resources much faster than the Earth can regenerate them. For example, the rapid deforestation to make way for urban expansion and agriculture leads to habitat loss and disrupts the local water cycle. When we deplete forests, we lose the 'carbon sinks' that help regulate our atmosphere. Similarly, the over-extraction of groundwater for irrigation is leading to a massive drop in water tables globally. This creates a vicious cycle: as resources become scarce, we often turn to even more intensive, chemical-heavy methods to extract or produce them, which in turn increases pollution. It is important to understand that pollution and resource depletion are not isolated problems; they are deeply interconnected. For instance, mining for minerals depletes a non-renewable resource and simultaneously causes massive soil and water pollution through tailings and runoff. As students of science, it is vital to recognize that the 'carrying capacity' of our environment—the maximum population size an ecosystem can support without being degraded—is being pushed to its limit. Our goal in studying this is not just to identify the damage, but to understand the mechanisms of disruption so that we can move toward sustainable development. In our next segment, we will look at how we can observe these impacts through specific lab activities and real-world data.","Welcome back. We have covered the theoretical framework of our environment, but in the science examination, your ability to interpret observations is just as critical as knowing the definitions. Today, we are going to dissect the core activities presented in your NCERT textbook to ensure you can handle any data-based or observation-based question. Let us start with the most fundamental concept: the distinction between biodegradable and non-biodegradable substances through observation. Imagine a controlled experiment where we take two different containers. In Container A, we place organic waste like vegetable peels, fruit scraps, and leftover cooked food. In Container B, we place inorganic waste such as plastic bags, glass pieces, and metal scraps. We add a little moisture and leave them in a warm environment for a few weeks. What do you observe? In Container A, you will notice a change in texture, a change in color, and eventually, the material disappears or turns into a dark, earthy substance called compost. This is because microorganisms like bacteria and fungi are actively breaking down the complex organic molecules. However, in Container B, the plastic and glass remain exactly as they were. They do not change shape, size, or composition. This observation is the direct evidence of biodegradability. If an exam question asks you to 'predict the outcome' of such an experiment, your answer must focus on the role of decomposers in Container A and the lack of microbial action in Container B. Next, let us look at the observation of energy flow, which is often represented through data tables in your exams. Suppose you are given a table showing the energy available at different trophic levels. For example, if the producers have ten thousand joules of energy, and the primary consumers have one thousand joules, you must be able to interpret this drop. The observation here is a quantitative decrease. This isn't just a random number; it is the physical manifestation of the Ten Percent Law. When you see data where energy decreases by a factor of ten at each step, you are observing the loss of energy as heat during metabolic processes. Now, let us move to a more complex observation: the impact of chemical pollutants, which relates to Biological Magnification. Imagine a lab setup where we monitor a pond ecosystem. We introduce a small amount of a non-biodegradable pesticide, like DDT, into the water. If we observe the concentration of DDT in the water, it might be very low, say zero point zero zero zero zero zero one parts per million. But if we observe the concentration in the plankton, then the small fish, and finally the large fish, we see a dramatic increase. The observation is that the concentration of the chemical increases as we move up the food chain. This is a crucial distinction: while energy decreases as we go up, the concentration of harmful chemicals increases. This is a common trap in board exams. Finally, let us discuss the observation of Ozone layer depletion. While this is often a theoretical concept, lab-based questions might ask you to interpret a graph showing the concentration of ozone in the stratosphere over several decades. If the graph shows a downward trend, especially in the polar regions, you must interpret this as the result of chemical reactions involving chlorofluorocarbons, or C-F-Cs. The observation of a 'hole' or a thinning layer is the direct result of chlorine atoms breaking down ozone molecules. Remember, when interpreting any activity, always follow this three-step method: first, identify the variables being changed; second, describe the physical change observed; and third, provide the scientific reason behind that change. Master this, and you will never lose marks on activity-based questions.","Welcome back. We have covered the core concepts of our environment, but before we move to our final exam masterclass, we need to address the areas where most students lose marks. Often, it is not a lack of knowledge, but a misunderstanding of how these concepts apply in real-world scenarios or word problems. Let us start with the most common misconception regarding the 10 percent law. Many students believe that energy is lost only because organisms use it for movement or breathing. While true, you must remember that energy is lost at every single trophic level due to metabolic heat and unretained energy. When solving a word problem, always identify the starting energy level first. If a question says, 'If producers have 10,000 Joules of energy, how much is available to the tertiary consumer?', do not jump straight to the answer. You must count the steps. Step one: Producers to Primary Consumers is 1,000 Joules. Step two: Primary to Secondary is 100 Joules. Step three: Secondary to Tertiary is 10 Joules. A common mistake is miscounting the number of transfers. Always remember: the number of transfers is one less than the number of trophic levels mentioned. Next, let us clear up a confusion regarding Biological Magnification. Students often think that because a chemical like DDT is present in small amounts in water, it won't affect the top predator. This is incorrect. You must understand that while the concentration in the environment is low, the concentration in the organism increases because the chemical is non-biodegradable and cannot be excreted. In exam questions, if you are asked why humans have the highest concentration of toxins, your answer must mention two things: first, that humans occupy the highest trophic level, and second, that the substance is non-biodegradable and accumulates through the food chain. Another pitfall involves the distinction between biodegradable and non-biodegradable waste. Some students think that if something 'disappears' from sight, it is biodegradable. This is a trap. For example, certain plastics might break into tiny microplastics. They are still non-biodegradable because they are not broken down by biological processes like enzymes from decomposers. When writing your answers, use the term 'microbial action' to explain biodegradation. Now, let us look at a mathematical word problem involving the Ozone layer. You might see a question asking about the impact of CFCs. Remember, the chemical reaction is not just 'CFCs destroy ozone.' To get full marks, you must explain that UV radiation breaks down CFCs to release chlorine atoms, and these chlorine atoms act as catalysts to break down ozone molecules into oxygen. Finally, regarding food webs, do not mistake a food web for a simple food chain. A food web is a network of interconnected food chains. If a question asks, 'What happens if a specific population in a food web decreases?', do not just say 'the animals will die.' Instead, explain the ripple effect: it might lead to an increase in the population of their prey and a decrease in the population of their predators, potentially destabilizing the entire ecosystem. Mastering these nuances will ensure you don't just know the chapter, but you can apply it perfectly in your board exams.","Welcome to our final session on 'Our Environment'. We have journeyed through the complex web of life, and now it is time to sharpen your tools for the examination. Let's start with our Exam Masterclass. In your board exams, questions often focus on the distinction between biodegradable and non-biodegradable waste. Remember, the key difference lies in whether microorganisms can break them down. Another high-yield topic is the 10 percent law. You might be asked to calculate energy at a specific trophic level. For example, if producers have one thousand joules of energy, the primary consumers will have only one hundred joules, and the secondary consumers will have only ten joules. Always show your steps in these mathematical problems. Next, pay close attention to Biological Magnification. A common question asks why humans, being at the top of the food chain, accumulate the highest concentration of harmful chemicals. The answer is simple: these chemicals are non-biodegradable and accumulate at every successive trophic level. Now, let's move to Diagram Practice. You must be able to draw a clear, labeled Food Chain. Start with a producer, like grass, then a primary consumer, like a deer, followed by a secondary consumer, like a lion. Do not forget to include arrows; these arrows are crucial because they represent the direction of energy flow. You should also practice drawing a simple flow chart of the Ozone layer formation and depletion process, showing how chlorofluorocarbons, or C-F-Cs, react with ozone molecules. Now, let's do a rapid-fire Full Chapter Recap to cement your learning. We began by defining an Ecosystem as a functional unit where biotic and abiotic components interact. We learned that energy flows unidirectionally through food chains and food webs. We identified decomposers as the essential recyclers that return nutrients to the soil. We discussed the alarming depletion of the Ozone layer caused by human-made chemicals and the critical need for proper waste management to prevent environmental degradation. We also addressed how human activities disrupt the delicate balance of nature. As we conclude this chapter, remember that understanding the environment is not just about passing an exam; it is about understanding our responsibility toward the planet. Review your NCERT activities one last time, especially the observations on waste disposal. You are now fully prepared. Good luck with your studies!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c10-science-13-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

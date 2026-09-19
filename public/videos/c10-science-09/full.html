@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Light: Reflection and Refraction, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c10-science-09-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Physics of Sight and Why Why Light Matters -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Physics of Sight and Why Why Light Matters</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Light is a form of energy that enables vision.</div>
+              <div id="qx0-p1" class="qe-bullet">• Light travels in straight lines (Rectilinear Propagation).</div>
+              <div id="qx0-p2" class="qe-bullet">• Reflection: Light bouncing off a surface.</div>
+              <div id="qx0-p3" class="qe-bullet">• Refraction: Light bending when changing media.</div>
+              <div id="qx0-p4" class="qe-bullet">• Understanding light helps us master optics and vision.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":4215360399,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">A cinematic transition from a pitch-black room to a vibrant, sunlit landscape, showing light rays traveling in straight lines toward a human eye.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A cinematic transition from a pitch-black room to a vibrant, sunlit landscape, showing light rays traveling in straight lines toward a human eye.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Reflection of Light: Laws, Plane Mirrors, and Image Formation -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Reflection of Light: Laws, Plane Mirrors, and Image Formation</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Reflection: Bouncing back of light into the same medium</div>
+              <div id="qx1-p1" class="qe-bullet">• Law 1: Angle of incidence (i) is equal to angle of reflection (r)</div>
+              <div id="qx1-p2" class="qe-bullet">• Law 2: Incident ray, reflected ray, and normal lie in the same plane</div>
+              <div id="qx1-p3" class="qe-bullet">• Plane Mirror: Virtual, erect, same size, and laterally inverted</div>
+              <div id="qx1-p4" class="qe-bullet">• Lateral Inversion: Left side of object appears as right side of image</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":4125058635,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a single light ray hitting a mirror, with a glowing normal line appearing to demonstrate the equality of angles i and r.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D animation showing a single light ray hitting a mirror, with a glowing normal line appearing to demonstrate the equality of angles i and r.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Spherical Mirrors: Concave and Convex Geometry and Ray Diagrams -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Spherical Mirrors: Concave and Convex Geometry and Ray Diagrams</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Concave mirrors curve inward; Convex mirrors curve outward</div>
+              <div id="qx2-p1" class="qe-bullet">• Center of Curvature (C) is the center of the original sphere</div>
+              <div id="qx2-p2" class="qe-bullet">• Principal Axis connects the Pole (P) and the Center of Curvature (C)</div>
+              <div id="qx2-p3" class="qe-bullet">• Focal Length (f) is half of the Radius of Curvature (R): f = R divided by 2</div>
+              <div id="qx2-p4" class="qe-bullet">• Three key ray rules: Parallel rays, Focus rays, and Center of Curvature rays</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":980640129,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">A 3D glass sphere splitting into two halves, one silvered internally (concave) and one externally (convex), with labels for P, F, and C appearing as light rays strike them.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D glass sphere splitting into two halves, one silvered internally (concave) and one externally (convex), with labels for P, F, and C appearing as light rays strike them.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Mirror Formula, Magnification, and Sign Convention Mastery -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Mirror Formula, Magnification, and Sign Convention Mastery</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• New Cartesian Sign Convention: Origin is at the Pole</div>
+              <div id="qx3-p1" class="qe-bullet">• Distances in direction of light are positive; against light are negative</div>
+              <div id="qx3-p2" class="qe-bullet">• Mirror Formula: 1/v + 1/u = 1/f</div>
+              <div id="qx3-p3" class="qe-bullet">• Magnification (m) = h'/h = -v/u</div>
+              <div id="qx3-p4" class="qe-bullet">• m is negative for real images; m is positive for virtual images</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3531488941,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system overlaying a concave mirror, showing vectors for u, v, and f with color-coded positive and negative axes.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D coordinate system overlaying a concave mirror, showing vectors for u, v, and f with color-coded positive and negative axes.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Reflection Practice: Worked Examples, Word Problems, and Common Mistakes -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Reflection Practice: Worked Examples, Word Problems, and Common Mistakes</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Step 1: Always apply the Cartesian Sign Convention first.</div>
+              <div id="qx4-p1" class="qe-bullet">• Step 2: Use the Mirror Formula: 1/v + 1/u = 1/f.</div>
+              <div id="qx4-p2" class="qe-bullet">• Step 3: Calculate Magnification: m = -v/u.</div>
+              <div id="qx4-p3" class="qe-bullet">• Common Pitfall: Forgetting that u is always negative.</div>
+              <div id="qx4-p4" class="qe-bullet">• Common Pitfall: Mixing up signs for concave vs convex mirrors.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3947430808,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen showing a mathematical derivation on the left and a real-time ray diagram adjusting as values change on the right.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A split-screen showing a mathematical derivation on the left and a real-time ray diagram adjusting as values change on the right.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Refraction of Light: Concept, Laws, and Refractive Index -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Refraction of Light: Concept, Laws, and Refractive Index</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Refraction: Bending of light due to change in speed between media</div>
+              <div id="qx5-p1" class="qe-bullet">• First Law: Incident ray, refracted ray, and normal lie in the same plane</div>
+              <div id="qx5-p2" class="qe-bullet">• Snell's Law: sine i / sine r = constant (Refractive Index)</div>
+              <div id="qx5-p3" class="qe-bullet">• Absolute Refractive Index: n = speed of light in vacuum / speed in medium</div>
+              <div id="qx5-p4" class="qe-bullet">• Rarer to Denser: Bends towards the normal; Denser to Rarer: Bends away</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":183219034,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a light ray traveling from air into a glass block, illustrating the change in angle and speed using color-coded velocity vectors.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D split-screen showing a light ray traveling from air into a glass block, illustrating the change in angle and speed using color-coded velocity vectors.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Refraction through Glass Slabs and Lateral Displacement -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Refraction through Glass Slabs and Lateral Displacement</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Light bends towards the normal when entering glass from air</div>
+              <div id="qx6-p1" class="qe-bullet">• Light bends away from the normal when exiting glass into air</div>
+              <div id="qx6-p2" class="qe-bullet">• The emergent ray is parallel to the original incident ray</div>
+              <div id="qx6-p3" class="qe-bullet">• Lateral displacement is the perpendicular shift between rays</div>
+              <div id="qx6-p4" class="qe-bullet">• Displacement increases with slab thickness and angle of incidence</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1088645638,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D transparent rectangular glass block showing a laser beam entering, bending towards the normal, traveling through, and exiting parallel to the original path with a highlighted gap.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D transparent rectangular glass block showing a laser beam entering, bending towards the normal, traveling through, and exiting parallel to the original path with a highlighted gap.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Spherical Lenses: Converging and Diverging Lens Theory -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Spherical Lenses: Converging and Diverging Lens Theory</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Lens: Transparent material bounded by two surfaces, one or both being spherical.</div>
+              <div id="qx7-p1" class="qe-bullet">• Optical Center (O): The central point of the lens where light passes without deviation.</div>
+              <div id="qx7-p2" class="qe-bullet">• Convex Lens: Thicker at center; converges parallel rays to a real Principal Focus.</div>
+              <div id="qx7-p3" class="qe-bullet">• Concave Lens: Thinner at center; diverges parallel rays from a virtual Principal Focus.</div>
+              <div id="qx7-p4" class="qe-bullet">• Focal Length (f): The distance between the optical center and the principal focus.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":179780905,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing parallel light rays converging to a point through a convex lens on the left, and diverging away from a point through a concave lens on the right.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D split-screen animation showing parallel light rays converging to a point through a convex lens on the left, and diverging away from a point through a concave lens on the right.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Lens Formula, Magnification, and Sign Convention for Lenses -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Lens Formula, Magnification, and Sign Convention for Lenses</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Sign Convention: Distances left of lens are negative; right are positive</div>
+              <div id="qx8-p1" class="qe-bullet">• Convex Lens: Focal length (f) is positive; Concave Lens: (f) is negative</div>
+              <div id="qx8-p2" class="qe-bullet">• Lens Formula: 1/v - 1/u = 1/f</div>
+              <div id="qx8-p3" class="qe-bullet">• Magnification (m): Height of image / Height of object OR v / u</div>
+              <div id="qx8-p4" class="qe-bullet">• Nature: Negative m = Real/Inverted; Positive m = Virtual/Erect</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":191076353,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate grid overlaying a glass lens, showing vectors for u, v, and f changing color based on sign.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D coordinate grid overlaying a glass lens, showing vectors for u, v, and f changing color based on sign.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Refraction through Lenses: Ray Diagrams and Image Characteristics -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Refraction through Lenses: Ray Diagrams and Image Characteristics</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Three principal rays: Parallel to axis, through optical center, and through focus.</div>
+              <div id="qx9-p1" class="qe-bullet">• Convex Lens: Image changes from diminished to magnified as object approaches focus.</div>
+              <div id="qx9-p2" class="qe-bullet">• The 'Special Case': Object between F and Optical Center creates a virtual, erect image.</div>
+              <div id="qx9-p3" class="qe-bullet">• Concave Lens: Always produces virtual, erect, and diminished images.</div>
+              <div id="qx9-p4" class="qe-bullet">• Image characteristics: Real/Inverted vs. Virtual/Erect depends on ray convergence.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":3898977475,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a convex lens on the left with moving object positions and a concave lens on the right, with glowing light rays tracing the paths in real-time.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation showing a convex lens on the left with moving object positions and a concave lens on the right, with glowing light rays tracing the paths in real-time.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Power of a Lens and Practical Applications in Vision -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Power of a Lens and Practical Applications in Vision</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Power of a lens (P) = 1 / focal length (f) in meters</div>
+              <div id="qx10-p1" class="qe-bullet">• The SI unit of power is the Dioptre (D)</div>
+              <div id="qx10-p2" class="qe-bullet">• Convex lens has positive power; Concave lens has negative power</div>
+              <div id="qx10-p3" class="qe-bullet">• Myopia (nearsightedness) is corrected using a concave lens</div>
+              <div id="qx10-p4" class="qe-bullet">• Hypermetropia (farsightedness) is corrected using a convex lens</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1241007514,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a myopic eye with light focusing in front of the retina versus a corrected eye using a concave lens focusing light perfectly on the retina.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a myopic eye with light focusing in front of the retina versus a corrected eye using a concave lens focusing light perfectly on the retina.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Full Chapter Recap, Diagram Tips, and PYQs -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Full Chapter Recap, Diagram Tips, and PYQs</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Recap: Mirror Formula (1/f = 1/v + 1/u) and Lens Formula (1/f = 1/v - 1/u)</div>
+              <div id="qx11-p1" class="qe-bullet">• Diagram Rule: Use sharp pencils, rulers, and ALWAYS include direction arrows</div>
+              <div id="qx11-p2" class="qe-bullet">• Sign Convention: Follow Cartesian rules for positive and negative distances</div>
+              <div id="qx11-p3" class="qe-bullet">• Magnification: Negative 'm' means real/inverted; Positive 'm' means virtual/erect</div>
+              <div id="qx11-p4" class="qe-bullet">• PYQ Tip: Master refractive index and power of combination calculations</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":254112963,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a perfectly drawn ray diagram on the left and a common incorrect diagram with missing arrows on the right, highlighted by red 'X' and green 'Check' marks.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a perfectly drawn ray diagram on the left and a common incorrect diagram with missing arrows on the right, highlighted by red 'X' and green 'Check' marks.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Light: Reflection and Refraction today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Physics of Sight and Why Why Light Matters <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Reflection of Light: Laws, Plane Mirrors, and Image Formation <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Spherical Mirrors: Concave and Convex Geometry and Ray Diagrams <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Mirror Formula, Magnification, and Sign Convention Mastery <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Reflection Practice: Worked Examples, Word Problems, and Common Mistakes <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Refraction of Light: Concept, Laws, and Refractive Index <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Refraction through Glass Slabs and Lateral Displacement <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Spherical Lenses: Converging and Diverging Lens Theory <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Lens Formula, Magnification, and Sign Convention for Lenses <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Refraction through Lenses: Ray Diagrams and Image Characteristics <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Power of a Lens and Practical Applications in Vision <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Full Chapter Recap, Diagram Tips, and PYQs <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone, and welcome to our journey into one of the most beautiful and fundamental chapters of Class 10 Science: Light: Reflection and Refraction. Before we dive into the complex formulas and ray diagrams, let us pause and ask a simple question: How do we perceive the world around us? Think about a bright sunny morning, the vibrant colors of a flower, or even the text in your textbook. Everything you see is possible because of one phenomenon: Light. Without light, our eyes would be useless, and the world would exist in absolute darkness. But what exactly is light? In physics, light is a form of energy that enables us to see. It travels in straight lines, a property we call rectilinear propagation. This simple fact is the foundation of everything we will learn in this chapter. Now, why do we study the physics of light? It is not just to pass an exam; it is to understand the mechanics of vision itself. When light hits an object, it interacts with that object in different ways. Sometimes, it bounces back, which we call reflection. This is how you see your face in a mirror. Other times, it passes through a medium, like water or glass, and changes direction, which we call refraction. This is why a pencil looks broken when you dip it in a glass of water. In this chapter, we are going to master these two behaviors. We will start with reflection, exploring how plane mirrors work and moving into the complex world of spherical mirrors like concave and convex mirrors. We will learn how to calculate exactly where an image will form using the mirror formula, which is written as one over focal length equals one over object distance plus one over image distance. Then, we will shift our focus to refraction, understanding how light bends when it moves from one medium to another, such as from air to glass. We will study lenses, how they focus light, and how they are used to correct human vision. By the end of these twelve lessons, you will not just be solving numerical problems; you will be able to look at a pair of spectacles or a camera lens and understand the precise physics happening inside them. Light is the bridge between the physical world and our perception of it. So, let us begin our exploration by looking at the very first principle: how light behaves when it encounters a surface. Get ready to see the world in a whole new light.","Welcome back to our journey through the world of light. In our previous session, we explored why light is essential for sight. Now, we dive into the first major phenomenon: Reflection. Imagine a ball bouncing off a wall. Light behaves in a very similar, predictable way when it hits a surface. Reflection is defined as the phenomenon of bouncing back of light rays into the same medium after striking a polished surface, like a mirror. To understand this scientifically, we must look at the geometry of a single ray. When a ray of light strikes a surface, we call the incoming ray the 'incident ray'. The point where it hits the surface is the 'point of incidence'. The ray that bounces back is the 'reflected ray'. Now, to describe the direction of these rays, we draw an imaginary line perpendicular to the surface at the point of incidence. This line is called the 'normal'. The angle between the incident ray and the normal is the 'angle of incidence', denoted as 'i'. Similarly, the angle between the reflected ray and the normal is the 'angle of reflection', denoted as 'r'. The laws of reflection are absolute and apply to all types of reflecting surfaces, whether they are smooth or rough. The first law states that the angle of incidence is always equal to the angle of reflection. In mathematical terms, we write this as 'i' equals 'r'. The second law is about the geometry of the rays: the incident ray, the reflected ray, and the normal at the point of incidence, all lie in the same plane. This means if you place a sheet of paper against these rays, they will all sit flat on that paper. Let us now apply these laws to the most common mirror you see every day: the plane mirror. When you look into a plane mirror, the image you see has very specific characteristics. First, the image is virtual. This means the light rays do not actually meet at a point; they only appear to diverge from a point behind the mirror. You cannot capture a virtual image on a screen. Second, the image is erect, meaning it is upright and not upside down. Third, the image is of the same size as the object. If you are ten centimeters tall, your image is ten centimeters tall. Fourth, the image is laterally inverted. This is a crucial concept. Lateral inversion means that the left side of the object appears as the right side of the image, and vice versa. This is why the word 'AMBULANCE' is written backwards on vehicles; so that when drivers look in their rearview mirrors, they can read it correctly. Finally, the distance of the object from the mirror is exactly equal to the distance of the image from the mirror behind it. If you stand two meters in front of a plane mirror, your image appears to be two meters behind the mirror. This symmetry is a direct result of the laws of reflection. Understanding these basics is vital because they form the foundation for understanding more complex spherical mirrors, which we will cover in our next lesson.","Welcome back. In our previous lesson, we explored the fundamental laws of reflection using plane mirrors. But what happens when the reflecting surface is not flat, but curved? This brings us to the fascinating world of spherical mirrors. Imagine taking a hollow glass sphere and coating its inner or outer surface with a thin layer of silver or aluminum. This is how we create spherical mirrors. There are two types: concave and convex. A concave mirror is also known as a converging mirror because it curves inward, like the inside of a spoon. A convex mirror curves outward, like the back of a spoon. To understand how these mirrors work, we must first master their geometry. Let us define some key terms. The center of the hollow sphere from which the mirror was cut is called the Center of Curvature, denoted by the letter C. The radius of this sphere is the Radius of Curvature, or R. Now, imagine a line passing through the Center of Curvature and striking the mirror at a point. This line is called the Normal. At the point where this line hits the mirror, we call it the Pole, denoted by P. The line passing through the Pole and the Center of Curvature is the Principal Axis. This is the imaginary straight line that acts as the backbone of our mirror diagram. The point on the mirror where the principal axis intersects is the Pole. Now, let us talk about the Focal Point. If we take a beam of light rays traveling parallel to the principal axis and strike a concave mirror, these rays will reflect and meet at a single point on the principal axis. This point is called the Principal Focus, denoted by F. The distance between the Pole and the Principal Focus is the Focal Length, denoted by f. It is important to remember a mathematical relationship here: the radius of curvature is twice the focal length. So, R equals two f. In a concave mirror, the focus is real and located in front of the mirror. Now, let us look at the convex mirror. When parallel rays strike a convex mirror, they reflect and appear to diverge from a point behind the mirror. This point is also the Principal Focus, but because the rays don't actually meet there, we call it a virtual focus. In a convex mirror, the focus and the center of curvature are both located behind the reflecting surface. To predict where an image will form, we use Ray Diagrams. We follow specific rules. Rule number one: A ray of light traveling parallel to the principal axis will, after reflection, pass through the principal focus. Rule number two: A ray of light passing through the principal focus will, after reflection, emerge parallel to the principal axis. Rule number three: A ray of light passing through the center of curvature will strike the mirror normally and reflect back along the same path. By combining these three rules, we can trace the path of light from any object position to find the exact location, size, and nature of the image. Let's visualize this. If an object is placed very far away, the rays are nearly parallel, and the image forms very close to the focus. As the object moves closer to the mirror, the image moves further away and grows in size. Mastering these geometric terms and the three fundamental ray rules is the essential first step before we move on to the mathematical formulas in our next lesson.","Welcome back. In our previous session, we mastered the ray diagrams for concave and convex mirrors. But in physics, drawing a picture is only half the battle. To solve real-world engineering problems, we need mathematical precision. Today, we move from qualitative descriptions to quantitative calculations using the Mirror Formula, Magnification, and the most critical tool in optics: the New Cartesian Sign Convention. Let's start with the Sign Convention. Imagine a mirror placed on a coordinate plane. To avoid confusion, we follow the New Cartesian Sign Convention. First, always fix your origin at the Pole of the mirror. This is your zero point. Second, all distances are measured from this Pole. Third, the principal axis is taken as the x-axis. Any distance measured in the direction of incident light is taken as positive, and any distance measured against the direction of incident light is taken as negative. This is where most students make mistakes. Remember, if an object is placed in front of the mirror, its object distance, which we call u, is always negative. For a concave mirror, the focal length, f, is negative because the focus lies in front of the mirror. For a convex mirror, the focal length, f, is positive because the focus lies behind the mirror. The image distance, v, will be negative if the image is real and formed in front of the mirror, and positive if the image is virtual and formed behind the mirror. Now, let's look at the mathematical relationship that ties these distances together: the Mirror Formula. The formula is written as: one over v, plus one over u, equals one over f. Here, v is the image distance, u is the object distance, and f is the focal length. This formula allows us to find any one unknown value if we know the other two. But how big is the image? Is it larger than the object or smaller? To find this, we use Magnification, denoted by the letter m. Magnification is the ratio of the height of the image to the height of the object. Mathematically, m equals h-prime divided by h, where h-prime is the image height and h is the object height. There is also a direct relationship between magnification and distances. Magnification is also equal to negative v divided by u. This is a lifesaver in exams! Let's decode what the value of m tells us. If the value of m is negative, it means the image is real and inverted. If the value of m is positive, the image is virtual and erect. Now, look at the magnitude, the actual number. If the absolute value of m is greater than one, the image is enlarged. If the absolute value of m is less than one, the image is diminished. If m is exactly one, the image is the same size as the object. Let's do a quick mental check. If you see a magnification of minus two, what does that mean? It means the image is real, inverted, and twice the size of the object. If you see a magnification of plus zero point five, it means the image is virtual, erect, and half the size of the object. Mastering these signs is the difference between a correct answer and a wrong one. Always write down your given values with their proper plus or minus signs before you even touch the formula. If u is ten centimeters, write it as negative ten centimeters. If f is fifteen centimeters for a concave mirror, write it as negative fifteen centimeters. This habit will prevent 90 percent of calculation errors. In our next session, we will put these rules to the test with complex word problems and common pitfalls.","Welcome back. Now that we have mastered the mirror formula and the sign convention, it is time to put that theory into practice. Many students understand the concepts but struggle when they face a word problem in an exam. Today, we will solve a classic problem step-by-step and then identify the common traps that lead to incorrect answers. Let us look at our first worked example. A concave mirror has a focal length of fifteen centimeters. An object is placed at a distance of thirty centimeters from the mirror. Find the position and nature of the image. Before you pick up your pen, remember the golden rule: always start with the sign convention. Since it is a concave mirror, the focal length, f, is negative fifteen centimeters. The object distance, u, is always negative, so u equals negative thirty centimeters. Now, we use the mirror formula, which is one over v, plus one over u, equals one over f. Substituting our values, we get one over v, plus one over negative thirty, equals one over negative fifteen. To solve for v, we move one over negative thirty to the right side. This gives us one over v equals one over negative fifteen, plus one over thirty. To add these fractions, we find a common denominator of thirty. One over negative fifteen is the same as negative two over thirty. So, one over v equals negative two over thirty, plus one over thirty, which equals negative one over thirty. Therefore, v equals negative thirty centimeters. What does this tell us? Since v is negative, the image is formed in front of the mirror, meaning it is a real image. Since the magnitude of v is thirty, which is the same as u, the image is formed at the same position as the object. Now, let us calculate the magnification, m. The formula is m equals negative v divided by u. So, m equals negative negative thirty, divided by negative thirty. This simplifies to m equals negative one. A negative magnification confirms that the image is real and inverted, and a magnitude of one tells us the image is the same size as the object. Now, let us discuss the common mistakes that frequently cost students marks. Mistake number one is the Sign Convention Error. Students often forget that the focal length of a convex mirror must be positive, while a concave mirror must be negative. If you get the sign wrong at the start, your entire calculation will be incorrect. Mistake number two is the 'u' error. Remember, the object distance u is always taken as negative in standard Cartesian sign convention because the object is placed in front of the mirror. Mistake number three is confusing the nature of the image. A positive magnification does not always mean a virtual image if you haven't checked the sign of v, but generally, a positive m indicates a virtual, erect image, while a negative m indicates a real, inverted image. Mistake number four is failing to include units. In physics, a number without a unit like centimeters or meters is incomplete. Finally, mistake number five is the calculation error with fractions. Always convert your fractions to a common denominator before adding or subtracting. Keep these pitfalls in mind, practice the sign convention until it becomes second nature, and you will find that word problems become much easier to navigate. Let's move on to the next part where we transition from reflection to the fascinating world of refraction.","Welcome back. In our previous lessons, we mastered how light bounces off surfaces through reflection. But what happens when light travels from one medium into another? Imagine you are looking at a coin at the bottom of a clear water tank, and it appears to be slightly higher than its actual position. Or think about why a straight straw looks bent when placed in a glass of water. This phenomenon is not an illusion; it is the result of refraction. Refraction is defined as the bending of light when it passes obliquely from one transparent medium to another. This bending occurs because the speed of light changes depending on the medium it is traveling through. In a vacuum or air, light travels at its maximum speed, approximately three times ten to the power of eight meters per second. However, when light enters a denser medium like glass or water, it slows down. This change in speed is the fundamental cause of refraction. Now, let us look at the two formal Laws of Refraction. The first law is very similar to the law of reflection. It states that the incident ray, the refracted ray, and the normal at the point of incidence all lie in the same plane. This means if you draw these lines on a piece of paper, they won't suddenly jump out into the third dimension; they stay flat on that surface. The second law is more crucial for our calculations, and it is known as Snell's Law. Snell's Law states that the ratio of the sine of the angle of incidence to the sine of the angle of refraction is a constant for a given pair of media and for light of a given wavelength. We write this mathematically as: sine i divided by sine r equals a constant. This constant is what we call the refractive index of the second medium with respect to the first. To understand this better, let us define the Refractive Index. There are two ways to look at it. First, we have the absolute refractive index. This is the ratio of the speed of light in a vacuum to the speed of light in a specific medium. We denote the absolute refractive index of medium two as n two. The formula is: n two equals c divided by v, where c is the speed of light in a vacuum and v is the speed of light in the medium. Because the speed of light in a vacuum is the highest possible speed, the refractive index of any material is always greater than one. A higher refractive index means the medium is optically denser, meaning light travels slower in it. For example, the refractive index of diamond is about two point four two, which is very high, meaning light slows down significantly in diamond, causing its brilliant sparkle. Second, we have the relative refractive index. This describes how much light bends when moving from medium one to medium two. The refractive index of medium two with respect to medium one, written as n two over one, is the ratio of the speed of light in medium one to the speed of light in medium two. Mathematically, n two over one equals v one divided by v two. Here, v one is the speed in the first medium and v two is the speed in the second. Remember this golden rule for your exams: when light travels from an optically rarer medium, like air, to an optically denser medium, like glass, it bends towards the normal. This means the angle of refraction is smaller than the angle of incidence. Conversely, when light travels from a denser medium to a rarer medium, it bends away from the normal, making the angle of refraction larger than the angle of incidence. Understanding these relationships is the key to solving every numerical problem in this chapter.","Welcome back. In our previous session, we explored the laws of refraction and the concept of the refractive index. Now, let us apply these concepts to a real-world scenario: what happens when a ray of light travels through a rectangular glass slab? Imagine a thick, transparent rectangular block of glass resting on a table. When a ray of light strikes the top surface of this slab at an angle, it doesn't just pass straight through. Instead, it undergoes a specific sequence of events. As the light moves from the air, which is a rarer medium, into the glass, which is a denser medium, it bends towards the normal. This is exactly what we learned about refraction in denser media. The ray travels through the glass and eventually reaches the bottom surface. At this second interface, the light is moving from glass back into the air. Since it is moving from a denser medium to a rarer medium, the ray bends away from the normal. Now, here is the most important observation: if you look closely at the path, the emergent ray, which is the light coming out of the slab, is parallel to the original incident ray. Even though the light has been shifted, its direction remains the same as the original path. This phenomenon is known as lateral displacement. But why does this shift occur? It happens because the amount of bending at the first surface is not perfectly cancelled out by the bending at the second surface due to the thickness of the slab. The perpendicular distance between the original path of the incident ray and the direction of the emergent ray is what we call the lateral displacement. Several factors influence how much this displacement occurs. First, the thickness of the glass slab plays a huge role. The thicker the slab, the greater the lateral displacement. Second, the angle of incidence matters. If you increase the angle at which the light hits the slab, the lateral displacement also increases. Third, the refractive index of the material is crucial. A material with a higher refractive index, meaning it is optically denser, will cause more bending and thus more displacement. Finally, the wavelength of light matters, though we usually focus on visible light as a whole. To summarize the geometry: the incident ray and the emergent ray are parallel, but they are laterally shifted. If you were to draw a dotted line representing the original path the light would have taken if the slab weren't there, you would see the gap between that dotted line and the actual emergent ray. This gap is our lateral displacement. Understanding this is vital because it explains why objects seen through thick glass windows or water containers might appear slightly shifted from their actual position. Let's keep this concept of bending and shifting in mind as we move toward our next topic: spherical lenses.","Welcome back. In our previous session, we explored how light bends when passing through a rectangular glass slab. Now, we are stepping into a much more dynamic world: the world of spherical lenses. Unlike a flat slab, a lens has curved surfaces, and these curves change everything about how light behaves. A lens is a piece of transparent refracting material, bounded by two surfaces, of which at least one is spherical. Let us first define our terminology. Every lens has an optical center, which we denote with the letter O. This is the geometric center of the lens. Any ray of light passing through the optical center does not deviate; it goes straight through. Next, we have the Principal Axis. This is an imaginary straight line passing through the centers of curvature of the two surfaces. Now, let's talk about the two main types of lenses you need to master for your exams: the Convex lens and the Concave lens. First, the Convex lens. You can also call this a Converging lens. A convex lens is thicker at the middle than at the edges. When a bundle of parallel rays of light strikes a convex lens, they are refracted inwards and meet at a single point on the other side. This is why we call it 'converging.' The point where these parallel rays actually meet after refraction is called the Principal Focus, denoted by the letter F. The distance between the optical center and this principal focus is known as the Focal Length, denoted by the letter f. Now, let's look at the opposite: the Concave lens. This is also known as a Diverging lens. A concave lens is thinner at the middle and thicker at the edges. When parallel rays of light pass through a concave lens, they bend outwards, or diverge. However, if we trace these diverging rays backwards, they appear to originate from a single point on the same side as the incoming light. This virtual point is the Principal Focus of the concave lens. Just like the convex lens, the distance from the optical center to this focus is the focal length. It is important to note a key difference here: for a convex lens, the focus is real because the light rays actually meet there. For a concave lens, the focus is virtual because the rays only appear to meet there. To visualize this, imagine a magnifying glass; that is a classic convex lens. Now, imagine the lenses used in certain types of eyeglasses to correct vision; those are often concave. Understanding these two basic shapes and how they manipulate light rays is the foundation for everything we will do next, including drawing ray diagrams and using the lens formula. Remember, the shape of the lens determines whether light gathers together or spreads apart.","Welcome back. In our previous lesson, we explored the geometry of converging and diverging lenses. Now, it is time to move from drawing diagrams to using the precise mathematical tools that physicists use to calculate exactly where an image will form and how large it will be. To do this, we need three things: the New Cartesian Sign Convention, the Lens Formula, and the concept of Magnification. Let us start with the Sign Convention, because if you get the signs wrong, your entire calculation will fail. Imagine a lens placed on a coordinate plane. We always assume the object is placed to the left of the lens. The optical center of the lens, which we call point O, acts as our origin, or the zero point. Any distance measured in the direction of incident light—which is to the right of the optical center—is taken as positive. Any distance measured against the direction of incident light—which is to the left—is taken as negative. This means the object distance, which we call u, is almost always negative in your problems. The focal length, f, follows a very specific rule: for a convex lens, which is a converging lens, the focal length is always positive. For a concave lens, which is a diverging lens, the focal length is always negative. Now, let us look at the Lens Formula. This formula relates the object distance, the image distance, and the focal length. The formula is written as: one over v, minus one over u, equals one over f. Here, v represents the image distance. If the image is real and formed on the opposite side of the lens from the object, v will be positive. If the image is virtual and formed on the same side as the object, v will be negative. Now, once you have found the image distance, you can find the magnification. Magnification, denoted by the letter m, tells us the ratio of the height of the image to the height of the object. Mathematically, m equals height of image divided by height of object. However, there is a much more convenient way to calculate this using distances. Magnification is also equal to the image distance, v, divided by the object distance, u. This is a crucial shortcut for your exams. The value of magnification tells us two vital pieces of information. First, the magnitude. If the absolute value of m is greater than one, the image is enlarged. If it is less than one, the image is diminished. If it is exactly one, the image is the same size as the object. Second, the sign of m tells us the nature of the image. If m is negative, it means the height of the image is in the opposite direction to the object, which tells us the image is real and inverted. If m is positive, the image is upright, which means it is a virtual image. Let us quickly summarize the rules for your numerical problems. Always draw a small rough sketch first. Mark your object on the left. Assign your signs: u is negative, f is positive for convex and negative for concave. Plug these into the formula: one over v, minus one over u, equals one over f. Solve for v. Finally, use m equals v divided by u to find the magnification and determine the nature. Remember, a negative v means a real image, and a positive v means a virtual image. Mastering these signs is the secret to solving any lens problem with confidence.","Welcome back. In our previous session, we mastered the lens formula and sign conventions. Now, it is time to bring those mathematical tools to life by visualizing how light actually behaves. Today, we are diving into the heart of optics: drawing ray diagrams and predicting exactly where an image will appear and what it will look like. Remember, a lens forms an image by refracting light rays. To draw any diagram, you only need to know three principal rays. First, any ray traveling parallel to the principal axis will, after refraction, pass through the principal focus on the other side. Second, any ray passing through the optical center of the lens will emerge undeviated, traveling in a straight line. Third, any ray passing through the focus will emerge parallel to the principal axis. Let us start with the Converging Lens, also known as the Convex Lens. The nature of the image depends entirely on the position of the object. Case one: when the object is at infinity, the rays are parallel, and they all converge at the focus on the far side. The image is real, inverted, and highly diminished, essentially a point at the focus. Case two: when the object is placed very far away but not at infinity, the image forms just beyond the focus. It remains real, inverted, and small. Case three: this is a crucial one. When the object is placed between the focus and twice the focal length, or two F, the image forms beyond two F on the other side. It is real, inverted, and magnified. Case four: when the object is exactly at two F, the image forms exactly at two F on the opposite side. It is real, inverted, and the same size as the object. This is a perfect equilibrium point. Case five: as we move the object closer to the focus, say between two F and F, the image moves further away beyond two F and becomes even larger. Case six: this is the most unique scenario. When the object is placed between the optical center and the focus, the rays diverge on the other side. To find the image, we must trace these rays backward. This produces a virtual, erect, and magnified image on the same side as the object. Now, let us look at the Diverging Lens, or the Concave Lens. Unlike the convex lens, the concave lens is much simpler because it always behaves in a predictable way. No matter where you place the object—whether it is at infinity or very close to the lens—the rays always appear to diverge from the focus on the same side as the object. Therefore, for a concave lens, the image is always virtual, always erect, and always diminished. It will always be located between the optical center and the focus. As you practice these, keep a close eye on the relationship between object distance and image distance. If the object moves closer to the lens, the real image in a convex lens moves further away and grows larger. If you can master these six patterns for the convex lens and the single pattern for the concave lens, you will never struggle with lens-based questions again. Let's look at the board to summarize these positions.","Welcome back. We have mastered ray diagrams, the lens formula, and magnification. Now, let us answer a very practical question: How do we measure the strength of a lens? In our daily lives, if someone says they have a 'number' in their eyes, they are actually talking about the power of the lens used in their spectacles. The power of a lens is defined as the degree of convergence or divergence of light rays coming from a point object. Mathematically, the power of a lens is defined as the reciprocal of its focal length. If we express the focal length in meters, then the power is simply one divided by the focal length in meters. We denote the power of a lens with the capital letter P. Because power is the reciprocal of focal length, the unit of power is the inverse meter, which we write as Dioptre. The symbol for Dioptre is a capital D. It is a very important point to remember that the sign of the power depends on the nature of the lens. A convex lens has a positive focal length, so its power will always be positive. Conversely, a concave lens has a negative focal length, which means its power will be negative. For example, if a convex lens has a focal length of twenty centimeters, we must first convert it to meters. Twenty centimeters is zero point two meters. Therefore, the power P equals one divided by zero point two, which gives us five Dioptres. If a concave lens has a focal length of negative twenty-five centimeters, that is negative zero point two five meters. The power would be one divided by negative zero point two five, resulting in negative four Dioptres. Now, let us apply this to human vision. Our eyes contain a natural crystalline lens that is convex. This lens adjusts its focal length to help us see objects at different distances. This process is called accommodation. However, sometimes the eye loses its ability to focus properly. One common condition is Myopia, also known as nearsightedness. In a myopic eye, the person can see nearby objects clearly, but distant objects appear blurry. This happens because the image of a distant object is formed in front of the retina instead of on it. This could be due to excessive curvature of the eye lens or an elongation of the eyeball. To correct myopia, we need to diverge the incoming light rays before they enter the eye so that the image is pushed back onto the retina. Therefore, a concave lens of suitable power is used as corrective glasses. The second common condition is Hypermetropia, or farsightedness. Here, a person can see distant objects clearly, but nearby objects appear blurry. In this case, the image is formed behind the retina. This is often caused by the focal length of the eye lens becoming too long or the eyeball becoming too short. To correct hypermetropia, we need to converge the light rays earlier so the image lands exactly on the retina. Thus, a convex lens is used for correction. Finally, there is Presbyopia, which usually occurs with age. As people get older, the ciliary muscles weaken, and the eye lens loses its flexibility, making it hard to focus on nearby objects. This is often corrected using bifocal lenses, where the upper part is a concave lens for distant vision and the lower part is a convex lens for reading. Understanding these powers helps us design the perfect optical tools for human health.","Welcome to our final session on Light: Reflection and Refraction. We have traveled from the fundamental laws of reflection to the complex mathematics of lens power. Now, it is time to prepare you for the examination hall. Let us begin with a rapid-fire recap. Remember, reflection is about light bouncing off surfaces, governed by the law that the angle of incidence equals the angle of reflection. We studied concave mirrors that converge light and convex mirrors that diverge it. We mastered the mirror formula, which is one over focal length equals one over object distance plus one over image distance. Then, we transitioned to refraction, the bending of light as it moves between media of different optical densities. We learned that the refractive index is the ratio of the speed of light in a vacuum to the speed of light in a medium. We analyzed lenses, where the lens formula is one over focal length equals one over object distance minus one over image distance. Finally, we calculated lens power as the reciprocal of focal length in meters. Now, let's talk about the most important skill for your board exams: Drawing Ray Diagrams. Most students lose marks here not because they don't know the concept, but because their diagrams are messy. Follow these three golden rules. First, always use a sharp pencil and a ruler. Freehand lines are your enemy in physics. Second, always mark the direction of light using arrows. A ray diagram without arrows is just a collection of lines and will result in zero marks. Third, clearly label your components: the optical center, the principal axis, the pole, the focus, and the center of curvature. When drawing, ensure your rays are straight and pass precisely through the focal points or parallel to the principal axis. Let's look at some common pitfalls. A very common mistake is the Sign Convention. Remember the Cartesian system: distances measured in the direction of incident light are positive, and those against it are negative. For mirrors, the focal length of a concave mirror is always negative, while for a convex mirror, it is always positive. For lenses, the focal length of a convex lens is positive, and a concave lens is negative. Do not mix these up, or your entire numerical calculation will fail. Now, let's tackle the Previous Year Questions, or PYQs, that frequently appear in exams. One classic question asks you to identify the type of mirror or lens based on the nature of the image. If the image is virtual, erect, and magnified, it is either a concave mirror or a convex lens. If the image is virtual, erect, and diminished, it is a convex mirror or a concave lens. Another frequent question involves numerical problems on magnification. Remember, magnification 'm' is the ratio of image height to object height, or negative 'v' over 'u' for mirrors, and positive 'v' over 'u' for lenses. If 'm' is negative, the image is real and inverted. If 'm' is positive, the image is virtual and erect. A third high-frequency topic is the refractive index. You might be asked to calculate the speed of light in a medium given its refractive index. Use the formula: refractive index equals the speed of light in a vacuum divided by the speed of light in the medium. Lastly, be prepared for questions on the power of a lens. If you are given two lenses in contact, the total power is simply the algebraic sum of the individual powers. You have worked hard through this chapter. Stay calm, draw your diagrams with precision, and always double-check your signs. You are ready for the exam. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c10-science-09-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

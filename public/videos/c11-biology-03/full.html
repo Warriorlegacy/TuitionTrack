@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Plant Kingdom, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-biology-03-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Diversity of Life and Why Plant Classification Matters -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Diversity of Life and Why Plant Classification Matters</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Biological diversity requires systematic organization</div>
+              <div id="qx0-p1" class="qe-bullet">• Classification brings order to the vast variety of life</div>
+              <div id="qx0-p2" class="qe-bullet">• Grouping organisms based on shared characteristics</div>
+              <div id="qx0-p3" class="qe-bullet">• Understanding evolutionary relationships and history</div>
+              <div id="qx0-p4" class="qe-bullet">• Transition from aquatic to terrestrial life forms</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":1988017297,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A cinematic zoom-out starting from a single green cell, expanding to a lush forest, then a global view of Earth's green continents.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A cinematic zoom-out starting from a single green cell, expanding to a lush forest, then a global view of Earth's green continents.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Basis of Classification: Vegetative vs Reproductive Structures and Life Cycles -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Basis of Classification: Vegetative vs Reproductive Structures and Life Cycles</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Vegetative structures: Parts for nutrition and support (Roots, Stems, Leaves)</div>
+              <div id="qx1-p1" class="qe-bullet">• Reproductive structures: Organs for producing gametes and spores</div>
+              <div id="qx1-p2" class="qe-bullet">• Thallus: A simple, undifferentiated body structure found in algae</div>
+              <div id="qx1-p3" class="qe-bullet">• Alternation of Generations: Switching between Gametophyte and Sporophyte</div>
+              <div id="qx1-p4" class="qe-bullet">• Haploid (n) phase produces gametes; Diploid (2n) phase produces spores</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":1568304955,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a simple green thallus on one side and a complex flowering plant on the other, with a glowing DNA strand transitioning between 'n' and '2n' states in the center.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation showing a simple green thallus on one side and a complex flowering plant on the other, with a glowing DNA strand transitioning between 'n' and '2n' states in the center.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Algae: Structure, Classification, and Economic Importance -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Algae: Structure, Classification, and Economic Importance</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Algae: Thalloid, autotrophic, and primarily aquatic organisms.</div>
+              <div id="qx2-p1" class="qe-bullet">• Chlorophyceae: Green algae, chlorophyll a and b, store starch in pyrenoids.</div>
+              <div id="qx2-p2" class="qe-bullet">• Phaeophyceae: Brown algae, fucoxanthin pigment, store laminarin/mannitol.</div>
+              <div id="qx2-p3" class="qe-bullet">• Rhodophyceae: Red algae, r-phycoerythrin pigment, store floridean starch.</div>
+              <div id="qx2-p4" class="qe-bullet">• Economic Use: Food sources, hydrocolloids (algin/carrageen), and agar.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2673669807,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D comparison showing a green Chlamydomonas, a brown Kelp with holdfast/stipe/frond, and a red Polysiphonia, highlighting their pigment colors.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen 3D comparison showing a green Chlamydomonas, a brown Kelp with holdfast/stipe/frond, and a red Polysiphonia, highlighting their pigment colors.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Bryophytes: The Amphibians of Plant Kingdom, Life Cycle, and Mosses vs Liverworts -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Bryophytes: The Amphibians of Plant Kingdom, Life Cycle, and Mosses vs Liverworts</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Bryophytes: Amphibians of the plant kingdom due to water-dependent fertilization</div>
+              <div id="qx3-p1" class="qe-bullet">• Structure: Thallus-like body with rhizoids; lacks true roots, stems, or leaves</div>
+              <div id="qx3-p2" class="qe-bullet">• Life Cycle: Dominant haploid gametophyte; dependent diploid sporophyte</div>
+              <div id="qx3-p3" class="qe-bullet">• Liverworts: Thalloid body, asexual reproduction via gemmae (e.g., Marchantia)</div>
+              <div id="qx3-p4" class="qe-bullet">• Mosses: Two stages—creeping protonema and upright leafy stage</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4249885251,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a Marchantia thallus with gemma cups on the left, and a Moss life cycle transitioning from filamentous protonema to a leafy shoot on the right.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A split-screen 3D animation showing a Marchantia thallus with gemma cups on the left, and a Moss life cycle transitioning from filamentous protonema to a leafy shoot on the right.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Pteridophytes: Evolution of Vascular Tissues, Homospory, Heterospory, and Seed Habit -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Pteridophytes: Evolution of Vascular Tissues, Homospory, Heterospory, and Seed Habit</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Evolution of Xylem and Phloem allows for larger, taller plant bodies.</div>
+              <div id="qx4-p1" class="qe-bullet">• Main plant body is a sporophyte with true roots, stems, and leaves.</div>
+              <div id="qx4-p2" class="qe-bullet">• Homospory: Production of a single type of spore of equal size.</div>
+              <div id="qx4-p3" class="qe-bullet">• Heterospory: Production of microspores and megaspores (e.g., Selaginella).</div>
+              <div id="qx4-p4" class="qe-bullet">• Heterospory is the essential evolutionary precursor to the seed habit.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2193239113,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing a homosporous plant releasing identical spores versus a heterosporous plant showing distinct small microspores and large megaspores.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D split-screen animation showing a homosporous plant releasing identical spores versus a heterosporous plant showing distinct small microspores and large megaspores.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Gymnosperms: Naked Seeds, Morphology, and Adaptations to Extreme Environments -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Gymnosperms: Naked Seeds, Morphology, and Adaptations to Extreme Environments</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Gymnosperms: 'Gymnos' means naked, 'sperma' means seed.</div>
+              <div id="qx5-p1" class="qe-bullet">• Ovules are not enclosed by an ovary; they remain exposed.</div>
+              <div id="qx5-p2" class="qe-bullet">• Diverse sizes: From tiny shrubs to giant Sequoias.</div>
+              <div id="qx5-p3" class="qe-bullet">• Root adaptations: Mycorrhiza in Pinus and Coralloid roots in Cycas.</div>
+              <div id="qx5-p4" class="qe-bullet">• Leaf adaptations: Thick cuticle, sunken stomata, and needle-like shapes.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1922381518,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a massive Sequoia tree on one side and a close-up of a Pinus cone with wind-blown pollen on the other.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D split-screen showing a massive Sequoia tree on one side and a close-up of a Pinus cone with wind-blown pollen on the other.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Angiosperms: Double Fertilization, Flower Structure, and Evolutionary Significance -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Angiosperms: Double Fertilization, Flower Structure, and Evolutionary Significance</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Flower Whorls: Calyx, Corolla, Androecium, and Gynoecium</div>
+              <div id="qx6-p1" class="qe-bullet">• Male Part: Stamen (Filament + Anther) producing pollen</div>
+              <div id="qx6-p2" class="qe-bullet">• Female Part: Carpel (Stigma, Style, Ovary) containing ovules</div>
+              <div id="qx6-p3" class="qe-bullet">• Double Fertilization: Syngamy (Zygote) + Triple Fusion (Endosperm)</div>
+              <div id="qx6-p4" class="qe-bullet">• Evolutionary Edge: Fruit-based dispersal and resource efficiency</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4213379784,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cross-section of a flower transitioning into a microscopic view of a pollen tube entering an embryo sac, highlighting the two fusion events in different colors.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D cross-section of a flower transitioning into a microscopic view of a pollen tube entering an embryo sac, highlighting the two fusion events in different colors.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Comparative Analysis: Life Cycles and Alternation of Generations -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Comparative Analysis: Life Cycles and Alternation of Generations</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Alternation of Generations: Haploid Gametophyte (n) vs Diploid Sporophyte (2n)</div>
+              <div id="qx7-p1" class="qe-bullet">• Haplontic: Dominant Gametophyte; Zygote is the only diploid stage (e.g., Algae)</div>
+              <div id="qx7-p2" class="qe-bullet">• Diplontic: Dominant Sporophyte; Gametophyte is highly reduced (e.g., Angiosperms)</div>
+              <div id="qx7-p3" class="qe-bullet">• Haplo-diplontic: Both phases are multicellular (e.g., Bryophytes and Pteridophytes)</div>
+              <div id="qx7-p4" class="qe-bullet">• Evolutionary Trend: Increasing dominance of Sporophyte from Algae to Angiosperms</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1823126383,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a Volvox colony (Haplontic) on the left and a flowering plant (Diplontic) on the right, with a central rotating diagram of a Fern (Haplo-diplontic) showing the transition between prothallus and sporophyte.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A split-screen 3D animation showing a Volvox colony (Haplontic) on the left and a flowering plant (Diplontic) on the right, with a central rotating diagram of a Fern (Haplo-diplontic) showing the transition between prothallus and sporophyte.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Diagram Mastery: Drawing and Labeling Key Plant Structures for Exams -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Diagram Mastery: Drawing and Labeling Key Plant Structures for Exams</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Master Algae: Focus on spiral chloroplasts in Spirogyra and seaweed morphology.</div>
+              <div id="qx8-p1" class="qe-bullet">• Bryophyte Essentials: Differentiate between Marchantia thallus and Moss life cycles.</div>
+              <div id="qx8-p2" class="qe-bullet">• Pteridophyte Detail: Clearly illustrate heterospory in Selaginella with micro/megaspores.</div>
+              <div id="qx8-p3" class="qe-bullet">• Gymnosperm Adaptations: Draw sunken stomata and distinct male/female cones.</div>
+              <div id="qx8-p4" class="qe-bullet">• Angiosperm Precision: Perfect the double fertilization diagram and floral anatomy.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":260444324,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a hand-drawn sketch evolving into a detailed, color-coded biological diagram of a flowering plant.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation showing a hand-drawn sketch evolving into a detailed, color-coded biological diagram of a flowering plant.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Common Pitfalls: Distinguishing Similar Taxa and Avoiding Conceptual Errors -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Common Pitfalls: Distinguishing Similar Taxa and Avoiding Conceptual Errors</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Bryophytes: Non-vascular vs. Pteridophytes: Vascular tissues present</div>
+              <div id="qx9-p1" class="qe-bullet">• Heterospory: The essential evolutionary step toward the seed habit</div>
+              <div id="qx9-p2" class="qe-bullet">• Gymnosperms: Ovules are naked because they lack an ovary wall</div>
+              <div id="qx9-p3" class="qe-bullet">• Dominant Phase: Gametophyte in Bryophytes; Sporophyte in higher plants</div>
+              <div id="qx9-p4" class="qe-bullet">• Algae Food Storage: Starch (Green), Mannitol (Brown), Floridean (Red)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2149500408,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D comparison showing a Bryophyte gametophyte next to a Pteridophyte sporophyte, highlighting the presence of xylem/phloem in the latter.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D comparison showing a Bryophyte gametophyte next to a Pteridophyte sporophyte, highlighting the presence of xylem/phloem in the latter.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): NCERT Exemplar &amp; Worked Examples: Solving Application-Based Questions -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">NCERT Exemplar &amp; Worked Examples: Solving Application-Based Questions</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Identify 'Key Discriminators' like vascular tissue or dominant life stages.</div>
+              <div id="qx10-p1" class="qe-bullet">• Watch for 'Exceptions' in statements (e.g., Heterospory in Pteridophytes).</div>
+              <div id="qx10-p2" class="qe-bullet">• Link economic uses (Agar, Algin) directly to specific Algae classes.</div>
+              <div id="qx10-p3" class="qe-bullet">• Master the 'Reduction Trend' of gametophytes from Bryophytes to Angiosperms.</div>
+              <div id="qx10-p4" class="qe-bullet">• Use the 'Elimination Method' for complex multi-statement questions.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2489479053,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen view showing a complex multiple-choice question on the left and a glowing, highlighted 'keyword' in the text on the right, transitioning into a 3D comparison of a large Bryophyte gametophyte versus a tiny Angiosperm pollen grain.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen view showing a complex multiple-choice question on the left and a glowing, highlighted 'keyword' in the text on the right, transitioning into a 3D comparison of a large Bryophyte gametophyte versus a tiny Angiosperm pollen grain.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: High-Yield Revision, Time Management, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: High-Yield Revision, Time Management, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Focus on Life Cycles: Haplontic, Diplontic, and Haplo-diplontic patterns.</div>
+              <div id="qx11-p1" class="qe-bullet">• Evolutionary Milestones: Vascular tissues, seeds, and double fertilization.</div>
+              <div id="qx11-p2" class="qe-bullet">• Exam Strategy: Prioritize diagrams and watch for 'NOT' or 'INCORRECT' keywords.</div>
+              <div id="qx11-p3" class="qe-bullet">• Time Management: 45 seconds for MCQs; Diagram-first approach for long answers.</div>
+              <div id="qx11-p4" class="qe-bullet">• NCERT Mastery: Every table, diagram, and caption is exam-critical.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1262291538,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D montage showing a rapid evolution sequence from green algae to a blooming rose, transitioning into a digital checklist of exam tips.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D montage showing a rapid evolution sequence from green algae to a blooming rose, transitioning into a digital checklist of exam tips.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Plant Kingdom today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Diversity of Life and Why Plant Classification Matters <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Basis of Classification: Vegetative vs Reproductive Structures and Life Cycles <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Algae: Structure, Classification, and Economic Importance <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Bryophytes: The Amphibians of Plant Kingdom, Life Cycle, and Mosses vs Liverworts <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Pteridophytes: Evolution of Vascular Tissues, Homospory, Heterospory, and Seed Habit <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Gymnosperms: Naked Seeds, Morphology, and Adaptations to Extreme Environments <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Angiosperms: Double Fertilization, Flower Structure, and Evolutionary Significance <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Comparative Analysis: Life Cycles and Alternation of Generations <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Diagram Mastery: Drawing and Labeling Key Plant Structures for Exams <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Common Pitfalls: Distinguishing Similar Taxa and Avoiding Conceptual Errors <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. NCERT Exemplar &amp; Worked Examples: Solving Application-Based Questions <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: High-Yield Revision, Time Management, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our comprehensive series on Class 11 Biology. Today, we are embarking on a fascinating journey into the Plant Kingdom. Before we dive into the specific groups like Algae or Bryophytes, we must first ask a fundamental question: Why are we studying this? Look around you. From the microscopic phytoplankton in the ocean to the massive, towering Redwood trees in a forest, life on Earth is incredibly diverse. This diversity is not just a collection of random organisms; it is a beautifully organized system of evolutionary relationships. In biology, when we encounter such vast variety, our first task is to bring order to the chaos. This is where classification comes in. Classification is the process of grouping organisms based on their similarities and differences. But why do we need it? Imagine walking into a massive library where millions of books are just thrown onto the floor in no particular order. Finding a specific book on botany would be impossible! A library uses a classification system—genres, authors, and subjects—to make knowledge accessible. Biology works the same way. By classifying plants, we can study them systematically. We move from the simplest, most primitive organisms to the most complex and highly evolved ones. This allows us to understand the evolutionary history of life. In this chapter, we will explore how plants have transitioned from living entirely in water to conquering the dry land. We will see how they developed vascular tissues to transport water and how they evolved complex reproductive systems to ensure survival. Understanding plant classification is not just about memorizing names; it is about understanding the logic of life itself. It helps us predict the characteristics of a new species based on its group and helps scientists communicate clearly using a universal language. As we progress through this series, we will look at the various criteria used for this classification, such as body organization, presence of vascular tissues, and the nature of their life cycles. So, get ready to explore the green world, from the simplest cells to the most complex flowering plants. Let's begin our journey into the Plant Kingdom.","Welcome back. In our last session, we looked at why we need to classify plants. Now, we dive into the actual criteria used by botanists to group these organisms. To understand plant classification, we must look at two fundamental pillars: the vegetative structures and the reproductive structures, along with the fascinating phenomenon of life cycles. Let us start with vegetative structures. These are the parts of the plant that are primarily involved in nutrition, support, and growth, rather than reproduction. In higher plants, we commonly see roots, stems, and leaves. However, in simpler organisms like algae, these specialized organs are absent. Instead, we see a simple body structure called a thallus. When we classify plants, we look at how these vegetative parts are organized. For example, is the body differentiated into true roots and leaves, or is it a simple mass of cells? Moving to our second pillar, we have reproductive structures. This is where the real complexity begins. Reproductive structures are the organs responsible for producing gametes and facilitating sexual reproduction. In lower plants, reproduction might be very simple, involving the production of spores. In more advanced plants, we see the development of specialized organs like flowers, cones, or even complex reproductive filaments. The presence or absence of these structures is a major deciding factor in classification. For instance, the presence of flowers immediately places a plant in the Angiosperm group. But there is a third, even more critical layer: the life cycle. This brings us to the concept of Alternation of Generations. In the plant kingdom, we don't just see one single stage of life. Instead, plants alternate between two distinct multicellular phases. One phase is the Gametophyte, which is haploid, meaning it contains a single set of chromosomes, represented as 'n'. This phase produces gametes through mitosis. The other phase is the Sporophyte, which is diploid, meaning it contains two sets of chromosomes, represented as '2n'. The sporophyte produces spores through the process of meiosis. The transition from a haploid gametophyte to a diploid sporophyte, and back again, is the heartbeat of plant biology. As we progress through this chapter, we will see how this ratio changes. In some plants, the gametophyte is the dominant, visible part of the plant, while in others, the sporophyte takes over completely. Understanding this balance between the 'n' phase and the '2n' phase is essential for distinguishing between Algae, Bryophytes, Pteridophytes, Gymnosperms, and Angiosperms. So, as we move forward, keep these two lenses in mind: first, what does the plant look like physically—its vegetative and reproductive organs—and second, how does it move through its life cycle—the alternation between haploid and diploid stages. Mastering these two concepts will make the rest of the Plant Kingdom chapter much easier to navigate.","Welcome back. Now that we understand the basis of classification, let's dive into the first major group of the plant kingdom: the Algae. Algae are simple, thalloid, autotrophic organisms. This means they lack true roots, stems, or leaves, and they perform photosynthesis to make their own food. They can be unicellular, like Chlamydomonas, or multicellular, like Spirogyra. Most algae are aquatic, living in both freshwater and marine environments. Their body structure, known as a thallus, can vary from microscopic single cells to massive seaweeds. Now, let's look at how we classify them. We classify algae primarily based on their pigments, the nature of their stored food, and their cell wall composition. This gives us three distinct classes: Chlorophyceae, Phaeophyceae, and Rhodophyceae. First, let's discuss Chlorophyceae, commonly known as Green Algae. These are the ancestors of land plants. They contain chlorophyll a and chlorophyll b, which give them a bright green color. Their food is stored as starch, often inside specialized structures called pyrenoids, which contain protein besides starch. Their cell walls are made of cellulose, and sometimes, an inner layer of pectose. Examples include Volvox, Ulothrix, and Chlamydomonas. Next, we move to Phaeophyceae, or Brown Algae. These are mostly marine organisms. Their characteristic color comes from the pigment fucoxanthin, which masks the chlorophyll a and c. Unlike green algae, brown algae store food as complex carbohydrates like laminarin or mannitol. Their cell walls are unique; they consist of cellulose alongside a gelatinous coating of algin. You will often find these in coastal areas. A key feature of brown algae is their body structure, which can be differentiated into a holdfast, which attaches to the substrate, a stipe, which is a stalk-like structure, and a frond, which is the leaf-like photosynthetic organ. Sargassum and Fucus are classic examples. Finally, we have Rhodophyceae, the Red Algae. These are also primarily marine. Their red color is due to the pigment r-phycoerythrin, which allows them to absorb blue light and survive at great depths in the ocean. They store food as floridean starch, which is structurally very similar to amylopectin and glycogen. Their cell walls are composed of cellulose, pectin, and even polysulphate esters. Polysiphonia and Gracilaria are common examples. But why should we care about algae? Their economic importance is massive. Firstly, many algae are used as food sources directly, such as Porphyra and Laminaria. Secondly, they are industrial powerhouses. Algin from brown algae and carrageen from red algae are used as hydrocolloids, which are substances that help thicken foods and even cosmetics. Thirdly, certain marine algae are used to produce agar, which is essential in laboratories for growing bacteria. Lastly, some algae are used in sewage treatment to increase oxygen levels in water. So, remember: Chlorophyceae is green with starch, Phaeophyceae is brown with laminarin and algin, and Rhodophyceae is red with floridean starch. Understanding these differences is key to mastering this chapter.","Welcome back. In our previous session, we explored the diverse world of Algae. Now, we step into a crucial evolutionary transition: the Bryophytes. You will often hear them called the 'Amphibians of the Plant Kingdom.' But why this specific title? It is because, while bryophytes live on land, they are absolutely dependent on water for sexual reproduction. Specifically, they need a film of water so that the male gametes, known as antherozoids, can swim to reach the female egg. This limitation keeps them tied to moist, shaded environments. Let us look at their structure. Unlike the algae we studied, bryophytes possess a differentiated plant body. They have a thallus-like structure, which can be prostrate or erect. They possess leaf-like and stem-like structures, but pay close attention here: they lack true roots, true stems, or true leaves. Instead, they have root-like structures called rhizoids. These rhizoids help in anchorage and absorption. Now, let's dive into the life cycle, which is a classic example of an alternation of generations. In bryophytes, the dominant, independent, and photosynthetic phase is the gametophyte. This is the haploid phase, denoted as 'n'. The gametophyte produces gametes through mitosis. The male organ is the antheridium, which produces antherozoids, and the female organ is the archegonium, which produces a single egg. When fertilization occurs through water, a diploid zygote is formed. This zygote does not immediately undergo meiosis. Instead, it develops into a multicellular, diploid sporophyte, denoted as '2n'. Unlike the gametophyte, the sporophyte is not free-living; it is physically attached to and dependent on the gametophyte for nutrition. The sporophyte typically consists of a foot, a seta, and a capsule. Inside the capsule, spore mother cells undergo meiosis to produce haploid spores. These spores germinate to form new gametophytes, completing the cycle. Now, to master this chapter, you must distinguish between the two main groups of bryophytes: Liverworts and Mosses. Let's start with Liverworts. These are often thalloid, meaning they have a flat, dorsiventral body. A classic example you must remember for your exams is Marchantia. In liverworts, asexual reproduction often occurs through fragmentation or through specialized structures called gemmae. Gemmae are green, multicellular, asexual buds that develop in small receptacles called gemma cups on the thallus. When they detach, they grow into new individuals. Moving on to Mosses, these represent a more advanced stage of bryophytes. The life cycle of a moss is more complex. The first stage is the protonema stage, which develops directly from a spore. The protonema is a creeping, green, branched, filamentous structure. From this protonema, the second stage emerges: the leafy stage. The leafy stage consists of upright, slender axes bearing spirally arranged leaves. This is the stage that produces the sex organs. While liverworts are often simple and thalloid, mosses show a more sophisticated differentiation into protonema and leafy stages. To summarize: Bryophytes are land-dwellers requiring water for fertilization, they have a dominant haploid gametophyte, and their sporophyte is dependent on the gametophyte. Remember the distinction: Liverworts like Marchantia use gemmae for asexual reproduction, while Mosses progress from a filamentous protonema to a leafy stage. Understanding this transition is key to mastering plant evolution.","Welcome back. In our previous session, we explored Bryophytes, the amphibians of the plant kingdom. Today, we step into a much more advanced territory: the Pteridophytes. If Bryophytes were the pioneers of land life, Pteridophytes are the architects of complexity. The most significant evolutionary breakthrough in this group is the development of vascular tissues. Unlike Bryophytes, which rely on simple diffusion, Pteridophytes have evolved specialized conducting tissues: Xylem for the transport of water and minerals, and Phloem for the translocation of food. This development is a game-changer because it allows the plant to grow taller and occupy more diverse terrestrial habitats. In Pteridophytes, the main plant body is a sporophyte, which is differentiated into true roots, true stems, and true leaves. This is a massive leap forward from the thalloid structures we saw in Algae and Bryophytes. Now, let's look at how they reproduce. Most pteridophytes are homosporous. This means they produce only one type of spore. These spores are all of the same size and are produced within a single type of sporangium. When these spores germinate, they grow into a small, multicellular, free-living, mostly photosynthetic structure called a prothallus. This prothallus represents the gametophyte stage. However, evolution didn't stop there. Some pteridophytes, like Selaginella and Salvinia, exhibit a much more advanced condition called heterospory. In heterospory, the plant produces two distinct types of spores: small spores called microspores and large spores called megaspores. The microspores develop into male gametophytes, while the megaspores develop into female gametophytes. This distinction is not just a morphological curiosity; it is the fundamental precursor to the seed habit. Think about it logically: in homosporous plants, the gametophyte is independent and lives on its own. But in heterosporous plants, the megaspore is retained within the parent sporophyte. This retention provides the developing female gametophyte with protection and nourishment from the parent plant. This close association between the sporophyte and the gametophyte is the very foundation of the seed habit. While Pteridophytes do not produce true seeds—because they lack an integumented ovule—the transition from heterospory to the seed habit is the most critical evolutionary bridge in the history of plants. It sets the stage for Gymnosperms and Angiosperms. To summarize the progression for your exams: first, we see the evolution of vascular tissues allowing for height; second, we see the shift from homospory to heterospory; and third, we see how heterospory leads to the development of the seed habit through spore retention. Remember, if you see a question asking for the precursor to the seed habit, your answer should be heterospory, specifically seen in genera like Selaginella. Let's move on to the next part where we dive deep into the Gymnosperms.","Welcome back. In our previous session, we explored the evolution of the seed habit in Pteridophytes. Today, we step into a world where seeds exist, but they are not enclosed within an ovary. We are discussing Gymnosperms. The term 'Gymnosperm' is derived from the Greek words 'gymnos', meaning naked, and 'sperma', meaning seed. Unlike Angiosperms, the ovules of these plants are not enclosed by an ovary wall; instead, they remain exposed, typically lying on the surface of specialized leaves called megasporophylls. This is why we call them 'naked seeded' plants. Let us look at their morphology. Gymnosperms are incredibly diverse in size. You might be surprised to know that some are massive trees, like the Sequoia, which is one of the tallest species in the world. On the other hand, some are much smaller. Their plant body is well-differentiated into true roots, stems, and leaves. The roots often show specialized adaptations. For instance, many gymnosperms form symbiotic associations. You might encounter mycorrhiza, where fungi live in association with the roots, providing minerals in exchange for food. A classic example is Pinus. Conversely, some gymnosperms, like Cycas, exhibit coralloid roots. These are specialized roots that house nitrogen-fixing cyanobacteria, helping the plant thrive in nutrient-poor soils. Now, let's talk about the leaves. Gymnosperm leaves are highly adapted to withstand extreme environmental conditions, such as intense sunlight, wind, or cold. To prevent water loss through transpiration, their leaves often have a thick cuticle and sunken stomata. In many species, the leaves are needle-like in shape, which reduces the surface area exposed to the air. This is a crucial adaptation for survival in arid or snowy environments. Moving to the reproductive structures, gymnosperms are heterosporous, meaning they produce two types of spores: microspores and megaspores. These spores are produced in different structures. The male reproductive organs are called microsporangia, which are borne on microsporophylls. These produce microspores, which develop into male gametophytes. The female reproductive organs are megasporangia, borne on megasporophylls. These produce megaspores, which develop into the female gametophyte. In many gymnosperms, these sporophylls are arranged in compact structures called cones or strobili. For example, in Pinus, you will see distinct male and female cones. The pollen grains are the male gametophytes, and they are carried by the wind to reach the female gametophyte. This reliance on wind for pollination is a key characteristic. Because the ovules are exposed, the pollen grain lands directly on the surface of the ovule. Once fertilization occurs, the zygote develops into an embryo, and the integument forms the seed coat. However, remember, because there was no ovary to transform into a fruit, the seed remains 'naked'. To summarize, gymnosperms represent a major evolutionary leap with their vascular tissues and seeds, but they maintain a unique distinction through their exposed ovules and specialized morphological adaptations to survive where other plants might struggle.","Welcome back. Having explored the naked seeds of Gymnosperms, we now move to the most dominant and diverse group of plants on Earth: the Angiosperms, or the flowering plants. Unlike Gymnosperms, Angiosperms protect their ovules within an ovary, which eventually matures into a fruit. Let us first look at the structure of a typical flower, the reproductive unit of these plants. A complete flower consists of four whorls attached to a receptacle. The outermost is the calyx, made of sepals, which protects the bud. Next is the corolla, composed of petals, which are often brightly colored to attract pollinators. Then we have the androecium, the male reproductive part, consisting of stamens. Each stamen has a filament and an anther, where pollen grains are produced. Finally, there is the gynoecium, the female reproductive part, consisting of one or more carpels or pistils. A carpel has a stigma to receive pollen, a style, and an ovary containing the ovules. Now, let us dive into the most unique and defining characteristic of Angiosperms: the process of Double Fertilization. This process occurs after a pollen grain lands on the stigma and germinates to form a pollen tube. The pollen tube grows through the style and enters the embryo sac through the micropyle. Inside the embryo sac, two male gametes are released. This is where the magic happens. The first male gamete moves towards the egg cell and fuses with it. This fusion is called Syngamy, and it results in the formation of a diploid zygote, which will eventually develop into the embryo. However, the second male gamete does something different. It moves towards the two polar nuclei located in the center of the embryo sac. This second fusion, where one male gamete fuses with two polar nuclei, is called Triple Fusion. Because two types of fusion occur simultaneously in the same embryo sac, we call this phenomenon Double Fertilization. The product of triple fusion is a triploid nucleus, known as the Primary Endosperm Nucleus. This nucleus develops into the endosperm, a highly nutritious tissue that provides food to the developing embryo. This is a brilliant evolutionary strategy; the plant only invests energy in creating food reserves if fertilization is successful. This brings us to the evolutionary significance of Angiosperms. Why have they become so successful? First, the development of the ovary into a fruit provides a massive advantage for seed dispersal, whether through wind, water, or animals. Second, the highly efficient process of double fertilization ensures that endosperm is produced only when needed, conserving resources. Third, the co-evolution with pollinators like insects, birds, and bats has allowed for precise and efficient reproduction. These adaptations have allowed Angiosperms to colonize almost every terrestrial habitat on the planet, from deserts to rainforests. As we move forward, we will compare these life cycles with other groups, but for now, remember: the flower is the stage, and double fertilization is the unique performance that defines the Angiosperm lineage.","Welcome back. In our previous sessions, we explored the diverse groups of the Plant Kingdom, from Algae to Angiosperms. Now, it is time to connect the dots. We are going to perform a comparative analysis of how these plants actually live and reproduce through their life cycles. The most fundamental concept here is the 'Alternation of Generations'. In the plant kingdom, we don't just see one type of organism; we see two distinct multicellular phases alternating with each other. One phase is the Gametophyte, which is haploid, meaning it contains one set of chromosomes, denoted as 'n'. The other is the Sporophyte, which is diploid, containing two sets of chromosomes, denoted as '2n'. The transition between these two phases is the key to understanding plant evolution. Let us first analyze the Haplontic life cycle. This is most commonly seen in many algae, such as Volvox or Spirogyra. In this cycle, the dominant, multicellular, and independent phase is the Gametophyte. The organism spends most of its life in the haploid state. When the gametes fuse during fertilization, they form a diploid zygote. However, in a haplontic cycle, the zygote does not undergo mitosis to grow into a large plant. Instead, the zygote often acts as a resting spore to survive unfavorable conditions and then undergoes meiosis immediately to produce haploid spores. Thus, the diploid phase is reduced to a single cell: the zygote. Next, let us look at the opposite extreme: the Diplontic life cycle. Here, the dominant, multicellular, and independent phase is the Sporophyte. This is the pattern we see in most Gymnosperms and Angiosperms, as well as in some algae like Fucus. In this cycle, the diploid sporophyte is the main plant body. It produces spores through meiosis. These spores are haploid and develop into the gametophyte. But here is the crucial distinction: in diplontic plants, the gametophyte is highly reduced and often microscopic, existing only for a short period to produce gametes. The life cycle is dominated by the diploid phase. Now, we move to the most complex and evolutionary significant pattern: the Haplo-diplontic life cycle. This is an intermediate condition where both the haploid gametophyte and the diploid sporophyte phases are multicellular and often independent. This pattern is seen in Bryophytes and Pteridophytes. In Bryophytes, the gametophyte is the dominant, photosynthetic, and independent phase, while the sporophyte is physically attached to and dependent on the gametophyte for nutrition. However, as we move to Pteridophytes, the trend reverses. In Pteridophytes, the sporophyte becomes the dominant, independent phase, while the gametophyte, often called a prothallus, is small and inconspicuous. To summarize this for your exams, remember this evolutionary trend: as plants transitioned from water to land, there was a progressive reduction in the size and importance of the gametophyte and a progressive increase in the complexity and dominance of the sporophyte. This shift allowed plants to protect their reproductive cells from drying out. When you are drawing these cycles in your exam, always clearly label the 'n' and '2n' stages and indicate exactly where meiosis occurs—it always happens in the sporogenous tissue to produce haploid spores. Understanding this alternation is the secret to mastering plant biology.","Welcome back. We have covered the complex life cycles and morphological features of the Plant Kingdom. Now, it is time to translate that theoretical knowledge into the visual language that examiners love: diagrams. In Biology, a well-labeled diagram can often earn you more marks than a page of text. Today, we are focusing on the high-yield structures you must master for your Class 11 exams. Let us start with Algae. When drawing Chlorophyceae, or green algae, do not just draw a blob. You must clearly show the cell wall composition, often mentioning cellulose. For Spirogyra, focus on the spiral arrangement of chloroplasts. This is a classic exam question. When sketching Phaeophyceae, like Laminaria or Sargassum, ensure you distinguish between the holdfast, the stipe, and the blade. For Rhodophyceae, emphasize the presence of pigments like phycoerythrin within the cellular structure. Moving to Bryophytes, the distinction between Liverworts and Mosses is crucial. When drawing a Liverwort like Marchantia, focus on the thallus structure and the presence of gemma cups. These small, cup-like reproductive structures are vital for asexual reproduction and are frequently asked about. For Mosses, you must master the two-stage life cycle: the protonema stage and the leafy stage. Draw the protonema as a creeping, branched structure, and the leafy stage with its upright stem and spirally arranged leaves. Now, let us step up to Pteridophytes. This is where vascular tissues come in. Your diagrams must clearly show the differentiation between xylem and phloem. If you are drawing a fern, highlight the sporophylls and the sporangia. A very important concept here is heterospory. If you draw Selaginella, you must show two distinct types of spores: the smaller microspores and the larger megaspores. This is a high-yield point for marking schemes. Next, we tackle Gymnosperms. When drawing a Pinus needle, show the thick cuticle and sunken stomata—these are adaptations to xerophytic conditions. For the reproductive structures, focus on the difference between male and female cones. The male cone is smaller and produces pollen grains, while the female cone is larger and contains ovules. In Angiosperms, the complexity increases. You must be able to draw a perfect longitudinal section of a flower. Label the sepals, petals, stamens, and the carpel. Within the carpel, clearly mark the stigma, style, and ovary. To score full marks, you must demonstrate the process of double fertilization. Draw the pollen tube entering the embryo sac, and show two male gametes: one fusing with the egg to form the zygote, and the other fusing with the two polar nuclei to form the primary endosperm nucleus. Remember, in your exam, use a sharp pencil, keep your lines clean, and always label on one side of the diagram using straight leader lines. Avoid crossing your label lines, as this creates visual clutter. Practice these structures repeatedly until the muscle memory takes over. Let us begin our practice session.","Welcome back. We have covered the vast diversity of the Plant Kingdom, but as we approach the end of this chapter, it is time to address the most common traps students fall into during examinations. Even if you know the facts, subtle differences can lead to incorrect answers. Let us start with the most frequent confusion: the distinction between Bryophytes and Pteridophytes. Many students assume that because both can grow in moist environments, they are similar. However, the critical error is forgetting the presence of vascular tissues. Remember, Bryophytes are non-vascular, meaning they lack xylem and phloem, whereas Pteridophytes are the first terrestrial plants to possess these conducting tissues. Another common pitfall is the confusion between Homospory and Heterospory. Do not simply memorize the terms; remember the functional difference. Homospory involves a single type of spore that develops into a bisexual gametophyte, typical of many pteridophytes. Heterospory involves two distinct types of spores—microspores and megaspores—which is the essential evolutionary precursor to the seed habit. If a question asks about the origin of seeds, your mind should immediately jump to heterospory in pteridophytes, not just to gymnosperms. Moving on to the Gymnosperms and Angiosperms. A very common mistake is the definition of 'naked seeds.' Students often think gymnosperms lack a seed coat entirely. That is incorrect. The distinction is that in gymnosperms, the ovules are not enclosed by an ovary wall. In angiosperms, the ovary develops into a fruit, which protects the seed. If you see a question about 'ovules exposed on sporophylls,' the answer is gymnosperms. Now, let us look at the life cycles, which is perhaps the most conceptually difficult area. Students often confuse the dominant phase. In Bryophytes, the dominant, independent phase is the haploid gametophyte. In Pteridophytes, Gymnosperms, and Angiosperms, the dominant, independent phase is the diploid sporophyte. A common error is thinking that because a plant is 'complex,' it must have a dominant sporophyte. While generally true for higher plants, always check the life cycle type. For example, in many algae, the life cycle is haplontic, meaning the zygote is the only diploid stage. Do not confuse this with the haplo-diplontic cycle seen in bryophytes and pteridophytes, where both phases are multicellular and distinct. Another subtle trap involves the classification of Algae. Students often mix up the stored food materials. Chlorophyceae store food as starch, Phaeophyceae store it as complex carbohydrates like mannitol or laminarin, and Rhodophyceae store it as floridean starch. If a question mentions 'laminarin,' do not accidentally pick Chlorophyceae; it belongs to the brown algae. Finally, pay close attention to the term 'Amphibians of the Plant Kingdom.' This term is exclusive to Bryophytes because they require water for fertilization. Do not apply this to Pteridophytes, even though they also like moisture, because Pteridophytes have evolved more advanced methods of water transport. To avoid these errors, always use a comparative approach. When studying a new group, ask yourself: Does it have vascular tissue? Is the dominant phase haploid or diploid? Is the seed enclosed or naked? By focusing on these 'discriminating characteristics,' you will move from mere memorization to true conceptual mastery. Let's prepare to apply this knowledge in the next session with some exemplar problems.","Welcome back to our final deep dive into the Plant Kingdom. We have covered the morphology, the life cycles, and the evolutionary transitions from Algae to Angiosperms. But knowing the facts is only half the battle. To score full marks in your Class 11 exams and competitive tests like NEET, you must master the art of application. Today, we are going to tackle the NCERT Exemplar style questions. These aren't just direct memory tests; they are designed to see if you truly understand the 'why' and 'how' behind plant classification. Let us look at our first type of question: The Comparative Identification. A typical question might ask: 'A plant body is thalloid, lacks true roots, stems, or leaves, but possesses vascular tissues. To which group does it belong?' Now, if you panic and think 'Algae' because of the thalloid body, you might lose marks. But look closer at the keyword: 'vascular tissues'. Algae are non-vascular. The presence of xylem and phloem immediately shifts our focus to Pteridophytes. Always hunt for that one distinguishing feature in the question stem. Next, let us tackle the Life Cycle logic. You might encounter a question like: 'In which of the following groups is the gametophyte stage highly reduced and dependent on the sporophyte?' Here, you must mentally run through your hierarchy. In Bryophytes, the gametophyte is the dominant, independent stage. In Pteridophytes, it is still somewhat independent. But as we move to Gymnosperms and Angiosperms, the gametophyte becomes microscopic and lives entirely within the tissues of the sporophyte. Therefore, the answer must be the seed-bearing plants. This is how you use the concept of 'evolutionary reduction' to solve a problem. Let us move to a more complex, multi-statement question, which is very common in the Exemplar. For example: Statement one: All Bryophytes are amphibians of the plant kingdom. Statement two: All Pteridophytes are homosporous. Are both statements correct? To solve this, you must apply your 'exception rule.' While statement one is a general rule because they need water for fertilization, statement two is false. Why? Because while many Pteridophytes are homosporous, some, like Selaginella and Salvinia, are heterosporous. This heterospory is a crucial step toward the seed habit. If you miss that exception, you miss the question. Another critical area is the 'Economic Importance' application. A question might ask: 'Which of the following is used as a food source, a jelly-forming agent, and a source of iodine?' You must recall your Algae classification. Agar is obtained from Red Algae, specifically Gelidium and Gracilaria. If the question asks about 'brown algae' used in the food industry, you are looking for Laminaria. Always link the specific chemical or economic use back to the specific class: Chlorophyceae, Phaeophyceae, or Rhodophyceae. Finally, let us practice the 'Diagram-Based Inference.' Imagine a diagram of a life cycle where the dominant phase is haploid. You must instantly identify this as a Haplontic life cycle, typical of many algae like Volvox or Spirogyra. If the diagram shows an alternation between a multicellular haploid and a multicellular diploid phase, you are looking at a Haplo-diplontic cycle, seen in Bryophytes and Pteridophytes. Remember the golden rule for solving biology application questions: Read the question twice, underline the 'limiting' or 'distinguishing' keywords, eliminate the obviously wrong options first, and then verify your choice against the NCERT textbook definitions. You are not just picking an answer; you are proving a biological concept. Let's get to work on these examples.","Welcome to the final stretch of our Plant Kingdom series. We have traveled from the simple, aquatic world of Algae to the complex, flowering world of Angiosperms. Now, it is time to transform your knowledge into marks. Let's start with our High-Yield Revision. If you are looking for the most important concepts that frequently appear in exams, focus on the life cycles. Remember the distinction: Haplontic is dominated by the gametophyte, seen in many algae; Diplontic is dominated by the sporophyte, seen in Gymnosperms and Angiosperms; and Haplo-diplontic is the intermediate stage, characteristic of Bryophytes and Pteridophytes. Another high-yield area is the evolutionary milestones. Always remember: the transition from water to land began with Bryophytes, but the true conquest of land required vascular tissues, which we see in Pteridophytes. The development of seeds was the game-changer in Gymnosperms, and the perfection of reproduction through double fertilization is the hallmark of Angiosperms. When you are sitting in the exam hall, time management is your best friend. For multiple-choice questions, do not spend more than forty-five seconds on a single item. Read the 'not' and 'incorrect' keywords very carefully; many students lose marks simply because they missed a single negative word in the question. For long-answer questions, your strategy should be 'Diagram First, Text Second.' If a question asks about the life cycle of a Moss or the structure of a Volvox colony, draw the diagram immediately. A well-labeled diagram can earn you eighty percent of the marks even if your written explanation is brief. Now, let's do a lightning-fast recap of the entire chapter to cement your memory. We began with the basis of classification, looking at body organization and life cycles. We studied Algae, categorized into Chlorophyceae, Phaeophyceae, and Rhodophyceae, noting their specific pigments like Chlorophyll a, b, c, and d. We moved to Bryophytes, the amphibians of the plant kingdom, where the gametophyte is the dominant phase. Then came the Pteridophytes, the first terrestrial plants with vascular tissues, where we learned the critical importance of heterospory as a precursor to the seed habit. We explored the Gymnosperms, characterized by naked seeds and specialized adaptations like needle-like leaves. Finally, we reached Angiosperms, where double fertilization ensures both embryo and endosperm formation. As you prepare, keep your NCERT textbook as your bible. Every diagram, every table, and every caption is a potential question. Don't just read the text; visualize the structures. If you can visualize the difference between a liverwort and a moss, or the difference between a zygote and an endosperm, you have mastered this chapter. You have worked hard through this series, and you are now ready to tackle any question the examiners throw at you. Stay calm, read carefully, and draw clearly. You've got this!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-biology-03-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Biomolecules, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-biology-09-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Chemical Basis of Life and the Importance of Biomolecules -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Chemical Basis of Life and the Importance of Biomolecules</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Life is a complex system of coordinated chemical reactions.</div>
+              <div id="qx0-p1" class="qe-bullet">• Biomolecules: Organic compounds essential for living organisms.</div>
+              <div id="qx0-p2" class="qe-bullet">• Building blocks: Amino acids, sugars, and nucleotides.</div>
+              <div id="qx0-p3" class="qe-bullet">• Macromolecules: Large polymers like proteins and polysaccharides.</div>
+              <div id="qx0-p4" class="qe-bullet">• Structure determines function in all biological molecules.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":4183695070,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A cinematic zoom-in sequence starting from a living forest, moving into a single plant cell, and finally transitioning into a glowing, rotating 3D model of a DNA double helix and a protein chain.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A cinematic zoom-in sequence starting from a living forest, moving into a single plant cell, and finally transitioning into a glowing, rotating 3D model of a DNA double helix and a protein chain.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Chemical Analysis and the Composition of Living Matter -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Chemical Analysis and the Composition of Living Matter</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Life is composed of a consistent set of fundamental chemical elements.</div>
+              <div id="qx1-p1" class="qe-bullet">• Carbon, Hydrogen, Oxygen, and Nitrogen make up 96% of living mass.</div>
+              <div id="qx1-p2" class="qe-bullet">• Carbon's tetravalency allows for the formation of complex molecular structures.</div>
+              <div id="qx1-p3" class="qe-bullet">• Elemental analysis identifies atoms; molecular analysis identifies bonds.</div>
+              <div id="qx1-p4" class="qe-bullet">• Chemical composition varies by organism type and environmental conditions.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3756845158,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular model of a cell dissolving into a cloud of individual atoms (C, H, O, N, P, S) which then reorganize into organized organic molecules.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D molecular model of a cell dissolving into a cloud of individual atoms (C, H, O, N, P, S) which then reorganize into organized organic molecules.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Primary and Secondary Metabolites: Classification and Significance -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Primary and Secondary Metabolites: Classification and Significance</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Primary Metabolites: Essential for growth, development, and reproduction.</div>
+              <div id="qx2-p1" class="qe-bullet">• Secondary Metabolites: Not essential for basic survival but provide ecological advantages.</div>
+              <div id="qx2-p2" class="qe-bullet">• Primary examples: Carbohydrates, Proteins, Lipids, and Nucleic Acids.</div>
+              <div id="qx2-p3" class="qe-bullet">• Secondary examples: Alkaloids, Terpenoids, Phenolics, and Antibiotics.</div>
+              <div id="qx2-p4" class="qe-bullet">• Significance: Primary fuels life; Secondary aids in defense and interaction.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":1560257578,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows a cell performing ATP production and DNA replication (Primary); Right side shows a plant secreting defensive chemicals to repel an insect (Secondary).</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen 3D animation: Left side shows a cell performing ATP production and DNA replication (Primary); Right side shows a plant secreting defensive chemicals to repel an insect (Secondary).</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Biomacromolecules: Concept of Molecular Mass and Polysaccharides -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Biomacromolecules: Concept of Molecular Mass and Polysaccharides</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Macromolecules typically have a molecular mass greater than 800 atomic mass units.</div>
+              <div id="qx3-p1" class="qe-bullet">• Polysaccharides are long chains of monosaccharides linked by glycosidic bonds.</div>
+              <div id="qx3-p2" class="qe-bullet">• Starch (Amylose and Amylopectin) serves as the primary energy storage in plants.</div>
+              <div id="qx3-p3" class="qe-bullet">• Glycogen is the highly branched energy storage molecule found in animals.</div>
+              <div id="qx3-p4" class="qe-bullet">• Cellulose provides structural support in plants, while Chitin supports fungi and arthropods.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":469052404,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular animation showing a linear chain of glucose molecules transforming into a highly branched glycogen structure, with labels appearing for Amylose and Amylopectin.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D molecular animation showing a linear chain of glucose molecules transforming into a highly branched glycogen structure, with labels appearing for Amylose and Amylopectin.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Proteins: Amino Acids, Peptide Bonds, and Primary to Quaternary Structures -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Proteins: Amino Acids, Peptide Bonds, and Primary to Quaternary Structures</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Amino acids: Building blocks with amino, carboxyl, and R-groups</div>
+              <div id="qx4-p1" class="qe-bullet">• Peptide bond: Covalent bond formed via condensation reaction</div>
+              <div id="qx4-p2" class="qe-bullet">• Primary Structure: The linear sequence of amino acids</div>
+              <div id="qx4-p3" class="qe-bullet">• Secondary Structure: Alpha-helices and Beta-pleated sheets</div>
+              <div id="qx4-p4" class="qe-bullet">• Tertiary and Quaternary: 3D folding and multi-subunit complexes</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2165604413,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular animation showing amino acids linking via peptide bonds, then folding from a simple string into a complex alpha-helix and finally a globular protein.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D molecular animation showing amino acids linking via peptide bonds, then folding from a simple string into a complex alpha-helix and finally a globular protein.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Lipids: Structure, Classification, and Biological Functions -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Lipids: Structure, Classification, and Biological Functions</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Lipids are hydrophobic and soluble in organic solvents.</div>
+              <div id="qx5-p1" class="qe-bullet">• Saturated vs. Unsaturated: Double bonds affect physical state.</div>
+              <div id="qx5-p2" class="qe-bullet">• Classification: Simple, Compound, and Derived lipids.</div>
+              <div id="qx5-p3" class="qe-bullet">• Phospholipids: The fundamental component of cell membranes.</div>
+              <div id="qx5-p4" class="qe-bullet">• Functions: Energy storage, membrane structure, and signaling.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":656521658,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular animation showing a phospholipid bilayer forming in water, with fatty acid tails pointing inward and hydrophilic heads facing outward.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D molecular animation showing a phospholipid bilayer forming in water, with fatty acid tails pointing inward and hydrophilic heads facing outward.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Nucleic Acids: DNA, RNA, and the Nucleotide Structure -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Nucleic Acids: DNA, RNA, and the Nucleotide Structure</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Nucleotide components: Pentose sugar, Nitrogenous base, and Phosphate group</div>
+              <div id="qx6-p1" class="qe-bullet">• Ribose sugar forms RNA; Deoxyribose sugar forms DNA</div>
+              <div id="qx6-p2" class="qe-bullet">• Purines: Adenine and Guanine (Double-ring); Pyrimidines: Cytosine, Thymine, Uracil (Single-ring)</div>
+              <div id="qx6-p3" class="qe-bullet">• Thymine is unique to DNA; Uracil is unique to RNA</div>
+              <div id="qx6-p4" class="qe-bullet">• DNA structure: Double helix with antiparallel strands and complementary base pairing</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":939471072,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D molecular animation zooming from a full DNA double helix down to a single nucleotide, showing the sugar-phosphate backbone and the hydrogen bonding between base pairs.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D molecular animation zooming from a full DNA double helix down to a single nucleotide, showing the sugar-phosphate backbone and the hydrogen bonding between base pairs.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Enzymes: Mechanism of Action and Factors Affecting Catalysis -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Enzymes: Mechanism of Action and Factors Affecting Catalysis</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Activation Energy: The energy barrier required to reach the transition state.</div>
+              <div id="qx7-p1" class="qe-bullet">• Lock and Key vs. Induced Fit: Models explaining enzyme-substrate specificity.</div>
+              <div id="qx7-p2" class="qe-bullet">• Active Site: The specific region where catalysis occurs.</div>
+              <div id="qx7-p3" class="qe-bullet">• Temperature and pH: Factors that can lead to enzyme denaturation.</div>
+              <div id="qx7-p4" class="qe-bullet">• Substrate Concentration: The relationship between substrate levels and V-max.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1489006227,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a substrate approaching a flexible enzyme active site, undergoing an induced fit, and releasing products while the activation energy curve drops significantly.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D animation showing a substrate approaching a flexible enzyme active site, undergoing an induced fit, and releasing products while the activation energy curve drops significantly.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Enzyme Inhibition and Regulation: Competitive vs Non-competitive -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Enzyme Inhibition and Regulation: Competitive vs Non-competitive</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Enzyme inhibition: Molecules that decrease enzyme activity to regulate metabolism.</div>
+              <div id="qx8-p1" class="qe-bullet">• Competitive Inhibition: Inhibitor resembles substrate and competes for the active site.</div>
+              <div id="qx8-p2" class="qe-bullet">• Competitive inhibition can be overcome by increasing substrate concentration.</div>
+              <div id="qx8-p3" class="qe-bullet">• Non-competitive Inhibition: Inhibitor binds to an allosteric site, not the active site.</div>
+              <div id="qx8-p4" class="qe-bullet">• Non-competitive inhibition changes enzyme shape and cannot be reversed by substrate.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2144738793,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows a substrate and inhibitor fighting for one active site; Right side shows an inhibitor binding to a side pocket, warping the active site shape.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation: Left side shows a substrate and inhibitor fighting for one active site; Right side shows an inhibitor binding to a side pocket, warping the active site shape.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Metabolic Pathways and the Role of Co-factors -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Metabolic Pathways and the Role of Co-factors</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Metabolic pathways: Interconnected series of enzyme-catalyzed reactions</div>
+              <div id="qx9-p1" class="qe-bullet">• Anabolism: Energy-consuming biosynthetic pathways (building up)</div>
+              <div id="qx9-p2" class="qe-bullet">• Catabolism: Energy-releasing degradative pathways (breaking down)</div>
+              <div id="qx9-p3" class="qe-bullet">• Co-factors: Non-protein components required for enzyme activity</div>
+              <div id="qx9-p4" class="qe-bullet">• Holoenzyme = Apoenzyme (protein) + Co-factor (non-protein)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":290626936,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D flowchart showing a linear pathway transitioning into a circular pathway, with glowing spheres representing co-factors docking into enzyme structures.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D flowchart showing a linear pathway transitioning into a circular pathway, with glowing spheres representing co-factors docking into enzyme structures.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Mistakes, Diagram Practice, and Numerical Problems in Biomolecules -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Mistakes, Diagram Practice, and Numerical Problems in Biomolecules</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Nucleoside vs Nucleotide: Don't forget the phosphate group!</div>
+              <div id="qx10-p1" class="qe-bullet">• Enzyme Saturation: V-max is reached when active sites are full.</div>
+              <div id="qx10-p2" class="qe-bullet">• Inhibition: Competitive can be overcome; Non-competitive cannot.</div>
+              <div id="qx10-p3" class="qe-bullet">• Peptide Math: Subtract eighteen for every peptide bond formed.</div>
+              <div id="qx10-p4" class="qe-bullet">• Diagram Precision: Clearly label 5-prime and 3-prime ends.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":58478296,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a correct vs. incorrect nucleotide structure, followed by a mathematical formula overlay for peptide bond mass calculation.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a correct vs. incorrect nucleotide structure, followed by a mathematical formula overlay for peptide bond mass calculation.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: High-Yield Questions, Revision, and Strategy -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: High-Yield Questions, Revision, and Strategy</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Focus on structural differences: DNA vs RNA and Protein folding levels.</div>
+              <div id="qx11-p1" class="qe-bullet">• Master Enzyme Inhibition: Competitive vs Non-competitive mechanisms.</div>
+              <div id="qx11-p2" class="qe-bullet">• Numerical Tip: Peptide bonds = number of amino acids minus one.</div>
+              <div id="qx11-p3" class="qe-bullet">• Use Active Recall and Flowcharts for metabolic pathways and regulation.</div>
+              <div id="qx11-p4" class="qe-bullet">• Prioritize well-labeled diagrams for maximum scoring potential.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":206425289,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a student's mind mapping connections between a protein structure, an enzyme active site, and a DNA helix, transitioning into a checklist of exam tips.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a student's mind mapping connections between a protein structure, an enzyme active site, and a DNA helix, transitioning into a checklist of exam tips.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Biomolecules today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Chemical Basis of Life and the Importance of Biomolecules <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Chemical Analysis and the Composition of Living Matter <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Primary and Secondary Metabolites: Classification and Significance <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Biomacromolecules: Concept of Molecular Mass and Polysaccharides <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Proteins: Amino Acids, Peptide Bonds, and Primary to Quaternary Structures <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Lipids: Structure, Classification, and Biological Functions <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Nucleic Acids: DNA, RNA, and the Nucleotide Structure <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Enzymes: Mechanism of Action and Factors Affecting Catalysis <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Enzyme Inhibition and Regulation: Competitive vs Non-competitive <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Metabolic Pathways and the Role of Co-factors <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Mistakes, Diagram Practice, and Numerical Problems in Biomolecules <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: High-Yield Questions, Revision, and Strategy <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our deep dive into one of the most fundamental chapters of Class 11 Biology: Biomolecules. Before we start looking at complex structures, we must ask ourselves a very basic yet profound question: What is life made of? If you look at a massive banyan tree, a tiny bacterium, or even yourself, you see a vast diversity of forms and functions. But if we zoom in, past the cells and past the organelles, we reach a level where biology meets chemistry. This is the realm of biomolecules. To understand life, we must first understand the chemical basis of life. Every living organism is essentially a complex chemical system. All the processes that define life—like breathing, moving, growing, and reproducing—are actually a series of coordinated chemical reactions. These reactions do not happen in a vacuum; they require specific substances to act as building blocks and as tools. These substances are what we call biomolecules. Now, you might wonder, why do we call them 'bio' molecules? The prefix 'bio' refers to life. These are organic compounds that are produced by living organisms and are essential for their survival. Think of a house. To build a house, you need bricks, cement, wood, and steel. In the biological world, the 'bricks' are molecules like carbohydrates, proteins, and lipids. But life is more than just a static structure; it is also a dynamic process. To keep the 'house' running, you need electricity and plumbing. In a cell, these functional roles are played by molecules like enzymes and nucleic acids. Let us categorize these molecules to make our study easier. Primarily, we look at small molecules like amino acids, simple sugars, and nucleotides. When these small units join together in long, organized chains, they form macromolecules. For example, a long chain of amino acids becomes a protein, and a long chain of sugars becomes a polysaccharide like starch. The study of these molecules is crucial because the structure of a biomolecule directly determines its function. If the shape of a protein changes even slightly, it might stop working, which can lead to diseases. Similarly, the structure of DNA is what allows it to carry the blueprint of life. In this chapter, we will explore how these molecules are organized, how they are classified into primary and secondary metabolites, and how they interact to maintain the delicate balance of life. We will move from the simplest building blocks to the most complex machines in the cell, like enzymes. By the end of this series, you will realize that life is not just a biological phenomenon, but a magnificent, highly organized chemical masterpiece. Let us begin our journey into the molecular heart of living organisms.","Welcome back to our series on Biomolecules. In our previous session, we established that life is essentially a complex web of chemical reactions. But how do scientists actually know what is inside a living cell? How do we move from observing a living organism to identifying its molecular components? This brings us to our second topic: Chemical Analysis and the Composition of Living Matter. To understand the chemistry of life, we must first understand how to break it down. Imagine you have a complex machine; to understand it, you might take it apart piece by piece. In biology, we do something similar through a process called chemical analysis. Historically, scientists began by analyzing the elemental composition of various organisms. They discovered that all living things, whether they are a tiny bacterium or a massive blue whale, are composed of the same basic elements. The most abundant elements found in living matter are Carbon, Hydrogen, Oxygen, and Nitrogen. These four elements alone make up about ninety-six percent of the total mass of most living organisms. Carbon is the backbone of life because of its unique ability to form four stable covalent bonds, allowing for the creation of complex, branched, and ring-shaped structures. Hydrogen and Oxygen are essential for the formation of water and organic functional groups, while Nitrogen is a critical component of amino acids and nucleic acids. Beyond these four, we also find significant amounts of Phosphorus, which is vital for energy molecules like ATP and the backbone of DNA, and Sulfur, which is found in certain amino acids like cysteine. However, it is not just about the elements; it is about how they are organized. When we perform a chemical analysis, we often use a technique called wet chemical analysis. This involves using specific chemical reagents to react with certain components. For example, if we want to test for the presence of proteins, we might use the Biuret reagent. If we are looking for carbohydrates, we might use Benedict's solution. Through these methods, we can quantify the amount of each component present in a sample. Another crucial aspect is the concept of elemental analysis versus molecular analysis. Elemental analysis tells us 'what' atoms are present, but molecular analysis tells us 'how' those atoms are bonded together. This is where the distinction between organic and inorganic compounds becomes vital. Most of the biomass in a cell consists of organic compounds—molecules that contain carbon-hydrogen bonds. These include carbohydrates, lipids, proteins, and nucleic acids. The study of these molecules reveals that life is not just a random collection of atoms, but a highly organized arrangement of specific chemical groups. As we progress through this chapter, keep this fundamental truth in mind: the chemical composition of a cell is not static. It changes depending on the type of cell, the organism, and even the environmental conditions. A plant cell will have a different chemical profile than an animal cell, particularly in its carbohydrate content. By mastering the basics of chemical analysis, we lay the groundwork for understanding the complex macromolecules that perform the actual work of life.","Welcome back. In our previous session, we explored the elemental composition of living matter. Now, we move into a crucial distinction in biochemistry: the difference between primary and secondary metabolites. Not all molecules produced by a cell serve the same purpose. To understand life at a molecular level, we must categorize these substances based on their functional roles. Let us start with Primary Metabolites. These are the molecules that are absolutely essential for the survival, growth, and reproduction of an organism. Think of them as the fundamental building blocks and the fuel for the cellular engine. If you remove a primary metabolite, the cell cannot function and will eventually die. This group includes carbohydrates, proteins, lipids, and nucleic acids, which we will study in depth in the coming lessons. They are also involved in core processes like respiration, photosynthesis, and DNA replication. Because they are so fundamental, primary metabolites are often produced in large quantities and are found across almost all living species. Now, let us turn our attention to the more specialized group: Secondary Metabolites. Unlike primary metabolites, these are not directly required for the basic survival or growth of the organism. You might wonder, if they aren't essential for survival, why does the organism spend energy making them? The answer lies in ecology and interaction. Secondary metabolites are often produced to provide a competitive advantage in a specific environment. They serve as chemical weapons, signals, or protective shields. For example, many plants produce alkaloids or tannins. These substances might taste bitter or be toxic, which prevents herbivores from eating the plant. Some secondary metabolites act as pigments to attract pollinators, while others act as antibiotics to kill off competing bacteria in the soil. Because these molecules are often species-specific, they are not found in every organism. Instead, they are highly specialized. Let us look at a formal classification of these secondary metabolites to make this easier to remember. We can group them into several categories based on their chemical nature. First, we have Alkaloids. These are nitrogen-containing compounds that often have profound physiological effects on animals. A famous example is caffeine or morphine. Second, we have Terpenoids. These are a diverse group of organic chemicals derived from five-carbon isoprene units. They include essential oils and many plant pigments. Third, we have Phenolics. These compounds often contain a hydroxyl group attached to an aromatic hydrocarbon group. Examples include tannins and lignin, which provide structural support to plants. Finally, we have other specialized compounds like antibiotics, which are produced by microorganisms to inhibit the growth of other microbes. To summarize the significance: Primary metabolites are the 'internal' necessities—they manage the cell's internal machinery. Secondary metabolites are the 'external' tools—they manage the organism's relationship with the outside world. Understanding this distinction is vital because many of our most important medicines, such as penicillin or quinine, are actually secondary metabolites derived from fungi or plants. As we move forward, keep this distinction in mind, as it will help you understand why certain molecules are so ubiquitous while others are highly specialized.","Welcome back to our series on Biomolecules. In our previous session, we explored how living organisms are composed of various elements and small molecules. Today, we dive into the world of the giants: the Biomacromolecules. Now, you might wonder, what exactly makes a molecule a 'macromolecule'? To understand this, we first need to talk about molecular mass. In the world of chemistry, we usually deal with small molecules like water or glucose, which have relatively low molecular masses. However, in biological systems, we encounter molecules that are incredibly large. A key way to distinguish them is by their molecular mass. Generally, molecules with a molecular mass of more than eight hundred atomic mass units are considered to be in the macromolecular range. But in biology, we often see molecules that reach hundreds of thousands or even millions of atomic mass units. This massive scale is what allows these molecules to perform complex structural and functional roles within the cell. Now, let's move to a very important class of these macromolecules: the Polysaccharides. As the name suggests, 'poly' means many and 'saccharide' refers to sugar. So, polysaccharides are long chains of monosaccharides linked together. Unlike simple sugars, polysaccharides are not sweet in taste and are generally insoluble in water. They serve two primary roles in living organisms: storage and structure. Let's look at the storage polysaccharides first. One of the most famous examples is Starch. Starch is the primary storage polysaccharide in plants. It is composed of two types of components: amylose and amylopectin. Amylose is the linear, unbranched part of starch, while amylopectin is highly branched. This branching is crucial because it allows enzymes to break down the molecule more rapidly when the plant needs energy. In animals, the equivalent of starch is Glycogen. Glycogen is also a highly branched polymer of glucose, stored primarily in the liver and muscles of humans and other animals. It acts as a quick-access energy reserve. Now, let's shift our focus from energy storage to structural support. For this, we look at Cellulose and Chitin. Cellulose is the most abundant organic compound on Earth. It is a linear, unbranched homopolymer of beta-D-glucose. It forms the cell walls of plants, providing them with immense mechanical strength and rigidity. Because of its structure, most animals cannot digest cellulose, which is why it is often referred to as dietary fiber. Then, we have Chitin. Chitin is a unique structural polysaccharide found in the exoskeletons of arthropods, like insects and crabs, and also in the cell walls of fungi. Unlike cellulose, chitin is a polymer of N-acetylglucosamine, which is a derivative of glucose containing nitrogen. This nitrogenous component adds to its strength and durability. To summarize, while the molecular mass defines the scale of these molecules, their specific chemical linkages and branching patterns determine whether they will store energy for a rainy day or build the very walls that hold a cell together. Understanding these patterns is the first step toward mastering the complex chemistry of life.","Welcome back. In our previous session, we explored the concept of biomacromolecules and polysaccharides. Now, we move to one of the most functionally diverse groups of macromolecules: Proteins. Proteins are heteropolymers of amino acids. To understand proteins, we must first understand their building blocks, which are amino acids. An amino acid is a molecule that contains both an amino group, which is negative nitrogenous, and a carboxylic acid group, which is acidic. This dual nature is why they are called amino acids. At the central carbon atom, also known as the alpha carbon, there is a hydrogen atom and a variable side chain called the R-group. This R-group is what makes each of the twenty different amino acids unique. Some amino acids have non-polar side chains, some are polar, and some carry positive or negative charges. When two amino acids join together, they undergo a condensation reaction. In this process, the carboxyl group of one amino acid reacts with the amino group of another, releasing a molecule of water. The resulting covalent bond between the carbon of the carboxyl group and the nitrogen of the amino group is called a peptide bond. A long chain of these amino acids linked by peptide bonds is called a polypeptide. Now, let us look at how these chains fold into complex shapes. The first level of organization is the Primary Structure. This is simply the linear sequence of amino acids in the polypeptide chain. Just like the order of letters determines a word, the specific sequence of amino acids determines the protein's ultimate function. If you change even one amino acid, the entire protein might fail to work. Next is the Secondary Structure. This refers to the local folding of the polypeptide chain due to hydrogen bonding between the backbone atoms. There are two common patterns here: the alpha-helix, which is a right-handed coil, and the beta-pleated sheet, which looks like a folded paper fan. Third, we have the Tertiary Structure. This is the overall three-dimensional shape of a single polypeptide. It is formed by various interactions between the R-groups, such as hydrophobic interactions, ionic bonds, disulfide bridges, and hydrogen bonds. This folding is crucial because it creates the specific active sites needed for biological activity. Finally, we have the Quaternary Structure. This level is only present in proteins that consist of more than one polypeptide chain. These individual chains, called subunits, must come together in a specific arrangement to form a functional protein. A classic example is hemoglobin, which consists of four subunits working together. Remember, the structure of a protein is directly tied to its function; if the shape is lost, a process called denaturation occurs, and the protein loses its ability to work.","Welcome back. In our previous session, we explored the complex folding of proteins. Now, we move to a group of biomolecules that are fundamentally different in their chemical nature: Lipids. Unlike carbohydrates and proteins, lipids are not strictly polymers. They do not consist of long chains of repeating monomeric units. Instead, they are a heterogeneous group of compounds that are insoluble in water but readily dissolve in organic solvents like ether, chloroform, or benzene. This hydrophobic nature is their defining characteristic. Let us look at their structure. Most lipids are esters of fatty acids with various alcohols. The most common fatty acids are long-chain carboxylic acids, typically containing between sixteen and eighteen carbon atoms. These fatty acids can be classified into two types based on their saturation. Saturated fatty acids have no double bonds between the carbon atoms in the hydrocarbon chain, making them straight and allowing them to pack tightly, often appearing solid at room temperature, like animal fats. Unsaturated fatty acids contain one or more double bonds, which create kinks in the chain, preventing tight packing and keeping them liquid at room temperature, such as vegetable oils. Now, let us classify them. We can broadly categorize lipids into simple, compound, and derived lipids. Simple lipids are esters of fatty acids with alcohols. A classic example is a triglyceride, which is one fatty acid molecule joined to a glycerol molecule. These are our primary energy storage molecules. Compound lipids are esters of fatty acids containing additional groups. For instance, phospholipids are esters of fatty acids, glycerol, and a phosphoric acid group. Phospholipids are crucial because they form the lipid bilayer of all biological membranes. Another example is glycolipids, which contain a carbohydrate group. Then, we have derived lipids. These are substances produced by the hydrolysis of simple and compound lipids. Examples include steroids, such as cholesterol, which is vital for membrane fluidity, and certain hormones. Beyond their structural roles, lipids serve several critical biological functions. First and foremost is energy storage. Lipids, especially triglycerides, store more than twice as much energy per gram as carbohydrates, making them highly efficient for long-term energy reserves. Second, they are the structural building blocks of cell membranes. The amphipathic nature of phospholipids—having both a hydrophilic head and a hydrophobic tail—allows them to form the protective barriers of every living cell. Third, lipids act as signaling molecules. Many hormones, like steroid hormones, are lipid-based and travel through the bloodstream to regulate various physiological processes. Fourth, they provide insulation and protection. Adipose tissue in animals acts as a thermal insulator to maintain body temperature and provides a cushion to protect internal organs from mechanical shock. Finally, lipids are essential components of the myelin sheath that insulates nerve fibers, ensuring rapid transmission of electrical impulses. As we move forward, remember that while lipids are not polymers, their diverse chemical structures allow them to perform roles ranging from cellular architecture to complex hormonal regulation.","Welcome back. We have explored carbohydrates, proteins, and lipids. Now, we move to the most critical information-carrying molecules of the cell: Nucleic Acids. If proteins are the workers of the cell, nucleic acids are the blueprints and the instruction manuals. They are the polymers that store and transmit genetic information. To understand these complex molecules, we must first zoom in and look at their fundamental building block: the nucleotide. A nucleotide is composed of three distinct components: a pentose sugar, a nitrogenous base, and a phosphate group. Let us look at the sugar first. In nucleic acids, we find a five-carbon sugar called a pentose. Depending on the type of sugar, we classify the nucleic acid into two types. If the sugar is ribose, we get Ribonucleic Acid, or RNA. If the sugar is deoxyribose, we get Deoxyribonucleic Acid, or DNA. Now, let us examine the nitrogenous bases. These are heterocyclic compounds, meaning they contain ring structures with nitrogen atoms. We categorize them into two groups: Purines and Pyrimidines. The Purines are double-ring structures, and they include Adenine and Guanine. You can remember them with the mnemonic 'Pure As Gold'. The Pyrimidines are single-ring structures, consisting of Cytosine, Thymine, and Uracil. Here is a crucial distinction for your exams: while Cytosine and Guanine are found in both DNA and RNA, Thymine is exclusive to DNA, and Uracil is found only in RNA instead of Thymine. Next, let us look at how these components connect. The nitrogenous base attaches to the one-prime carbon of the sugar through a glycosidic bond. The phosphate group attaches to the five-prime carbon of the sugar through an ester linkage. When a sugar and a base join, they form a nucleoside. When a phosphate group is added to that nucleoside, it becomes a nucleotide. These nucleotides then polymerize to form long chains. In DNA, the backbone is formed by alternating sugar and phosphate groups, linked by phosphodiester bonds. The nitrogenous bases project inward, away from the backbone. This structure allows for the famous double helix formation. In DNA, the two strands are antiparallel, meaning one runs in the five-prime to three-prime direction, while the other runs three-prime to five-prime. The strands are held together by hydrogen bonds between complementary bases. Adenine always pairs with Thymine via two hydrogen bonds, and Guanine always pairs with Cytosine via three hydrogen bonds. This specific pairing, known as complementary base pairing, is what allows DNA to replicate accurately. RNA, on the other hand, is typically single-stranded. However, it can fold into complex three-dimensional shapes to perform various functions, such as acting as a messenger, a carrier of amino acids, or even a catalyst itself. Understanding this structure is the key to understanding how life replicates and how traits are passed from one generation to the next. Let us move on to the next part where we discuss how these molecules actually function in the cell.","Welcome back. In our previous session, we understood what enzymes are. Now, let's dive into the heart of biochemistry: how do these biological catalysts actually work? To understand this, we must first look at the concept of Activation Energy. Imagine you are trying to push a heavy boulder over a hill. The energy required to get that boulder to the top of the hill is the activation energy. In a chemical reaction, reactants must reach a high-energy, unstable state called the transition state before they can turn into products. This energy barrier is the activation energy. Enzymes work by lowering this activation energy, making it much easier and faster for the reaction to occur. Now, let's look at the mechanism. How does an enzyme recognize its substrate? The most widely accepted model is the Lock and Key Hypothesis. Think of an enzyme as a specific lock and the substrate as a specific key. The enzyme has a uniquely shaped area called the Active Site. When the substrate molecules bind to this active site, they form an Enzyme-Substrate Complex. This binding is highly specific. However, modern science also gives us the Induced Fit Theory. This theory suggests that the active site is not a rigid lock, but rather a flexible structure. When the substrate approaches, the active site undergoes a slight conformational change to wrap more tightly around the substrate, ensuring a perfect fit. Once the reaction is complete, the products are released, and the enzyme remains unchanged, ready to catalyze another reaction. But enzymes don't work at the same speed under all conditions. Several factors affect the rate of catalysis. The first is Temperature. Every enzyme has an optimum temperature where it works most efficiently. For most human enzymes, this is around thirty-seven degrees Celsius. If the temperature rises too high, the hydrogen bonds holding the enzyme's shape break, causing the protein to unfold. This process is called denaturation, and it is irreversible. On the other hand, very low temperatures decrease the kinetic energy, slowing down the reaction. The second factor is pH. Most enzymes have an optimum pH. For example, pepsin in our stomach works best in highly acidic conditions, while trypsin in the small intestine prefers alkaline conditions. Deviating from this optimum pH can also lead to denaturation. The third factor is Substrate Concentration. As you increase the amount of substrate, the rate of reaction increases because more active sites are being filled. However, this increase is not infinite. Eventually, the rate reaches a plateau known as V-max. At this point, all available enzyme active sites are saturated with substrate. Adding more substrate won't speed up the reaction because the enzymes are already working at their maximum capacity. Understanding these mechanisms and factors is crucial for grasping how life maintains its metabolic balance.","Welcome back. In our previous session, we explored how enzymes lower activation energy to speed up reactions. But life isn't just about making things happen fast; it is also about knowing when to stop. This is where enzyme regulation comes in. Imagine your body is a busy factory. If every machine runs at full speed all the time, the factory will crash. To prevent this, cells use inhibitors—molecules that bind to enzymes and decrease their activity. Now, let's dive into the two most important types of inhibition you need to know for your exams: Competitive and Non-competitive inhibition. First, let's look at Competitive Inhibition. In this scenario, the inhibitor molecule looks very similar in shape and structure to the actual substrate. Because of this structural similarity, the inhibitor enters the active site of the enzyme, essentially 'competing' with the substrate for the same spot. Think of it like two people trying to sit in the same single chair. If the inhibitor occupies the active site, the substrate cannot bind, and no product is formed. However, there is a very important characteristic of competitive inhibition: it can be overcome by increasing the substrate concentration. If you flood the system with a massive amount of substrate, the probability of a substrate molecule hitting the active site becomes much higher than the inhibitor hitting it. A classic biological example of this is the inhibition of the enzyme Succinate Dehydrogenase by Malonate. The enzyme normally acts on Succinate, but Malonate has a very similar structure, so it competes for the active site. Now, let's move to the second type: Non-competitive Inhibition. This mechanism is fundamentally different. Here, the inhibitor does not look like the substrate at all. Therefore, it does not bother fighting for the active site. Instead, it binds to a completely different part of the enzyme called the Allosteric Site. When the inhibitor binds to this allosteric site, it causes a conformational change—a change in the three-dimensional shape—of the entire enzyme, including the active site. Because the shape of the active site is now distorted, the substrate can no longer fit properly, even if the active site itself is empty. Unlike competitive inhibition, you cannot overcome non-competitive inhibition by simply adding more substrate. No matter how much substrate you add, the enzyme's shape remains altered by the inhibitor. An example of this is how certain heavy metal ions like Silver or Mercury can inhibit enzymes by binding to sites away from the active center. To summarize the distinction for your notes: In competitive inhibition, the inhibitor competes for the active site, and the effect can be reversed by increasing substrate concentration. In non-competitive inhibition, the inhibitor binds to an allosteric site, changes the enzyme's shape, and cannot be reversed by adding more substrate. Understanding these two mechanisms is crucial for understanding how drugs work and how our metabolic pathways are controlled. In the next part, we will look at how these processes fit into larger metabolic pathways and the role of co-factors.","Welcome back. In our previous session, we explored how enzymes act as biological catalysts to lower activation energy. But enzymes do not work in isolation. They function within a complex, interconnected web of chemical reactions known as metabolic pathways. Think of a cell not as a static bag of chemicals, but as a bustling factory with assembly lines. A metabolic pathway is a series of enzyme-catalyzed reactions where the product of one reaction becomes the substrate for the next. These pathways are broadly classified into two types: Anabolism and Catabolism. Anabolism, or anabolic pathways, are biosynthetic processes. Here, small, simple precursor molecules are built up into larger, complex macromolecules like proteins or polysaccharides. These processes require an input of energy, often in the form of adenosine triphosphate, or A-T-P. An example would be the synthesis of a protein from individual amino acids. On the other hand, we have Catabolic pathways, or catabolism. These are degradative processes where complex organic molecules, like glucose or lipids, are broken down into simpler molecules like carbon dioxide and water. These pathways release energy, which the cell captures to drive other processes. Now, let us look at how these pathways are organized. They can be linear, where A becomes B, B becomes C, and so on, or they can be cyclic, where the starting material is regenerated at the end of the loop, such as the Krebs cycle. But here is a crucial detail: many enzymes cannot perform their job using only the amino acid chain that makes up their structure. To complete certain chemical transformations, enzymes require non-protein components. These are called co-factors. A co-factor is a non-protein chemical compound or metallic ion that is required for an enzyme's biological activity. We can categorize co-factors into three main groups: inorganic ions, prosthetic groups, and co-enzymes. First, let's discuss inorganic ions. These are simple metal ions like magnesium, iron, or zinc. For example, magnesium ions are often essential for enzymes that interact with A-T-P. These ions are often loosely bound to the enzyme and help in stabilizing the structure or participating directly in the reaction. Next, we have prosthetic groups. These are organic or inorganic molecules that are very tightly, often covalently, bound to the enzyme's protein portion. Because they are so firmly attached, they become an integral part of the enzyme's structure. A classic example is the heme group in hemoglobin or certain enzymes, which stays attached throughout the catalytic cycle. Finally, we have co-enzymes. These are organic molecules, often derived from vitamins, that are loosely associated with the enzyme. They are not permanently attached; instead, they often move from one enzyme to another, carrying chemical groups or electrons between them. Think of a co-enzyme as a shuttle bus that picks up a passenger—a chemical group—at one station and drops it off at another. For instance, Nicotinamide Adenine Dinucleotide, or N-A-D, is a vital co-enzyme that carries electrons during cellular respiration. When an enzyme requires a co-factor to function, the complete, active unit is called a holoenzyme. The protein part alone, which is inactive, is called the apoenzyme. To summarize the relationship: Apoenzyme plus Co-factor equals Holoenzyme. Understanding this distinction is vital for grasping how metabolic flux is controlled in the cell. If a co-factor is missing, the entire metabolic assembly line can grind to a halt, regardless of how much substrate is available.","Welcome back to our final deep dive into Biomolecules. Before we move to our exam masterclass, we need to address the areas where even the brightest students stumble. Let's start with common conceptual mistakes. One frequent error is confusing the structure of a nucleotide with a nucleoside. Remember, a nucleoside is just a nitrogenous base joined to a pentose sugar. To make it a nucleotide, you must add a phosphate group. Don't lose marks by forgetting that extra phosphate! Another mistake occurs in enzyme kinetics. Students often think that increasing substrate concentration will infinitely increase the rate of reaction. This is incorrect. Once all the active sites of the enzymes are saturated, the reaction reaches its maximum velocity, known as V-max. The rate stays constant even if you add more substrate. Also, be careful with the distinction between competitive and non-competitive inhibition. In competitive inhibition, the inhibitor looks like the substrate and fights for the active site, but you can overcome this by adding more substrate. In non-competitive inhibition, the inhibitor binds to an allosteric site, changing the enzyme's shape, so adding more substrate won't help. Now, let's move to diagram practice. In your exams, precision is everything. When drawing an amino acid, ensure the central alpha-carbon is clearly bonded to four distinct groups: the amino group, the carboxyl group, a hydrogen atom, and the specific R-group. If you misplace a single bond, the entire structure is chemically invalid. When drawing a nucleotide, clearly label the three components: the phosphate, the sugar, and the base. For nucleic acids, remember the directionality. Always indicate the five-prime and three-prime ends. A common mistake is drawing the sugar-phosphate backbone incorrectly; ensure the phosphate connects the carbon-five of one sugar to the carbon-three of the next. Let's tackle some numerical problems to sharpen your quantitative skills. Biomolecules often involve calculating molecular mass. For example, if you are asked to find the molecular mass of a tripeptide, you cannot simply add the masses of three amino acids. You must subtract the mass of the water molecules lost during the formation of peptide bonds. For every peptide bond formed, one molecule of water, which has a molecular mass of eighteen atomic mass units, is released. So, for a tripeptide, which has two peptide bonds, you calculate the sum of the three amino acids and subtract thirty-six. Another type of problem involves calculating the percentage composition of an element. If a protein is known to contain twenty percent nitrogen by mass, and you are given the total mass of the protein, you can easily find the mass of nitrogen. However, be prepared for more complex questions involving the ratio of nitrogen to phosphorus in DNA. Remember that DNA contains phosphorus in its backbone, while proteins contain nitrogen in their amino groups. If a question asks for the molarity of a glucose solution, remember the formula: molarity equals moles of solute divided by the volume of the solution in liters. Moles are calculated by dividing the given mass by the molecular mass of glucose, which is one hundred eighty grams per mole. Practice these calculations repeatedly. Accuracy in these numbers is what separates a good score from a great score. Keep your diagrams clean, your definitions precise, and your math checked. Let's review these points one last time before we head into our final exam strategy session.","Welcome to the final segment of our comprehensive journey through Biomolecules. You have traveled from the basic chemical composition of life to the intricate catalytic mechanisms of enzymes. Now, it is time to transition from learning to mastering. In the examination, Biomolecules is a high-weightage chapter because it bridges biology with chemistry. To score full marks, you must adopt a multi-dimensional approach. First, let us focus on the high-yield question patterns. The most frequent questions involve the structural differences between DNA and RNA, the levels of protein folding, and the mechanism of enzyme inhibition. You will often see questions asking you to distinguish between competitive and non-competitive inhibition. Remember, in competitive inhibition, the inhibitor resembles the substrate and competes for the active site, whereas in non-competitive inhibition, the inhibitor binds to an allosteric site, changing the enzyme's shape. Another critical area is the classification of secondary metabolites. Do not just memorize the names; understand their source, such as alkaloids, tannins, or essential oils. For numerical-based questions, pay close attention to the concept of molecular mass in macromolecules. You might be asked to calculate the number of peptide bonds in a protein chain of a certain length. Remember the rule: if there are 'n' amino acids, there are 'n minus one' peptide bonds. Now, let us talk about revision strategy. Do not attempt to re-read the entire textbook in one sitting. Instead, use active recall. Close your eyes and try to map out the structure of a nucleotide: phosphate group, pentose sugar, and nitrogenous base. If you struggle, that is your signal to review that specific section. Use flowcharts for metabolic pathways and enzyme regulation. For example, create a chart showing how temperature and pH affect the rate of reaction, noting the 'optimum' points. A common mistake students make is neglecting the diagrams. In Biology, a well-labeled diagram can earn you full marks even if your explanation is brief. Practice drawing the structure of an amino acid, the double helix of DNA, and the lock-and-key model of enzyme action. Ensure you can clearly label the active site and the substrate. When answering long-form questions, always use a structured approach. Start with a clear definition, move to the structural components, explain the biological significance, and if possible, provide a chemical equation or a structural formula. For example, when discussing proteins, mention the peptide bond, which is a covalent bond formed between the carboxyl group of one amino acid and the amino group of another. Use terms like primary, secondary, tertiary, and quaternary structures to show depth of knowledge. Lastly, manage your time. In the exam, tackle the objective multiple-choice questions first to build confidence. If you encounter a complex question on enzyme kinetics, mark it and move on; do not let one difficult question derail your momentum. You have worked hard through this chapter, covering everything from carbohydrates to complex metabolic regulation. Trust your preparation, focus on the connections between these molecules, and approach your exam with the precision of a scientist. You are now ready to master Biomolecules. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-biology-09-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

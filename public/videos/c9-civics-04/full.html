@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Working of Institutions, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c9-civics-04-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Why Institutions Matter and the Power of Rules -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Why Institutions Matter and the Power of Rules</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Institutions are organized bodies that govern through established rules.</div>
+              <div id="qx0-p1" class="qe-bullet">• Institutions prevent chaos by providing structure to decision-making.</div>
+              <div id="qx0-p2" class="qe-bullet">• Rules act as guardrails to prevent the misuse of political power.</div>
+              <div id="qx0-p3" class="qe-bullet">• Democracy relies on the distribution of power, not its concentration.</div>
+              <div id="qx0-p4" class="qe-bullet">• Three pillars: Legislature (makes laws), Executive (implements), Judiciary (interprets).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":697161273,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a chaotic football game transforming into a structured match with a referee, boundaries, and a rulebook, transitioning into a stylized 3D model of a government building.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D animation showing a chaotic football game transforming into a structured match with a referee, boundaries, and a rulebook, transitioning into a stylized 3D model of a government building.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): The Parliament: Why do we need it? Lok Sabha vs. Rajya Sabha -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">The Parliament: Why do we need it? Lok Sabha vs. Rajya Sabha</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Parliament: The supreme forum for law-making and government accountability.</div>
+              <div id="qx1-p1" class="qe-bullet">• Rajya Sabha: The Upper House representing States; a permanent body.</div>
+              <div id="qx1-p2" class="qe-bullet">• Lok Sabha: The Lower House representing the people; directly elected.</div>
+              <div id="qx1-p3" class="qe-bullet">• Money Bills: Can only be introduced and decided in the Lok Sabha.</div>
+              <div id="qx1-p4" class="qe-bullet">• Collective Responsibility: The Executive is accountable to the Lok Sabha.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3034080256,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D model showing the majestic circular architecture of the Rajya Sabha on one side and the rectangular, high-energy Lok Sabha chamber on the other, with glowing lines connecting them to represent the flow of laws.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D model showing the majestic circular architecture of the Rajya Sabha on one side and the rectangular, high-energy Lok Sabha chamber on the other, with glowing lines connecting them to represent the flow of laws.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): How Laws are Made: The Legislative Process and Real-world Examples -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">How Laws are Made: The Legislative Process and Real-world Examples</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Bill: A draft proposal for a new law.</div>
+              <div id="qx2-p1" class="qe-bullet">• Public Bills are introduced by Ministers; Private Bills by other MPs.</div>
+              <div id="qx2-p2" class="qe-bullet">• The Second Reading involves detailed clause-by-clause debate.</div>
+              <div id="qx2-p3" class="qe-bullet">• Select Committees provide expert scrutiny of complex Bills.</div>
+              <div id="qx2-p4" class="qe-bullet">• A Bill becomes an Act only after receiving Presidential Assent.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1804408650,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D flowchart animation showing a glowing 'Bill' document traveling through stages of 'Introduction', 'Debate', 'Committee Scrutiny', 'Voting', and finally transforming into a 'Law' icon upon hitting the President's seal.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D flowchart animation showing a glowing 'Bill' document traveling through stages of 'Introduction', 'Debate', 'Committee Scrutiny', 'Voting', and finally transforming into a 'Law' icon upon hitting the President's seal.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Political Executive: Distinction between Political and Permanent Executive -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Political Executive: Distinction between Political and Permanent Executive</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Executive: The branch responsible for implementing laws and policies.</div>
+              <div id="qx3-p1" class="qe-bullet">• Political Executive: Elected leaders like the PM and Ministers; temporary tenure.</div>
+              <div id="qx3-p2" class="qe-bullet">• Permanent Executive: Civil servants/Bureaucrats; appointed based on merit.</div>
+              <div id="qx3-p3" class="qe-bullet">• Role Distinction: Political leaders set direction; Bureaucrats provide expertise.</div>
+              <div id="qx3-p4" class="qe-bullet">• Accountability: Political Executive is accountable to the people and Parliament.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1626629000,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows an election rally (Political), the other shows a professional government office (Permanent), with a bridge connecting them labeled 'Policy Implementation'.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A split-screen 3D animation: one side shows an election rally (Political), the other shows a professional government office (Permanent), with a bridge connecting them labeled 'Policy Implementation'.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): The Prime Minister and Council of Ministers: Decision-making Dynamics -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">The Prime Minister and Council of Ministers: Decision-making Dynamics</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Hierarchy: Cabinet Ministers, Ministers of State (Independent Charge), and Ministers of State</div>
+              <div id="qx4-p1" class="qe-bullet">• The Prime Minister: The pivot of the executive and coordinator of ministries</div>
+              <div id="qx4-p2" class="qe-bullet">• Cabinet: The supreme decision-making body of the government</div>
+              <div id="qx4-p3" class="qe-bullet">• Collective Responsibility: The entire Council resigns if a no-confidence motion passes</div>
+              <div id="qx4-p4" class="qe-bullet">• The PM's Power: Authority to allocate portfolios and resolve inter-ministerial conflicts</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":3431535112,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D organizational pyramid showing the Prime Minister at the apex, branching down to the Cabinet, then to Ministers of State, with glowing lines representing the flow of authority.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D organizational pyramid showing the Prime Minister at the apex, branching down to the Cabinet, then to Ministers of State, with glowing lines representing the flow of authority.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): The President: Powers, Role, and Constitutional Limitations -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">The President: Powers, Role, and Constitutional Limitations</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• President is the Head of State, while PM is the Head of Government.</div>
+              <div id="qx5-p1" class="qe-bullet">• All major appointments are made in the name of the President.</div>
+              <div id="qx5-p2" class="qe-bullet">• A bill becomes law only after receiving the President's assent.</div>
+              <div id="qx5-p3" class="qe-bullet">• The President can declare National, State, or Financial Emergencies.</div>
+              <div id="qx5-p4" class="qe-bullet">• The President generally acts on the advice of the Council of Ministers.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2784318674,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing the Rashtrapati Bhavan on one side and the PMO on the other, with glowing lines of authority connecting them to illustrate the flow of advice.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D split-screen showing the Rashtrapati Bhavan on one side and the PMO on the other, with glowing lines of authority connecting them to illustrate the flow of advice.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): The Judiciary: Independence, Structure, and the Hierarchy of Courts -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">The Judiciary: Independence, Structure, and the Hierarchy of Courts</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Judiciary: The interpreter of laws and protector of the Constitution.</div>
+              <div id="qx6-p1" class="qe-bullet">• Judicial Independence: Freedom from interference by Executive and Legislature.</div>
+              <div id="qx6-p2" class="qe-bullet">• Integrated Structure: A single, unified hierarchy of courts across India.</div>
+              <div id="qx6-p3" class="qe-bullet">• The Pyramid: Supreme Court (Top) -&gt; High Courts (State) -&gt; District Courts (Base).</div>
+              <div id="qx6-p4" class="qe-bullet">• Right to Appeal: The ability to move from lower courts to higher courts for justice.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":1463925382,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D golden pyramid rises from the ground, with the Supreme Court icon at the apex, High Courts at the middle tier, and District Courts forming the wide base, with glowing lines showing the flow of appeals upward.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D golden pyramid rises from the ground, with the Supreme Court icon at the apex, High Courts at the middle tier, and District Courts forming the wide base, with glowing lines showing the flow of appeals upward.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Judicial Review and Public Interest Litigation (PIL) Explained -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Judicial Review and Public Interest Litigation (PIL) Explained</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Judicial Review: Power to declare unconstitutional laws null and void.</div>
+              <div id="qx7-p1" class="qe-bullet">• The Constitution remains the supreme law through judicial oversight.</div>
+              <div id="qx7-p2" class="qe-bullet">• Locus Standi: Traditional rule where only the victim could sue.</div>
+              <div id="qx7-p3" class="qe-bullet">• PIL: Allows third parties to file cases for public interest/marginalized groups.</div>
+              <div id="qx7-p4" class="qe-bullet">• Suo Motu: The court's power to take up cases on its own initiative.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2115718954,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a judge's gavel striking a 'Law Book' to invalidate a document on one side, and a diverse group of citizens standing behind a single lawyer on the other.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D split-screen showing a judge's gavel striking a 'Law Book' to invalidate a document on one side, and a diverse group of citizens standing behind a single lawyer on the other.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Case Study: How Institutions Interact in a Crisis -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Case Study: How Institutions Interact in a Crisis</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Institutions do not work in isolation; they interact dynamically.</div>
+              <div id="qx8-p1" class="qe-bullet">• The Executive provides immediate leadership and resource management.</div>
+              <div id="qx8-p2" class="qe-bullet">• The Parliament ensures democratic legitimacy and creates necessary laws.</div>
+              <div id="qx8-p3" class="qe-bullet">• The Judiciary acts as a watchdog through Judicial Review.</div>
+              <div id="qx8-p4" class="qe-bullet">• Checks and balances prevent any single institution from becoming too powerful.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2037965031,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D flowchart showing the Executive, Parliament, and Judiciary as interconnected gears that move together to stabilize a tilting scale representing 'National Stability'.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D flowchart showing the Executive, Parliament, and Judiciary as interconnected gears that move together to stabilize a tilting scale representing 'National Stability'.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Common Mistakes: Confusing Executive Roles and Legislative Powers -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Common Mistakes: Confusing Executive Roles and Legislative Powers</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Law-making (Legislature) vs. Law-implementation (Executive)</div>
+              <div id="qx9-p1" class="qe-bullet">• The Executive is accountable to the Lok Sabha</div>
+              <div id="qx9-p2" class="qe-bullet">• Political Executive sets policy; Permanent Executive executes it</div>
+              <div id="qx9-p3" class="qe-bullet">• The President provides assent but does not draft laws</div>
+              <div id="qx9-p4" class="qe-bullet">• Avoid treating the Legislature and Executive as identical entities</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2819724528,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a Parliament hall on the left (Legislature) and a government office with officials on the right (Executive), with glowing arrows showing the flow of a law from one side to the other.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation showing a Parliament hall on the left (Legislature) and a government office with officials on the right (Executive), with glowing arrows showing the flow of a law from one side to the other.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Exam Techniques: How to Answer Descriptive and Comparison Questions -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Exam Techniques: How to Answer Descriptive and Comparison Questions</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Use the 'Point-Heading-Explanation' method for descriptive answers</div>
+              <div id="qx10-p1" class="qe-bullet">• Always include technical keywords like 'Independence' or 'Constitutional Mandate'</div>
+              <div id="qx10-p2" class="qe-bullet">• Use T-shape tables to compare two institutions effectively</div>
+              <div id="qx10-p3" class="qe-bullet">• Employ linking words like 'whereas' and 'conversely' for comparison questions</div>
+              <div id="qx10-p4" class="qe-bullet">• Add a concluding sentence to link theory to constitutional principles</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3734453007,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a messy paragraph transforming into a structured, bulleted list with highlighted headings.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a messy paragraph transforming into a structured, bulleted list with highlighted headings.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Full Chapter Recap and Practice Paper Strategy -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Full Chapter Recap and Practice Paper Strategy</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Quick Recap: Parliament, Executive, and Judiciary connections</div>
+              <div id="qx11-p1" class="qe-bullet">• Comparison Strategy: Use T-tables for Lok Sabha vs. Rajya Sabha</div>
+              <div id="qx11-p2" class="qe-bullet">• Descriptive Strategy: Use the Point-Heading-Explanation method</div>
+              <div id="qx11-p3" class="qe-bullet">• Key Terminology: Use 'Judicial Review' and 'Accountability' for marks</div>
+              <div id="qx11-p4" class="qe-bullet">• Exam Timing: Answer confident questions first to build momentum</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3388821377,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D digital workspace showing a student's desk transitioning into a glowing flowchart of the Indian Government structure.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A 3D digital workspace showing a student's desk transitioning into a glowing flowchart of the Indian Government structure.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Working of Institutions today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Why Institutions Matter and the Power of Rules <small>0:00</small></button>
+          <button type="button" data-seek="300">2. The Parliament: Why do we need it? Lok Sabha vs. Rajya Sabha <small>5:00</small></button>
+          <button type="button" data-seek="600">3. How Laws are Made: The Legislative Process and Real-world Examples <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Political Executive: Distinction between Political and Permanent Executive <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. The Prime Minister and Council of Ministers: Decision-making Dynamics <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. The President: Powers, Role, and Constitutional Limitations <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. The Judiciary: Independence, Structure, and the Hierarchy of Courts <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Judicial Review and Public Interest Litigation (PIL) Explained <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Case Study: How Institutions Interact in a Crisis <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Common Mistakes: Confusing Executive Roles and Legislative Powers <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Exam Techniques: How to Answer Descriptive and Comparison Questions <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Full Chapter Recap and Practice Paper Strategy <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey through Class 9 Civics. Today, we are starting a very important chapter: 'Working of Institutions'. Before we dive into the complex structures of government, let's ask ourselves a simple question: Why do we even need a government? And more importantly, how does a government actually function without turning into chaos? Imagine a football match. If there were no referee, no fixed rules, and no boundaries, what would happen? It would be pure mayhem. The players would fight, the score would be disputed, and the game would never end. A country is much like that football match, but on a much larger scale. To manage a country of billions, we cannot rely on the whims or moods of a single person. We need a system. This system is what we call 'Institutions'. In a democracy, institutions are the pillars that hold everything together. They are not just buildings like the Parliament or the Supreme Court; they are the organized bodies and the set of rules that govern how decisions are made. Think about your school. You have a Principal, teachers, and a set of rules. If the Principal decided one day that all students must wear blue instead of white, without any rulebook or consultation, it would be unfair. But because there is a system of rules and roles, decisions follow a certain pattern. In a government, institutions perform three main tasks. First, they make decisions. Second, they implement those decisions. And third, they ensure that those decisions follow the law. Now, let's talk about the 'Power of Rules'. In a democracy, power is not concentrated in one hand. Instead, it is distributed through rules. These rules ensure that even the most powerful leader cannot act like a dictator. For example, if the government wants to build a new highway, they cannot just pick any land they want. There are rules regarding compensation, environmental impact, and public hearings. These rules are the 'guardrails' of democracy. They prevent the misuse of power. When we talk about institutions, we are talking about the 'how' of politics. We know that people vote and elect representatives, but how do those representatives actually change a law? How does a policy move from an idea in a minister's head to a reality on the ground? This happens through the interaction of different institutions. Sometimes these institutions work together smoothly, and sometimes they clash. For instance, the Parliament might pass a law, but the Judiciary might say that the law violates the Constitution. This tension is not a sign of failure; it is actually a sign of a healthy democracy. It means the system of checks and balances is working. In this chapter, we will explore the three main branches that act as these institutions: The Legislature, which makes laws; The Executive, which implements them; and The Judiciary, which interprets them. By the end of this series, you will understand that the strength of a democracy does not lie just in the people who are elected, but in the strength and independence of the institutions they inhabit. Let's get started by looking at the most important forum for decision-making: The Parliament.","Welcome back. In our last session, we understood how rules and institutions form the backbone of a democracy. Now, let's dive into the most visible institution of our country: The Parliament. You might wonder, why do we even need a Parliament? Why can't a single leader just make all the decisions? Well, in a democracy, power cannot be concentrated in one hand. We need a platform where people's representatives can debate, discuss, and question the government. The Parliament is the supreme forum for these activities. It serves three main purposes. First, it is the place where laws are made. Second, it is the place where the government is held accountable. Every decision taken by the Prime Minister or the Ministers must be justified before the Parliament. Third, it represents the will of the people. Since we cannot all sit in one room to govern, we elect representatives to speak for us. Now, let's look at the structure of the Indian Parliament. Our Parliament is bicameral, which means it consists of two Houses. The first is the Rajya Sabha, or the Council of States, and the second is the Lok Sabha, or the House of the People. Let's start with the Rajya Sabha. The Rajya Sabha is the Upper House. It represents the states of India. It is a permanent body, meaning it is never fully dissolved. Instead, one-third of its members retire every two years, and new members are elected to take their place. The total strength is 245 members. Out of these, 233 are elected by the members of the State Legislative Assemblies, and 12 are nominated by the President from fields like art, science, and literature. The Vice-President of India serves as the ex-officio Chairperson of the Rajya Sabha. Now, let's move to the Lok Sabha, which is the Lower House and arguably the more powerful house in many aspects. The Lok Sabha represents the people of India directly. Its members are elected through direct elections based on Universal Adult Franchise—meaning every citizen above eighteen can vote. The maximum strength is 550 members. The term of the Lok Sabha is five years, but it can be dissolved earlier by the President. The leader of the majority party in the Lok Sabha becomes the Prime Minister. Now, you might ask, what is the difference between them? Let's compare them on three key grounds. First, Composition. The Lok Sabha is directly elected by the people, while the Rajya Sabha is indirectly elected by the members of State Assemblies. Second, Representation. The Lok Sabha represents the entire nation as a single unit, whereas the Rajya Sabha represents the interests of the various States. Third, and most importantly, Powers. While both houses participate in making laws, the Lok Sabha holds more power in financial matters. Money Bills, which deal with taxes and government spending, can only be introduced in the Lok Sabha. The Rajya Sabha can suggest changes, but it cannot reject a Money Bill. Furthermore, the Council of Ministers, including the Prime Minister, is collectively responsible to the Lok Sabha. This means if the Lok Sabha passes a 'No-Confidence Motion' against the government, the entire ministry must resign. The Rajya Sabha does not have this power to remove the government. So, to summarize, the Rajya Sabha provides stability and represents state interests, while the Lok Sabha provides the dynamic energy of the people's will and holds the ultimate power over the executive and finances. Understanding this balance is key to understanding how our democracy functions.","Welcome back. In our previous segment, we looked at the structure of our Parliament. Now, we move to the most critical function of the legislature: Law-making. You might wonder, how does a mere idea or a social problem transform into a binding law that every citizen must follow? This journey is called the Legislative Process. It is not just about voting; it is a rigorous, multi-stage journey designed to ensure that every law is debated, scrutinized, and refined. The process usually begins with a proposal called a Bill. A Bill is essentially a draft version of a proposed law. There are two main types of Bills: Public Bills and Private Member Bills. A Public Bill is introduced by a Minister and reflects the policy of the government. A Private Member Bill is introduced by any Member of Parliament who is not a minister. Most major laws we follow come from Public Bills. The first stage is the Introduction. The member in charge moves a motion to introduce the Bill in either the Lok Sabha or the Rajya Sabha. Once introduced, the Bill undergoes its first reading, where its objectives are explained. Next comes the Second Reading, which is the most crucial stage. Here, the Bill is discussed clause by clause. This is where the real 'working of institutions' happens. Members debate the merits and demerits, suggest changes, and propose amendments. Sometimes, the House decides to refer the Bill to a Select Committee or a Joint Committee of both Houses. These committees consist of experts and MPs who study the Bill in great detail, away from the public glare, to ensure no technical flaw is missed. After the committee reports back, the Bill moves to the Third Reading. At this stage, no new amendments are allowed; the House simply votes to accept or reject the Bill as a whole. Now, remember, for a Bill to become an Act, it must pass through both Houses. If the Lok Sabha passes a Bill, it goes to the Rajya Sabha. If the Rajya Sabha passes it, it goes to the President. But what if the two Houses disagree? This is a common point of confusion. If there is a deadlock, the President can call a Joint Sitting of both Houses to resolve the disagreement. In a Joint Sitting, the combined strength of both Houses votes, and since the Lok Sabha has more members, it often has a decisive influence. Once both Houses have passed the Bill, it reaches the final stage: Presidential Assent. The President examines the Bill. The President can sign it, which turns the Bill into an Act, or the President can send it back for reconsideration. However, if both Houses pass the Bill again with or without changes, the President is constitutionally bound to sign it. Let us look at a real-world example to understand this. Consider a law like the Right to Information Act or a recent environmental regulation. It likely started as a need identified by citizens or experts, was drafted by the Ministry, debated fiercely in the Parliament, scrutinized by committees to ensure it doesn't violate fundamental rights, and finally received the President's signature. This process ensures that laws are not arbitrary whims of a ruler, but products of collective deliberation. It prevents hasty legislation that could harm the democratic fabric of our nation.","Now that we understand how laws are made in the Parliament, we must ask: who actually implements these laws? Who makes sure that the decisions taken in the Parliament actually reach the citizens? This brings us to the 'Executive'. In a democracy, the Executive is the branch of government responsible for the implementation of laws and policies. But here is the interesting part: the Executive is not a single group of people. It is divided into two distinct categories: the Political Executive and the Permanent Executive. Let us first look at the Political Executive. These are the people we elect directly or indirectly through elections. Think of the Prime Minister, the Chief Minister, and the Council of Ministers. They are the leaders of the political parties. Their role is crucial because they represent the will of the people. They decide the major policies of the country—for example, whether to focus on new education policies or changes in foreign relations. However, there is a catch. The Political Executive is temporary. They are elected for a specific term, usually five years in India. Once the term is over, they may be voted out or they may choose not to contest again. Because they are elected, they are highly accountable to the people and the Parliament. Now, let us turn our attention to the second group: the Permanent Executive. These are the civil servants, often called bureaucrats. You might know them as IAS, IPS, or IFS officers. Unlike the political leaders, these individuals are not elected by the people. Instead, they are recruited through a rigorous, merit-based competitive examination process conducted by bodies like the UPSC. They are called the 'Permanent Executive' because they do not change when the government changes. Even if a new political party wins the election and a new Prime Minister takes office, the bureaucrats stay in their positions. Their tenure is long, often lasting until they reach the age of retirement. So, what is the fundamental difference in their roles? Imagine a ship. The Political Executive is like the Captain who decides the destination—where the ship should go and which route it should take. The Permanent Executive is like the crew and the engineers who know exactly how to operate the engines, manage the supplies, and ensure the ship actually moves toward that destination. The Political Executive provides the direction and the vision, while the Permanent Executive provides the expertise and the continuity. The bureaucrats are experts in their specific fields—be it finance, agriculture, or security. They assist the ministers by providing necessary data, facts, and technical advice. A minister might decide to implement a new welfare scheme, but it is the bureaucrat who knows the administrative steps, the budget allocation, and the ground-level logistics required to make it work. This relationship is one of interdependence. The ministers need the expertise of the bureaucrats to make informed decisions, and the bureaucrats need the political leadership to provide the legal authority and policy direction. However, it is important to remember that in a democracy, the Political Executive is always supreme. Since they are accountable to the voters, they have the final say in policy matters. The Permanent Executive must work within the framework of the laws and policies set by the elected representatives. To summarize, the Political Executive is elected, temporary, and policy-making, whereas the Permanent Executive is appointed, permanent, and policy-implementing. Understanding this distinction is vital to understanding how the machinery of our government actually functions every single day.","Welcome back. In our previous segment, we distinguished between the Political Executive and the Permanent Executive. Now, let us dive into the heart of the political executive: the Prime Minister and the Council of Ministers. While the President is the formal head of the state, the real power of decision-making lies here. Let's start with the structure. The Council of Ministers is a large body, but it functions through a specific hierarchy. At the top is the Prime Minister. Below the Prime Minister, we have three categories of ministers. First, the Cabinet Ministers. These are the most important members who hold key portfolios like Home, Defence, or Finance. They attend every crucial meeting and make the most significant policy decisions. Second, we have the Ministers of State with Independent Charge. They head smaller ministries and do not report to a Cabinet Minister, but they are not part of the full Cabinet meetings unless specifically invited. Third, there are Ministers of State. These ministers are attached to Cabinet Ministers to assist them in their work. Now, you might wonder, how do decisions actually get made? This is where the 'Decision-making Dynamics' come into play. The Prime Minister is not just another member of the Council; he or she is the pivot around which the entire system rotates. The Prime Minister decides who will be a minister and which minister will handle which department. If the Prime Minister withdraws support from a minister, that minister must resign. This gives the Prime Minister immense authority. Furthermore, the Prime Minister presides over Cabinet meetings and coordinates the work of different departments. If there is a conflict between two ministries—say, the Ministry of Environment and the Ministry of Industry—it is the Prime Minister who resolves it. The Cabinet is the supreme decision-making body. When a major policy is proposed, it is discussed in the Cabinet. Once the Cabinet reaches a consensus, it becomes the official decision of the government. This is often called 'Collective Responsibility.' This is a vital concept for your exams. Collective Responsibility means that all ministers are jointly responsible to the Lok Sabha for every decision taken by the Council of Ministers. If the Lok Sabha passes a vote of no-confidence against the government, the entire Council of Ministers, including all ministers regardless of their rank, must resign together. You cannot say, 'I agree with the policy, but I disagree with the Prime Minister, so I will stay.' In a parliamentary democracy, the team sinks or swims together. This ensures that the government speaks with one voice. To summarize, the Prime Minister leads, the Cabinet decides, and the Council of Ministers implements, but they all stand or fall together under the principle of collective responsibility.","Welcome back. In our previous segment, we explored how the Prime Minister and the Council of Ministers drive the decision-making process of our country. Now, we turn our attention to the highest constitutional office in India: The President. You might wonder, if the Prime Minister holds so much power, what is the role of the President? Is the office just ceremonial? Let us dive into the details. According to the Constitution of India, the President is the Head of the State. This is a crucial distinction. While the Prime Minister is the Head of the Government, the President represents the nation and acts as the formal head of the executive. Every major decision of the government is taken in the name of the President. However, there is a significant constitutional limitation here. The President does not act independently. The President must act according to the advice or instructions of the Council of Ministers, headed by the Prime Minister. This is known as the principle of being a 'nominal executive.' Let's look at the specific powers. First, we have Executive Powers. All major appointments are made in the name of the President. This includes the Prime Minister, other ministers, the Judges of the Supreme Court and High Courts, the Governors of States, and the Election Commissioners. Even though the President makes these appointments, they are made on the recommendation of the Prime Minister. Second, we have Legislative Powers. The President is an integral part of the Parliament. No bill passed by the Lok Sabha and the Rajya Sabha can become a law without the President's assent. If the President signs it, it becomes an Act. The President also has the power to summon and prorogue the sessions of Parliament and can dissolve the Lok Sabha. Third, let's discuss Emergency Powers. This is where the President's role becomes very significant. Under certain extraordinary circumstances, the President can declare three types of emergencies: National Emergency, State Emergency, or President's Rule, and Financial Emergency. During these times, the federal structure of our country changes, and the central government gains much more control. But remember, even during an emergency, the President must act on the written advice of the Cabinet. Finally, we must understand the 'Constitutional Limitations.' The President is not a dictator. The Indian system is designed so that the real power rests with the elected representatives of the people. The President acts as a guardian of the Constitution. If there is a deadlock or a situation where the Council of Ministers cannot agree, the President can exercise 'situational discretion.' For example, if no single party gets a clear majority in the Lok Sabha after an election, the President uses their discretion to appoint a Prime Minister who is most likely to command a majority. So, to summarize: the President is the formal head, the appointments are made in their name, they sign laws into existence, and they hold emergency powers, but they almost always function on the advice of the Council of Ministers. Understanding this balance is key to understanding how our democracy prevents the concentration of power in a single individual.","Now that we have understood how the Legislature and the Executive function, we must ask: who ensures that these institutions follow the rules? This brings us to the third pillar of our democracy—the Judiciary. The Judiciary is the system of courts that interprets the law, settles disputes, and ensures that the Constitution is upheld. But for the Judiciary to be effective, it must possess one critical quality: Independence. What does judicial independence actually mean? It means that the other two branches—the Legislature and the Executive—cannot interfere in the work of the courts. Judges should be able to give decisions without fear of being removed by the Prime Minister or the Parliament. To ensure this, the Constitution provides certain safeguards. For instance, the process of appointing judges is designed to be non-political, and once appointed, it is extremely difficult to remove a judge. They cannot be removed simply because the government dislikes their verdict. This independence allows the judiciary to protect the fundamental rights of citizens, even against the state itself. Now, let us look at how the Indian Judiciary is organized. Unlike some countries that have many different types of court systems, India has a single, integrated judicial structure. This means that decisions made by higher courts are binding on the lower courts. At the very top of this pyramid sits the Supreme Court of India, located in New Delhi. The Supreme Court is the highest court of appeal. Its decisions are final and must be followed by every other court in the country. It also has the power to settle disputes between the Union government and the States, or between two different States. Moving down the hierarchy, we find the High Courts. Each state, or a group of states, has a High Court. The High Court is the highest judicial authority at the state level. It supervises the lower courts within its jurisdiction and has the power to issue orders protecting fundamental rights. Finally, at the base of this structure, we have the Subordinate Courts, often called District Courts. These are the courts that most citizens interact with. They deal with civil cases, like property disputes, and criminal cases, like theft or assault. These courts are located in almost every district of the country. So, to recap the hierarchy: at the peak is the Supreme Court, followed by the High Courts at the state level, and finally the District or Subordinate Courts at the local level. This pyramid structure ensures that if a person is unhappy with a decision in a lower court, they have the right to appeal to a higher court. This system of appeals is a fundamental part of our justice delivery mechanism, ensuring that mistakes can be corrected and justice is served fairly. In our next lesson, we will dive deeper into how the judiciary uses specific tools like Judicial Review and PIL to protect your rights.","Welcome back. In our previous session, we explored the hierarchy of the Indian Judiciary. But now, we must ask a crucial question: How does the Judiciary ensure that the Parliament and the Executive stay within their constitutional limits? This is where two powerful tools come into play: Judicial Review and Public Interest Litigation, or PIL. Let us first understand Judicial Review. In a democracy like India, the Constitution is the supreme law of the land. Every law passed by the Parliament and every action taken by the Executive must follow the rules laid down in the Constitution. However, sometimes, the Parliament might pass a law that violates the fundamental rights of citizens, or the government might take an action that goes against the spirit of the Constitution. When this happens, the Judiciary has the power to examine these laws and actions. If the Supreme Court or a High Court finds that a law or an order is inconsistent with the Constitution, they can declare it 'null and void.' This means the law is no longer valid and cannot be enforced. This power is called Judicial Review. It acts as a protective shield, ensuring that no institution becomes too powerful and that the basic structure of our Constitution remains intact. Think of it as a referee in a football match; the referee ensures that even the most powerful players follow the rules of the game. Now, let us move to our second concept, which is equally revolutionary: Public Interest Litigation, commonly known as PIL. Traditionally, the legal system followed a principle called 'Locus Standi.' This meant that only the person whose rights were directly violated could approach the court for justice. If someone's rights were being ignored, they had to fight the case themselves. But in a country as large and diverse as India, many people are poor, illiterate, or marginalized. They often do not even know that their rights are being violated, let alone have the resources to fight a long legal battle in a high court. To solve this, the Supreme Court introduced the concept of PIL in the early 1980s. Under PIL, any individual or organization can file a petition in the court on behalf of those who cannot approach the court themselves. This could be for issues like bonded labor, environmental pollution, or the rights of prisoners. In fact, the court can even take up a case on its own, based on a newspaper report or a letter written to a judge. This is known as 'Suo Motu' action. PIL has democratized justice in India. It has shifted the focus from individual disputes to social issues that affect the public at large. For example, if a factory is polluting a river and affecting the health of an entire village, a social activist can file a PIL to protect that community. To summarize, while Judicial Review allows the courts to check the power of the legislature and executive, PIL allows the courts to reach out to the most vulnerable sections of society. Together, these two mechanisms ensure that the rule of law prevails and that justice is not just for the powerful, but for everyone.","Now that we have understood the individual roles of the Parliament, the Executive, and the Judiciary, it is time to see them in action. In a textbook, institutions often look like separate boxes on a page. But in the real world, especially during a crisis, these boxes must work together, sometimes pushing against each other, to ensure the country functions. Let us look at a hypothetical but realistic case study to understand this dynamic. Imagine a sudden, massive public health crisis or a natural disaster that requires immediate national action. First, let us see the role of the Executive. The Prime Minister and the Council of Ministers must take immediate decisions regarding the allocation of funds, the deployment of resources, and the implementation of emergency protocols. This is the Political Executive in action. They might issue executive orders to manage the crisis. However, the Executive cannot act arbitrarily. They must follow the rules laid down by the Constitution. This is where the second institution comes in: the Parliament. While the Executive manages the day-to-day emergency, the Parliament must be kept informed. If the crisis requires new laws—for example, a law to regulate the distribution of essential medicines—the Executive must introduce a Bill in the Parliament. The Parliament debates the necessity, the cost, and the impact of these laws. This ensures that the Executive's power is checked by the representatives of the people. But what if the Executive takes a decision that seems to violate the fundamental rights of citizens? For instance, what if an emergency order restricts the freedom of movement in a way that is disproportionate or unfair? This is where the Judiciary enters the frame. The courts act as the ultimate watchdog. A citizen or a group can approach the High Court or the Supreme Court, perhaps through a Public Interest Litigation, which we discussed earlier. The Judiciary will then perform the power of Judicial Review. They will examine whether the Executive's action is constitutional. If the court finds that the government has overstepped its legal boundaries, it can strike down that order. So, in this crisis scenario, we see a beautiful, complex dance. The Executive provides the speed and leadership needed for action. The Parliament provides the democratic legitimacy and the legal framework. The Judiciary provides the safeguard for rights and the rule of law. They are not working in isolation; they are performing a system of checks and balances. If the Executive is too strong, the Parliament and Judiciary pull it back. If the Parliament passes a flawed law, the Judiciary can intervene. This interaction ensures that even in the most chaotic times, the country is governed by laws and not by the whims of individuals. This is the essence of how institutions work together to maintain stability and justice.","Welcome back. We have explored how the Parliament, the Executive, and the Judiciary function. But as you prepare for your exams, there is a very common trap that students fall into. Many students mistakenly believe that because the Prime Minister and the Council of Ministers are members of Parliament, they are the same thing as the Legislature. This is a fundamental error. Let us clear this up once and for all. The first major mistake is confusing the 'Power to Make Laws' with the 'Power to Implement Laws'. Remember, the Parliament is the legislative body. Its primary job is to debate, discuss, and pass laws. However, once a law is passed, the Parliament does not go out into the streets to enforce it. That is where the Executive comes in. The Executive, led by the Prime Minister and the Ministers, takes that law and turns it into action. If a question asks, 'Who makes the law?', the answer is the Legislature. If it asks, 'Who executes the law?', the answer is the Executive. Do not swap them. The second mistake involves the concept of 'Accountability'. Students often think the Executive is independent of the Parliament. In our parliamentary system, the opposite is true. The Executive is a part of the Legislature, but it is not the same as the Legislature. The Council of Ministers is collectively responsible to the Lok Sabha. This means the Executive stays in power only as long as it enjoys the confidence of the majority in the Parliament. If the Parliament passes a No-Confidence Motion, the Executive must resign. So, while they are different roles, they are deeply interconnected through accountability. The third mistake is a confusion between the 'Political Executive' and the 'Permanent Executive' when discussing legislative implementation. When a law is passed, the Ministers—who are the Political Executive—decide the policy direction. But the actual, day-to-day work of implementing that law is done by civil servants, like IAS officers, who are the Permanent Executive. Students often write that 'Ministers implement the law directly on the ground,' which is technically incorrect. Ministers provide the political leadership and direction; the bureaucracy provides the administrative execution. The fourth mistake is misunderstanding the President's role. Because the President is the Head of State and signs all bills, students often think the President is a legislative authority. This is wrong. The President is a formal part of the Parliament, but the President does not 'make' laws. The President's role is to give assent to the laws passed by the two Houses. Without the President's signature, a bill cannot become an Act, but the President does not participate in the debating or drafting process. Finally, watch out for the 'Separation of Powers' confusion. While we talk about the separation of powers, in India, we have a 'fusion' of powers between the Legislature and the Executive. Do not write that the Executive and Legislature are completely isolated from each other. They overlap significantly because the Ministers are also Members of Parliament. To summarize: The Legislature debates and makes laws; the Executive implements them; the Political Executive sets the policy; and the Permanent Executive carries out the administration. Keep these distinctions sharp, and you will avoid the most common marks-deduction traps in your Civics paper.","Welcome back. We have journeyed through the complex machinery of our democracy, from the halls of Parliament to the chambers of the Supreme Court. Now, it is time to translate that knowledge into marks. In your Class 9 examinations, the questions on 'Working of Institutions' are rarely simple one-word answers. You will face two main types of challenges: Descriptive questions and Comparison questions. Let us master both. First, let's look at Descriptive questions. These are questions that ask you to 'Explain the powers of the President' or 'Describe the process of law-making.' The biggest mistake students make here is writing a single, long paragraph. This is a trap. To score high, you must use the 'Point-Heading-Explanation' method. Instead of writing a wall of text, start with a clear heading. For example, if the question is about the powers of the Prime Minister, your first heading should be 'Head of the Council of Ministers.' Under this heading, write two to three precise sentences. This makes your answer structured and easy for the examiner to read. Always use keywords. If you are talking about the Judiciary, words like 'Independence,' 'Impartiality,' and 'Guardian of the Constitution' must be present. If you miss these technical terms, your answer might be correct in meaning but weak in academic weight. Now, let's move to the second type: Comparison questions. These are the high-order thinking questions. You might see: 'Distinguish between the Political Executive and the Permanent Executive' or 'Compare the Lok Sabha and the Rajya Sabha.' For these, never write two separate paragraphs. If you do, you aren't actually comparing; you are just listing. The secret weapon for comparison questions is the T-shape table. Draw a table with two columns. In the first column, write the features or the basis of comparison. In the second and third columns, write the details for each institution. For example, if comparing the Lok Sabha and Rajya Sabha, your rows could be 'Composition,' 'Term Duration,' and 'Special Powers.' This shows the examiner that you understand the relationship between the two entities. Another pro-tip for comparison is to use 'linking words' in your sentences. Instead of saying 'The Lok Sabha is powerful. The Rajya Sabha is also important,' say 'While the Lok Sabha holds more power regarding money bills, the Rajya Sabha plays a crucial role in representing the states.' Words like 'whereas,' 'on the other hand,' 'conversely,' and 'similarly' are your best friends. Finally, let's talk about the 'Value Addition' technique. In a five-mark question, after you have written your points, try to add a small real-world connection. If you are explaining Judicial Review, a quick mention that 'this ensures no law violates the basic structure of the Constitution' adds immense value. Remember, an answer in Civics is not just about what you know, but how logically you present it. Don't just tell the story of our institutions; prove you understand their mechanics through structure, keywords, and tables. Practice these techniques with the previous year's questions, and you will see a massive difference in your scores.","Welcome to the final segment of our journey through 'Working of Institutions'. We have covered everything from the halls of Parliament to the chambers of the Supreme Court. Now, it is time to shift our focus from learning to performing. This is your Exam Masterclass. First, let us do a lightning-fast recap to cement your memory. Remember, institutions are not just buildings; they are sets of rules that distribute power. We saw how the Parliament, through the Lok Sabha and Rajya Sabha, creates the laws that govern us. We distinguished between the Political Executive, who are our elected leaders like the Prime Minister, and the Permanent Executive, the civil servants who implement those decisions. We explored the President's role as the formal head and the Prime Minister's role as the real decision-maker. We also understood how the Judiciary acts as the guardian of the Constitution through Judicial Review and PILs. If you can connect these dots, you have mastered the chapter. Now, let us talk strategy. When you sit for your exam, you will face three types of questions. First, the Objective Type. These test your precision. Do not confuse the 'Head of State' with the 'Head of Government'. The President is the Head of State, while the Prime Minister is the Head of Government. Second, the Comparison Questions. You will often see questions like 'Distinguish between Lok Sabha and Rajya Sabha' or 'Political vs. Permanent Executive'. For these, never write long, rambling paragraphs. Use a T-shape table. On one side, write the feature, and on the other, the distinction. This makes it impossible for the examiner to miss your correct points. Third, the Long Answer or Descriptive Questions. These are the high-scoring ones. For a five-mark question, follow the 'Point-Heading-Explanation' rule. Do not just write a wall of text. Write a clear heading, such as 'Powers of the Prime Minister', and then provide two to three sentences of explanation. If the question asks about the 'Working of Institutions', always mention how they check and balance each other. This shows the examiner you understand the 'system', not just individual parts. A common mistake students make is being too vague. Instead of saying 'The Judiciary is powerful', say 'The Judiciary exercises power through Judicial Review, ensuring laws follow the Constitution'. Use the technical terms we learned: Separation of Powers, Accountability, and Constitutional Mandate. Finally, let's look at your practice paper strategy. When you get your question paper, spend the first five minutes reading everything. Identify the 'low-hanging fruit'—the questions you are 100 percent sure about. Answer them first to build confidence. For the case-study questions, read the passage twice. The answer is often hidden in the text, but you must link it to the institutional concept we studied. If a question asks about a conflict between a Minister and a Bureaucrat, you are being tested on the relationship between the Political and Permanent Executive. Practice writing one full-length answer every day under a timer. This builds the muscle memory needed for the actual exam. You have worked hard through all twelve parts of this chapter. You know the rules, you know the players, and now, you know the game. Go into that exam hall with confidence. You are not just reciting facts; you are explaining how democracy breathes. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c9-civics-04-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

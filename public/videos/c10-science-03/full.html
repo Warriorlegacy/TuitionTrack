@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Metals and Non-metals, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c10-science-03-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Real-world Applications and Why Metals and Non-metals Matter -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Real-world Applications and Why Metals and Non-metals Matter</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Matter is composed of elements classified as Metals or Non-metals</div>
+              <div id="qx0-p1" class="qe-bullet">• Metals: Essential for construction, electronics, and infrastructure</div>
+              <div id="qx0-p2" class="qe-bullet">• Non-metals: Vital for life processes, breathing, and nutrition</div>
+              <div id="qx0-p3" class="qe-bullet">• Classification is based on unique physical and chemical properties</div>
+              <div id="qx0-p4" class="qe-bullet">• Understanding these elements is key to modern engineering and biology</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":1621103155,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A high-speed 3D montage transitioning from a glowing steel skyscraper to a microscopic view of oxygen molecules, then to a circuit board with flowing electrons.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A high-speed 3D montage transitioning from a glowing steel skyscraper to a microscopic view of oxygen molecules, then to a circuit board with flowing electrons.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Physical Properties: Detailed Analysis of Metals and Non-metals with Activities -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Physical Properties: Detailed Analysis of Metals and Non-metals with Activities</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Metals are typically lustrous, while non-metals are generally dull (Exception: Iodine)</div>
+              <div id="qx1-p1" class="qe-bullet">• Malleability: Metals can be beaten into sheets; Non-metals are brittle</div>
+              <div id="qx1-p2" class="qe-bullet">• Ductility: Metals can be drawn into wires; Non-metals cannot</div>
+              <div id="qx1-p3" class="qe-bullet">• Conductivity: Metals conduct heat and electricity well (Exception: Graphite)</div>
+              <div id="qx1-p4" class="qe-bullet">• State: Most metals are solid (Exception: Mercury); Non-metals vary</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3509167750,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a hammer flattening a gold sheet versus shattering a piece of coal, alongside a glowing copper wire conducting electricity.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation showing a hammer flattening a gold sheet versus shattering a piece of coal, alongside a glowing copper wire conducting electricity.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Chemical Properties I: Reaction of Metals with Air and Water -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Chemical Properties I: Reaction of Metals with Air and Water</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Metals react with oxygen to form basic metal oxides.</div>
+              <div id="qx2-p1" class="qe-bullet">• Magnesium burns with a dazzling white flame to form magnesium oxide.</div>
+              <div id="qx2-p2" class="qe-bullet">• Highly reactive metals like Sodium are stored under kerosene.</div>
+              <div id="qx2-p3" class="qe-bullet">• Reactivity with water: Cold water vs. Hot water vs. Steam.</div>
+              <div id="qx2-p4" class="qe-bullet">• Hydrogen gas is released during the reaction of metals with water.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2833875894,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing magnesium burning in a crucible on one side, and a sequence of sodium reacting with cold water versus iron reacting with steam on the other.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen 3D animation showing magnesium burning in a crucible on one side, and a sequence of sodium reacting with cold water versus iron reacting with steam on the other.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Chemical Properties II: Reaction of Metals with Acids and Salt Solutions -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Chemical Properties II: Reaction of Metals with Acids and Salt Solutions</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Metals + Dilute Acid -&gt; Metal Salt + Hydrogen Gas</div>
+              <div id="qx3-p1" class="qe-bullet">• The 'Pop' Test confirms the presence of Hydrogen gas</div>
+              <div id="qx3-p2" class="qe-bullet">• Nitric acid often produces water instead of Hydrogen gas</div>
+              <div id="qx3-p3" class="qe-bullet">• Displacement: More reactive metal replaces less reactive metal</div>
+              <div id="qx3-p4" class="qe-bullet">• Example: Iron displaces Copper from Copper Sulphate solution</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2734460103,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a zinc strip bubbling in acid on the left, and an iron nail turning reddish-brown in a blue liquid on the right.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A split-screen 3D animation showing a zinc strip bubbling in acid on the left, and an iron nail turning reddish-brown in a blue liquid on the right.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): The Reactivity Series: Understanding Metal Potency and Displacement Reactions -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">The Reactivity Series: Understanding Metal Potency and Displacement Reactions</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Reactivity Series: A hierarchy of metals based on their chemical potency.</div>
+              <div id="qx4-p1" class="qe-bullet">• High Reactivity: Potassium and Sodium (found only in compounds).</div>
+              <div id="qx4-p2" class="qe-bullet">• Low Reactivity: Copper, Silver, and Gold (found in free state).</div>
+              <div id="qx4-p3" class="qe-bullet">• Displacement Reaction: More reactive metal replaces a less reactive metal.</div>
+              <div id="qx4-p4" class="qe-bullet">• Example: Zinc + Copper Sulfate yields Zinc Sulfate + Copper.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3872683585,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D vertical ladder appearing on screen with metal icons, showing a Zinc atom physically pushing a Copper ion out of a blue sulfate molecule.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D vertical ladder appearing on screen with metal icons, showing a Zinc atom physically pushing a Copper ion out of a blue sulfate molecule.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Ionic Compounds: Formation, Electron Dot Structures, and Properties -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Ionic Compounds: Formation, Electron Dot Structures, and Properties</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Ionic compounds form via electron transfer from metals to non-metals.</div>
+              <div id="qx5-p1" class="qe-bullet">• Electrostatic force of attraction holds cations and anions together.</div>
+              <div id="qx5-p2" class="qe-bullet">• Electron Dot Structures represent valence electrons visually.</div>
+              <div id="qx5-p3" class="qe-bullet">• Ionic compounds have high melting and boiling points due to strong bonds.</div>
+              <div id="qx5-p4" class="qe-bullet">• Electrical conductivity occurs only in molten or aqueous states.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":1978933673,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a Sodium atom transferring an electron to a Chlorine atom, followed by the ions snapping together into a crystalline lattice structure.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D animation showing a Sodium atom transferring an electron to a Chlorine atom, followed by the ions snapping together into a crystalline lattice structure.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Metallurgy I: Occurrence of Metals and Concentration of Ores -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Metallurgy I: Occurrence of Metals and Concentration of Ores</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Minerals: Naturally occurring substances in the Earth's crust.</div>
+              <div id="qx6-p1" class="qe-bullet">• Ores: Minerals from which metals can be extracted profitably.</div>
+              <div id="qx6-p2" class="qe-bullet">• Gangue: The unwanted impurities like sand and clay in an ore.</div>
+              <div id="qx6-p3" class="qe-bullet">• Gravity Separation: Uses density differences to remove impurities.</div>
+              <div id="qx6-p4" class="qe-bullet">• Froth Floatation: Uses pine oil to separate sulphide ores.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":280451907,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a heavy ore particle sinking in water while sand floats, and a magnetic roller lifting iron particles from a moving belt.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D split-screen showing a heavy ore particle sinking in water while sand floats, and a magnetic roller lifting iron particles from a moving belt.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Metallurgy II: Extraction of Metals (Low, Medium, and High Reactivity) -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Metallurgy II: Extraction of Metals (Low, Medium, and High Reactivity)</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Low reactivity metals: Extracted by heating or roasting sulphide ores.</div>
+              <div id="qx7-p1" class="qe-bullet">• Medium reactivity metals: Converted to oxides via roasting or calcination.</div>
+              <div id="qx7-p2" class="qe-bullet">• Reduction of medium reactivity oxides: Uses Carbon or Coke as a reducing agent.</div>
+              <div id="qx7-p3" class="qe-bullet">• High reactivity metals: Cannot be reduced by carbon; require electrolysis.</div>
+              <div id="qx7-p4" class="qe-bullet">• Electrolytic reduction: Metal ions move to the cathode to gain electrons.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3822756176,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a furnace for roasting, a chemical reduction setup, and an electrolytic cell with glowing ions moving to electrodes.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D split-screen showing a furnace for roasting, a chemical reduction setup, and an electrolytic cell with glowing ions moving to electrodes.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Refining of Metals: Electrolytic Refining and Purification Processes -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Refining of Metals: Electrolytic Refining and Purification Processes</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Refining is necessary to remove impurities from extracted metals.</div>
+              <div id="qx8-p1" class="qe-bullet">• Electrolytic Refining: Uses an electrolyte and two electrodes.</div>
+              <div id="qx8-p2" class="qe-bullet">• Anode: Thick block of impure metal; Cathode: Thin strip of pure metal.</div>
+              <div id="qx8-p3" class="qe-bullet">• Oxidation at Anode: Copper loses electrons to become Copper Two Plus ions.</div>
+              <div id="qx8-p4" class="qe-bullet">• Reduction at Cathode: Copper ions gain electrons to become pure Copper metal.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":2883780405,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cross-section of an electrolytic cell showing copper ions migrating from a dissolving impure anode to a growing pure cathode, with anode mud accumulating at the bottom.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D cross-section of an electrolytic cell showing copper ions migrating from a dissolving impure anode to a growing pure cathode, with anode mud accumulating at the bottom.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Corrosion: Mechanisms, Prevention, and Alloys -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Corrosion: Mechanisms, Prevention, and Alloys</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Corrosion: Gradual destruction of metals by air, moisture, and chemicals.</div>
+              <div id="qx9-p1" class="qe-bullet">• Rusting of Iron: Formation of hydrated iron oxide (iron oxide of two times water).</div>
+              <div id="qx9-p2" class="qe-bullet">• Prevention: Painting, oiling, and galvanization (coating with zinc).</div>
+              <div id="qx9-p3" class="qe-bullet">• Alloys: Homogeneous mixtures of metals or metals and non-metals.</div>
+              <div id="qx9-p4" class="qe-bullet">• Examples: Bronze (Copper + Tin), Brass (Copper + Zinc), Stainless Steel (Iron + Cr + Ni).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":993132212,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing an iron nail rusting on one side and a shiny stainless steel spoon on the other, transitioning into a molecular view of zinc protecting iron during galvanization.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation showing an iron nail rusting on one side and a shiny stainless steel spoon on the other, transitioning into a molecular view of zinc protecting iron during galvanization.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Worked Examples: Balancing Equations, Reactivity Predictions, and Word Problems -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Worked Examples: Balancing Equations, Reactivity Predictions, and Word Problems</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Law of Conservation of Mass: Atoms must be equal on both sides</div>
+              <div id="qx10-p1" class="qe-bullet">• Balancing Technique: Adjust coefficients, never change subscripts</div>
+              <div id="qx10-p2" class="qe-bullet">• Reactivity Rule: A more reactive metal displaces a less reactive one</div>
+              <div id="qx10-p3" class="qe-bullet">• Pop Sound Test: Indicates the presence of Hydrogen gas</div>
+              <div id="qx10-p4" class="qe-bullet">• Step-by-Step Problem Solving: Identify, Predict, and Balance</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3983316417,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a balancing scale for atoms on one side and a reactivity ladder with metals sliding up and down on the other.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a balancing scale for atoms on one side and a reactivity ladder with metals sliding up and down on the other.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Common Mistakes, Diagram Practice, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Common Mistakes, Diagram Practice, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Avoid confusing Roasting with Calcination</div>
+              <div id="qx11-p1" class="qe-bullet">• Ionic bonds involve electron transfer, not sharing</div>
+              <div id="qx11-p2" class="qe-bullet">• Rusting is specific to Iron; Copper forms green carbonate</div>
+              <div id="qx11-p3" class="qe-bullet">• Practice Electrolytic Refining and Electron Dot diagrams</div>
+              <div id="qx11-p4" class="qe-bullet">• Reactivity Series predicts Displacement Reactions</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2473267693,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a correct vs incorrect electron dot structure on one side, and a detailed, labeled electrolytic refining setup on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a correct vs incorrect electron dot structure on one side, and a detailed, labeled electrolytic refining setup on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Metals and Non-metals today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Real-world Applications and Why Metals and Non-metals Matter <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Physical Properties: Detailed Analysis of Metals and Non-metals with Activities <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Chemical Properties I: Reaction of Metals with Air and Water <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Chemical Properties II: Reaction of Metals with Acids and Salt Solutions <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. The Reactivity Series: Understanding Metal Potency and Displacement Reactions <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Ionic Compounds: Formation, Electron Dot Structures, and Properties <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Metallurgy I: Occurrence of Metals and Concentration of Ores <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Metallurgy II: Extraction of Metals (Low, Medium, and High Reactivity) <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Refining of Metals: Electrolytic Refining and Purification Processes <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Corrosion: Mechanisms, Prevention, and Alloys <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Worked Examples: Balancing Equations, Reactivity Predictions, and Word Problems <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Common Mistakes, Diagram Practice, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey into the fascinating world of Chemistry. Today, we are starting a brand new chapter in Class 10 Science: Metals and Non-metals. Before we dive into chemical equations and reactivity series, I want you to take a look around you. Look at the chair you are sitting on, the smartphone in your hand, the water you drink, and even the air you breathe. Everything in this universe is made of matter, and that matter is composed of elements. These elements are broadly classified into two major groups: Metals and Non-metals. But why does this classification matter? Why do we spend so much time studying them? Think about it. If you want to build a bridge that can withstand massive weight and heavy winds, would you use wood or steel? You would choose steel, which is a metal, because of its incredible strength and durability. If you want to conduct electricity to light up your room, would you use a piece of coal or a copper wire? You would choose copper, a metal, because of its high conductivity. Now, let's look at the other side. The oxygen we breathe to stay alive is a non-metal. The carbon in our food provides us with energy is a non-metal. Even the nitrogen in the atmosphere is a non-metal. So, while metals provide the structural backbone of our modern civilization—from the massive skyscrapers to the tiny microchips in your computers—non-metals are the very essence of life and biological processes. In this chapter, we are going to explore the fundamental differences between these two groups. We will investigate why some metals are soft enough to be cut with a knife, like sodium, while others are hard enough to scratch glass. We will learn why some elements react violently with water, while others remain calm for years. We will understand how metals and non-metals combine to form ionic compounds, which are the building blocks of many substances we use daily, like common salt, sodium chloride. We will also step into the shoes of a metallurgist to learn how we extract pure metals from the rocks and ores found deep inside the earth. This chapter is not just about memorizing the periodic table; it is about understanding the very materials that build our world. By the end of this series, you will not just see a piece of iron or a lump of sulfur; you will see their atomic structures, their chemical personalities, and their incredible utility. So, let's get started with our first deep dive into the physical properties of these elements.","Welcome back to our journey through the world of elements. In our previous session, we saw how metals and non-metals surround us in everyday life. Now, let us dive deep into what actually makes a metal a metal, and a non-metal a non-metal, by looking at their physical properties. We will do this through a series of observations and activities. First, let us talk about Lustre. Most metals have a characteristic shine on their surface. This is called metallic lustre. If you take a piece of copper or aluminum, you will notice they reflect light beautifully. Non-metals, on the other hand, are generally dull. However, there is a famous exception you must remember for your exams: Iodine is a non-metal, yet it possesses a shiny, lustrous appearance. Next, let us look at Malleability. This is the ability of a material to be beaten into thin sheets. If you take a piece of iron and hit it with a hammer, it flattens rather than breaking into pieces. Gold and silver are the most malleable metals. Non-metals are non-malleable; if you hit a piece of coal or sulfur with a hammer, it will simply shatter into powder. This brings us to Ductility. Ductility is the property that allows metals to be drawn into thin wires. Think of the long copper wires used in your home electrical wiring. Metals are highly ductile, while non-metals cannot be drawn into wires. Now, let us consider Hardness. Generally, metals are hard. For instance, iron is incredibly strong and hard. But wait, there is another exception here! Sodium and potassium are metals, yet they are so soft that you can easily cut them with a knife. On the other side, most non-metals like carbon in the form of diamond are extremely hard, while others like sulfur are soft. Moving on to Conduction. This is a crucial property. Metals are excellent conductors of both heat and electricity. This is why cooking utensils are made of metals like aluminum or stainless steel, and why electrical wires are made of copper. In metals, electrons are free to move, carrying charge and energy. Non-metals are generally poor conductors. If you use a wooden stick or a piece of coal, electricity will not flow through it. The only major exception is Graphite, a form of carbon, which is an excellent conductor of electricity. Finally, let us discuss the state of matter. At room temperature, most metals are solids. Again, we have an exception: Mercury is a metal, but it is a liquid at room temperature. Non-metals can be solids like sulfur, liquids like bromine, or gases like oxygen and nitrogen. By observing these properties—lustre, malleability, ductility, hardness, conductivity, and state—we can clearly distinguish between these two vast groups of elements. Let us move on to how these elements behave when they meet other substances.","Welcome back. In our previous lesson, we explored the physical characteristics of metals and non-metals. Now, we dive into the heart of chemistry: how these elements actually behave when they meet other substances. Today, we focus on two critical reactions: how metals react with air and how they react with water. Let's start with air. Air is not just empty space; it is a mixture of gases, primarily oxygen. When metals are heated in the presence of oxygen, they undergo oxidation to form metal oxides. For example, if you take a piece of magnesium ribbon and burn it in air, you will see a dazzling white flame. This reaction produces a white powder called magnesium oxide. The chemical equation for this is two magnesium plus one oxygen yields one magnesium oxide. Now, notice something important: most metal oxides are basic in nature. If you dissolve this magnesium oxide in water, it forms magnesium hydroxide, which turns red litmus paper blue, confirming its basic character. However, not all metals behave this way. Some metals, like sodium and potassium, are so reactive that they react vigorously with even the oxygen present in the air at room temperature. This is why they are stored under kerosene to prevent accidental fires. On the other hand, metals like silver and gold are very unreactive; they do not react with oxygen even when heated. Moving on to our second reaction: metals reacting with water. This is where we see a fascinating spectrum of reactivity. When a metal reacts with water, it produces a metal oxide or a metal hydroxide, and importantly, it releases hydrogen gas. Let's look at the different levels of this reaction. First, we have highly reactive metals like sodium and potassium. These metals react violently with cold water. The reaction is so exothermic, meaning it releases a massive amount of heat, that the hydrogen gas produced catches fire instantly. You will see a characteristic lilac flame with potassium. This is why we never use cold water with these metals. Next, we have metals like calcium. Calcium reacts with cold water, but much less violently than sodium. It forms calcium hydroxide and bubbles of hydrogen gas stick to the surface of the metal, making the calcium float. Now, let's look at magnesium. Magnesium is a bit different. It does not react with cold water at all. However, if you take hot water, magnesium reacts to form magnesium hydroxide and hydrogen gas. If you want to see a really intense reaction with magnesium, try reacting it with steam. When magnesium reacts with steam, it forms magnesium oxide and hydrogen gas. Then we have a group of metals like aluminium, iron, and zinc. These metals are quite stubborn. They do not react with cold or hot water. They only react when they are heated with steam. For instance, when iron reacts with steam, it forms iron oxide and hydrogen gas. Finally, we have the least reactive metals, such as copper, silver, and gold. These metals do not react with water at all, whether it is cold, hot, or even steam. To summarize, the reactivity of metals with water depends on their position in the reactivity series. Highly reactive metals react with cold water, moderately reactive metals react with hot water or steam, and low reactivity metals do not react with water at all. Understanding these patterns is the key to predicting chemical behavior in the lab and in industry.","Welcome back. In our previous lesson, we explored how metals react with oxygen and water. Now, let us dive into another crucial aspect of their chemical nature: how metals react with dilute acids and various salt solutions. When a metal reacts with a dilute acid, such as hydrochloric acid or sulphuric acid, it generally produces a metal salt and releases hydrogen gas. Let us look at a classic example. Imagine we take a piece of zinc and add dilute hydrochloric acid to it. The zinc displaces the hydrogen from the acid to form zinc chloride and hydrogen gas. The chemical equation for this is Zinc plus two Hydrochloric acid yields Zinc chloride plus Hydrogen gas. You can actually observe this in a laboratory by performing the pop test. If you bring a burning matchstick near the mouth of the test tube, the hydrogen gas will burn with a characteristic 'pop' sound, confirming its presence. However, there is an important observation to make here. Not all metals react with all acids to produce hydrogen. For instance, when metals react with nitric acid, which is a very strong oxidizing agent, hydrogen gas is usually not evolved. Instead, the nitric acid oxidizes the hydrogen produced into water, and the metal itself gets oxidized to its oxide, nitrate, or other oxides. This is because nitric acid is such a powerful oxidizer that it immediately reacts with the hydrogen gas being formed. Now, let us move on to a different type of reaction: the reaction of metals with salt solutions. This is where we see the concept of displacement in action. When a more reactive metal is added to a solution of a salt of a less reactive metal, the more reactive metal displaces the less reactive metal from its salt solution. Let us take a practical example. Suppose we have a blue solution of Copper Sulphate. This blue color is due to the presence of copper ions. If we drop an iron nail into this solution, a chemical change occurs. Iron is more reactive than copper. Therefore, the iron will displace the copper from the copper sulphate solution. As a result, we get Iron Sulphate, which is a light green solution, and solid copper begins to deposit on the iron nail. The equation for this is Iron plus Copper sulphate yields Iron sulphate plus Copper. You will notice the distinct color change from blue to light green. This reaction is a direct consequence of the relative reactivity of the metals involved. It is important to remember that if you were to try this in reverse—placing a copper strip into an iron sulphate solution—no reaction would occur because copper is less reactive than iron and cannot displace it. Understanding these reactions with acids and salt solutions is fundamental, as it sets the stage for our next topic: the Reactivity Series, where we will rank these metals from most to least reactive.","Welcome back. In our previous sessions, we explored how metals react individually with oxygen, water, and acids. But have you ever wondered why some metals, like sodium, react explosively with cold water, while others, like iron, react only with steam? Or why a piece of copper cannot displace zinc from its salt solution? To answer these questions, we need to understand the concept of reactivity. Not all metals are created equal; they possess different levels of chemical potency. This hierarchy is known as the Reactivity Series. Imagine a ladder where the most reactive metals are at the very top and the least reactive are at the bottom. At the top, we find Potassium and Sodium. These are so reactive that they are never found in nature in their free state; they are always locked in compounds. Moving down, we have Calcium, Magnesium, and Aluminum. These are moderately reactive. Then comes the group of metals like Zinc, Iron, and Lead, which are less reactive. Finally, at the very bottom, we find precious metals like Copper, Silver, and Gold. These are so stable and unreactive that they are often found in their pure, elemental form in the earth's crust. This arrangement is not just a list; it is a predictive tool used to understand displacement reactions. A displacement reaction occurs when a more reactive metal displaces a less reactive metal from its salt solution. Let us look at a classic example. Suppose we take a solution of Copper Sulfate, which is blue in color, and drop a piece of Zinc into it. Zinc is higher in the reactivity series than Copper. Therefore, Zinc will 'push' the Copper out of the sulfate solution. The chemical equation for this is Zinc plus Copper Sulfate yields Zinc Sulfate and Copper. You will observe a color change from blue to colorless as the Copper Sulfate is converted into Zinc Sulfate, and a reddish-brown coating of solid copper will deposit on the zinc strip. Now, let us look at the reverse. If we take a solution of Zinc Sulfate and add a piece of Copper to it, nothing happens. Why? Because Copper is lower in the reactivity series than Zinc; it lacks the 'strength' to displace Zinc. This principle is the foundation of many industrial processes. It also explains why certain metals corrode faster than others and how we can extract pure metals from their ores. Remember this rule: A more reactive metal always displaces a less reactive metal from its aqueous salt solution. This concept is crucial for predicting the outcomes of chemical equations in your board exams. As we move forward, keep this series in mind, as it will be your guide to understanding how ionic bonds form and how metals are extracted from the earth.","Welcome back. In our previous session, we explored how metals and non-metals react with oxygen, water, and acids. Now, we are going to look at what happens when a metal and a non-metal meet each other. This interaction leads to the creation of one of the most important classes of substances in chemistry: Ionic Compounds. To understand this, we first need to remember the fundamental rule of chemistry: atoms want to achieve a stable electronic configuration, which usually means having a full outermost shell, often called an octet. Let us take the example of Sodium and Chlorine. Sodium has an atomic number of eleven. Its electronic configuration is two, eight, one. It has one extra electron in its outermost shell. On the other hand, Chlorine has an atomic number of seventeen, with a configuration of two, eight, seven. It needs exactly one more electron to complete its octet. Now, watch what happens. Sodium, being a metal, has a low ionization enthalpy, meaning it can easily lose that one electron. Chlorine, a non-metal, has a high electron affinity, meaning it strongly attracts electrons. When they react, Sodium transfers its single valence electron to Chlorine. Sodium becomes a positively charged ion, called a cation, written as Sodium plus. Chlorine becomes a negatively charged ion, called an anion, written as Chloride minus. This transfer is not just a movement; it is a complete transformation. Because one is positive and the other is negative, they are pulled together by a powerful force called electrostatic force of attraction. This force is what holds the ionic compound, Sodium Chloride, together. To represent this visually, we use Electron Dot Structures, also known as Lewis Dot Structures. In your notebook, draw the symbol for Sodium with one dot representing its valence electron. Draw the symbol for Chlorine with seven dots around it. Now, draw an arrow from the Sodium dot to the Chlorine atom. The final result shows the Sodium ion in brackets with a plus sign and the Chlorine ion in brackets with eight dots and a minus sign. This process is similar for Magnesium Chloride. Magnesium has two electrons in its outer shell, and Chlorine needs one. Therefore, one Magnesium atom reacts with two Chlorine atoms. Magnesium loses two electrons to become Magnesium plus two, and two Chlorine atoms each gain one electron to become two Chloride minus ions. This brings us to the unique properties of these ionic compounds. First, let us look at their physical state. Because the electrostatic forces are incredibly strong, ionic compounds are generally hard solids with high melting and boiling points. If you want to melt common salt, you need temperatures much higher than what a kitchen stove can provide. Second, let us discuss solubility. Most ionic compounds are highly soluble in water but are insoluble in organic solvents like kerosene or petrol. This is because water is a polar solvent that can break the strong electrostatic bonds. Third, a very important property is electrical conductivity. In their solid state, ionic compounds do not conduct electricity. Why? Because the ions are locked in a rigid three-dimensional lattice and cannot move. However, when you melt an ionic compound or dissolve it in water, the lattice breaks down, and the ions become free to move. This mobility allows them to carry an electric current. So, remember: solid is an insulator, but molten or aqueous is a conductor. To summarize, ionic compounds are formed by the complete transfer of electrons from a metal to a non-metal, resulting in strong electrostatic attractions, high melting points, and conductivity only in molten or solution states.","Welcome back! Now that we understand how metals react and how they are ranked in the reactivity series, it is time to answer a fundamental question: Where do we actually find these metals in nature? We don't just find pure gold or pure iron lying around in large quantities. Most metals are found in the form of compounds. To understand this, we need to learn some specific terminology. First, let's talk about minerals. Minerals are naturally occurring substances found in the earth's crust. They have a definite chemical composition. Now, when a mineral contains a very high concentration of a particular metal, we call that mineral an ore. For example, aluminum oxide is an ore of aluminum. However, it is important to remember a key distinction: all ores are minerals, but not all minerals are ores. Some minerals contain very little metal and are not economically viable to extract. The process of extracting a metal from its ore is what we call metallurgy. The first step in metallurgy is not extraction, but rather the concentration of ores. In nature, ores are often mixed with impurities like sand, clay, and rocky materials. These impurities are known as gangue. To make the extraction process efficient, we must first remove this gangue. This process is called concentration or ore dressing. There are several methods to concentrate ores, depending on the nature of the ore. The first method is based on density differences, known as Hydraulic Washing or Gravity Separation. This is commonly used for heavy ores. In this method, the ore is crushed into fine particles and then washed with a stream of water. Because the ore particles are heavier than the impurities like sand and clay, the ore settles down at the bottom, while the lighter gangue is washed away. This is a very common method used in mining sites. The second method is quite fascinating and is called Magnetic Separation. This method is used when either the ore or the impurities have magnetic properties. For instance, if an ore like magnetite is mixed with non-magnetic impurities, we can pass the mixture over a conveyor belt with a magnetic roller. The magnetic ore particles will stick to the roller, while the non-magnetic impurities fall off. This allows for a very clean separation. The third method is quite different and is used primarily for sulphide ores. It is called Froth Floatation. In this process, the ore is treated with pine oil and mixed with water in a container. Air is blown through the mixture to create froth or foam. The sulphide ore particles are preferentially wetted by the oil and attach themselves to the air bubbles, rising to the top as a froth. The impurities, being water-wetted, sink to the bottom. The froth is then skimmed off the top. Finally, we have the method used for carbonate or oxide ores, which is Leaching. Leaching is a chemical method of concentration. Here, the ore is treated with a specific chemical solvent that dissolves only the metal compound, leaving the impurities behind. For example, in the process of extracting bauxite, the ore is treated with sodium hydroxide to dissolve the aluminum oxide, leaving the impurities as a solid residue. Once the concentration is complete, we are left with a purified ore, ready for the next stage of metallurgy, which we will discuss in our next lesson.","Welcome back. In our previous lesson, we learned how to concentrate ores. But once we have a concentrated ore, how do we actually get the pure metal out? This process is called extraction. The method we use depends entirely on one thing: the reactivity of the metal. We can categorize metals into three groups based on their position in the reactivity series. Let us start with the easiest group: the low reactivity metals. These are metals like Mercury and Copper. They are often found in nature as sulphides or oxides. For these metals, the extraction process is quite simple. We can just heat the ore itself in the presence of air. For example, when we heat Cinnabar, which is Mercury Sulphide, it decomposes to give Mercury metal and Sulphur dioxide gas. The equation is Mercury Sulphide heated to give Mercury plus Sulphur dioxide. In some cases, we might need to roast the ore first. Roasting means heating the sulphide ore strongly in the presence of excess air to convert it into an oxide. Once we have the metal oxide, we can reduce it using a milder reducing agent like Carbon. Now, let us move to the middle ground: medium reactivity metals. These metals, such as Zinc, Iron, and Lead, are typically found as sulphides or carbonates. The extraction happens in two main stages. First, we convert the ore into its oxide. If it is a sulphide ore, we use roasting—heating it in excess air. If it is a carbonate ore, we use calcination. Calcination is the process of heating the carbonate ore strongly in the absence or limited supply of air to convert it into an oxide. Once we have the metal oxide, we need to remove the oxygen. We do this through reduction using a reducing agent, most commonly Carbon or Coke. The reaction looks like this: Zinc Oxide plus Carbon gives Zinc plus Carbon Monoxide. This is a chemical reduction. Now, let us tackle the most challenging group: the high reactivity metals. These are metals like Sodium, Magnesium, and Aluminium. They are so reactive that they form very stable compounds, usually chlorides or oxides. Because they hold onto their oxygen so tightly, Carbon is not strong enough to pull the oxygen away. Therefore, we cannot use reduction with carbon for these metals. Instead, we must use a much more powerful method: Electrolytic Reduction. In this process, we pass an electric current through the molten ore. For example, to get Sodium, we use molten Sodium Chloride. When electricity passes through the molten salt, the Sodium ions move towards the negative electrode, which is the cathode, and get reduced to Sodium metal. Simultaneously, the Chlorine ions move towards the positive electrode, the anode, and get oxidized to Chlorine gas. This is an electrochemical process. To summarize, low reactivity metals are extracted by simple heating or roasting. Medium reactivity metals are converted to oxides via roasting or calcination and then reduced using carbon. High reactivity metals require electrolysis of their molten salts. Understanding this hierarchy is the key to mastering metallurgy.","Welcome back. In our previous lesson, we discussed how metals are extracted from their ores using various chemical processes. However, the metal we obtain after extraction is rarely pure. It usually contains various impurities or gangue, making it unsuitable for high-end industrial or electrical applications. To achieve the extreme level of purity required, we must use a process called refining. Today, we will focus on the most important method: Electrolytic Refining. Let us take Copper as our primary example, as it is the most common metal refined this way. Imagine we have a sample of impure copper. To refine it, we set up an electrolytic cell. First, we need an electrolyte. For copper refining, we use a solution of Copper Sulphate, which is written as Copper Two Plus, Sulphate Two Minus. Now, let us look at the electrodes. We use two electrodes: the Anode and the Cathode. The Anode is the positive electrode, and the Cathode is the negative electrode. Here is the crucial part: we take a thick block of our impure copper and make it the Anode. Then, we take a thin strip of very pure copper and make it the Cathode. Now, when we pass an electric current through the Copper Sulphate solution, a fascinating chemical reaction occurs. At the Anode, which is positive, the copper atoms from the impure block lose electrons and turn into copper ions. This process is called oxidation. The chemical equation is: Copper solid minus two electrons gives Copper Two Plus ions. As these ions enter the solution, the impure block slowly dissolves and gets smaller. Simultaneously, at the Cathode, which is negative, the copper ions from the solution are attracted to it. When they reach the cathode, they gain electrons and turn back into solid copper atoms. This process is called reduction. The chemical equation is: Copper Two Plus ions plus two electrons gives Copper solid. Because the ions are moving from the impure anode to the pure cathode, the pure metal begins to deposit on the cathode, making it thicker and thicker. But what happens to the impurities? This is a very important concept for your exams. Impurities present in the impure copper fall to the bottom of the container, forming what we call 'Anode Mud'. These are insoluble impurities like gold, silver, or other precious metals that do not dissolve in the electrolyte. On the other hand, soluble impurities remain in the solution as ions. By the end of this process, we are left with a cathode that is almost one hundred percent pure copper. This high-purity copper is essential for making electrical wires because even tiny amounts of impurities can significantly increase electrical resistance and cause overheating. Beyond electrolytic refining, there are other purification methods like distillation for low-boiling metals like Zinc or Mercury, and zone refining for ultra-high purity semiconductors like Silicon and Germanium. In zone refining, a part of the metal is melted using a heated zone that moves slowly from one end to the other. Impurities stay in the molten zone and move along with it, leaving the purified metal behind at the solid end. Understanding these processes is key to understanding how the modern world is built, from the wires in your house to the chips in your smartphone.","Welcome back. We have explored how metals are extracted and refined, but what happens when these pure metals are exposed to the environment? Today, we look at the process of decay known as corrosion, how to stop it, and how we can create superior materials called alloys. Let us start with corrosion. Have you ever noticed an old iron gate turning reddish-brown? Or a copper vessel turning green? This is corrosion. Corrosion is the gradual destruction of metals due to their reaction with air, moisture, or chemicals in the environment. The most common example is the rusting of iron. For rusting to occur, both oxygen and water are essential. The chemical formula for rust is hydrated iron oxide, written as iron oxide of two times water. In this process, iron reacts with oxygen and moisture to form a flaky, porous layer that keeps peeling off, eventually destroying the entire metal object. When copper is exposed to moist carbon dioxide in the air, it develops a green coating of basic copper carbonate. Silver, on the other hand, reacts with sulfur compounds in the air to form a black layer of silver sulfide. This is why silver jewelry loses its shine over time. Now, how do we prevent this? Prevention is all about creating a barrier between the metal and the environment. The first method is painting or oiling. By applying a layer of paint or grease, we prevent oxygen and moisture from touching the metal surface. Second is galvanization. This is a very effective method where a thin layer of zinc is applied to iron or steel. Even if the zinc layer is scratched, it continues to protect the iron because zinc is more reactive and oxidizes instead of the iron. Third is alloying. Instead of just coating, we can change the very nature of the metal. Finally, we have electrostatic coating, where a layer of paint is applied using an electric field to ensure even coverage. This leads us to our next major topic: Alloys. An alloy is a homogeneous mixture of two or more metals, or a metal and a non-metal. Why do we make alloys? Pure metals are often too soft or too reactive for industrial use. Alloys are designed to improve properties like hardness, prevent corrosion, or change the melting point. Let us look at some classic examples. Bronze is an alloy made of copper and tin. It is much harder than pure copper. Brass is another important alloy, made by mixing copper and zinc. It is widely used in decorative items and musical instruments. Stainless steel is perhaps the most important alloy in our daily lives. It is made by mixing iron with carbon, chromium, and nickel. The addition of chromium and nickel is crucial because it makes the steel highly resistant to rusting. This is why your kitchen utensils stay shiny for years. Another example is Solder, which is an alloy of lead and tin. It has a very low melting point, making it perfect for joining electrical components. In summary, corrosion is a natural chemical attack on metals, but through methods like galvanization and the creation of alloys like stainless steel, we can engineer materials that are much more durable and useful for modern civilization.","Welcome back. We have covered the theory of metals and non-metals, but now it is time to put that knowledge into practice. In this session, we will tackle the three types of problems that frequently appear in your board exams: balancing chemical equations, predicting reactivity, and solving word problems. Let us start with balancing equations. Remember, according to the Law of Conservation of Mass, the number of atoms of each element must be the same on both the reactant and product sides. Let us look at the reaction of Magnesium with Oxygen. If we write Magnesium plus Oxygen gives Magnesium Oxide, the unbalanced equation is Magnesium plus Oxygen yields Magnesium Oxide. On the left, we have one Magnesium and one Oxygen. On the right, we have one Magnesium and two Oxygens. To balance this, we place a coefficient of two in front of Magnesium Oxide, giving us two Magnesium and two Oxygen. But now the Magnesium is unbalanced! So, we place a two in front of the reactant Magnesium. Now we have two Magnesium and two Oxygen on both sides. The balanced equation is two Magnesium plus one Oxygen yields two Magnesium Oxide. Next, let us move to Reactivity Predictions. This is where your knowledge of the Reactivity Series becomes your greatest tool. Suppose a question asks: What happens when Zinc powder is added to a solution of Copper Sulfate? To solve this, first identify the reactivity of both metals. Zinc is higher in the reactivity series than Copper. This means Zinc is more 'active' and can displace Copper from its salt solution. The reaction will occur, Zinc will displace Copper, and the blue color of the Copper Sulfate solution will gradually fade to colorless Zinc Sulfate, while reddish-brown Copper metal deposits on the container. If the question asked about adding Copper to Zinc Sulfate, the answer would be no reaction, because Copper is less reactive than Zinc. Finally, let us tackle a complex Word Problem. A question might read: An element X reacts with dilute Hydrochloric acid to produce a gas Y, which burns with a pop sound. When element X is heated in air, it forms an oxide Z. Identify X, Y, and Z. Let us break this down step by step. The gas that burns with a pop sound is a classic indicator of Hydrogen gas. So, gas Y is Hydrogen. Since the metal X reacts with acid to produce Hydrogen, X must be a metal. When a metal reacts with oxygen, it forms a metal oxide. Therefore, Z is the Metal Oxide of X. If we are given a hint that X is a common metal used in construction, we can deduce that X is Iron. Thus, X is Iron, Y is Hydrogen, and Z is Iron Oxide. Always look for these keywords like 'pop sound', 'effervescence', or 'color change' to decode the chemical identity. Practice these steps: identify the reactants, check the reactivity series, and ensure your final equation is balanced. Mastering these three skills will ensure you score full marks in the chemical reactions section of your exam.","Welcome to our final session on Metals and Non-metals. We have traveled from the basic physical properties all the way to the complex processes of metallurgy. Before we conclude, we need to sharpen your exam skills. Let's start with the most common mistakes students make in this chapter. First, many students confuse the reactivity series with the activity series. Remember, the reactivity series is a list of metals arranged in decreasing order of their chemical reactivity. Second, pay close attention to the state of matter in chemical equations. When writing the reaction of a metal with water, if it produces hydrogen gas, you must write hydrogen as a gas, or H-two, not a liquid. Third, a very frequent error occurs in ionic bonding. When drawing electron dot structures, students often forget to show the transfer of electrons. Remember, an ionic bond is not about sharing; it is about the complete transfer of electrons from a metal to a non-metal to achieve a stable octet. Fourth, in metallurgy, do not confuse roasting with calcination. Roasting is for sulphide ores and involves heating in the presence of excess air, while calcination is for carbonate ores and involves heating in limited air. Fifth, when discussing corrosion, do not just say 'rusting.' Rusting is specific to iron. For copper, it forms a green layer of basic copper carbonate, and for silver, it forms a black layer of silver sulphide. Now, let's move to diagram practice. In your board exams, diagrams carry significant marks. You must practice the diagram of the electrolytic refining of copper. Identify the anode as the impure metal slab and the cathode as the pure metal strip. Ensure you can label the electrolyte, which is copper sulphate solution. You should also be able to draw the electron dot structure for compounds like Magnesium Chloride, written as M-g-C-l-two, or Sodium Oxide, written as N-a-two-O. Practice the setup for the displacement reaction where a piece of zinc is placed in a copper sulphate solution; the blue color fades as iron replaces copper. Finally, let's do a rapid-fire recap of the entire chapter. We started with the physical properties, noting that metals are malleable, ductile, and sonorous, while non-metals are generally brittle. We moved to chemical properties, learning how metals react with oxygen to form basic oxides and with water to form hydroxides or oxides and hydrogen gas. We mastered the reactivity series, which allows us to predict displacement reactions. We explored the formation of ionic compounds through electron transfer, resulting in high melting points and electrical conductivity in molten states. We delved into metallurgy, learning how ores are concentrated and how metals are extracted based on their position in the reactivity series—using reduction with carbon for medium reactivity and electrolysis for high reactivity metals. We concluded with the prevention of corrosion through alloying and galvanization. You have now completed the entire chapter. Review your notes, practice your equations, and approach your exams with confidence. You are ready!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c10-science-03-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

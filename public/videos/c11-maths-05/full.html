@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Linear Inequalities, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-maths-05-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Real-world applications and the concept of Inequality vs Equality -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Real-world applications and the concept of Inequality vs Equality</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Equality represents a perfect balance: x equals a specific value.</div>
+              <div id="qx0-p1" class="qe-bullet">• Inequality represents a range: one value is greater or less than another.</div>
+              <div id="qx0-p2" class="qe-bullet">• Symbols: &lt; (less than), &gt; (greater than), &lt;= (less than or equal to), &gt;= (greater than or equal to).</div>
+              <div id="qx0-p3" class="qe-bullet">• Real-world use: Budgets, speed limits, and temperature ranges.</div>
+              <div id="qx0-p4" class="qe-bullet">• Goal: Finding a set of possible solutions rather than a single number.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2746325999,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a balanced see-saw turning into a scale that tilts left and right, with mathematical symbols floating around it.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D animation showing a balanced see-saw turning into a scale that tilts left and right, with mathematical symbols floating around it.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Foundations: Algebraic rules for adding, subtracting, multiplying, and dividing inequalities -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Foundations: Algebraic rules for adding, subtracting, multiplying, and dividing inequalities</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Addition and subtraction do not change the inequality sign.</div>
+              <div id="qx1-p1" class="qe-bullet">• Multiplying/dividing by a positive number keeps the sign the same.</div>
+              <div id="qx1-p2" class="qe-bullet">• Multiplying/dividing by a negative number REVERSES the inequality sign.</div>
+              <div id="qx1-p3" class="qe-bullet">• Rule: If a &lt; b and c is negative, then ac &gt; bc.</div>
+              <div id="qx1-p4" class="qe-bullet">• Always check the sign of the coefficient before dividing.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"numberline","seed":437361964,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a number line where a positive multiplication slides numbers right, while a negative multiplication flips the entire line and reverses the arrow direction.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation showing a number line where a positive multiplication slides numbers right, while a negative multiplication flips the entire line and reverses the arrow direction.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): The Golden Rule: Handling negative coefficients and reversing inequality signs -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">The Golden Rule: Handling negative coefficients and reversing inequality signs</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Adding or subtracting values does not change the inequality sign.</div>
+              <div id="qx2-p1" class="qe-bullet">• Multiplying or dividing by a positive number keeps the sign the same.</div>
+              <div id="qx2-p2" class="qe-bullet">• CRITICAL: Multiplying/dividing by a negative number reverses the sign.</div>
+              <div id="qx2-p3" class="qe-bullet">• Example: If -2x &gt; 8, then x &lt; -4 after dividing by -2.</div>
+              <div id="qx2-p4" class="qe-bullet">• Always check your final solution on a number line to verify direction.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"numberline","seed":2263962415,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D number line where a heavy metal sign representing '&lt;' physically rotates 180 degrees to become '&gt;' when a negative multiplier hits it.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D number line where a heavy metal sign representing '&lt;' physically rotates 180 degrees to become '&gt;' when a negative multiplier hits it.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Linear Inequalities in One Variable: Solving and representing on a Number Line -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Linear Inequalities in One Variable: Solving and representing on a Number Line</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Isolate the variable using standard algebraic operations</div>
+              <div id="qx3-p1" class="qe-bullet">• Remember to flip the inequality sign when dividing by a negative</div>
+              <div id="qx3-p2" class="qe-bullet">• Use a solid circle for inclusive inequalities (&lt;= or &gt;=)</div>
+              <div id="qx3-p3" class="qe-bullet">• Use an open circle for strict inequalities (&lt; or &gt;)</div>
+              <div id="qx3-p4" class="qe-bullet">• Shade the number line to represent the infinite solution set</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"numberline","seed":970210222,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D number line floats in space, where a point moves to a value, transforms from an open to a solid circle, and a glowing colored ray expands to shade the solution region.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D number line floats in space, where a point moves to a value, transforms from an open to a solid circle, and a glowing colored ray expands to shade the solution region.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Graphical Representation: Solving inequalities in two variables on a Cartesian plane -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Graphical Representation: Solving inequalities in two variables on a Cartesian plane</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Convert inequality to an equation to find the boundary line</div>
+              <div id="qx4-p1" class="qe-bullet">• Use dashed lines for &lt; or &gt; and solid lines for &lt;= or &gt;=</div>
+              <div id="qx4-p2" class="qe-bullet">• The line divides the Cartesian plane into two half-planes</div>
+              <div id="qx4-p3" class="qe-bullet">• Use the Test Point Method (usually origin 0,0) to check regions</div>
+              <div id="qx4-p4" class="qe-bullet">• Shade the region where the inequality statement holds true</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":967298631,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D Cartesian plane where a line emerges from a mathematical equation, transitioning from a solid to a dashed style, followed by a translucent colored shading spreading across one side of the plane.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D Cartesian plane where a line emerges from a mathematical equation, transitioning from a solid to a dashed style, followed by a translucent colored shading spreading across one side of the plane.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Shading Regions: Testing points and determining the feasible half-plane -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Shading Regions: Testing points and determining the feasible half-plane</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• A linear inequality divides the Cartesian plane into two half-planes.</div>
+              <div id="qx5-p1" class="qe-bullet">• The Test Point Method identifies which half-plane contains the solutions.</div>
+              <div id="qx5-p2" class="qe-bullet">• The origin (0,0) is the simplest test point if it is not on the line.</div>
+              <div id="qx5-p3" class="qe-bullet">• If the test point satisfies the inequality, shade its side.</div>
+              <div id="qx5-p4" class="qe-bullet">• If the test point fails, shade the opposite side of the boundary line.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2691777574,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D Cartesian plane where a line appears, and a glowing point (0,0) moves to one side, causing that entire side to fill with a translucent blue color.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D Cartesian plane where a line appears, and a glowing point (0,0) moves to one side, causing that entire side to fill with a translucent blue color.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Systems of Linear Inequalities: Finding the common solution region (Intersection) -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Systems of Linear Inequalities: Finding the common solution region (Intersection)</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• A system consists of two or more linear inequalities.</div>
+              <div id="qx6-p1" class="qe-bullet">• The solution is the intersection of all individual shaded regions.</div>
+              <div id="qx6-p2" class="qe-bullet">• A point must satisfy every inequality in the system to be a solution.</div>
+              <div id="qx6-p3" class="qe-bullet">• Solid lines for inclusive boundaries (&lt;= or &gt;=), dashed for strict (&lt; or &gt;).</div>
+              <div id="qx6-p4" class="qe-bullet">• The overlapping area is often referred to as the Feasible Region.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1389158921,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D Cartesian plane where multiple colored translucent planes (blue, yellow, red) descend and overlap, with the final intersection glowing brightly in white.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D Cartesian plane where multiple colored translucent planes (blue, yellow, red) descend and overlap, with the final intersection glowing brightly in white.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Graphical Solutions of Systems: Step-by-step procedure for multiple constraints -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Graphical Solutions of Systems: Step-by-step procedure for multiple constraints</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Step 1: List all inequalities and identify boundary types</div>
+              <div id="qx7-p1" class="qe-bullet">• Step 2: Convert inequalities to equations for boundary lines</div>
+              <div id="qx7-p2" class="qe-bullet">• Step 3: Use solid lines for inclusive and dashed for strict inequalities</div>
+              <div id="qx7-p3" class="qe-bullet">• Step 4: Use the origin test (zero, zero) to determine shading</div>
+              <div id="qx7-p4" class="qe-bullet">• Step 5: Find the intersection—the region common to all constraints</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":3518100892,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D Cartesian plane where multiple colored translucent planes slide into place, overlapping to form a bright, glowing central polygon representing the feasible region.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D Cartesian plane where multiple colored translucent planes slide into place, overlapping to form a bright, glowing central polygon representing the feasible region.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Word Problems Part I: Translating verbal statements into mathematical inequalities -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Word Problems Part I: Translating verbal statements into mathematical inequalities</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Keywords for 'Greater than or equal to': At least, Minimum, No less than</div>
+              <div id="qx8-p1" class="qe-bullet">• Keywords for 'Less than or equal to': At most, Maximum, Not more than</div>
+              <div id="qx8-p2" class="qe-bullet">• Strict Inequalities: Exceeds (&gt;) or Below (&lt;)</div>
+              <div id="qx8-p3" class="qe-bullet">• Step 1: Define variables for unknown quantities</div>
+              <div id="qx8-p4" class="qe-bullet">• Step 2: Match verbal constraints to correct inequality symbols</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":454720050,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen animation where English text on the left morphs into mathematical symbols on the right as the teacher speaks.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen animation where English text on the left morphs into mathematical symbols on the right as the teacher speaks.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Word Problems Part II: Advanced application problems and optimization logic -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Word Problems Part II: Advanced application problems and optimization logic</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Distinguishing between lower bounds (at least) and upper bounds (at most)</div>
+              <div id="qx9-p1" class="qe-bullet">• Defining variables clearly to represent real-world quantities</div>
+              <div id="qx9-p2" class="qe-bullet">• Identifying limiting factors in multi-constraint systems</div>
+              <div id="qx9-p3" class="qe-bullet">• Introduction to optimization: finding maximum and minimum values</div>
+              <div id="qx9-p4" class="qe-bullet">• Using the feasible region to determine optimal outcomes</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":3321534986,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a factory production line on one side and its corresponding overlapping shaded inequality regions on a Cartesian plane on the other.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D split-screen showing a factory production line on one side and its corresponding overlapping shaded inequality regions on a Cartesian plane on the other.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Identifying sign errors, boundary mistakes, and interval notation errors -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Identifying sign errors, boundary mistakes, and interval notation errors</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Sign Error: Flip the sign ONLY when multiplying or dividing by a negative number.</div>
+              <div id="qx10-p1" class="qe-bullet">• Addition/Subtraction: Never flip the sign when adding or subtracting negatives.</div>
+              <div id="qx10-p2" class="qe-bullet">• Boundary Mistake: Use dashed lines for strict inequalities (&lt;, &gt;) and solid for (&lt;=, &gt;=).</div>
+              <div id="qx10-p3" class="qe-bullet">• Interval Notation: Use parentheses ( ) for excluded endpoints and brackets [ ] for included.</div>
+              <div id="qx10-p4" class="qe-bullet">• Infinity Rule: Always use a parenthesis ( ) when writing infinity or negative infinity.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":116828523,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a 'Wrong' vs 'Right' comparison of a graph with dashed/solid lines and corresponding interval notation.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D split-screen showing a 'Wrong' vs 'Right' comparison of a graph with dashed/solid lines and corresponding interval notation.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Time management, presentation tips, and full chapter recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Time management, presentation tips, and full chapter recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Time Management: Use the 'test point' method for multiple-choice questions.</div>
+              <div id="qx11-p1" class="qe-bullet">• Presentation: Explicitly state when an inequality sign is reversed.</div>
+              <div id="qx11-p2" class="qe-bullet">• Graphing: Use dashed lines for &lt; or &gt; and solid lines for &lt;= or &gt;=.</div>
+              <div id="qx11-p3" class="qe-bullet">• Recap: Master the Golden Rule of negative coefficients and sign reversal.</div>
+              <div id="qx11-p4" class="qe-bullet">• Recap: Always verify the common solution region in systems of inequalities.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":565104001,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a student's organized exam paper on one side and a glowing, interactive summary map of the chapter's concepts on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a student's organized exam paper on one side and a glowing, interactive summary map of the chapter's concepts on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Linear Inequalities today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Real-world applications and the concept of Inequality vs Equality <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Foundations: Algebraic rules for adding, subtracting, multiplying, and dividing inequalities <small>5:00</small></button>
+          <button type="button" data-seek="600">3. The Golden Rule: Handling negative coefficients and reversing inequality signs <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Linear Inequalities in One Variable: Solving and representing on a Number Line <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Graphical Representation: Solving inequalities in two variables on a Cartesian plane <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Shading Regions: Testing points and determining the feasible half-plane <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Systems of Linear Inequalities: Finding the common solution region (Intersection) <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Graphical Solutions of Systems: Step-by-step procedure for multiple constraints <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Word Problems Part I: Translating verbal statements into mathematical inequalities <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Word Problems Part II: Advanced application problems and optimization logic <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Identifying sign errors, boundary mistakes, and interval notation errors <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Time management, presentation tips, and full chapter recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey into the world of Linear Inequalities. Before we dive into the complex algebraic rules, let us stop and think about how we perceive the world around us. In your previous classes, you have spent a lot of time working with equations. An equation is a statement of perfect balance. When we say x equals five, we are saying that x and five are exactly the same. It is like a perfectly balanced see-saw where both sides carry the same weight. In mathematics, we represent this with the equals sign. But is life always a matter of perfect equality? Think about it. When you go to a grocery store, you might have a budget of five hundred rupees. You don't have to spend exactly five hundred rupees; you can spend any amount that is less than or equal to five hundred. When you check the weather, the temperature might be more than twenty degrees. When you are driving, your speed must be less than the speed limit. These are not equations; these are inequalities. An inequality describes a relationship where one quantity is greater than, less than, or not equal to another quantity. It defines a range or a boundary rather than a single, fixed point. In this chapter, we will move away from finding a single 'answer' and instead learn how to find a 'set of possible answers' that satisfy a condition. Let us look at the mathematical symbols we use to express these relationships. First, we have the 'less than' symbol, which looks like a small opening pointing to the right. We use this when the value on the left is smaller than the value on the right. Next, we have the 'greater than' symbol, which is the mirror image, pointing to the left. Then, we have two very important symbols that include the concept of equality. The 'less than or equal to' symbol, which is a less than sign with a horizontal line underneath it, means the value can be smaller or it can be exactly equal. Finally, we have the 'greater than or equal to' symbol, which means the value can be larger or exactly equal. Why is this distinction so important? Let us take a real-world example. Suppose you are a manufacturer of notebooks. Your cost of production is fixed, but your profit depends on how many notebooks you sell. You might say, 'To break even, my total revenue must be greater than or equal to my total cost.' This is a linear inequality. If we used an equation, we would only be looking at the exact moment we break even. But by using an inequality, we are looking at every single scenario where we make a profit. This is the power of this chapter. We are not just solving for x; we are defining the boundaries of possibility. Throughout this series of twelve lessons, we will learn how to manipulate these symbols, how to solve them using algebra, and how to draw their solutions on number lines and coordinate planes. We will start with the basic rules and move toward solving complex word problems. So, let us prepare to shift our mindset from 'what is the exact value' to 'what is the range of possible values.' Let's get started!","Welcome back to our journey through Linear Inequalities. In our last session, we established what an inequality actually represents. Now, it is time to learn how to manipulate them. If you know how to solve algebraic equations, you are already halfway there. However, inequalities have their own set of rules that we must follow strictly to ensure our solution remains valid. Let us start with the simplest operations: addition and subtraction. Suppose we have an inequality where x is greater than five. If we add the same number, say three, to both sides, the relationship remains unchanged. x plus three is still greater than five plus three, which means x is greater than eight. The same applies to subtraction. If you subtract a number from both sides, the inequality sign stays exactly as it is. In mathematical terms, if a is less than b, then a plus c is less than b plus c, and a minus c is less than b minus c. This is a fundamental rule: adding or subtracting any real number does not flip the direction of the inequality sign. Now, let us move to a slightly more complex territory: multiplication and division. This is where most students make mistakes. Let us look at two different scenarios. Scenario one: multiplying or dividing by a positive number. If we have two times x is greater than ten, and we divide both sides by positive two, we get x is greater than five. The sign remains the same. As long as the number you are multiplying or dividing by is positive, the inequality sign stays pointing in the same direction. Scenario two: multiplying or dividing by a negative number. This is the critical moment. Let us take an example. Suppose we have negative three times x is less than twelve. If we divide both sides by negative three, we might instinctively think the answer is x is less than negative four. But that is incorrect. When we divide by a negative number, the inequality sign must be reversed. The correct answer is x is greater than negative four. Why does this happen? Think about it on a number line. We know that negative two is actually greater than negative five. If we multiply both sides of the inequality negative two is greater than negative five by a negative one, we get two and five. For the statement to remain true, we must flip the sign so that two is less than five. This reversal is not just a suggestion; it is a mathematical necessity to maintain the truth of the statement. To summarize these foundations: addition and subtraction never change the sign. Multiplying or dividing by a positive number never changes the sign. But, multiplying or dividing by a negative number always, always reverses the sign. Mastering these four basic operations is the bedrock upon which all your future solutions in this chapter will be built. In the next part, we will dive deeper into the logic behind this 'Golden Rule' and practice more complex examples to ensure you never miss a sign flip again.","Welcome back. In our previous session, we explored how adding and subtracting numbers works with inequalities. You saw that adding or subtracting a value from both sides keeps the inequality relationship exactly the same. But now, we are approaching the most critical turning point in this entire chapter. This is the part where most students make mistakes in their exams, so I want you to pay very close attention. This is what we call the Golden Rule of Inequalities. Let's start with a simple observation. Suppose we have the inequality: three is less than five. We write this as three is less than five. This is a true statement. Now, let's multiply both sides by a positive number, say two. We get six is less than ten. This is still true. The sign stayed exactly where it was. But, what happens if we multiply or divide both sides by a negative number? Let's take our original inequality: three is less than five. Now, let's multiply both sides by negative one. On the left, we get negative three. On the right, we get negative five. Now, look closely at the number line. Is negative three less than negative five? No! On a number line, negative five is further to the left than negative three. Therefore, negative three is actually greater than negative five. To make our statement true, we had to flip the inequality sign from 'less than' to 'greater than'. This is the Golden Rule: Whenever you multiply or divide both sides of an inequality by a negative number, you must reverse the direction of the inequality sign. Let's see this in an algebraic equation. Consider the inequality: negative two x is greater than or equal to eight. Written mathematically, that is: negative two x is greater than or equal to eight. Our goal is to isolate x. To do that, we need to divide both sides by negative two. If we follow the standard rule of division without thinking, we might say x is greater than or equal to negative four. But wait! Because we are dividing by a negative coefficient, negative two, the 'greater than or equal to' sign must flip. It becomes 'less than or equal to'. So, the correct solution is: x is less than or equal to negative four. Let's try one more example to solidify this. Suppose we have: five minus three x is less than eleven. First, let's move the constant. Subtract five from both sides. We get: negative three x is less than eleven minus five, which simplifies to: negative three x is less than six. Now, we must divide by negative three to solve for x. Because negative three is a negative coefficient, the 'less than' sign must flip and become a 'greater than' sign. When we divide six by negative three, we get negative two. So, our final answer is: x is greater than negative two. If you forget to flip that sign, your entire solution set will be the exact opposite of the truth, pointing in the wrong direction on the number line. Remember, this rule applies to multiplication and division only. Adding or subtracting a negative number does not flip the sign; only multiplying or dividing by a negative number does. Keep this rule in your mind as if it were etched in stone, because as we move into solving complex one-variable inequalities in the next video, this will be your most important tool.","Welcome back. In our previous session, we mastered the 'Golden Rule'—knowing exactly when to flip that inequality sign when multiplying or dividing by a negative number. Now, it is time to put those rules into practice. Today, we move from theory to action: solving linear inequalities in one variable and, most importantly, visualizing those solutions on a number line. Let us start with a standard algebraic expression. Suppose we have the inequality: three x plus five is less than or equal to seventeen. Our goal is to isolate the variable x, just as we would in a normal equation. First, we subtract five from both sides. This gives us three x is less than or equal to twelve. Next, we divide both sides by three. Since three is a positive number, our inequality sign remains unchanged. We find that x is less than or equal to four. But what does 'x is less than or equal to four' actually mean? It does not just mean the number four; it means every single real number smaller than four is a valid solution. This brings us to the concept of a solution set. To represent this visually, we use a number line. Draw a horizontal line and mark your integers. To represent 'x is less than or equal to four', we first locate the number four on the line. Now, pay close attention to the boundary point. Because our inequality includes the 'equal to' part—that is, it is a non-strict inequality—we draw a solid, filled-in circle at the number four. This solid circle tells the viewer that four is included in our solution. Since x is 'less than' four, we draw a thick line or an arrow extending from that solid circle towards the left, towards the negative infinity side. Now, let us try a different case to see the contrast. Consider the inequality: negative two x plus seven is greater than fifteen. First, subtract seven from both sides. We get negative two x is greater than eight. Now, we must divide by negative two. Remember our Golden Rule! Because we are dividing by a negative coefficient, we must reverse the inequality sign from 'greater than' to 'less than'. This gives us x is less than negative four. On our number line, we locate negative four. Since this is a strict inequality—there is no 'equal to' sign—we draw an open circle at negative four. An open circle acts like a boundary that we can approach but never actually touch. Because x is 'less than' negative four, we shade the line to the left of the open circle. Let us look at one more complex example involving a fraction. Suppose we have: five minus two x is strictly greater than eleven. Subtract five from both sides to get negative two x is greater than six. Divide by negative two and flip the sign. We get x is less than negative three. On the number line, this is an open circle at negative three with shading to the left. To summarize the visual language: a solid circle means the endpoint is included, used for 'less than or equal to' or 'greater than or equal to'. An open circle means the endpoint is excluded, used for 'less than' or 'greater than'. The direction of your shading depends entirely on whether x is greater than or less than your target value. Master these two things—the circle type and the direction—and you will never misinterpret a solution set again.","Welcome back. In our previous lesson, we mastered solving inequalities in a single variable using the number line. But what happens when we introduce a second variable, say x and y? Now, we are no longer looking for a single point or a segment on a line; we are looking for a region on a two-dimensional Cartesian plane. Let us take a standard linear inequality, for example, ax plus by less than or equal to c. To solve this graphically, we follow a very specific three-step procedure. Step one: Treat the inequality as an equation. We temporarily ignore the inequality sign and write it as ax plus by equals c. This equation represents a straight line on our graph. Now, here is a crucial detail you must remember for your exams. If the original inequality uses 'less than' or 'greater than' symbols—that is, strictly less than or strictly greater than—we draw the line as a dashed or dotted line. This indicates that the points exactly on the line are not part of the solution. However, if the inequality is 'less than or equal to' or 'greater than or equal to', we draw a solid, continuous line. This solid line tells us that the boundary itself is included in the solution set. Step two: Once we have drawn our line, we must decide which side of the line contains the solutions. A line divides the Cartesian plane into two distinct regions, or half-planes. To find the correct one, we use the 'Test Point Method'. You can pick any point in the plane that is not on the line itself. The easiest and most common choice is the origin, which is the point zero comma zero. Let us plug x equals zero and y equals zero into our original inequality. If the resulting statement is true, then the region containing the origin is our solution region. If the statement is false, then the solution region is the opposite half-plane, the one that does not contain the origin. For example, if our inequality is x plus y less than or equal to five, and we test zero, zero, we get zero plus zero is less than or equal to five, which is zero less than or equal to five. This is a true statement. Therefore, the region containing the origin is the solution. Step three: We represent the solution by shading the identified region. In a formal mathematical graph, we don't just leave it blank; we lightly shade the area that satisfies the inequality. So, to summarize the process: convert to an equation, draw the line—remembering to use dashed lines for strict inequalities and solid lines for non-strict ones—pick a test point, usually the origin, and shade the side that makes the inequality true. This shaded area represents an infinite set of ordered pairs that satisfy the condition. Mastering this visual transition from an algebraic expression to a geometric region is the foundation for everything we will do in the next few lessons, especially when we start dealing with systems of inequalities. Let's move on to how we shade these regions systematically.","Welcome back. In our previous lesson, we learned how to draw the boundary line for a linear inequality on a Cartesian plane. We discussed when to use a solid line for 'greater than or equal to' and a dashed line for 'strictly greater than'. But a line divides the entire two-dimensional plane into two distinct parts, which we call half-planes. The question is: which side of the line contains the solutions? To find out, we use a method called the 'Test Point Method'. This is a foolproof way to determine the feasible half-plane. Let us take a practical example. Suppose we have the inequality: two x plus three y is less than or equal to six. First, we treat it as an equation, two x plus three y equals six, and draw the line. Now, we need to pick a point that is definitely not on the line. The easiest point to choose is the origin, which is zero, zero. Why the origin? Because plugging in zeros makes the arithmetic incredibly simple. Let us substitute x equals zero and y equals zero into the left-hand side of our inequality. Two times zero plus three times zero gives us zero. Now, we compare this result to the right-hand side. Is zero less than or equal to six? Yes, it is. Since the statement 'zero is less than or equal to six' is true, it means the origin is a solution to the inequality. Therefore, the half-plane that contains the origin is our feasible region. In your notebook, you would shade the side of the line where the origin lies. But what if the origin was not a solution? Suppose we had the inequality two x plus three y is greater than or equal to six. If we test zero, zero again, we get zero is greater than or equal to six. This is a false statement. In that case, the origin is not part of the solution, and we would shade the opposite half-plane—the side that does not contain the origin. Now, what if the line itself passes through the origin? For example, x minus y equals zero. In this specific case, you cannot use zero, zero as a test point because it lies on the boundary. If this happens, simply pick any other easy point, like one, zero or zero, one. Let us try one, zero. Substitute x equals one and y equals zero into the inequality x minus y is greater than zero. This gives us one minus zero, which is one. Since one is greater than zero, the statement is true, and we shade the half-plane containing the point one, zero. To summarize the process: step one, draw the boundary line—remembering to use a dashed line for strict inequalities. Step two, select a test point not on the line, preferably the origin. Step three, substitute the coordinates into the inequality. Step four, if the resulting statement is true, shade the side containing that point. If the statement is false, shade the opposite side. This method works for any linear inequality in two variables, no matter how complex the coefficients are. Mastering this step is crucial because, in the next lesson, we will combine multiple inequalities to find a common shaded region, which is the foundation of linear programming.","Welcome back. In our previous lesson, we learned how to shade a single half-plane to represent the solution of a single linear inequality in two variables. But in the real world, we rarely deal with just one constraint. Imagine you are a manufacturer: you have a limited amount of raw material, a limited amount of labor hours, and a specific budget. Each of these is a separate inequality. To find a solution that satisfies all these conditions simultaneously, we need to find the intersection of their individual solution regions. This is what we call a System of Linear Inequalities. Let us look at a mathematical example to understand this. Suppose we have a system consisting of two inequalities. Inequality number one is x plus y less than or equal to five. Inequality number two is x plus y greater than or equal to two. To solve this, we do not look for a single point, but rather a shared region on the Cartesian plane. First, we treat them individually. For the first inequality, x plus y less than or equal to five, we draw the line x plus y equals five. Since it is 'less than or equal to', we use a solid line and shade the region towards the origin, because the point zero, zero satisfies the inequality. Now, let us look at the second inequality, x plus y greater than or equal to two. We draw the line x plus y equals two. Again, it is a solid line, but since it is 'greater than or equal to', we shade the region away from the origin. Now, here is the crucial part: the solution to the system is not both shaded areas separately, but the area where the two shaded regions overlap. This overlapping area is the intersection. If a point lies in the first shaded region but not the second, it is not a solution to the system. If it lies in the second but not the first, it is also not a solution. A point is only a solution to the system if it satisfies every single inequality in that system at the same time. Think of it like a Venn diagram. The solution to the system is the intersection of all the sets. When you have three or even four inequalities, the process remains the same. You graph each line, shade each respective half-plane, and then identify the specific region that is covered by all the shadings. This common region is often a bounded polygon, like a triangle or a quadrilateral, or it could be an unbounded region. In many optimization problems, this intersection is called the 'Feasible Region'. It is important to pay close attention to the boundary lines. If an inequality uses 'less than' or 'greater than' without the 'equal to' sign, the boundary line must be dashed to show that the points on the line itself are not included in the solution. If it uses 'less than or equal to' or 'greater than or equal to', the line is solid. In our example, both lines were solid, so the boundaries of our intersection are included. As we move forward, remember that finding the intersection is the most critical step in solving complex linear programming problems. You are looking for the 'common ground' where all constraints are respected. Let's practice identifying these overlapping zones in the next segment.","Welcome back. In our previous lesson, we learned how to shade a single inequality to find a feasible half-plane. But in real-world scenarios, like manufacturing or resource management, we are never dealing with just one constraint. We are almost always dealing with a system of multiple linear inequalities. Today, we will master the systematic, step-by-step procedure to find the common solution region for these systems. Let's break this down into a professional workflow. Step one: Identify and list all your inequalities. It is crucial to write them down clearly, ensuring you have identified whether the boundaries are strict, like 'less than', or non-strict, like 'less than or equal to'. Step two: Convert each inequality into its corresponding linear equation. For example, if you have 'two x plus three y is less than or equal to twelve', you first treat it as 'two x plus three y equals twelve' to find your boundary line. Step three: Graph each boundary line on the same Cartesian plane. This is where precision is vital. If an inequality uses 'equal to', draw a solid line. If it is a strict inequality, use a dashed or dotted line. This distinction tells the viewer whether the points on the line itself are part of the solution. Step four: For each individual line, determine the shaded region. You can do this using the origin test. Pick a point not on the line, usually the origin, zero comma zero. Plug these values into the inequality. If the statement is true, shade the side containing the origin. If it is false, shade the opposite side. Step five: This is the most critical step—identify the intersection. The solution to a system is not just any shaded area; it is the region where the shaded areas of ALL inequalities overlap. This is known as the feasible region. Think of it like a Venn diagram, but for planes. If a point lies in the shaded region of inequality A but not in inequality B, it is not a solution to the system. Step six: Clearly mark the final common region. In your exams, it is a good practice to shade the final intersection more darkly or use a different color to distinguish it from the individual test regions. Finally, step seven: Identify the vertices or corner points. These are the points where the boundary lines intersect. These points are extremely important for later topics like Linear Programming. To find them, you must solve the equations of the intersecting lines simultaneously using substitution or elimination methods. Let's visualize a quick example. Suppose we have three constraints. The first might be a line cutting through the first quadrant, the second a vertical line, and the third a horizontal line. Each creates a half-plane. The area trapped between these three lines—often forming a triangle or a polygon—is our common solution set. Remember, if there is no area where all shadings overlap, the system has no solution. Always double-check your boundary lines; a single misplaced dashed line can change the entire mathematical meaning of your graph. Let's apply this logic to a complex problem now.","Welcome back. We have mastered the rules of solving inequalities and graphing them on the Cartesian plane. Now, we move to the most practical part of this chapter: Word Problems. In real life, math doesn't come to you as an equation like x plus five is greater than ten. Instead, it comes as a story or a set of constraints. Our job today is to act as translators. We are translating English sentences into mathematical inequalities. Let's start with the most important tool in your kit: the vocabulary of comparison. When you see the words 'at least', 'minimum', or 'no less than', what does that mean mathematically? It means the value can be equal to the limit or anything higher. So, we use the 'greater than or equal to' sign. For example, if a student must score at least forty marks to pass, we write 'marks is greater than or equal to forty'. Now, let's look at the opposite. Words like 'at most', 'maximum', or 'not more than' indicate an upper limit. This translates to the 'less than or equal to' sign. If a car can carry at most five passengers, then the number of passengers is 'less than or equal to five'. There is a third category: strict inequalities. Words like 'exceeds', 'more than', or 'greater than' do not include the limit itself. If the temperature exceeds thirty degrees, it is strictly 'greater than thirty'. Similarly, 'below' or 'less than' implies a strict 'less than' sign. Now, let's increase the complexity. Often, a problem won't just give you a single number; it will give you a relationship between two quantities. Let's try a practical example. Suppose you are buying notebooks. Each notebook costs ten rupees, and there is a fixed delivery charge of fifty rupees. If you want your total bill to be no more than five hundred rupees, how do we write this? First, identify the variable. Let 'x' be the number of notebooks. The cost of notebooks is 'ten times x'. The total cost is 'ten x plus fifty'. The phrase 'no more than' tells us to use the 'less than or equal to' sign. So, our inequality is 'ten x plus fifty is less than or equal to five hundred'. Notice how we built this step-by-step. Another common scenario involves constraints on resources. Imagine a baker has ten kilograms of flour. Each cake requires two hundred grams of flour. How many cakes can he bake? First, we must ensure units are consistent. Ten kilograms is ten thousand grams. Let 'c' be the number of cakes. The flour used is 'two hundred times c'. Since he cannot use more than what he has, the inequality is 'two hundred c is less than or equal to ten thousand'. Let's look at a slightly more advanced one involving two variables. Suppose a person invests in two types of stocks, A and B. Stock A gives a five percent return, and Stock B gives an eight percent return. If the total return must be at least one thousand rupees, we would write 'zero point zero five times A plus zero point zero eight times B is greater than or equal to one thousand'. The key to success here is a three-step process. Step one: Read the entire problem to identify what is unknown; these are your variables. Step two: Identify the 'limit words' like 'at most' or 'at least' to choose your inequality sign. Step three: Construct the algebraic expression by linking the variables with the constants. Remember, the most common mistake is choosing the wrong sign. Always double-check: if the problem says 'minimum', it must be 'greater than or equal to'. If it says 'maximum', it must be 'less than or equal to'. Master this translation, and you have conquered the hardest part of word problems. In the next video, we will take these inequalities and solve complex optimization problems.","Welcome back. In our previous session, we mastered the art of translating simple sentences into mathematical inequalities. But in the real world, problems aren't always that straightforward. Today, we step into the realm of advanced application problems and the logic of optimization. This is where mathematics meets decision-making. Imagine you are a manager at a factory. You have limited raw materials, a fixed budget, and a specific production capacity. You don't just want to find 'a' solution; you want to find the 'best' solution. This brings us to the concept of optimization logic. While formal Linear Programming is a separate chapter, the foundation lies right here in linear inequalities. Let's look at a complex scenario. Suppose a nutritionist is designing a diet plan. The diet must contain at least fifty units of Vitamin A and at least thirty units of Vitamin C. However, the total cost of the food items must not exceed five hundred rupees. Here, we aren't just dealing with one constraint, but a system of constraints. We have a lower bound for nutrients—meaning the inequality sign will be 'greater than or equal to'—and an upper bound for cost, meaning the sign will be 'less than or equal to'. When solving these, the key is to identify the 'limiting factors'. In advanced problems, you will often see variables representing quantities, like 'x' for kilograms of food A and 'y' for kilograms of food B. The first step is always to define these variables clearly. Once defined, you must construct the inequalities. Pay close attention to keywords. 'At most' or 'cannot exceed' translates to 'less than or equal to'. 'At least' or 'minimum requirement' translates to 'greater than or equal to'. Now, let's discuss the logic of optimization. In many advanced problems, you are asked to find the range of a certain value, like the total profit or total weight. This is done by expressing the target quantity as a function of your variables. For example, if Profit equals ten x plus fifteen y, you are looking for the maximum or minimum value this expression can take within the feasible region we defined earlier. In a single-variable advanced problem, you might be asked to find the maximum possible value of a variable given several constraints. You solve the system of inequalities to find the intersection of all solution sets. The 'optimal' value often occurs at the boundary of these constraints. Let's try a mental exercise. If a student needs an average of at least eighty percent in four exams to get a scholarship, and they have already scored seventy, eighty-five, and seventy-five, what is the minimum score they need in the fourth exam? Here, the total sum of four scores, divided by four, must be greater than or equal to eighty. This simplifies to: seventy plus eighty-five plus seventy-five plus x, all divided by four, is greater than or equal to eighty. Solving this gives you the minimum threshold. In more complex multi-variable problems, you will find that the constraints create a 'feasible region' on a graph. The optimization logic tells us that the extreme values—the highest and lowest possible outcomes—are usually found at the corner points or the vertices of this shaded region. As you move into higher mathematics, this logic becomes the backbone of economics, engineering, and logistics. Remember, the goal is not just to find any number that works, but to understand how the constraints restrict your options and guide you toward the most efficient result. Always double-check your boundary conditions. If a problem says 'more than', do not use the 'equal to' line in your graph. If it says 'at least', ensure your line is solid. Mastering this logic is what separates a student who just solves equations from a student who understands mathematical modeling.","Welcome back. We have mastered the techniques of solving linear inequalities, but even the best mathematicians can stumble. In this final technical session before our exam masterclass, we are going to look at the three most common traps that cost students marks: sign errors, boundary mistakes, and interval notation errors. Let us start with the most frequent culprit: the sign reversal error. Remember the Golden Rule we discussed earlier: whenever you multiply or divide both sides of an inequality by a negative number, you must flip the inequality sign. A common mistake occurs when students see a negative coefficient and forget to flip the sign, or conversely, they flip the sign when they are only adding or subtracting a negative number. Let me clarify: adding or subtracting a negative number does NOT change the direction of the inequality. Only multiplication and division by a negative value do that. For example, if you have negative three x is greater than or equal to twelve, and you divide by negative three, your result must be x is less than or equal to negative four. If you leave it as greater than, your entire solution set is inverted and incorrect. Next, let us look at boundary mistakes. This happens during the graphical representation phase. When you are plotting a line on a Cartesian plane, you must look closely at the inequality symbol. If the symbol is strictly 'greater than' or 'less than', the boundary line must be dashed or dotted. This indicates that the points exactly on the line are not part of the solution set. However, if the symbol is 'greater than or equal to' or 'less than or equal to', the line must be solid. A very common error is to solve the inequality correctly but then draw a solid line for a strict inequality. This is a fundamental error in representing the solution set. Always double-check: is the boundary included? If no, use a dashed line. If yes, use a solid line. Finally, we have interval notation errors. This is where many students lose precision. When writing your solution in interval notation, you must match your brackets to your boundary type. Use a parenthesis, or a round bracket, for strict inequalities like 'greater than' or 'less than'. This signifies that the endpoint is excluded. Use a square bracket for 'greater than or equal to' or 'less than or equal to', signifying the endpoint is included. For example, if your solution is x is greater than five, you write it as the open interval from five to infinity, using a parenthesis like this: open bracket five, infinity. If it is x is greater than or equal to five, you use a closed bracket: closed bracket five, infinity. Another subtle mistake is the use of infinity. Remember, infinity is a concept, not a specific number, so you must always use a parenthesis with infinity or negative infinity. You can never use a square bracket with infinity because infinity is not a reachable endpoint. Let us recap these three traps. First, check your signs: did you multiply or divide by a negative? If yes, flip the sign. Second, check your boundaries: is the line dashed for strict inequalities and solid for inclusive ones? Third, check your notation: are your parentheses and square brackets consistent with your inequality symbols? Mastering these small details is what separates a good student from a topper. If you can avoid these three errors, your accuracy in linear inequalities will be near perfect.","Welcome to the final segment of our journey through Linear Inequalities. You have mastered everything from basic algebraic rules to complex systems of inequalities in two variables. Now, it is time to shift our focus from 'how to solve' to 'how to score.' In a high-stakes examination, knowing the math is only half the battle; presenting it clearly and managing your time effectively is what separates a good student from a topper. Let us begin with the Exam Masterclass. First, let's talk about Time Management. Linear inequalities, especially those involving graphical representations, can be time-consuming. Do not get stuck on a single word problem. If a translation from a verbal statement to a mathematical inequality is taking too long, move to the next question and return later. For multiple-choice questions, use the 'test point' method. Instead of solving the entire system, pick a coordinate from the options and see if it satisfies all the given inequalities. This can save you minutes of graphing time. Second, let's discuss Presentation Tips. This is crucial for securing full marks in subjective questions. When solving an inequality, always state your steps clearly. For example, if you are multiplying or dividing by a negative number, explicitly write: 'Since we are multiplying by a negative constant, the inequality sign reverses.' This shows the examiner you understand the Golden Rule. When graphing, your axes must be neatly labeled. Always clearly distinguish between a solid line for 'greater than or equal to' and a dashed line for 'strictly greater than.' When shading a region, use light, neat strokes. Do not scribble over your lines; instead, use a clear arrow or a light hatch pattern to indicate the feasible region. Label the intersection point or the common region clearly as 'S' for the solution set. Third, let's conduct a rapid-fire recap of the entire chapter to cement your learning. We started with the concept that inequalities represent a range of values rather than a single point. We learned the fundamental algebraic rules, specifically the most critical rule: whenever you multiply or divide both sides by a negative number, you must flip the inequality sign. We moved to one-variable inequalities, where we represent solutions on a number line using open or closed circles. Then, we stepped into the Cartesian plane to solve two-variable inequalities. We learned to graph the boundary line, test a point like zero, zero to see which side to shade, and identify the feasible half-plane. We then combined multiple inequalities to find the intersection, which represents the common solution set for a system. We applied all this to word problems, translating real-world constraints into mathematical language. Finally, we identified common pitfalls, such as forgetting to reverse the sign or misinterpreting 'at least' as 'less than or equal to' instead of 'greater than or equal to.' Remember, 'at least' means greater than or equal to, and 'at most' means less than or equal to. As you head into your exams, stay calm, read the constraints carefully, and always double-check your signs. You have the tools, you have the logic, and now you have the strategy. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-maths-05-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Probability, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-maths-14-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Real-world Applications, Intuition, and the Concept of Random Experiments -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Real-world Applications, Intuition, and the Concept of Random Experiments</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Probability: The mathematical study of uncertainty and likelihood.</div>
+              <div id="qx0-p1" class="qe-bullet">• Real-world uses: Weather forecasting, insurance, and gaming.</div>
+              <div id="qx0-p2" class="qe-bullet">• Deterministic vs. Random: Predictable vs. Unpredictable processes.</div>
+              <div id="qx0-p3" class="qe-bullet">• Random Experiment: An action where outcomes are known but uncertain.</div>
+              <div id="qx0-p4" class="qe-bullet">• Key Requirement: Identical conditions must yield uncertain results.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2983849475,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a falling stone (deterministic) and the other shows a spinning glowing die (random).</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A split-screen 3D animation: one side shows a falling stone (deterministic) and the other shows a spinning glowing die (random).</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Fundamental Concepts: Sample Space, Events, and Types of Events -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Fundamental Concepts: Sample Space, Events, and Types of Events</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Sample Space (S): The set of all possible outcomes of a random experiment.</div>
+              <div id="qx1-p1" class="qe-bullet">• Event (E): A subset of the Sample Space containing specific outcomes.</div>
+              <div id="qx1-p2" class="qe-bullet">• Simple Event: An event consisting of exactly one outcome.</div>
+              <div id="qx1-p3" class="qe-bullet">• Compound Event: An event consisting of more than one outcome.</div>
+              <div id="qx1-p4" class="qe-bullet">• Mutually Exclusive Events: Events that cannot occur simultaneously (Intersection is empty).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3741154048,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D digital dice and coins floating in space, with outcomes being pulled into glowing circular containers labeled 'Sample Space' and 'Event'.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D digital dice and coins floating in space, with outcomes being pulled into glowing circular containers labeled 'Sample Space' and 'Event'.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Set Theory in Probability: Union, Intersection, Complement, and Venn Diagram Representation -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Set Theory in Probability: Union, Intersection, Complement, and Venn Diagram Representation</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• An event is mathematically defined as a subset of the Sample Space S</div>
+              <div id="qx2-p1" class="qe-bullet">• Union (A cup B): The occurrence of event A, event B, or both</div>
+              <div id="qx2-p2" class="qe-bullet">• Intersection (A cap B): The simultaneous occurrence of both A and B</div>
+              <div id="qx2-p3" class="qe-bullet">• Complement (A bar): All outcomes in S that are not in event A</div>
+              <div id="qx2-p4" class="qe-bullet">• Venn Diagrams: Visualizing sets using circles within a rectangular sample space</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2656985177,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D rectangular box representing the Sample Space containing two glowing, overlapping spheres labeled A and B, with the intersection area pulsing in a different color.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D rectangular box representing the Sample Space containing two glowing, overlapping spheres labeled A and B, with the intersection area pulsing in a different color.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Axiomatic Approach: Probability of an Event, Range of Probability, and Basic Axioms -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Axiomatic Approach: Probability of an Event, Range of Probability, and Basic Axioms</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Probability P(A) is a real number assigned to an event A.</div>
+              <div id="qx3-p1" class="qe-bullet">• Range of Probability: 0 ≤ P(A) ≤ 1.</div>
+              <div id="qx3-p2" class="qe-bullet">• Axiom 1: Non-negativity — P(A) ≥ 0 for any event A.</div>
+              <div id="qx3-p3" class="qe-bullet">• Axiom 2: Certainty — P(S) = 1 for the entire sample space S.</div>
+              <div id="qx3-p4" class="qe-bullet">• Axiom 3: Additivity — For mutually exclusive events, P(A ∪ B) = P(A) + P(B).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":528632668,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D floating number line from 0 to 1, with a glowing sphere representing an event moving along the line, accompanied by mathematical symbols appearing in space.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D floating number line from 0 to 1, with a glowing sphere representing an event moving along the line, accompanied by mathematical symbols appearing in space.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Algebra of Events: Addition Theorem for Two and Three Events -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Algebra of Events: Addition Theorem for Two and Three Events</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Addition Theorem for two events: P(A U B) = P(A) + P(B) - P(A ∩ B)</div>
+              <div id="qx4-p1" class="qe-bullet">• If events are mutually exclusive, P(A ∩ B) = 0</div>
+              <div id="qx4-p2" class="qe-bullet">• For three events, we use the Principle of Inclusion-Exclusion</div>
+              <div id="qx4-p3" class="qe-bullet">• Formula: P(A U B U C) = P(A)+P(B)+P(C) - [P(A∩B)+P(B∩C)+P(C∩A)] + P(A∩B∩C)</div>
+              <div id="qx4-p4" class="qe-bullet">• Visualizing overlaps prevents double-counting or missing regions</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2681396217,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A dynamic 3D Venn diagram where colored spheres expand and overlap, highlighting the intersection regions in different shades to demonstrate the addition and subtraction logic.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A dynamic 3D Venn diagram where colored spheres expand and overlap, highlighting the intersection regions in different shades to demonstrate the addition and subtraction logic.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Conditional Probability: Definition, Formula, and the Concept of Reduced Sample Space -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Conditional Probability: Definition, Formula, and the Concept of Reduced Sample Space</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Definition: Probability of event A occurring given that event B has already occurred.</div>
+              <div id="qx5-p1" class="qe-bullet">• Notation: P(A|B) represents the conditional probability of A given B.</div>
+              <div id="qx5-p2" class="qe-bullet">• The Formula: P(A|B) = P(A ∩ B) / P(B), where P(B) &gt; 0.</div>
+              <div id="qx5-p3" class="qe-bullet">• Reduced Sample Space: Event B becomes the new universal set for the calculation.</div>
+              <div id="qx5-p4" class="qe-bullet">• Logic: The intersection A ∩ B is the only part of A that survives the condition B.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":118689658,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D Venn diagram where the outer circle S fades into transparency, and the circle B glows brightly, becoming the new boundary for a moving particle representing event A.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D Venn diagram where the outer circle S fades into transparency, and the circle B glows brightly, becoming the new boundary for a moving particle representing event A.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Multiplication Theorem: Independent Events vs. Dependent Events and Derivations -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Multiplication Theorem: Independent Events vs. Dependent Events and Derivations</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Dependent Events: The outcome of the first event affects the second event.</div>
+              <div id="qx6-p1" class="qe-bullet">• Independent Events: The occurrence of one event does not affect the other.</div>
+              <div id="qx6-p2" class="qe-bullet">• Multiplication Theorem (General): P(A and B) = P(A) * P(B|A)</div>
+              <div id="qx6-p3" class="qe-bullet">• Multiplication Theorem (Independent): P(A and B) = P(A) * P(B)</div>
+              <div id="qx6-p4" class="qe-bullet">• Key distinction: Sampling with replacement vs. Sampling without replacement.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":242825289,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows a hand removing a marble from a jar (Dependent); Right side shows a hand replacing a marble into a jar (Independent).</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A split-screen 3D animation: Left side shows a hand removing a marble from a jar (Dependent); Right side shows a hand replacing a marble into a jar (Independent).</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Probability of Independent Events: Mathematical Proofs and Practical Applications -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Probability of Independent Events: Mathematical Proofs and Practical Applications</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Definition: Event A does not affect the probability of Event B</div>
+              <div id="qx7-p1" class="qe-bullet">• Mathematical Condition: P(B|A) = P(B) and P(A|B) = P(A)</div>
+              <div id="qx7-p2" class="qe-bullet">• The Multiplication Rule: P(A intersection B) = P(A) * P(B)</div>
+              <div id="qx7-p3" class="qe-bullet">• Independence vs Mutually Exclusive: One is about influence, the other about overlap</div>
+              <div id="qx7-p4" class="qe-bullet">• Application: Calculating reliability in multi-component systems</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1763279240,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a coin toss on the left and a die roll on the right, with mathematical symbols floating between them to show zero interaction.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A split-screen 3D animation showing a coin toss on the left and a die roll on the right, with mathematical symbols floating between them to show zero interaction.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Bayes' Theorem: Concept of Prior and Posterior Probability with Detailed Derivations -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Bayes' Theorem: Concept of Prior and Posterior Probability with Detailed Derivations</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Prior Probability: Initial belief before new evidence is observed.</div>
+              <div id="qx8-p1" class="qe-bullet">• Posterior Probability: Updated belief after incorporating new evidence.</div>
+              <div id="qx8-p2" class="qe-bullet">• Bayes' Theorem: Relates conditional probabilities of inverse events.</div>
+              <div id="qx8-p3" class="qe-bullet">• Derivation: Uses the Law of Total Probability and Multiplication Theorem.</div>
+              <div id="qx8-p4" class="qe-bullet">• Formula: P(Ei|A) equals P(Ei) times P(A|Ei) divided by the sum of P(Ej) times P(A|Ej).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":4000180307,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a doctor's thought process: on the left, a population chart (Prior), and on the right, a single patient's test result transforming into a refined diagnosis (Posterior).</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D split-screen showing a doctor's thought process: on the left, a population chart (Prior), and on the right, a single patient's test result transforming into a refined diagnosis (Posterior).</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Problem-Solving Strategies: Word Problems, Tree Diagrams, and Combinatorial Approaches -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Problem-Solving Strategies: Word Problems, Tree Diagrams, and Combinatorial Approaches</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Identify keywords: 'Given that' implies Conditional Probability.</div>
+              <div id="qx9-p1" class="qe-bullet">• Translate English sentences into mathematical event notation.</div>
+              <div id="qx9-p2" class="qe-bullet">• Use Tree Diagrams for multi-stage experiments to organize outcomes.</div>
+              <div id="qx9-p3" class="qe-bullet">• Multiply probabilities along branches; add results of different paths.</div>
+              <div id="qx9-p4" class="qe-bullet">• Apply Combinations (nCr) when order does not matter in large sets.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2238552273,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a word problem transforming into a mathematical equation on the left, and a branching tree diagram growing dynamically on the right.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation showing a word problem transforming into a mathematical equation on the left, and a branching tree diagram growing dynamically on the right.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Misinterpreting 'At Least/At Most', Conditional Errors, and Calculation Mistakes -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Misinterpreting 'At Least/At Most', Conditional Errors, and Calculation Mistakes</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• At Least: Includes the value and everything greater.</div>
+              <div id="qx10-p1" class="qe-bullet">• At Most: Includes the value and everything smaller.</div>
+              <div id="qx10-p2" class="qe-bullet">• Complement Rule: P(at least one) = 1 - P(none).</div>
+              <div id="qx10-p3" class="qe-bullet">• Conditional Probability: Always use the condition as the new sample space.</div>
+              <div id="qx10-p4" class="qe-bullet">• Replacement Matters: 'Without replacement' changes the denominator.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":836704996,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a Venn diagram expanding and shrinking based on conditional constraints, alongside a digital counter tracking 'With vs Without Replacement' scenarios.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a Venn diagram expanding and shrinking based on conditional constraints, alongside a digital counter tracking 'With vs Without Replacement' scenarios.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: High-Weightage Question Patterns, Time Management, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: High-Weightage Question Patterns, Time Management, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• High-Weightage: Conditional Probability and 'Given That' scenarios</div>
+              <div id="qx11-p1" class="qe-bullet">• Strategy: Use the Complement Rule for 'At Least' and 'At Most' problems</div>
+              <div id="qx11-p2" class="qe-bullet">• Time Management: Use placeholders for complex calculations to maintain flow</div>
+              <div id="qx11-p3" class="qe-bullet">• Common Error: Always define the Sample Space clearly before calculating</div>
+              <div id="qx11-p4" class="qe-bullet">• Quick Recap: From Axioms and Set Theory to Independence and Multi-step logic</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3419784312,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D digital dashboard showing a checklist of topics being ticked off, transitioning into a split-screen showing a complex word problem on one side and a clean Venn Diagram on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A 3D digital dashboard showing a checklist of topics being ticked off, transitioning into a split-screen showing a complex word problem on one side and a clean Venn Diagram on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Probability today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Real-world Applications, Intuition, and the Concept of Random Experiments <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Fundamental Concepts: Sample Space, Events, and Types of Events <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Set Theory in Probability: Union, Intersection, Complement, and Venn Diagram Representation <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Axiomatic Approach: Probability of an Event, Range of Probability, and Basic Axioms <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Algebra of Events: Addition Theorem for Two and Three Events <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Conditional Probability: Definition, Formula, and the Concept of Reduced Sample Space <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Multiplication Theorem: Independent Events vs. Dependent Events and Derivations <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Probability of Independent Events: Mathematical Proofs and Practical Applications <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Bayes' Theorem: Concept of Prior and Posterior Probability with Detailed Derivations <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Problem-Solving Strategies: Word Problems, Tree Diagrams, and Combinatorial Approaches <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Misinterpreting 'At Least/At Most', Conditional Errors, and Calculation Mistakes <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: High-Weightage Question Patterns, Time Management, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey into one of the most fascinating and practical chapters in Class 11 Mathematics: Probability. Have you ever wondered why a weather reporter says there is a sixty percent chance of rain tomorrow? Or how insurance companies decide how much premium to charge you? Or even how a game designer ensures a loot box in a video game isn't too easy or too hard to win? The answer to all these questions lies in Probability. At its heart, probability is the mathematical language of uncertainty. In our daily lives, we are constantly making predictions about things that haven't happened yet. We deal with randomness every single day. Now, before we dive into complex formulas, let's build our intuition. Imagine you are tossing a fair coin. You don't know for certain if it will land on heads or tails, but you have a strong feeling it is equally likely to be either. This 'feeling' or 'likelihood' is what we quantify using probability. In mathematics, we move from vague feelings to precise numbers. To do this, we first need to understand what we are measuring. We cannot calculate the probability of something unless we define the process that produces the outcome. This brings us to our first core concept: The Random Experiment. Now, be careful here. Not every experiment is a 'random' experiment in the mathematical sense. For example, if I drop a stone from a height, its fall is governed by gravity and physics. If we know the exact force and height, we can predict exactly where it lands. That is a deterministic process. However, a random experiment is one where, even if we repeat the same process under identical conditions, we cannot predict the exact outcome with absolute certainty. Think of rolling a six-sided die. Even if you use the same hand, the same table, and the same force, the result—one, two, three, four, five, or six—is uncertain. This uncertainty is the soul of probability. A random experiment must satisfy two main conditions. First, it must have a set of all possible outcomes. Second, while we know what the possible outcomes are, we cannot predict which one will occur in a single trial. Let's look at a few more examples to solidify this. Consider a deck of fifty-two playing cards. If you pick one card at random, the experiment is random because you know you will get a card, but you don't know if it will be the Ace of Spades or the King of Hearts. Consider a weather forecast. The experiment is the observation of atmospheric conditions over twenty-four hours. The outcomes are 'rain', 'no rain', or 'cloudy'. We cannot be one hundred percent sure of the result, making it a random experiment. Even in biology, if we observe the inheritance of traits in offspring, the specific combination of genes is a random experiment. So, to summarize this introduction: Probability is the study of uncertainty. We use it to turn 'maybe' into a precise number between zero and one. And the foundation of this entire study is the Random Experiment—a process where the possible results are known, but the specific result of any single trial is unpredictable. In our next session, we will take these random experiments and learn how to organize their outcomes into something called a Sample Space. Get ready, because we are just getting started!","Welcome back. In our previous lesson, we understood what a random experiment is. Now, we need the mathematical language to describe the outcomes of these experiments. This brings us to our core concepts: the Sample Space and Events. Imagine you are tossing a fair coin. The possible outcomes are either Head or Tail. If we collect all these possible outcomes into a single set, we call it the Sample Space, denoted by the symbol S. For a single coin toss, S equals {Head, Tail}. If we toss two coins simultaneously, the outcomes aren't just Head-Head or Tail-Tail. We must account for every combination. The Sample Space becomes S equals {Head-Head, Head-Tail, Tail-Head, Tail-Tail}. Notice that Head-Tail and Tail-Head are distinct because they represent different coins. The total number of elements in the Sample Space is called the number of outcomes. Now, let's define an Event. An event is simply a subset of the Sample Space. Suppose we are tossing two coins and we are interested in the event where 'at least one head' appears. We look at our Sample Space and pick out the outcomes that satisfy this condition. So, our Event E would be {Head-Head, Head-Tail, Tail-Head}. Every outcome in this set is a part of the event. Let's categorize these events to make our calculations easier. First, we have Simple Events. A simple event is an event that contains only one single outcome from the sample space. For example, in a single die roll, the event of getting exactly a 4 is a simple event. It cannot be broken down further. On the other hand, we have Compound Events. A compound event is an event that consists of more than one outcome. Using our die example, the event of getting an even number is a compound event, because it includes the outcomes {2, 4, 6}. Now, let's move to a very important concept: Mutually Exclusive Events. Two events are said to be mutually exclusive if they cannot happen at the same time. In terms of set theory, their intersection is an empty set. Think about tossing a single coin. The event of getting a Head and the event of getting a Tail are mutually exclusive. You can't have both simultaneously on one toss. However, if we are rolling a die, the event of getting an even number and the event of getting a number greater than 3 are NOT mutually exclusive. Why? Because the outcomes 4 and 6 belong to both events. They overlap. Understanding these distinctions—whether an event is a single point or a collection, and whether events can coexist or are strictly separate—is the foundation for everything we will do in the upcoming chapters, especially when we start calculating actual probabilities.","Welcome back. In our previous session, we explored sample spaces and the different types of events. Now, to truly master probability, we need to speak the language of mathematics. That language is Set Theory. You see, in probability, an 'event' is not just a vague occurrence; it is mathematically defined as a subset of the sample space. If S is our sample space, any event A is simply a collection of outcomes from S. To manipulate these events, we use three fundamental operations: Union, Intersection, and Complement. Let's start with the Union. The union of two events, A and B, is denoted by the symbol 'cup'. It represents the occurrence of event A, or event B, or both. Think of it as the 'inclusive or'. If we are looking for the probability of A union B, we are looking for the chance that at least one of these events happens. Next, we have the Intersection. This is denoted by the symbol 'cap'. The intersection of A and B consists only of the outcomes that are common to both sets. It represents the occurrence of both event A and event B simultaneously. This is the 'and' condition. If there are no common outcomes between two events, we call them disjoint or mutually exclusive, and their intersection is an empty set. Now, let's look at the Complement. The complement of an event A is denoted as A prime or A bar. It consists of all the outcomes in the sample space S that are not in A. In simple terms, if event A is 'it rains today', the complement is 'it does not rain today'. The union of an event and its complement always gives us the entire sample space. To make these abstract concepts visible, we use Venn Diagrams. Imagine a large rectangle representing the universal set, which in our case is the Sample Space S. Inside this rectangle, we draw circles to represent events. If we have event A and event B, we draw two circles. The area where these two circles overlap is the Intersection of A and B. The total area covered by both circles combined is the Union of A and B. The area inside the rectangle but outside the circles represents the complement of the union. Venn diagrams are not just drawings; they are powerful tools for visualizing complex probability problems. When you see a word problem, your first instinct should be to sketch a Venn diagram. It helps you partition the sample space into distinct, non-overlapping regions, making it much easier to apply the formulas we will learn in the next section. By mastering these set operations, you are building the logical foundation required to understand the Addition Theorem and much more complex probability laws. Let's move forward with this visual mindset.","Welcome back. In our previous session, we explored how set theory provides the language for probability. Today, we transition from the language of sets to the actual mathematics of chance using the Axiomatic Approach. Up until now, we have been using intuitive definitions, but to make probability a rigorous branch of mathematics, we need a formal foundation. This foundation is built upon three fundamental rules called the Axioms of Probability. Let us first define what we mean by the probability of an event. Suppose we have a random experiment with a sample space, which we denote by the letter S. An event, let's call it A, is simply a subset of this sample space. The probability of event A, written as P of A, is a real number that quantifies the likelihood of that event occurring. Now, before we dive into the axioms, let's discuss the range of probability. You might have noticed in our earlier examples that probabilities are never negative, and they never exceed one. This isn't just a coincidence; it is a mathematical necessity. The probability of any event A is always greater than or equal to zero, and it is always less than or equal to one. We write this as zero is less than or equal to P of A is less than or equal to one. If the probability is zero, the event is impossible. If the probability is exactly one, the event is certain to happen. Now, let us formalize this using Kolmogorov's Axioms. These axioms are the bedrock of modern probability theory. The first axiom is the Axiom of Non-negativity. It states that for any event A in the sample space S, the probability P of A must be greater than or equal to zero. This ensures we don't deal with the nonsense of a negative chance. The second axiom is the Axiom of Certainty. It states that the probability of the entire sample space S is exactly equal to one. In mathematical terms, P of S equals one. This means that when we perform an experiment, it is certain that some outcome from the sample space will occur. The third axiom is the Axiom of Additivity, specifically for mutually exclusive events. This is a very powerful rule. It states that if we have a sequence of events, let's say A sub one, A sub two, and so on, and these events are mutually exclusive—meaning no two events can happen at the same time—then the probability of the union of all these events is equal to the sum of their individual probabilities. So, P of A sub one union A sub two union A sub three, and so on, equals P of A sub one plus P of A sub two plus P of A sub three, and so on. This rule allows us to break down complex events into simpler, disjoint parts to calculate their total probability. By accepting these three simple rules, we can derive almost every other property in probability. For example, we can prove that the probability of an empty set, or an impossible event, is zero, and that the probability of the complement of an event, which is P of A bar, is equal to one minus P of A. These axioms transform probability from a collection of observations into a precise, logical system. Let's move on to see how these axioms apply to specific problems.","Welcome back. In our previous session, we explored how set theory forms the backbone of probability using unions and intersections. Today, we move from the language of sets to the language of numbers. We are going to derive the Addition Theorem of Probability. This theorem allows us to calculate the probability that at least one of several events occurs. Let us start with two events, A and B, defined on the same sample space. We want to find the probability of the union of A and B, which is written as P of A union B. Think about a Venn diagram. When we add the area of circle A to the area of circle B, we notice something happens in the middle. The overlapping region, which is the intersection of A and B, is counted twice—once inside A and once inside B. To get the correct total area covered by both circles, we must subtract that overlap once. Mathematically, this gives us our first major formula: the probability of A union B is equal to the probability of A plus the probability of B, minus the probability of A intersection B. This formula works whether the events are mutually exclusive or not. If they are mutually exclusive, the intersection is an empty set, its probability is zero, and the formula simplifies to just P of A plus P of B. Now, let us step up the complexity. What happens when we have three events: A, B, and C? This is where the logic of inclusion and exclusion becomes truly beautiful. We want to find the probability of the union of A, B, and C. First, we add the individual probabilities: P of A, plus P of B, plus P of C. But wait, we have over-counted. The regions where two events overlap—A intersection B, B intersection C, and C intersection A—have been added twice. To correct this, we must subtract these three double-intersections. However, look closely at the very center of your Venn diagram, where all three events A, B, and C overlap. This central region, the triple intersection, was added three times during our first step. Then, it was subtracted three times during our second step. This means the triple intersection is currently not being counted at all! To ensure it is included in our total, we must add it back one final time. So, the complete Addition Theorem for three events is: the probability of A union B union C equals the sum of individual probabilities, minus the sum of the probabilities of all possible intersections of two events, plus the probability of the intersection of all three events. This pattern of adding, then subtracting, then adding is known as the Principle of Inclusion-Exclusion. It is a fundamental logic used in combinatorics and advanced statistics. Remember, the key to mastering these derivations is not just memorizing the formula, but visualizing the overlapping regions in a Venn diagram to understand why we add or subtract each term. Let's look at a quick numerical example to solidify this logic before we move to conditional probability in the next video.","Welcome back. In our previous session, we explored how events interact using unions and intersections. But what happens when we receive new information that changes the very landscape of our experiment? This brings us to one of the most powerful concepts in statistics: Conditional Probability. Imagine you are watching a cricket match. Before the first ball is bowled, the probability of a batsman scoring a century is based on the entire sample space of all possible scores. However, if the batsman hits a boundary on the very first ball, does your estimation of him scoring a century change? Yes, it does. Why? Because the 'condition' of hitting a boundary has occurred, effectively narrowing down the possibilities. In formal terms, Conditional Probability is the probability of an event A occurring, given that another event B has already occurred. We denote this as P of A given B. Now, let us look at the mathematical foundation. Suppose we have a sample space S, and two events A and B are subsets of S. If event B has already occurred, our original sample space S is no longer relevant. Instead, B becomes our new, restricted universe. This is what we call the concept of the Reduced Sample Space. Since we know B has happened, any outcome outside of B is now impossible. Therefore, the only way for event A to occur is if it happens within the region where A and B overlap. This overlap is the intersection of A and B, written as A intersection B. To find the new probability, we take the measure of this intersection and divide it by the measure of our new sample space, which is B. This gives us the fundamental formula: P of A given B equals P of A intersection B divided by P of B, provided that P of B is not equal to zero. Let us walk through a concrete numerical example to solidify this. Suppose we roll a fair six-sided die. The original sample space S is {1, 2, 3, 4, 5, 6}. Let event A be 'getting an even number', which is {2, 4, 6}. Let event B be 'getting a number greater than 3', which is {4, 5, 6}. If I ask you, 'What is the probability of getting an even number?', the answer is 3 out of 6, or one-half. But if I add a condition and say, 'Given that the number rolled is greater than 3, what is the probability that it is even?', the game changes. Our new sample space is no longer {1, 2, 3, 4, 5, 6}; it is now just {4, 5, 6} because we know B has occurred. Within this new set of three numbers, how many are even? The numbers 4 and 6 are even. So, the probability is 2 out of 3. Let's verify this using our formula. P of B is 3 out of 6, which is one-half. The intersection of A and B, which is the set of numbers that are both even and greater than 3, is {4, 6}. So, P of A intersection B is 2 out of 6, which is one-third. Now, applying the formula: P of A given B equals (one-third) divided by (one-half). When we divide fractions, we multiply by the reciprocal. So, one-third times two over one equals two-thirds. The result matches our logic perfectly! It is crucial to remember that the condition B acts as a filter. It shrinks the world we are looking at. If A and B are disjoint, meaning they have no intersection, then the probability of A given B will be zero, because if B happened, A becomes impossible. This concept of the reduced sample space is the stepping stone to understanding independent events, which we will cover in the next part. Always ask yourself: 'Does the occurrence of the first event change the denominator of my probability calculation?' If the answer is yes, you are dealing with conditional probability.","Welcome back. In our previous lesson, we explored Conditional Probability, where we learned how the probability of an event changes when we have prior information. Today, we are going to take that logic a step further to understand the Multiplication Theorem. This theorem is the bridge that allows us to calculate the probability of two or more events occurring in sequence. To understand this, we must first distinguish between two fundamental types of relationships between events: Dependent and Independent events. Let us start with Dependent Events. Imagine you have a bag containing three red balls and two blue balls. You pick one ball, and without putting it back, you pick a second ball. Does the first action affect the second? Absolutely. Because you did not replace the first ball, the total number of balls in the bag has changed, and the composition of colors has changed. This is the essence of dependence. The outcome of the first event restricts or alters the sample space for the second event. Mathematically, if event A and event B are dependent, the probability of both occurring is the probability of A occurring, multiplied by the probability of B occurring given that A has already happened. We write this as: Probability of A intersection B equals Probability of A, multiplied by the conditional probability of B given A. In formula terms, that is P of A and B equals P of A, multiplied by P of B, given A. This is our Multiplication Theorem for dependent events. Now, let us look at the opposite scenario: Independent Events. Suppose we go back to that same bag of three red and two blue balls, but this time, every time we pick a ball, we record its color and then put it back into the bag before the next draw. This is called sampling with replacement. Because the ball is replaced, the sample space remains exactly the same for every draw. The first draw has no influence, no memory, and no impact on the second draw. When the occurrence of event A does not change the probability of event B, we call them Independent Events. Let us derive the formula for this. For independent events, the conditional probability of B given A is actually just the probability of B itself. Why? Because A happening provides zero new information about B. So, if we take our general multiplication formula, P of A and B equals P of A, multiplied by P of B given A, and we substitute P of B given A with just P of B, we arrive at a much simpler rule. For independent events, the probability of both A and B occurring is simply the product of their individual probabilities. That is, P of A and B equals P of A, multiplied by P of B. This is a powerful tool. It means if you flip a coin and roll a die, the coin landing on heads has nothing to do with the die landing on a six. You can simply multiply one-half by one-sixth to get one-twelfth. To summarize the derivation: the general theorem is derived from the definition of conditional probability, which is P of B given A equals P of A and B divided by P of A. By multiplying both sides by P of A, we get the general Multiplication Theorem. From there, the special case for independence emerges when the conditional probability equals the marginal probability. Understanding this distinction—whether the sample space is being reduced or remains constant—is the secret to mastering all complex probability problems that follow.","Welcome back. In our previous lesson, we explored the Multiplication Theorem and how the occurrence of one event can influence the probability of another. Today, we dive into a special, elegant case: Independent Events. Now, don't confuse 'Independent' with 'Mutually Exclusive'. Mutually exclusive events cannot happen at the same time, but independent events are about influence. Two events, let's call them A and B, are independent if the occurrence of A does not change the probability of B occurring. In mathematical terms, A and B are independent if the conditional probability of B given A is simply the probability of B. That is, P of B given A equals P of B. Similarly, P of A given B equals P of A. This leads us to our most important mathematical definition. For two independent events, the probability of both A and B occurring, which is the intersection of A and B, is equal to the product of their individual probabilities. We write this as: P of A intersection B equals P of A multiplied by P of B. Let's prove this using what we learned about conditional probability. We know from the Multiplication Theorem that P of A intersection B equals P of A multiplied by P of B given A. But, if the events are independent, P of B given A is just P of B. Therefore, substituting that in, we get P of A intersection B equals P of A multiplied by P of B. This is a beautiful result because it allows us to calculate the joint probability of complex systems just by knowing the individual parts. Now, let's look at a practical application to see this in action. Imagine you are a quality control engineer in a factory. Suppose a machine produces bolts, and the probability of a bolt being defective is zero point zero five. Now, suppose you are testing two bolts chosen at random. Since the production of one bolt does not affect the next, these are independent events. What is the probability that both bolts are defective? Using our rule, we multiply zero point zero five by zero point zero five, which gives us zero point zero zero two five. What if we want to find the probability that at least one bolt is defective? It is often easier to find the complement. The probability that a bolt is not defective is one minus zero point zero five, which is zero point nine five. The probability that both are not defective is zero point nine five multiplied by zero point nine five, which is zero point nine zero two five. Finally, subtract this from one to get zero point zero nine seven five. This logic applies to everything from weather forecasting to telecommunications, where we calculate the reliability of multiple components working simultaneously. Remember, always check if the events are truly independent before you multiply. If the outcome of the first trial changes the pool of options for the second, like drawing cards without replacement, they are dependent, and you must use the conditional formula instead. Master this distinction, and you master the heart of probability theory.","Welcome back. In our previous lesson, we mastered the Multiplication Theorem. Today, we step into one of the most powerful tools in modern statistics: Bayes' Theorem. While conditional probability asks, 'What is the chance of B happening, given that A has already occurred?', Bayes' Theorem flips the script. It asks: 'Given that an outcome has occurred, what is the probability that it was caused by a specific event?' To understand this, we must first master two critical terms: Prior Probability and Posterior Probability. Imagine you are a doctor. Before you see a patient, you know the general prevalence of a disease in the population. This initial belief, based on existing knowledge before new evidence is gathered, is called the Prior Probability. Now, the patient arrives with a positive test result. This test result is your new evidence. After you combine your prior knowledge with this new evidence, your updated belief about whether the patient actually has the disease is called the Posterior Probability. Let's look at the mathematical derivation to see how this works. Suppose we have a set of mutually exclusive and exhaustive events, let's call them E sub one, E sub two, up to E sub n. These events partition our sample space. Now, let A be an event that can occur as a result of one of these E events. We want to find the probability that E sub i has occurred, given that A has already happened. This is written as P of E sub i, given A. According to the definition of conditional probability, P of E sub i, given A, is equal to the probability of the intersection of E sub i and A, divided by the probability of A. So, we have P of E sub i intersection A, divided by P of A. Now, using the multiplication theorem, we know that the probability of the intersection of E sub i and A is equal to P of E sub i multiplied by P of A, given E sub i. This is our numerator. Now, let's look at the denominator, P of A. Since the events E sub one, E sub two, and so on, are exhaustive and mutually exclusive, the event A can only happen through one of these E events. Therefore, P of A is the sum of the probabilities of A occurring with each E event. This is expressed as the sum from i equals one to n of the probability of E sub i intersection A. Applying the multiplication theorem again to each term in this sum, we get the sum from i equals one to n of P of E sub i multiplied by P of A, given E sub i. When we put it all together, we get the formal statement of Bayes' Theorem: the probability of E sub i, given A, is equal to the product of the prior probability of E sub i and the conditional probability of A given E sub i, all divided by the total probability of A. This denominator, the sum of all possible ways A can happen, acts as a normalizing constant. In essence, Bayes' Theorem allows us to update our prior beliefs in the light of new evidence to reach a more accurate posterior probability. This is the foundation of machine learning, medical diagnosis, and even spam filters in your email. Let's move on to some practical applications.","Welcome back. We have covered the core theorems and formulas of probability. Now, it is time to bridge the gap between theory and application. In your exams, you won't just be asked to calculate a value; you will be presented with complex scenarios. Today, we master three powerful tools: decoding word problems, using tree diagrams, and applying combinatorial approaches. Let's start with word problems. The biggest mistake students make is rushing into calculation before understanding the language. Probability is a language of logic. When you read a problem, your first task is to identify the 'Experiment' and the 'Sample Space'. Look for keywords. Words like 'given that' or 'if it is known that' are massive red flags—they signal that you are dealing with Conditional Probability. Words like 'and' usually imply an intersection, while 'or' implies a union. Once you have identified these, translate the English sentence into a mathematical event. For example, 'the probability of drawing a red ball given that it is not a king' becomes P of Red intersection Not King, divided by P of Not King. Next, let's look at our second tool: Tree Diagrams. Tree diagrams are your best friend when an experiment involves multiple successive stages. Imagine you are tossing a coin three times. Instead of trying to list all eight outcomes in a messy set, you draw a branch for 'Heads' and 'Tails' for the first toss. From each of those, you draw two more branches for the second toss, and so on. The beauty of the tree diagram is two-fold. First, the branches at any node must always sum to one. Second, to find the probability of a specific sequence, you multiply along the branches. To find the probability of multiple different successful outcomes, you add the results of the individual paths. This visual structure prevents you from missing outcomes and keeps your sample space organized. Finally, let's discuss the Combinatorial Approach. As we move into more complex problems involving large sets—like picking five cards from a deck or selecting a committee from a group—listing the sample space becomes impossible. This is where Combinations, or 'n choose r', become essential. Remember, in probability, the formula is often the Number of Favorable Outcomes divided by the Total Number of Possible Outcomes. When the order of selection does not matter, use the combination formula: n factorial divided by r factorial times n minus r factorial. For instance, if you need to find the probability of picking exactly two aces in a five-card hand, your numerator is the combination of choosing two aces from the four available, multiplied by the combination of choosing the remaining three cards from the forty-eight non-ace cards. Your denominator is simply the total combinations of choosing five cards from fifty-two. By combining these three strategies—translating words into events, mapping sequences with trees, and using combinations for large sets—you turn overwhelming problems into manageable steps. Practice these transitions, and you will find that probability becomes a game of logic rather than a struggle with numbers.","Welcome back. We have covered the complex theorems and formulas, but even the brightest students often lose marks in Probability not because they don't know the formulas, but because they misinterpret the language of the question. Today, we address the three most common traps. First, let's tackle the linguistic confusion between 'At Least' and 'At Most'. This is where most errors occur in combinatorial probability. When a question asks for the probability of getting 'at least two heads' in three coin tosses, students often calculate the probability of exactly two heads and stop there. Remember, 'at least two' means two OR more. In a three-toss scenario, that includes the case of exactly two heads and the case of exactly three heads. Conversely, 'at most' sets an upper limit. 'At most one head' means zero heads OR one head. A pro-tip here: if the question asks for 'at least one', it is almost always faster to use the complement rule. Instead of adding up the probabilities of one, two, three, and more, simply calculate one minus the probability of 'none'. This saves time and reduces calculation errors. Second, let's look at Conditional Probability errors. The most frequent mistake is failing to recognize when the sample space has been restricted. In conditional probability, denoted as P of A given B, the event B is no longer just an event; it becomes our new universe. Students often try to use the original sample space S to calculate the denominator. Always remember: the denominator in a conditional probability formula is the probability of the condition itself. If you are told 'given that the card drawn is a red card', your entire world is now only the 26 red cards, not the original 52. If you use 52 in your denominator, your answer will be fundamentally wrong. Third, we must address Calculation Mistakes, specifically regarding the Multiplication Theorem and Independent Events. A very common error is assuming two events are independent just because they seem unrelated. Independence is a mathematical property where P of A intersection B equals P of A multiplied by P of B. You cannot assume this; you must prove it or the question must explicitly state it. Another calculation trap involves the 'replacement' factor. In problems involving drawing marbles or cards, always read carefully whether the experiment is 'with replacement' or 'without replacement'. If it is 'without replacement', the events are dependent, and the denominator must decrease with every draw. For example, if you draw one ace from a deck of 52, the probability of drawing a second ace is not four over 52, but three over 51. Failing to adjust the denominator is a classic way to lose marks in high-weightage questions. Finally, watch out for the 'And' versus 'Or' trap. In probability, 'And' typically implies intersection and often requires multiplication, while 'Or' implies union and requires addition. If you swap these operations, the entire logic of your solution collapses. Master these linguistic and logical nuances, and you will move from just knowing the formulas to truly mastering the subject.","Welcome to the final session of our Class 11 Probability series. We have journeyed from the basic concept of random experiments all the way to the complex logic of conditional probability. Now, it is time to transition from learning to performing. In your upcoming examinations, Probability is not just a chapter; it is a scoring powerhouse. Let us first identify the high-weightage question patterns. The most frequent pattern involves Conditional Probability, where you are given a specific condition that restricts the sample space. Always remember: when you see the words 'given that', your denominator changes from the total sample space to the size of the conditioning event. Another major pattern is the distinction between Dependent and Independent events. You will often face questions asking you to verify if two events are independent by checking if the probability of their intersection equals the product of their individual probabilities. Third, watch out for 'At Least' and 'At Most' problems. These are classic traps. Instead of calculating multiple cases, always use the complement rule: the probability of 'at least one' is equal to one minus the probability of 'none'. Fourth, questions involving Venn Diagrams are common for testing your understanding of the Addition Theorem. If a question provides overlapping data, draw the diagram immediately to avoid double-counting the intersection. Now, let's talk about Time Management. Probability questions can be deceptive. They often look simple but involve heavy combinatorial calculations or long fractions. My golden rule is: do not get stuck on a single calculation. If a fraction is becoming too complex, leave a placeholder, move to the next question, and return later. Allocate more time to the multi-step word problems and less to the direct formula-based questions. To ensure you don't lose marks, always write down your Sample Space, S, clearly at the start of every problem. This prevents the most common error: using the wrong total. Let us do a rapid-fire recap of the entire chapter. We started with the intuition of uncertainty and the definition of a Random Experiment. We moved to Sample Spaces and Events, learning how to categorize them as simple or compound. We bridged the gap between Set Theory and Probability, using Union and Intersection to describe events. We established the Axiomatic approach, knowing that probability always lies between zero and one. We mastered the Addition Theorem for two and three events. We then delved into the heart of the chapter: Conditional Probability and the Multiplication Theorem, which taught us how one event's occurrence affects another. We explored the mathematical proofs of Independent Events and touched upon the logic that leads to Bayes' Theorem. We learned to use Tree Diagrams to visualize sequential events and identified common pitfalls like misinterpreting the sample space. As you prepare, remember that Probability is about logic, not just numbers. If your answer is greater than one or less than zero, stop and re-evaluate your logic immediately. Practice the NCERT examples, as they often form the blueprint for exam questions. You are now equipped with the concepts and the strategy. Go forth and solve with confidence. Happy studying!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-maths-14-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

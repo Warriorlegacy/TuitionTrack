@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Linear Programming, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-maths-12-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Real-world Applications and the Concept of Optimization -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Real-world Applications and the Concept of Optimization</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Optimization: Finding the maximum or minimum value of a function</div>
+              <div id="qx0-p1" class="qe-bullet">• Real-world use: Maximizing profit or minimizing costs with limited resources</div>
+              <div id="qx0-p2" class="qe-bullet">• Linearity: All mathematical relationships are of the first degree</div>
+              <div id="qx0-p3" class="qe-bullet">• Objective Function: The goal we want to achieve (Maximize or Minimize)</div>
+              <div id="qx0-p4" class="qe-bullet">• Constraints: The limitations expressed as linear inequalities</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":628901415,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a busy bakery on one side and a mathematical graph evolving on the other.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D split-screen showing a busy bakery on one side and a mathematical graph evolving on the other.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Mathematical Formulation: Defining Decision Variables, Objective Functions, and Constraints -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Mathematical Formulation: Defining Decision Variables, Objective Functions, and Constraints</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Decision Variables: The unknown quantities (x, y) we need to determine.</div>
+              <div id="qx1-p1" class="qe-bullet">• Objective Function: The mathematical goal (Maximize Z or Minimize Z).</div>
+              <div id="qx1-p2" class="qe-bullet">• Constraints: The limitations expressed as linear inequalities.</div>
+              <div id="qx1-p3" class="qe-bullet">• Non-negativity Constraints: Ensuring variables remain zero or positive (x, y &gt;= 0).</div>
+              <div id="qx1-p4" class="qe-bullet">• Formulation Goal: Converting word problems into mathematical models.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2774756984,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a messy factory floor on the left transforming into clean mathematical equations on the right.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D split-screen showing a messy factory floor on the left transforming into clean mathematical equations on the right.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Graphical Method Part 1: Plotting Inequalities and Identifying the Feasible Region -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Graphical Method Part 1: Plotting Inequalities and Identifying the Feasible Region</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Convert inequalities into equations to find boundary lines</div>
+              <div id="qx2-p1" class="qe-bullet">• Use x and y intercepts to plot the boundary lines accurately</div>
+              <div id="qx2-p2" class="qe-bullet">• Solid lines for inclusive inequalities; dashed for strict inequalities</div>
+              <div id="qx2-p3" class="qe-bullet">• Use the Test Point Method (usually origin) to determine shading</div>
+              <div id="qx2-p4" class="qe-bullet">• The Feasible Region is the intersection of all shaded half-planes</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2998039332,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate plane where multiple colored translucent planes intersect to form a glowing, bounded polygonal volume in the first quadrant.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D coordinate plane where multiple colored translucent planes intersect to form a glowing, bounded polygonal volume in the first quadrant.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Graphical Method Part 2: Corner Point Method and Finding Optimal Solutions -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Graphical Method Part 2: Corner Point Method and Finding Optimal Solutions</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• The Feasible Region contains all possible valid solutions.</div>
+              <div id="qx3-p1" class="qe-bullet">• Optimal solutions always occur at the corner points (vertices).</div>
+              <div id="qx3-p2" class="qe-bullet">• Step 1: Identify all corner points by solving intersection equations.</div>
+              <div id="qx3-p3" class="qe-bullet">• Step 2: Substitute each corner point into the Objective Function Z.</div>
+              <div id="qx3-p4" class="qe-bullet">• Step 3: Compare Z-values to find the Maximum or Minimum.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":297936023,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate plane showing a shaded polygonal feasible region with glowing vertices that pulse as the objective function values are calculated.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D coordinate plane showing a shaded polygonal feasible region with glowing vertices that pulse as the objective function values are calculated.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Special Cases in LPP: Unbounded Regions, Infeasible Solutions, and Multiple Optimal Solutions -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Special Cases in LPP: Unbounded Regions, Infeasible Solutions, and Multiple Optimal Solutions</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Unbounded Region: Feasible area extends infinitely in one or more directions.</div>
+              <div id="qx4-p1" class="qe-bullet">• Infeasible Solution: No common shaded region satisfies all constraints.</div>
+              <div id="qx4-p2" class="qe-bullet">• Multiple Optimal Solutions: Objective function is parallel to a constraint line.</div>
+              <div id="qx4-p3" class="qe-bullet">• Unbounded Maxima: Check if Z can increase infinitely before concluding.</div>
+              <div id="qx4-p4" class="qe-bullet">• Multiple Solutions: All points on the line segment between two corners are optimal.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2664079190,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate plane showing three split-screen views: an open-ended shaded area, two non-overlapping shaded regions, and a line segment highlighted in gold between two corner points.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D coordinate plane showing three split-screen views: an open-ended shaded area, two non-overlapping shaded regions, and a line segment highlighted in gold between two corner points.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Linear Inequalities in Two Variables: Review of Shading Regions and Boundary Lines -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Linear Inequalities in Two Variables: Review of Shading Regions and Boundary Lines</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Boundary lines: Treat inequalities as equations to find the limit.</div>
+              <div id="qx5-p1" class="qe-bullet">• Solid lines: Used for non-strict inequalities (&lt;= or &gt;=).</div>
+              <div id="qx5-p2" class="qe-bullet">• Dashed lines: Used for strict inequalities (&lt; or &gt;).</div>
+              <div id="qx5-p3" class="qe-bullet">• Test Point Method: Use (0,0) to determine the correct half-plane.</div>
+              <div id="qx5-p4" class="qe-bullet">• The Feasible Region: The intersection of all shaded inequality regions.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3319611172,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate plane where a line transitions from solid to dashed, and a translucent colored plane sweeps across one side of the line to demonstrate shading.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D coordinate plane where a line transitions from solid to dashed, and a translucent colored plane sweeps across one side of the line to demonstrate shading.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): The Geometry of Constraints: Intersection of Half-Planes and Convex Sets -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">The Geometry of Constraints: Intersection of Half-Planes and Convex Sets</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• A linear inequality divides the plane into two distinct half-planes.</div>
+              <div id="qx6-p1" class="qe-bullet">• The feasible region is the intersection of all given half-planes.</div>
+              <div id="qx6-p2" class="qe-bullet">• A set is convex if the line segment between any two points stays within it.</div>
+              <div id="qx6-p3" class="qe-bullet">• Linear constraints always produce a convex feasible region.</div>
+              <div id="qx6-p4" class="qe-bullet">• Convexity ensures the optimal solution occurs at the corner points.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4006573121,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing multiple colored translucent half-planes overlapping to form a solid, glowing convex polygon in the center.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D animation showing multiple colored translucent half-planes overlapping to form a solid, glowing convex polygon in the center.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Step-by-Step Worked Examples: From Word Problems to Graphical Solutions -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Step-by-Step Worked Examples: From Word Problems to Graphical Solutions</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Step 1: Identify decision variables x and y</div>
+              <div id="qx7-p1" class="qe-bullet">• Step 2: Write the Objective Function Z = ax + by</div>
+              <div id="qx7-p2" class="qe-bullet">• Step 3: Convert word limits into linear inequalities</div>
+              <div id="qx7-p3" class="qe-bullet">• Step 4: Graph lines and shade the Feasible Region</div>
+              <div id="qx7-p4" class="qe-bullet">• Step 5: Test corner points to find the optimal Z value</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":4079482784,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen animation showing a text-heavy word problem on the left transforming into a mathematical system of equations on the right, then morphing into a 2D coordinate plane with a shaded feasible region.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A split-screen animation showing a text-heavy word problem on the left transforming into a mathematical system of equations on the right, then morphing into a 2D coordinate plane with a shaded feasible region.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Advanced Word Problems: Manufacturing, Diet, and Transportation Models -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Advanced Word Problems: Manufacturing, Diet, and Transportation Models</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Manufacturing: Maximize profit subject to resource constraints</div>
+              <div id="qx8-p1" class="qe-bullet">• Diet Problems: Minimize cost while meeting nutritional minimums</div>
+              <div id="qx8-p2" class="qe-bullet">• Transportation: Minimize shipping costs from sources to destinations</div>
+              <div id="qx8-p3" class="qe-bullet">• Always include non-negativity constraints: x, y &gt;= 0</div>
+              <div id="qx8-p4" class="qe-bullet">• Key Step: Convert word descriptions into mathematical inequalities</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":3376313762,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a factory assembly line, a nutritional food chart, and a logistics map with moving delivery trucks.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation showing a factory assembly line, a nutritional food chart, and a logistics map with moving delivery trucks.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Common Pitfalls: Mistakes in Inequality Signs, Shading, and Corner Point Calculation -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Common Pitfalls: Mistakes in Inequality Signs, Shading, and Corner Point Calculation</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Watch for keywords: 'at least' (&gt;=) vs 'at most' (&lt;=)</div>
+              <div id="qx9-p1" class="qe-bullet">• Use dashed lines for strict inequalities (&lt; or &gt;)</div>
+              <div id="qx9-p2" class="qe-bullet">• Always use the Test Point method (usually 0,0) to shade</div>
+              <div id="qx9-p3" class="qe-bullet">• Find corner points using Algebra, not just visual estimation</div>
+              <div id="qx9-p4" class="qe-bullet">• Verify if intersection points actually lie within the feasible region</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":1957227586,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a 'Correct' shaded region versus an 'Incorrect' shaded region, with red 'X' marks appearing over dashed lines used incorrectly.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation showing a 'Correct' shaded region versus an 'Incorrect' shaded region, with red 'X' marks appearing over dashed lines used incorrectly.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Exam Techniques: Time Management, Precision in Graphing, and Verification Steps -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Exam Techniques: Time Management, Precision in Graphing, and Verification Steps</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Formulation Strategy: Identify variables, objective, and constraints first.</div>
+              <div id="qx10-p1" class="qe-bullet">• Graphing Precision: Use sharp pencils and explicitly calculate intercepts.</div>
+              <div id="qx10-p2" class="qe-bullet">• The Test Point Method: Verify the feasible region using a point like (0,0).</div>
+              <div id="qx10-p3" class="qe-bullet">• Vertex Accuracy: Show the intersection calculations for corner points.</div>
+              <div id="qx10-p4" class="qe-bullet">• Final Check: Re-verify the objective function value and max/min requirement.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":919461772,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a 'Messy Graph' with blunt lines vs. a 'Pro Graph' with sharp intercepts, labeled vertices, and a green checkmark appearing after a test point is applied.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a 'Messy Graph' with blunt lines vs. a 'Pro Graph' with sharp intercepts, labeled vertices, and a green checkmark appearing after a test point is applied.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Full Chapter Recap, PYQs, and High-Yield Summary -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Full Chapter Recap, PYQs, and High-Yield Summary</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Core Components: Decision Variables, Objective Function, and Constraints</div>
+              <div id="qx11-p1" class="qe-bullet">• The Corner Point Method: Optimal solutions occur at the vertices</div>
+              <div id="qx11-p2" class="qe-bullet">• Crucial Check: Always include non-negativity constraints (x, y &gt;= 0)</div>
+              <div id="qx11-p3" class="qe-bullet">• Special Cases: Handling Unbounded Regions and Multiple Optimal Solutions</div>
+              <div id="qx11-p4" class="qe-bullet">• Exam Strategy: Precise graphing, intersection calculation, and verification</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2434442199,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D digital chalkboard where key formulas and a summary flowchart glow and assemble themselves in mid-air as the teacher speaks.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A 3D digital chalkboard where key formulas and a summary flowchart glow and assemble themselves in mid-air as the teacher speaks.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Linear Programming today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Real-world Applications and the Concept of Optimization <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Mathematical Formulation: Defining Decision Variables, Objective Functions, and Constraints <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Graphical Method Part 1: Plotting Inequalities and Identifying the Feasible Region <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Graphical Method Part 2: Corner Point Method and Finding Optimal Solutions <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Special Cases in LPP: Unbounded Regions, Infeasible Solutions, and Multiple Optimal Solutions <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Linear Inequalities in Two Variables: Review of Shading Regions and Boundary Lines <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. The Geometry of Constraints: Intersection of Half-Planes and Convex Sets <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Step-by-Step Worked Examples: From Word Problems to Graphical Solutions <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Advanced Word Problems: Manufacturing, Diet, and Transportation Models <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Common Pitfalls: Mistakes in Inequality Signs, Shading, and Corner Point Calculation <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Exam Techniques: Time Management, Precision in Graphing, and Verification Steps <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Full Chapter Recap, PYQs, and High-Yield Summary <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey through the fascinating world of Linear Programming. Before we dive into the equations and graphs, let us ask ourselves a very practical question: How do we make the best possible decisions when we have limited resources? Imagine you are running a small bakery. You have a fixed amount of flour, a limited number of eggs, and only eight hours of oven time. You want to bake as many cakes and cookies as possible to maximize your profit. But there is a catch! Every cake uses more flour than a cookie, and every cookie takes more time to bake than a cake. How do you decide exactly how many cakes and how many cookies to bake to make the most money without running out of ingredients? This, my dear students, is the essence of Linear Programming. In mathematics, we call this the concept of Optimization. Optimization is the process of finding the best possible value—either the maximum or the minimum—of a particular function, subject to certain limitations. In our daily lives, we are constantly optimizing. A logistics company optimizes its delivery routes to save fuel. A farmer optimizes the use of land and fertilizer to get the highest crop yield. Even you, when you plan your study schedule to cover the most chapters in the least amount of time, are performing a form of optimization. Now, let us break down the formal definition. Linear Programming, or L.P.P. as we commonly call it, is a mathematical technique used to find the optimal solution to a problem where the relationships between the variables are represented by linear equations or linear inequalities. Why do we use the word 'Linear'? It is because all the mathematical expressions we will deal with in this chapter—the objective function and the constraints—will be of the first degree. This means you won't see any squared terms like x squared or terms like x multiplied by y. Everything will be simple, straight-line relationships. In a typical Linear Programming Problem, we have three main components. First, we have the Objective Function. This is the mathematical expression that represents the quantity we want to maximize or minimize. If we want to maximize profit, our objective function might look like Z equals fifty x plus thirty y, where Z is the profit, x is the number of cakes, and y is the number of cookies. Second, we have the Constraints. These are the restrictions or limitations on our resources, expressed as linear inequalities. For example, if you only have ten kilograms of flour, your constraint might be written as two x plus one y is less than or equal to ten. Third, we have the Non-negative Constraints. In the real world, you cannot bake negative five cakes! Therefore, we always include conditions like x is greater than or equal to zero and y is greater than or equal to zero. These constraints ensure our solution makes sense in reality. As we progress through this chapter, we will learn how to translate these real-world stories into mathematical models, how to plot them on a graph, and how to pinpoint the exact 'sweet spot' where the profit is highest or the cost is lowest. By the end of this series, you will not just be solving math problems; you will be thinking like a manager and an optimizer. Let's get started!","Welcome back. In our previous session, we explored how Linear Programming helps us optimize resources in the real world. Now, we move into the most critical step of the entire process: Mathematical Formulation. This is where we translate a complex word problem into a precise mathematical model. If your formulation is wrong, your entire solution will be wrong, no matter how perfect your graph is. There are three essential pillars to this formulation: Decision Variables, the Objective Function, and Constraints. Let us start with the first pillar: Decision Variables. In any optimization problem, you are trying to decide 'how much' of something to produce, 'how many' units to buy, or 'how much' time to allocate. These unknown quantities that you need to determine are called your Decision Variables. We usually represent them with letters like x and y. For example, if a factory makes two types of chairs, x could represent the number of Type A chairs and y could represent the number of Type B chairs. Always be very specific when defining these. Instead of just saying 'x is chairs', say 'x is the number of Type A chairs produced per day'. This precision prevents confusion later. Moving to the second pillar, we have the Objective Function. This is the mathematical expression of your main goal. In Linear Programming, your goal is always either to Maximize something, like profit or efficiency, or to Minimize something, like cost or waste. The Objective Function is written in the form of Z equals ax plus by, where a and b are constants. For instance, if each Type A chair gives a profit of fifty rupees and each Type B chair gives a profit of thirty rupees, your objective function would be Z equals fifty x plus thirty y. Our task is to find the values of x and y that make this value Z as large as possible. Finally, we come to the third pillar: Constraints. In the real world, we never have infinite resources. We are limited by time, money, raw materials, or labor. These limitations are expressed as linear inequalities. For example, if you only have one hundred kilograms of wood available, and Type A chairs require two kilograms while Type B requires one kilogram, this limitation is written as two x plus one y is less than or equal to one hundred. Notice that we use inequality signs like less than or equal to, or greater than or equal to, rather than simple equal signs. This is because we don't have to use every single bit of resource; we just cannot exceed the limit. There is also a final, often overlooked set of constraints called Non-negativity Constraints. In most real-world scenarios, you cannot produce a negative number of items. You cannot make negative five chairs. Therefore, we must always state that x is greater than or equal to zero and y is greater than or equal to zero. To summarize, the process of formulation follows a strict hierarchy. First, identify what you are trying to decide—those are your decision variables. Second, identify what you are trying to maximize or minimize—that is your objective function. Third, identify the limitations imposed on your resources—those are your constraints. Once you have these three components, you have successfully converted a messy word problem into a clean, mathematical Linear Programming Problem. In our next video, we will take these equations and start plotting them on a graph to find the solution.","Welcome back. In our previous session, we learned how to translate a real-world problem into a mathematical model consisting of an objective function and constraints. Now, it is time to move from algebra to geometry. Today, we begin the Graphical Method. Our goal is to visualize these constraints on a coordinate plane to find the 'Feasible Region'. Let us start with the fundamental step: converting an inequality into a boundary line. Suppose we have a constraint like two x plus three y is less than or equal to twelve. To plot this, we first treat it as an equation: two x plus three y equals twelve. This line represents the boundary where the inequality is exactly equal. To draw this line, the easiest way is to find the intercepts. First, let x be zero. This gives us three y equals twelve, so y equals four. Our y-intercept is the point zero, four. Next, let y be zero. This gives us two x equals twelve, so x equals six. Our x-intercept is the point six, zero. Now, we draw a straight line passing through these two points. A very important detail: if the inequality sign is 'less than or equal to' or 'greater than or equal to', we draw a solid line. This indicates that the points on the line itself are included in the solution. If the sign was strictly 'less than' or 'greater than', we would use a dashed line. Now, we must decide which side of this line to shade. This is where we use the 'Test Point Method'. Pick a point that is not on the line. The easiest point to use is the origin, zero, zero. Substitute x equals zero and y equals zero into our original inequality. Two times zero plus three times zero is zero. Is zero less than or equal to twelve? Yes, it is. Since the statement is true, the origin satisfies the inequality, so we shade the region that contains the origin. If the statement had been false, we would shade the opposite side. Once we have plotted our first line, we repeat this entire process for every single constraint in our problem. Each inequality represents a 'half-plane'. As we add more constraints, we are essentially looking for the area where all these shaded half-planes overlap. This overlapping area is the most critical part of Linear Programming. It is called the Feasible Region. Every single point within this region, and on its boundaries, satisfies all the constraints simultaneously. If a point lies outside this region, it violates at least one constraint and cannot be a solution. In many problems, you will also have non-negativity constraints, such as x is greater than or equal to zero and y is greater than or equal to zero. These are very helpful because they tell you immediately to only look at the first quadrant of your graph. As we add more lines, the feasible region might look like a polygon, a triangle, or even an unbounded area stretching to infinity. In this part, we are focusing purely on the accuracy of your drawing and the correct identification of this intersection. Remember, if your lines are even slightly inaccurate, your feasible region will be wrong, and your final optimal solution will be incorrect. Precision in plotting intercepts and careful shading are your best tools here. In the next part, we will take this region and use the Corner Point Method to find the exact maximum or minimum value.","Welcome back. In our previous video, we learned how to plot linear inequalities and shade the common region that satisfies all constraints. This region is what we call the Feasible Region. Now, we reach the most critical part of Linear Programming: how do we actually find the best possible value? We want to maximize profit or minimize cost. This process is known as finding the Optimal Solution. Now, you might wonder, why don't we just pick any point inside the shaded region? While any point in the feasible region is a valid solution, it is rarely the 'optimal' one. The Fundamental Theorem of Linear Programming tells us something very powerful: if an optimal solution exists, it must occur at one of the corner points, or vertices, of the feasible region. This is why we use the Corner Point Method. Let us break this down into a systematic step-by-step procedure. Step one: Identify all the corner points of your feasible region. These are the points where the boundary lines intersect. Some corner points might be the intercepts on the x-axis or y-axis, while others are found by solving a pair of linear equations simultaneously using substitution or elimination methods. Step two: List these corner points clearly. Let's say your corner points are A, B, C, and D. Step three: Take your Objective Function, which we usually denote as Z, and substitute the coordinates of each corner point into it. If your objective function is Z equals ax plus by, you will calculate the value of Z for point A, then for point B, and so on. Step four: Compare all the resulting values of Z. If you are solving a Maximization problem, the largest value you obtain is your maximum value, and the point that gave it to you is your optimal solution. If you are solving a Minimization problem, the smallest value is your minimum value. Let's look at a quick mental example. Suppose our objective function is Z equals three x plus five y, and our feasible region has three corner points: point P at zero, zero; point Q at four, zero; and point R at zero, three. To find the optimal solution, we calculate Z at P: three times zero plus five times zero, which is zero. We calculate Z at Q: three times four plus five times zero, which is twelve. Finally, we calculate Z at R: three times zero plus five times three, which is fifteen. Comparing zero, twelve, and fifteen, the maximum value is fifteen, occurring at point R. It is important to note that the feasible region can be bounded or unbounded. If the region is bounded, like a closed polygon, an optimal solution is guaranteed to exist. However, if the region is unbounded, we must be careful. Even if we find a corner point that gives a high value, we must verify if there are other points further out in the infinite region that could give an even higher value. This is a nuance we will explore in the next section. For now, master this: find the vertices, plug them into Z, and pick the winner. Precision in calculating these intersection points is the key to avoiding errors in your exams. Let's move on to the special cases.","Welcome back. In our previous lessons, we learned how to find a unique optimal solution using the corner point method. But what happens when the math doesn't behave so neatly? In real-world optimization, we often encounter three special scenarios: Unbounded Regions, Infeasible Solutions, and Multiple Optimal Solutions. Let's dive into the first one: The Unbounded Region. Imagine you are trying to maximize profit, but your constraints are so loose that the feasible region extends infinitely in one direction. When you plot your inequalities, you might find that the shaded area is not enclosed by lines on all sides. In such a case, the feasible region is called 'unbounded.' Now, here is the catch. Just because a region is unbounded doesn't automatically mean there is no maximum value. If you are maximizing an objective function in an unbounded region, the value of Z might increase infinitely as you move further away from the origin. In your exam, if you find the region is unbounded, you must check if the objective function value can actually grow without limit. You do this by testing a point far outside the current corner points. If Z keeps increasing, we say the optimal solution does not exist because it is unbounded. However, if you are minimizing in an unbounded region, a finite minimum value might still exist. Next, let's look at the second special case: Infeasible Solutions. This occurs when there is no common area that satisfies all the given constraints simultaneously. Imagine one constraint says x plus y must be greater than or equal to ten, while another constraint says x plus y must be less than or equal to five. These two requirements are contradictory. When you shade these regions on your graph, you will notice that the shaded areas do not overlap at any point. Since there is no shared feasible region, there are no points to test, and therefore, no solution exists. We call this an 'infeasible solution.' It simply means the constraints are too restrictive to allow for any possible outcome. Finally, let's discuss a very interesting case: Multiple Optimal Solutions, also known as Alternative Optimal Solutions. This happens when the objective function line is parallel to one of the boundary lines of the feasible region. Usually, the maximum or minimum value occurs at a single corner point. But in this special case, when you slide your objective function line, it touches an entire edge of the feasible region at once. This means that not just the two corner points at the ends of that line segment, but every single point on the line segment connecting them, yields the exact same maximum or minimum value for Z. If you find that two different corner points give you the same optimal value, you can immediately conclude that there are infinitely many optimal solutions lying on the line segment joining those two points. Understanding these three cases is crucial because they allow you to interpret complex mathematical models accurately. Remember: Unbounded means no limit, Infeasible means no overlap, and Multiple Optimal means an entire edge is the winner. Let's look at some examples to solidify this.","Welcome back. Before we dive deep into the optimization process of Linear Programming, we must ensure your foundation in graphing linear inequalities is rock solid. In the previous parts, we discussed how to formulate problems, but the heart of the graphical method lies in how we represent constraints on a coordinate plane. Let's start with the boundary line. Every linear inequality, whether it is less than, greater than, equal to, or not equal to, has a corresponding linear equation. For example, if we have the inequality ax plus by less than or equal to c, our first step is to treat it as the equation ax plus by equals c. This equation represents the boundary line that divides the entire two-dimensional Cartesian plane into two distinct regions, or half-planes. Now, pay close attention to the type of line you draw. This is a common area where students lose marks. If the inequality is non-strict, meaning it includes the 'equal to' sign, such as less than or equal to or greater than or equal to, we draw a solid line. A solid line tells the viewer that the points sitting exactly on the boundary are included in the solution set. However, if the inequality is strict, meaning it is strictly less than or strictly greater than, we must draw a dashed or dotted line. A dashed line signifies that the boundary itself is not part of the solution; it is merely the limit. Once the boundary is drawn, we need to decide which side of the line to shade. This is where the 'Test Point Method' becomes your best friend. To find the correct region, pick any point that is not on the boundary line itself. The easiest point to use is the origin, zero comma zero, provided the line does not pass through the origin. Let's take an example. Suppose we have the inequality three x plus four y less than or equal to twelve. First, we plot the line three x plus four y equals twelve. We can find the intercepts: when x is zero, y is three; when y is zero, x is four. Now, let's test the origin, zero comma zero. Substitute these values into the inequality: three times zero plus four times zero is zero. Is zero less than or equal to twelve? Yes, it is. Since the statement is true, the region containing the origin is our solution. We shade this side. If the statement had been false, we would shade the opposite side of the line. What if the line passes through the origin? In that case, you cannot use zero comma zero. Instead, pick a simple point like one comma one or zero comma one and follow the same logic. Another way to think about this is the slope-intercept form. If you rewrite the inequality in the form y less than or equal to mx plus c, the 'less than' sign generally indicates the region below the line, while 'greater than' indicates the region above. However, always double-check with a test point to avoid errors caused by negative coefficients. Remember, in Linear Programming, we aren't just shading one inequality; we are looking for the intersection of multiple shaded regions. Each inequality represents a constraint, and the area where all these shaded half-planes overlap is what we call the feasible region. If you shade incorrectly even one line, your entire feasible region will be wrong, and your final optimal solution will be incorrect. So, practice being precise with your solid versus dashed lines and always, always verify your shading with a test point.","Welcome back. In our previous session, we learned how to plot individual linear inequalities on a Cartesian plane. But in Linear Programming, we are rarely dealing with just one inequality. We are dealing with a system of them. Today, we are going to look under the hood of the graphical method to understand the beautiful geometry that governs the feasible region. Let us start with a single linear inequality, such as ax plus by less than or equal to c. When we plot the equation ax plus by equals c, we get a straight line. This line acts as a boundary. This line divides the entire two-dimensional plane into two distinct parts. One part contains all the points that satisfy the inequality, and the other part contains points that do not. Mathematically, we call this part a half-plane. Think of it like a piece of paper cut perfectly in half by a straight edge. Now, imagine we have three or four different inequalities. Each one defines its own half-plane. The solution to our Linear Programming problem is not just any point in these half-planes, but the points that satisfy all of them simultaneously. In geometry, when we look for the area where multiple shapes or regions overlap, we call this the intersection. So, the feasible region is the intersection of all the half-planes defined by our constraints. If there is no area where all these half-planes overlap, we say the problem has no feasible solution. Now, let us discuss a very important property of this feasible region: Convexity. A set of points is called a convex set if, for any two points chosen within that set, the entire straight line segment joining them also lies completely inside the set. In Linear Programming, because our constraints are linear inequalities, the resulting feasible region is always a convex set. Why is this important? It is crucial because it ensures that the optimal solution, which we will find using the corner point method, will always occur at the boundaries or vertices of this region. If the region were non-convex, like a crescent moon shape, the optimal solution might be lost in a 'dent' in the shape. But because our constraints form a convex polygon or a convex unbounded region, we are guaranteed that the 'corners' are the most important points. Let us visualize this. Imagine three lines forming a triangle. Each line represents a constraint. The area inside the triangle is the intersection of three half-planes. This triangle is a convex set. If you pick any two dots inside that triangle and draw a line between them, that line will never leave the triangle. This geometric stability is what makes the mathematical optimization possible. As we move forward, remember that the feasible region is the 'playground' where our objective function searches for the maximum or minimum value. Understanding that this playground is an intersection of half-planes and a convex set will help you visualize why we focus so heavily on the corner points in the next steps.","Welcome back. We have learned the theory and the geometry; now, it is time to put it all together. In this session, we will bridge the gap between a complex word problem and a precise graphical solution. Let us take a classic manufacturing problem. Imagine a company that produces two types of products, say, Product A and Product B. To solve this, we must follow a rigorous four-step process. Step one: Mathematical Formulation. Read the problem carefully to identify what needs to be decided. These are our decision variables. Let x be the number of units of Product A and y be the number of units of Product B. Step two: Define the Objective Function. Usually, the problem asks us to maximize profit or minimize cost. If Product A gives a profit of fifty rupees and Product B gives thirty rupees, our objective function, Z, is equal to fifty x plus thirty y. We want to maximize this Z. Step three: Formulate the Constraints. These are the limitations, such as available raw materials or machine hours. Suppose Product A requires two hours of machine time and Product B requires one hour, and the total available time is forty hours. This gives us the linear inequality: two x plus one y is less than or equal to forty. We also have non-negativity constraints, meaning x is greater than or equal to zero and y is greater than or equal to zero, because we cannot produce negative items. Step four: The Graphical Solution. Now, we convert these inequalities into equations to plot them. For the equation two x plus y equals forty, if we let x be zero, y is forty. If we let y be zero, x is twenty. We plot these two points, (zero, forty) and (twenty, zero), and draw a straight line through them. Since the inequality is 'less than or equal to', we shade the region towards the origin. We repeat this for all constraints. The area where all shaded regions overlap is our Feasible Region. In our case, it is a bounded polygon. Now, the most critical part: the Corner Point Method. The optimal solution always lies at one of the vertices, or corners, of this feasible region. We identify the coordinates of these corners. Let's say our corners are (zero, zero), (twenty, zero), (zero, forty), and an intersection point we find by solving the equations simultaneously. Let's say the intersection is at (x equals ten, y equals twenty). We plug each corner point into our objective function, Z equals fifty x plus thirty y. At (zero, zero), Z is zero. At (twenty, zero), Z is one thousand. At (zero, forty), Z is one thousand two hundred. At (ten, twenty), Z is five hundred plus six hundred, which equals one thousand one hundred. Comparing these values, we see that the maximum value is one thousand two hundred, occurring at the point (zero, forty). This means to maximize profit, the company should produce zero units of Product A and forty units of Product B. Always remember to double-check your intersection points by substituting them back into the original equations. A small error in calculation here can lead to the wrong optimal point. Let's practice another one where the region is unbounded, but the method remains exactly the same: formulate, graph, find corners, and test. Mastery comes from repeating this cycle until the transition from words to math becomes second nature.","Welcome back. We have mastered the mechanics of graphing and finding corner points. Now, it is time to apply these skills to the complex, real-world scenarios that frequently appear in your board examinations. In this session, we will dissect three distinct pillars of Linear Programming: Manufacturing, Diet, and Transportation models. Let us start with the Manufacturing Model. Imagine you are a manager of a factory producing two products, say, Product A and Product B. Your goal is to maximize profit. To solve this, you must first identify your decision variables, which we will call x and y, representing the quantity of each product. Your objective function will be the total profit, often written as Z equals p times x plus q times y, where p and q are the unit profits. The constraints here are usually resource-based, such as machine hours or raw material availability. For example, if Product A requires two hours of machine time and Product B requires three, and you only have forty hours available, your inequality is two x plus three y is less than or equal to forty. Remember, in manufacturing, we always include non-negativity constraints, x is greater than or equal to zero and y is greater than or equal to zero, because you cannot produce negative items. Next, let us shift to the Diet Problem. This is a minimization model. Here, the objective is to minimize the total cost of a food mixture while meeting certain nutritional requirements. Your decision variables, x and y, represent the quantities of different food items. Your objective function is the cost, Z equals c one times x plus c two times y. Unlike manufacturing, the constraints here are often 'at least' constraints. For instance, if a meal must contain at least ten units of Vitamin A, and food x provides two units while food y provides one, your inequality is two x plus one y is greater than or equal to ten. You are looking for the smallest possible value of Z within the feasible region. Finally, we look at the Transportation Model. While advanced transportation problems often involve more variables, in your current syllabus, we focus on the distribution of goods from two sources to two destinations to minimize cost. Let x one one be the amount sent from source one to destination one, and so on. The constraints are based on the total supply available at each source and the total demand required at each destination. For example, if source one has a total supply of one hundred units, the sum of all goods leaving source one must be less than or equal to one hundred. The goal is to minimize the total transportation cost, which is the sum of each quantity multiplied by its respective unit shipping cost. As you approach these problems in your exam, always follow this three-step ritual: First, clearly define your variables. Second, write down the objective function explicitly. Third, list all constraints, including the non-negativity constraints. If you miss even one inequality, your feasible region will be incorrect, and your optimal solution will fail. Let us practice these by converting complex paragraphs into these mathematical structures.","Welcome back. We have learned the mechanics of Linear Programming, but knowing the method is only half the battle. In the examination, even if your logic is perfect, a tiny slip in a sign or a shading error can lead to a completely wrong feasible region and, ultimately, the wrong optimal solution. Today, we are going to perform a 'post-mortem' on the most common mistakes students make. Let's start with the most frequent culprit: Inequality Signs. When you convert a word problem into a mathematical model, pay extreme attention to keywords. If a problem says 'at least ten,' that means 'greater than or equal to ten.' If it says 'no more than,' that means 'less than or equal to.' A common mistake is reversing these. For example, if a constraint is 'x plus y is at most fifty,' writing 'x plus y is greater than or equal to fifty' will flip your entire feasible region to the wrong side of the line. Always double-check your signs before you even pick up your ruler. Next, let's talk about Shading and Boundary Lines. This is where many students lose marks in the graphical representation. First, remember the 'Strict Inequality' rule. If your constraint is 'x plus y is strictly greater than five,' the boundary line must be a dashed or dotted line. If it is 'greater than or equal to,' the line must be solid. If you draw a solid line for a strict inequality, your feasible region technically includes points that are not allowed, which is mathematically incorrect. Second, the 'Test Point' error. Many students shade the region without testing a point. Never assume the shading direction based on the sign alone without a quick check. Always pick a point not on the line, usually the origin, zero comma zero. If you plug zero, zero into your inequality and it results in a false statement, like zero is not greater than ten, then you must shade the side that does not contain the origin. Third, let's address the 'Corner Point Calculation' errors. This is the most critical stage. Even if your graph is perfect, a calculation error here ruins everything. Students often struggle with finding the intersection of two lines. Instead of guessing from the graph, always use the method of substitution or elimination to find the exact coordinates of the corner points. Do not rely on your eyes to estimate a point like two point five, three point two. If the lines intersect at a fractional value, calculate it precisely. Another mistake is forgetting to check if a corner point actually belongs to the feasible region. In complex problems with many constraints, sometimes an intersection point of two lines lies outside the boundaries of a third constraint. If it's outside, it is not a corner point of the feasible region and must be ignored. Finally, there is the 'Objective Function' error. Once you have your corner points, students often miscalculate the value of Z. Be very careful with negative coefficients. If your objective function is Z equals five x minus three y, and your corner point is two, four, make sure you don't accidentally add the three instead of subtracting it. Always write out the substitution clearly: Z equals five times two minus three times four, which is ten minus twelve, equals negative two. To avoid these traps, I recommend a three-step verification: First, re-read the constraints to ensure the signs are correct. Second, use the origin test for every single inequality. Third, solve the system of equations algebraically for every corner point rather than just eyeballing the graph. Master these details, and you will turn your LPP solutions from 'almost correct' to 'perfect.'","Welcome back. We have mastered the theory and the mechanics of Linear Programming, but knowing how to solve a problem is different from knowing how to score full marks in a high-pressure exam. In this final technical session, we focus on the three pillars of exam success: Time Management, Precision in Graphing, and the crucial Verification Steps. Let us start with Time Management. Linear Programming problems, especially word problems, can be time-consuming. The biggest trap is spending too much time on the formulation stage. When you read a word problem, do not start writing equations immediately. Spend the first sixty seconds identifying the decision variables, the objective function, and the constraints. Once you have the mathematical model, the rest is mechanical. If you find yourself stuck on a complex calculation for a corner point, move on to the next question and come back. A common mistake is getting bogged down in the arithmetic of the intersection points. Remember, the goal is the optimal value, not just the coordinates. Next, let us talk about Precision in Graphing. This is where most students lose half a mark. In an exam, your graph must be legible and mathematically accurate. First, always use a sharp pencil. A thick, blunt line can make it impossible to distinguish between a boundary line and a shaded region. Second, when plotting your constraint lines, do not just guess the intercepts. Calculate them explicitly. For a line like three x plus four y equals twelve, clearly write down that when x is zero, y is three, and when y is zero, x is four. Label these intercepts on the axes. Third, the shading of the feasible region must be clear. Use light, consistent strokes. If the feasible region is bounded, ensure the vertices are clearly marked with a dot. If a vertex is an intersection of two lines, do not just label it; show the small calculation or the system of equations used to find that specific point. This provides a safety net for you. Finally, we must discuss Verification Steps. Never assume your shaded region is correct just because it looks right. Use the Test Point Method. Pick a point clearly inside your shaded region, such as the origin zero, zero, if it is not on the boundary. Plug these coordinates into every single inequality constraint. If the point satisfies all of them, your region is likely correct. If it fails even one, you have shaded the wrong side. Once you have identified your corner points, perform the final check. Before writing your final answer, plug your corner points back into the objective function one last time. A simple sign error, like writing negative ten instead of positive ten, can change your entire result. Also, check if the question asks for 'maximum' or 'minimum'. It sounds simple, but under exam stress, students often find the maximum when the question demanded the minimum. To summarize your exam strategy: formulate quickly, graph with mathematical precision using intercepts, verify your region with a test point, and double-check your final substitution. Master these habits, and you will turn your knowledge into perfect scores.","Welcome to the final stretch of our journey through Linear Programming. You have mastered the formulation, the graphing, and the complex special cases. Now, it is time to transition from learning to scoring. This masterclass is designed to consolidate everything we have covered and prepare you for the high-pressure environment of your board exams. Let us begin with a rapid-fire recap of the core pillars. First, remember that every LPP is built on three components: the decision variables, which represent what you are trying to determine; the objective function, usually denoted as Z, which you aim to maximize or minimize; and the constraints, which are the linear inequalities that limit your resources. When you move to the graph, always remember to treat the inequality as an equation first to draw the boundary line. Pay close attention to whether the inequality is strict or non-strict to decide if the line is solid or dashed. The most critical step is identifying the Feasible Region—the intersection of all half-planes. Once you have that region, the Corner Point Method is your best friend. The Fundamental Theorem of Linear Programming tells us that if an optimal solution exists, it must occur at one of the vertices or corner points of the feasible region. Now, let us look at the high-yield patterns often seen in Previous Year Questions. The most frequent question type is the Manufacturing Model, where you have limited labor and machine hours and need to maximize profit. The second most common is the Diet Problem, which focuses on minimizing cost while meeting nutritional requirements. When solving these, students often make two fatal errors: first, forgetting to include non-negativity constraints like x is greater than or equal to zero and y is greater than or equal to zero, which are essential to keep your solution in the first quadrant; and second, miscalculating the intersection points of the boundary lines. To avoid this, always use substitution or elimination methods to find your corner points precisely. Let us talk about the 'Special Cases' that examiners love to use to catch you off guard. If your feasible region is unbounded, an optimal solution might not exist, or you must perform an extra check to see if the objective function value can increase or decrease infinitely. If the objective function line is parallel to one of the constraint lines, you will find multiple optimal solutions along that entire line segment. In your exam, if you find two corner points giving the same maximum value, do not panic; simply state that all points on the line segment joining them are also optimal solutions. For time management, do not spend too much time making the graph aesthetically perfect. Use a sharp pencil, label your axes clearly, and ensure your shading is distinct. A quick tip for verification: once you find your optimal corner point, plug those values back into all your original constraints to ensure they are actually feasible. If they violate even one constraint, your calculation is wrong. To summarize our high-yield checklist: define your variables, write the objective function, list all constraints including non-negativity, shade the common region, identify all corner points, test them in Z, and double-check for unboundedness or multiple solutions. You are now equipped with the logic and the strategy to tackle any LPP problem. Stay calm, be precise with your inequalities, and approach every word problem methodically. You have worked hard, and now it is time to let that knowledge shine on paper. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-maths-12-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

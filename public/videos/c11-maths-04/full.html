@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Complex Numbers and Quadratic Equations, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-maths-04-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Need for Complex Numbers, Imaginary Unit i, and Real-World Applications -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Need for Complex Numbers, Imaginary Unit i, and Real-World Applications</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• The limitation of Real Numbers: Square of a real number is always non-negative.</div>
+              <div id="qx0-p1" class="qe-bullet">• The emergence of the Imaginary Unit: i squared equals negative one.</div>
+              <div id="qx0-p2" class="qe-bullet">• Defining the square root of negative numbers using i.</div>
+              <div id="qx0-p3" class="qe-bullet">• Real-world use: Electrical Engineering and Alternating Current.</div>
+              <div id="qx0-p4" class="qe-bullet">• Real-world use: Fluid Dynamics and Quantum Mechanics.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"numberline","seed":3080745120,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D number line representing Real Numbers that suddenly rotates 90 degrees into a vertical axis to represent the Imaginary axis, forming a 2D plane.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D number line representing Real Numbers that suddenly rotates 90 degrees into a vertical axis to represent the Imaginary axis, forming a 2D plane.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Defining Complex Numbers: Algebraic Form, Real and Imaginary Parts, and the Argand Plane -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Defining Complex Numbers: Algebraic Form, Real and Imaginary Parts, and the Argand Plane</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Algebraic Form: z = a + ib, where a and b are real numbers</div>
+              <div id="qx1-p1" class="qe-bullet">• Real Part: Re(z) = a</div>
+              <div id="qx1-p2" class="qe-bullet">• Imaginary Part: Im(z) = b</div>
+              <div id="qx1-p3" class="qe-bullet">• Purely Real: b = 0; Purely Imaginary: a = 0</div>
+              <div id="qx1-p4" class="qe-bullet">• Argand Plane: Real axis (horizontal) and Imaginary axis (vertical)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2103130611,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system transitions into a 2D plane where a point (a, b) glows and connects to the complex expression 'a + ib'.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D coordinate system transitions into a 2D plane where a point (a, b) glows and connects to the complex expression 'a + ib'.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Equality of Complex Numbers and Operations: Addition, Subtraction, and Multiplication -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Equality of Complex Numbers and Operations: Addition, Subtraction, and Multiplication</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Equality: Real parts must equal real parts; imaginary parts must equal imaginary parts.</div>
+              <div id="qx2-p1" class="qe-bullet">• Addition: Sum the real parts and sum the imaginary parts separately.</div>
+              <div id="qx2-p2" class="qe-bullet">• Subtraction: Subtract real parts and subtract imaginary parts separately.</div>
+              <div id="qx2-p3" class="qe-bullet">• Multiplication: Use distributive law and substitute i squared with negative one.</div>
+              <div id="qx2-p4" class="qe-bullet">• Key Rule: Always group real and imaginary terms after multiplying.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3179499954,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system where two complex number vectors merge through addition and expand through multiplication using glowing algebraic terms.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D coordinate system where two complex number vectors merge through addition and expand through multiplication using glowing algebraic terms.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Division of Complex Numbers, Conjugate Properties, and Modulus-Argument Form -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Division of Complex Numbers, Conjugate Properties, and Modulus-Argument Form</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Conjugate: Flip the sign of the imaginary part (a - ic)</div>
+              <div id="qx3-p1" class="qe-bullet">• Division: Multiply numerator and denominator by the conjugate of the denominator</div>
+              <div id="qx3-p2" class="qe-bullet">• Modulus: The distance from origin, |z| = square root of (a squared + b squared)</div>
+              <div id="qx3-p3" class="qe-bullet">• Argument: The angle theta measured from the positive real axis</div>
+              <div id="qx3-p4" class="qe-bullet">• Polar Form: z = r (cos theta + i sin theta)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":889181497,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D Argand plane where a complex number vector rotates to show its argument and shrinks/grows to demonstrate the modulus.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D Argand plane where a complex number vector rotates to show its argument and shrinks/grows to demonstrate the modulus.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Polar Representation of Complex Numbers and Euler's Form Introduction -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Polar Representation of Complex Numbers and Euler's Form Introduction</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Polar Form: z = r(cos θ + i sin θ)</div>
+              <div id="qx4-p1" class="qe-bullet">• Trigonometric link: x = r cos θ and y = r sin θ</div>
+              <div id="qx4-p2" class="qe-bullet">• Euler's Formula: e^(iθ) = cos θ + i sin θ</div>
+              <div id="qx4-p3" class="qe-bullet">• Exponential Form: z = r e^(iθ)</div>
+              <div id="qx4-p4" class="qe-bullet">• Multiplication becomes addition of exponents</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2875556877,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D Argand plane where a vector rotates from the x-axis, transitioning from (x,y) coordinates to a polar radius and angle, finally morphing into the compact expression r*e^(iθ).</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D Argand plane where a vector rotates from the x-axis, transitioning from (x,y) coordinates to a polar radius and angle, finally morphing into the compact expression r*e^(iθ).</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Geometric Interpretation of Complex Numbers: Distance, Midpoint, and Section Formula -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Geometric Interpretation of Complex Numbers: Distance, Midpoint, and Section Formula</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Distance between z1 and z2 is the modulus of (z1 - z2)</div>
+              <div id="qx5-p1" class="qe-bullet">• Midpoint formula: z_m = (z1 + z2) / 2</div>
+              <div id="qx5-p2" class="qe-bullet">• Internal Section Formula: z = (n*z1 + m*z2) / (m + n)</div>
+              <div id="qx5-p3" class="qe-bullet">• External Section Formula: z = (n*z1 - m*z2) / (m - n)</div>
+              <div id="qx5-p4" class="qe-bullet">• Complex numbers behave like points in a 2D Cartesian plane</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":316524621,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D Argand plane where two points z1 and z2 glow, a line segment connects them, and a distance vector emerges to show the modulus calculation.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D Argand plane where two points z1 and z2 glow, a line segment connects them, and a distance vector emerges to show the modulus calculation.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Quadratic Equations with Real Coefficients and Complex Roots: The Discriminant Analysis -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Quadratic Equations with Real Coefficients and Complex Roots: The Discriminant Analysis</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• General form: ax^2 + bx + c = 0 where a, b, c are real numbers</div>
+              <div id="qx6-p1" class="qe-bullet">• Discriminant (D) = b^2 - 4ac determines the nature of roots</div>
+              <div id="qx6-p2" class="qe-bullet">• If D &gt; 0: Roots are real and distinct</div>
+              <div id="qx6-p3" class="qe-bullet">• If D = 0: Roots are real and equal</div>
+              <div id="qx6-p4" class="qe-bullet">• If D &lt; 0: Roots are complex conjugates (p + iq and p - iq)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":251293232,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system where a parabola shifts vertically until it no longer touches the x-axis, while the discriminant value transitions from positive to negative on a floating digital display.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D coordinate system where a parabola shifts vertically until it no longer touches the x-axis, while the discriminant value transitions from positive to negative on a floating digital display.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Solving Quadratic Equations with Complex Roots and the Fundamental Theorem of Algebra -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Solving Quadratic Equations with Complex Roots and the Fundamental Theorem of Algebra</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Quadratic formula application for negative discriminants</div>
+              <div id="qx7-p1" class="qe-bullet">• Complex roots of real-coefficient equations occur in conjugate pairs</div>
+              <div id="qx7-p2" class="qe-bullet">• Fundamental Theorem of Algebra: A polynomial of degree n has n roots</div>
+              <div id="qx7-p3" class="qe-bullet">• The concept of an algebraically closed field</div>
+              <div id="qx7-p4" class="qe-bullet">• Relationship between polynomial degree and total number of solutions</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":4233887700,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D coordinate system showing a parabola floating above the x-axis, transitioning into a complex plane where the roots appear as symmetric points across the real axis.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D coordinate system showing a parabola floating above the x-axis, transitioning into a complex plane where the roots appear as symmetric points across the real axis.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Advanced Algebraic Manipulations: Powers of i, Binomial Expansion, and Complex Identities -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Advanced Algebraic Manipulations: Powers of i, Binomial Expansion, and Complex Identities</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• The cyclic pattern of i: i, -1, -i, 1 repeats every four powers</div>
+              <div id="qx8-p1" class="qe-bullet">• To find i to the power of n, find the remainder of n divided by 4</div>
+              <div id="qx8-p2" class="qe-bullet">• Binomial expansion of (a + bi)^n involves cycling powers of i</div>
+              <div id="qx8-p3" class="qe-bullet">• Identity: z multiplied by conjugate z-bar equals modulus squared</div>
+              <div id="qx8-p4" class="qe-bullet">• z plus conjugate z-bar equals 2 times the real part</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3945170542,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D glowing cycle of four nodes representing i, -1, -i, and 1 rotating in a loop around a central axis.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D glowing cycle of four nodes representing i, -1, -i, and 1 rotating in a loop around a central axis.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Worked Examples: Step-by-Step Problem Solving from NCERT and Exemplar -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Worked Examples: Step-by-Step Problem Solving from NCERT and Exemplar</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Simplify square roots of negative numbers using the imaginary unit i</div>
+              <div id="qx9-p1" class="qe-bullet">• Use conjugates to perform division of complex numbers</div>
+              <div id="qx9-p2" class="qe-bullet">• Find modulus and argument by simplifying the expression first</div>
+              <div id="qx9-p3" class="qe-bullet">• Apply the quadratic formula for complex roots when discriminant is negative</div>
+              <div id="qx9-p4" class="qe-bullet">• Equate real and imaginary parts to solve for unknown variables</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":281632478,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen showing a handwritten step-by-step derivation on the left and a digital color-coded version of the same math on the right.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen showing a handwritten step-by-step derivation on the left and a digital color-coded version of the same math on the right.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Avoiding Errors in Modulus, Conjugates, and Square Roots of Complex Numbers -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Avoiding Errors in Modulus, Conjugates, and Square Roots of Complex Numbers</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Modulus Error: The modulus of a sum is NOT the sum of the moduli.</div>
+              <div id="qx10-p1" class="qe-bullet">• Conjugate Trap: Be careful when distributing conjugates over roots.</div>
+              <div id="qx10-p2" class="qe-bullet">• Square Root Error: Do not take square roots of parts separately.</div>
+              <div id="qx10-p3" class="qe-bullet">• Argument Check: Always ensure the principal argument is between -pi and pi.</div>
+              <div id="qx10-p4" class="qe-bullet">• Power of i: Always use the cycle of four for negative or large exponents.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1253876387,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a 'Correct' vs 'Incorrect' algebraic derivation of a complex square root, with red 'X' marks appearing over common mistakes.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a 'Correct' vs 'Incorrect' algebraic derivation of a complex square root, with red 'X' marks appearing over common mistakes.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: High-Weightage Question Patterns, Time Management, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: High-Weightage Question Patterns, Time Management, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• High-Weightage Patterns: Geometric Locus, Polar Form, and Conjugate Properties</div>
+              <div id="qx11-p1" class="qe-bullet">• Quadratic Equations: Solving with negative discriminants and complex roots</div>
+              <div id="qx11-p2" class="qe-bullet">• Time Management: Identify the form first and use the process of elimination</div>
+              <div id="qx11-p3" class="qe-bullet">• Avoid Pitfalls: Always verify the quadrant for the principal argument</div>
+              <div id="qx11-p4" class="qe-bullet">• Quick Recap: From the imaginary unit 'i' to Euler's Form and beyond</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4043592671,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D digital dashboard displaying a checklist of topics being ticked off, transitioning into a split-screen showing a complex calculation on one side and a ticking stopwatch on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A 3D digital dashboard displaying a checklist of topics being ticked off, transitioning into a split-screen showing a complex calculation on one side and a ticking stopwatch on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Complex Numbers and Quadratic Equations today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Need for Complex Numbers, Imaginary Unit i, and Real-World Applications <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Defining Complex Numbers: Algebraic Form, Real and Imaginary Parts, and the Argand Plane <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Equality of Complex Numbers and Operations: Addition, Subtraction, and Multiplication <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Division of Complex Numbers, Conjugate Properties, and Modulus-Argument Form <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Polar Representation of Complex Numbers and Euler's Form Introduction <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Geometric Interpretation of Complex Numbers: Distance, Midpoint, and Section Formula <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Quadratic Equations with Real Coefficients and Complex Roots: The Discriminant Analysis <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Solving Quadratic Equations with Complex Roots and the Fundamental Theorem of Algebra <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Advanced Algebraic Manipulations: Powers of i, Binomial Expansion, and Complex Identities <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Worked Examples: Step-by-Step Problem Solving from NCERT and Exemplar <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Avoiding Errors in Modulus, Conjugates, and Square Roots of Complex Numbers <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: High-Weightage Question Patterns, Time Management, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey into one of the most fascinating chapters of Class 11 Mathematics: Complex Numbers and Quadratic Equations. Before we dive into the math, let's start with a question that might seem simple but actually stumped mathematicians for centuries. Consider the quadratic equation x squared plus one equals zero. If we try to solve this using the methods you learned in Class 10, we would say x squared equals negative one. Now, think back to your properties of real numbers. Is there any real number that, when multiplied by itself, gives a negative result? No. Whether you take a positive number, a negative number, or even zero, the square is always non-negative. This creates a dead end in our number system. We find ourselves stuck, unable to find a solution within the realm of Real Numbers. This is exactly where the 'need' for a new kind of number arises. To overcome this limitation, mathematicians introduced a new concept called the Imaginary Unit, denoted by the symbol 'i'. We define 'i' such that i squared equals negative one. This tiny symbol, 'i', acts as a bridge, allowing us to take the square root of negative numbers. For example, the square root of negative four can now be written as the square root of four times negative one, which simplifies to two times i. This isn't just a mathematical trick; it is a fundamental expansion of our number system, much like how we moved from whole numbers to integers to handle negative quantities. But you might be wondering, why do we need this? Is it just a fantasy? Absolutely not. Complex numbers are not just 'imaginary' in the sense of being non-existent; they are essential tools in the real world. In the field of Electrical Engineering, complex numbers are used to describe alternating current, where they represent both magnitude and phase. In Fluid Dynamics, they help scientists model the flow of air over an airplane wing. Even in Quantum Mechanics, the very fabric of how we understand subatomic particles is described using complex-valued wave functions. Without complex numbers, our modern technology, from your smartphone to the power grid, would be much harder to design and understand. So, in this chapter, we aren't just learning a new way to solve equations; we are unlocking a whole new dimension of mathematics that connects algebra to geometry and physics. Let's get started.","Welcome back. In our previous session, we explored the necessity of the imaginary unit 'i' and how it solves equations that real numbers cannot. Now, let us move from the concept of 'i' to the formal definition of a Complex Number itself. A complex number is a number that can be expressed in the form 'a plus i times b', where 'a' and 'b' are real numbers. We usually denote this complex number with the capital letter 'z'. This expression, 'a plus i times b', is known as the algebraic form of a complex number. Here, the letter 'a' represents the real part of the complex number, and we denote it as 'Re of z'. The letter 'b' is the coefficient of the imaginary unit, and we call it the imaginary part of the complex number, denoted as 'Im of z'. It is very important to note that the imaginary part is the real number 'b' itself, not 'i times b'. For example, if we have 'z equals 3 plus 4i', then the real part is 3 and the imaginary part is 4. If we have 'z equals negative 5 minus i', the real part is negative 5 and the imaginary part is negative 1. If 'b' is zero, the complex number becomes a purely real number. Conversely, if 'a' is zero, the number is called a purely imaginary number. Now, how do we visualize these numbers? Since a complex number has two distinct components, a single number line is not enough. To represent them, we use a two-dimensional plane called the Argand Plane, named after the mathematician Jean-Robert Argand. In this plane, we do not use an x-axis and a y-axis in the traditional sense of functions; instead, we use a Real Axis and an Imaginary Axis. The horizontal axis represents the real part 'a', and the vertical axis represents the imaginary part 'b'. Every complex number 'z equals a plus i times b' can be uniquely represented as a point with coordinates 'a comma b' on this plane. For instance, the complex number '2 plus 3i' would be plotted by moving 2 units to the right on the real axis and 3 units up on the imaginary axis. This mapping between the algebra of complex numbers and the geometry of the plane is a fundamental concept that will help us understand operations like addition and multiplication much more intuitively in the upcoming lessons. Let us quickly recap: the algebraic form is 'a plus i times b', 'a' is the real part, 'b' is the imaginary part, and the Argand Plane uses the real and imaginary axes to plot these numbers as points.","Welcome back to our journey through Complex Numbers. In our previous session, we explored the Argand plane and how to represent a complex number as a point. Now, it is time to learn how to manipulate these numbers mathematically. We will start with a very fundamental concept: Equality. When do we say two complex numbers are exactly the same? Suppose we have two complex numbers, let's call them z one and z two. If z one equals a plus i times b, and z two equals c plus i times d, then for these two to be equal, two specific conditions must be met simultaneously. First, the real parts must be equal, meaning a equals c. Second, the imaginary parts must also be equal, meaning b equals d. It is important to remember that we are comparing the coefficients of the imaginary unit i. For example, if we have three plus four i equals x plus y i, then x must be three and y must be four. This principle of equality is the bedrock for all the operations we are about to perform. Now, let's move to Addition. Adding complex numbers is incredibly intuitive if you think of them as algebraic expressions. To add two complex numbers, say z one equals a plus i times b and z two equals c plus i times d, you simply group the real parts together and the imaginary parts together. The sum is the real part a plus c, plus i times the sum of the imaginary parts, b plus d. Think of it like combining like terms in algebra. Subtraction follows the exact same logic. To subtract z two from z one, you take the real part of z one minus the real part of z two, and then add i times the real part of z one minus the real part of z two. It is essentially a matter of distributing the negative sign across both the real and imaginary components. Let's look at a quick mental example. If you subtract one minus two i from three plus five i, you do three minus one for the real part, which is two, and five minus negative two for the imaginary part, which becomes seven. So, the result is two plus seven i. Now, let's step up the complexity with Multiplication. This is where it gets interesting. To multiply two complex numbers, we use the distributive law, often called the FOIL method in algebra. Let's multiply z one equals a plus i times b by z two equals c plus i times d. We multiply a times c, then a times i times d, then i times b times c, and finally i times b times i times d. This gives us a c plus i times a d, plus i times b c, plus i squared times b d. Now, remember the most important rule in this entire chapter: i squared is equal to negative one. This is the magic step. When we replace i squared with negative one, the term i squared times b d becomes negative b d. Now, we group the terms again. The new real part is a c minus b d, and the new imaginary part is the sum of a d plus b c, multiplied by i. So, the product is a c minus b d, plus i times the quantity a d plus b c. This structure is consistent every single time. Whether you are working with simple integers or complex fractions, the rule remains: multiply them like binomials and then simplify the i squared term. Mastering these three operations—addition, subtraction, and multiplication—is essential because they form the foundation for division and the more advanced geometric interpretations we will discuss in the next part. Practice these steps carefully, ensuring you never forget to change the sign when i squared appears.","Welcome back. In our previous session, we mastered addition, subtraction, and multiplication of complex numbers. Now, we step into the more sophisticated realm of division and the geometric structure of these numbers. Let us start with the concept of the Conjugate. If we have a complex number z, expressed as a equals b plus i c, its conjugate, denoted as z-bar, is simply a minus i c. We just flip the sign of the imaginary part. Think of it as a reflection across the real axis in the Argand plane. This conjugate is a powerful tool. One of its most important properties is that when you multiply a complex number by its conjugate, the result is always a non-negative real number. Specifically, z multiplied by z-bar equals a squared plus c squared. This is the foundation of division. To divide one complex number by another, say z-one divided by z-two, we cannot simply divide the parts. Instead, we multiply both the numerator and the denominator by the conjugate of the denominator. This process, called rationalizing the denominator, turns the denominator into a pure real number, allowing us to separate the result into its real and imaginary components. Let us look at an example. If we have two plus three i divided by one minus two i, we multiply top and bottom by one plus two i. The denominator becomes one squared plus two squared, which is five. The numerator becomes two plus four i plus three i minus six, which simplifies to negative four plus seven i. Thus, the quotient is negative four-fifths plus seven-fifths i. Now, let us shift our perspective from algebra to geometry. We have been representing complex numbers as points or vectors, but there is a more elegant way: the Modulus-Argument form, also known as the Polar form. Every complex number z equals a plus i b can be described by two values: its distance from the origin and its angle with the positive real axis. The distance is the modulus, denoted as absolute value of z, and it is calculated using the Pythagorean theorem as the square root of a squared plus b squared. The angle, denoted by the Greek letter theta, is called the argument or the amplitude. To find the argument, we first calculate the reference angle alpha using the tangent inverse of the absolute value of b divided by a. However, the actual argument theta depends on which quadrant the complex number lies in. In the first quadrant, theta equals alpha. In the second quadrant, theta equals pi minus alpha. In the third quadrant, theta equals negative pi plus alpha, or pi plus alpha depending on the principal value range. In the fourth quadrant, theta equals negative alpha. Remember, the principal argument is always kept between negative pi and positive pi. By combining the modulus r and the argument theta, we can write any complex number as z equals r times the quantity cosine theta plus i sine theta. This form is not just a different way of writing the number; it is a gateway to understanding rotations and scaling in the complex plane, which we will explore in our next lesson on Euler's form. Let's practice these transitions carefully.","Welcome back. In our previous lesson, we explored the modulus and the argument of a complex number. Today, we are going to bridge the gap between algebra and geometry by learning how to represent a complex number in its Polar Form, and we will be introduced to the incredibly powerful Euler's Form. Let us start with a quick recap. Imagine a complex number z, which is equal to x plus i-y. We know that the modulus, denoted as r, is the distance from the origin to the point (x, y) in the Argand plane. We also know the argument, denoted as theta, is the angle this line makes with the positive x-axis. Now, think about basic trigonometry. In a right-angled triangle, x is equal to r-cosine-theta, and y is equal to r-sine-theta. If we substitute these values back into our algebraic form, z equals r-cosine-theta plus i-times-r-sine-theta. If we take r as a common factor, we get the Polar Representation: z equals r times the quantity cosine-theta plus i-sine-theta. This is a beautiful way to describe a complex number using its magnitude and its direction. However, there is a small catch. The argument theta must be carefully chosen based on which quadrant the point lies in. We call this the principal argument. For example, if your point is in the second quadrant, your angle must reflect that. Now, let us look at the most elegant form of all: Euler's Form. In the 18th century, Leonhard Euler discovered a profound connection between trigonometry and the exponential function. He showed that the expression cosine-theta plus i-sine-theta is actually equal to e raised to the power of i-theta. This is known as Euler's Formula. It is one of the most important formulas in all of mathematics. Because of this, we can rewrite our complex number z in a much more compact way. Instead of writing z equals r times the quantity cosine-theta plus i-sine-theta, we can simply write z equals r-e-to-the-power-of-i-theta. This is called the Exponential Form or Euler's Form. Why is this so useful? Well, imagine you have to multiply two complex numbers. In polar form, you multiply the moduli and add the angles. In Euler's form, this becomes even simpler because of the laws of exponents. If you have z-one equals r-one-e-to-the-power-of-i-theta-one and z-two equals r-two-e-to-the-power-of-i-theta-two, then z-one times z-two equals r-one-times-r-two-e-to-the-power-of-i-times-theta-one-plus-theta-two. It turns complex multiplication into simple addition of exponents! Let us do a quick example. Suppose we have a complex number z equals one plus i-square-root-of-three. First, find the modulus r. r equals the square root of one squared plus square-root-of-three-squared, which is the square root of one plus three, which is two. Next, find the argument theta. tan-theta equals y-over-x, which is square-root-of-three-over-one. This means theta is pi-over-three or sixty degrees. So, the polar form is z equals two times the quantity cosine-pi-over-three plus i-sine-pi-over-three. And using Euler's form, we write it simply as z equals two-e-to-the-power-of-i-pi-over-three. See how much cleaner that looks? As we move forward, you will see that Euler's form makes calculating powers and roots of complex numbers much easier than the algebraic method. Master these forms, and you will unlock the true power of complex numbers.","Welcome back. In our previous lesson, we explored the polar form of complex numbers. Today, we move from algebra to geometry. We are going to see how the Argand plane allows us to treat complex numbers not just as values, but as points or vectors in a two-dimensional space. Let us start with the concept of distance. In the real number line, the distance between two numbers is simply their difference. In the complex plane, if we have two points representing the complex numbers z sub one and z sub two, the distance between them is the modulus of their difference. Mathematically, we write this as the modulus of z sub one minus z sub two. Think of it this way: if z sub one is a plus i b and z sub two is c plus i d, then z sub one minus z sub two equals the quantity a minus c plus i of the quantity b minus d. When we take the modulus of this result, we apply the formula: the square root of the quantity a minus c squared plus the quantity b minus d squared. This is exactly the same as the distance formula you learned in coordinate geometry for two points in a Cartesian plane. It is a beautiful bridge between algebra and geometry. Now, let us look at the midpoint. If we want to find the point that lies exactly halfway between z sub one and z sub two, we use the arithmetic mean. The midpoint z sub m is calculated by adding the two complex numbers and dividing the sum by two. So, z sub m equals one half times the quantity z sub one plus z sub two. If you break this down into real and imaginary parts, you will see that the real part of the midpoint is the average of the real parts, and the imaginary part is the average of the imaginary parts. Finally, let us tackle the more advanced Section Formula. Suppose a point z divides the line segment joining z sub one and z sub two in a specific ratio, say m to n. If the division is internal, meaning the point lies between the two complex numbers, the formula for z is given by the quantity n times z sub one plus m times z sub two, all divided by the quantity m plus n. This works exactly like the internal section formula in geometry. If the division is external, where the point lies on the extension of the line, we simply change the sign in the denominator and the numerator. The formula becomes the quantity n times z sub one minus m times z sub two, all divided by the quantity m minus n. To master this, remember that every complex number z equals x plus i y can be viewed as a position vector from the origin to the point x, y. Therefore, all your existing knowledge of coordinate geometry applies perfectly here. Let us practice these concepts with a few examples to ensure you can transition smoothly from algebraic subtraction to geometric distance.","Welcome back. In our previous session, we explored the geometry of the Argand plane. Now, let us bridge the gap between algebra and complex numbers by revisiting a concept you know well: the quadratic equation. Consider a general quadratic equation of the form, a-x-squared plus b-x plus c equals zero, where the coefficients a, b, and c are real numbers and a is not equal to zero. Up until now, in your earlier classes, you were taught that if the roots were not real, we simply said 'no real roots exist.' But now, with our knowledge of the imaginary unit 'i', we can go much deeper. To understand the nature of these roots, we look at the discriminant, which is the expression D equals b-squared minus four-a-c. The discriminant acts as a mathematical compass, telling us exactly what kind of roots to expect. Let us analyze the three distinct cases. Case one: If the discriminant, b-squared minus four-a-c, is greater than zero, the roots are real and distinct. This is the scenario you are most familiar with. Case two: If the discriminant is exactly equal to zero, the roots are real and equal. Case three, and the most important for our current chapter, is when the discriminant is less than zero. When b-squared minus four-a-c is a negative number, the square root in the quadratic formula results in an imaginary value. This is where the magic happens. Instead of saying there are no solutions, we say the roots are complex and non-real. Because the coefficients a, b, and c are real, these complex roots always appear in a very specific and beautiful pattern. They are complex conjugates of each other. If one root is alpha equals p plus i-q, then the other root must be beta equals p minus i-q. This is not a coincidence; it is a mathematical necessity. Let us look at the quadratic formula itself: x equals negative b, plus or minus, the square root of the discriminant, all divided by two-a. When the discriminant is negative, we can write the square root of a negative number as the square root of the absolute value of the discriminant, multiplied by the imaginary unit 'i'. This gives us a clear algebraic path to finding the complex roots. For example, if you have an equation where the discriminant turns out to be negative nine, you don't stop there. You treat the square root of negative nine as three-i. This transition from 'no solution' to 'complex conjugate solutions' is a fundamental shift in your mathematical thinking. It allows us to solve every single quadratic equation, regardless of the coefficients. In the next part, we will apply this to solve specific equations and discuss how this relates to the Fundamental Theorem of Algebra. For now, remember: when coefficients are real and the discriminant is negative, your roots are complex conjugates.","Welcome back. In our previous session, we explored how a negative discriminant leads to the birth of imaginary numbers. Today, we are going to bridge that gap by mastering how to solve quadratic equations with complex roots and understanding a profound principle known as the Fundamental Theorem of Algebra. Let us start with a review. Consider a standard quadratic equation in the form of a-x-squared plus b-x plus c equals zero, where a, b, and c are real numbers and a is not equal to zero. When we apply the quadratic formula, x equals minus b, plus or minus the square root of b-squared minus four-a-c, all divided by two-a, we look closely at the term under the radical, which is the discriminant, denoted by the Greek letter Delta. If Delta is less than zero, we cannot find a real number that satisfies the equation. This is where our new friend, the imaginary unit i, comes to the rescue. If the discriminant is a negative number, say negative k-squared, we rewrite the square root of negative k-squared as i times k. This allows us to express the roots as a pair of complex numbers. An essential property to remember here is that if the coefficients a, b, and c are real, these complex roots will always occur in conjugate pairs. This means if one root is p plus i-q, the other must be p minus i-q. They are mirror images of each other across the real axis on the Argand plane. Now, let us elevate our understanding to a much broader mathematical landscape. Have you ever wondered how many solutions a polynomial equation can have? A linear equation like x minus five equals zero has exactly one solution. A quadratic equation can have two. But what about a cubic equation or a polynomial of degree ten? This brings us to the Fundamental Theorem of Algebra. This theorem states that every non-constant single-variable polynomial with complex coefficients has at least one complex root. More importantly, for a polynomial of degree n, there are exactly n roots, provided we count them with their multiplicities. This is a revolutionary concept. It tells us that the field of complex numbers is algebraically closed. In simpler terms, it means that we will never need to invent a 'new' kind of number to solve polynomial equations; complex numbers are sufficient to solve any polynomial equation, no matter how high the power. For example, a polynomial of degree three, such as x-cubed plus x-squared plus x-one equals zero, is guaranteed to have exactly three roots in the complex number system. Some might be real, and some might be complex, but the total count will always match the highest exponent. Let us look at a quick example to solidify this. Suppose we have the equation x-squared plus two-x plus five equals zero. Here, a is one, b is two, and c is five. The discriminant is b-squared minus four-a-c, which is two-squared minus four times one times five, giving us four minus twenty, which equals negative sixteen. Since the discriminant is negative, the roots are complex. The square root of negative sixteen is four-i. Applying the quadratic formula, we get x equals minus two, plus or minus four-i, all divided by two. Simplifying this, we get x equals minus one plus two-i and x equals minus one minus two-i. Notice how they are conjugates. This beautiful symmetry is a direct consequence of having real coefficients. As we move forward in this chapter, keep this theorem in mind: the degree of the equation is the key to the number of solutions. This certainty provides a foundation for all advanced algebra. In the next part, we will dive into advanced algebraic manipulations to handle even more complex expressions.","Welcome back. In our previous session, we explored how quadratic equations yield complex roots. Today, we move into the deeper algebraic mechanics that make complex numbers such a powerful tool in mathematics. We will start with the cyclic nature of the imaginary unit, i. Remember that i is defined as the square root of negative one. When we raise i to successive integer powers, a fascinating pattern emerges. Let us calculate them together. i to the power of one is simply i. i to the power of two is negative one. i to the power of three is i squared times i, which gives us negative i. And i to the power of four is i squared squared, which is negative one squared, resulting in positive one. If we continue to i to the power of five, it is the same as i to the power of one. This creates a cycle of four: i, negative one, negative i, and one. To find i to the power of any large integer n, you simply divide n by four and look at the remainder. If the remainder is zero, the result is one; if one, the result is i; if two, it is negative one; and if three, it is negative i. This cyclic property is essential for simplifying complex expressions. Next, let us look at how complex numbers behave within binomial expansions. The Binomial Theorem, which you studied in algebra, applies perfectly here. When we expand a binomial like the sum of a real number a and a complex number bi raised to the power of n, we follow the standard formula using combinations. However, the complexity arises because each term in the expansion will contain powers of i. As we saw, these powers will cycle through i, negative one, negative i, and one. This means the expansion will naturally split into a real part and an imaginary part. This is a vital technique for finding the real and imaginary components of large algebraic expressions without expanding every single term manually. Finally, we must master complex identities. One of the most important identities involves the relationship between a complex number and its conjugate. We know that the product of a complex number z and its conjugate z-bar is equal to the square of its modulus. In mathematical terms, z multiplied by z-bar equals the modulus of z squared. Another critical identity involves the sum of a complex number and its conjugate, which always results in twice the real part of the number. Conversely, the difference between a complex number and its conjugate results in twice the imaginary part, multiplied by i. These identities are not just shortcuts; they are the fundamental tools used to simplify division, find moduli, and solve higher-order polynomial equations. By mastering these manipulations, you transition from simply understanding what a complex number is to being able to manipulate them with the same fluidity as real numbers. Let us prepare to apply these rules in our upcoming worked examples.","Welcome back. In this session, we are moving from theory to application. We will solve a variety of problems ranging from standard NCERT exercises to higher-order thinking questions from the Exemplar. Let us start with a fundamental problem involving the simplification of a complex expression. Suppose we are asked to find the value of the expression, square root of negative seven, plus the square root of negative eight. Remember, we cannot take the square root of a negative number in the real number system. So, we rewrite square root of negative seven as the square root of seven, multiplied by the imaginary unit i, and square root of negative eight as the square root of eight, multiplied by i. Now, we simplify the square root of eight as two, square root of two, times i. Our expression becomes, square root of seven, plus, two, square root of two, i. This is our final answer in the form of a, a plus bi. Now, let's look at a more challenging problem from the Exemplar involving the modulus and argument. Find the modulus and the argument of the complex number, negative one minus i, divided by, one plus i, multiplied by, i. First, let us simplify the denominator. The denominator is one plus i. We multiply the numerator and the denominator by the conjugate, which is one minus i. This gives us, negative one minus i, multiplied by, one minus i, all divided by, the modulus of one plus i, squared. The denominator, one plus i, squared, is one squared plus one squared, which is two. Now, let us expand the numerator: negative one multiplied by one, is negative one; negative one multiplied by minus i, is plus i; minus i multiplied by one, is minus i; and minus i multiplied by minus i, is i squared, which is negative one. Adding these together, we get, negative one, plus i, minus i, minus one, which simplifies to negative two. So, the entire expression is, negative two, divided by, two, which equals negative one. The complex number is just negative one. The modulus of negative one is one, and the argument of negative one, which lies on the negative real axis, is pi. Let's try a quadratic equation problem where the coefficients are real but the roots are complex. Solve the equation, x squared plus x plus one, equals zero. Here, the coefficients are a equals one, b equals one, and c equals one. We calculate the discriminant, b squared minus four a c. This gives us, one squared minus four times one times one, which is one minus four, resulting in negative three. Since the discriminant is less than zero, the roots are complex. Using the quadratic formula, x equals, negative b, plus or minus, the square root of the discriminant, all divided by, two a. This gives us, negative one, plus or minus, the square root of negative three, divided by, two. We rewrite the square root of negative three as, square root of three, times i. Thus, the two roots are, negative one plus i, square root of three, divided by, two, and, negative one minus i, square root of three, divided by, two. These are conjugate pairs, which is a key property we discussed earlier. Finally, let's look at a problem involving the equality of complex numbers. If, a plus ib, is equal to, square root of three, plus i, find the values of a and b. This is straightforward. We equate the real parts and the imaginary parts separately. The real part on the left is a, and on the right is square root of three. So, a equals square root of three. The imaginary part on the left is b, and on the right is one. So, b equals one. By practicing these different types of problems—simplification, modulus-argument, quadratic equations, and equality—you build the muscle memory needed for your exams. Always show your steps clearly, especially when dealing with the imaginary unit i.","Welcome back. We have mastered the concepts, but in mathematics, knowing the rule is only half the battle; the other half is avoiding the traps that examiners set. Today, we focus on the most frequent errors students make in Complex Numbers. Let us start with the Modulus. A very common mistake is thinking that the modulus of a sum is equal to the sum of the moduli. For example, students often write the modulus of z one plus z two as the modulus of z one plus the modulus of z two. This is incorrect. The triangle inequality tells us that the modulus of the sum is always less than or equal to the sum of the individual moduli. Always remember: the modulus represents distance, and the shortest distance between two points is a straight line. Next, let us look at the Conjugate. A frequent error occurs when students try to apply the conjugate to a product or quotient without distributing it correctly. While the conjugate of a product is indeed the product of the conjugates, a common mistake happens when dealing with square roots. Students often assume that the conjugate of the square root of a complex number is simply the square root of its conjugate. This is not always straightforward and can lead to sign errors. Speaking of square roots, this is perhaps the biggest pitfall. When you are asked to find the square root of a complex number, say a plus i b, many students simply take the square root of a and the square root of b separately. This is a fundamental error. You must use the algebraic method, setting the square root equal to x plus i y, squaring both sides, and solving the resulting system of equations. This process ensures that the real and imaginary parts are correctly balanced. Another subtle error involves the modulus of a quotient. Remember, the modulus of z one divided by z two is the modulus of z one divided by the modulus of z two, provided the denominator is not zero. Do not forget to calculate the modulus of the entire expression at once to avoid rounding errors or sign mistakes. We also see errors in the Argand plane. Students often confuse the principal argument with a general argument. Remember, the principal argument theta must always fall within the range of negative pi to positive pi. If your calculated angle is outside this range, you must adjust it by adding or subtracting two pi. For instance, if you get an angle of three pi divided by two, your principal argument is actually negative pi divided two. Finally, be extremely careful with the imaginary unit i. When simplifying higher powers of i, students often lose track of the cycle of four. Always divide the exponent by four and use the remainder to find the value. A common mistake is thinking i to the power of negative one is i, when it is actually negative i. Stay vigilant, check your signs, and always verify your final answer against the original equation. Mastering these nuances is what separates a good student from a topper.","Welcome to the final session of our journey through Complex Numbers and Quadratic Equations. We have covered everything from the imaginary unit 'i' to the elegance of Euler's form. Now, it is time to transition from learning to performing. In a competitive exam environment, knowing the concept is only half the battle; the other half is speed, accuracy, and pattern recognition. Let us start with the high-weightage question patterns you must master. The first pattern is the geometric interpretation. Expect questions that ask you to find the distance between two complex numbers or the midpoint of a line segment on the Argand plane. These are easy marks if you remember that the modulus represents distance. The second pattern involves the properties of the conjugate and the modulus. You will often see questions like 'If the modulus of z is equal to the modulus of z plus one, find the locus of z'. These require you to square both sides and simplify. The third pattern is the Polar and Euler form conversion. Examiners love testing your ability to find the principal argument, especially when the complex number lies in the second or third quadrant. Always double-check the sign of your sine and cosine values. The fourth pattern is the application of complex numbers in quadratic equations. You must be ready to solve equations where the discriminant is negative, ensuring you express your final answer in the form a plus i b. Finally, there are algebraic identity questions, such as finding the value of i raised to the power of n, or simplifying complex fractions using the conjugate. Now, let's talk about time management. When you see a complex number problem, do not jump into heavy calculations immediately. First, identify the form. Is it algebraic, polar, or geometric? If a question looks long, like a complex division, check if you can simplify the numerator or denominator using properties before multiplying by the conjugate. This saves precious minutes. For multiple-choice questions, use the process of elimination. If you are asked for the modulus, you can often plug in the options to see which one satisfies the equation. For long-answer questions, show every step of your algebraic manipulation. Even if your final calculation is wrong, you will earn step-marks for correctly identifying the conjugate or the argument. Let's do a lightning-fast recap of the entire chapter to cement your understanding. We began with the necessity of the imaginary unit 'i', where i squared equals negative one. We defined a complex number as z equals a plus i b, where 'a' is the real part and 'b' is the imaginary part. We visualized these on the Argand plane, where the x-axis is real and the y-axis is imaginary. We learned that addition and subtraction are done component-wise, while multiplication requires the distributive property and the substitution of i squared with negative one. We mastered the conjugate, which flips the sign of the imaginary part, and the modulus, which is the square root of a squared plus b squared. We moved into the polar form, using r cosine theta plus i r sine theta, and touched upon the power of Euler's form. We applied these concepts to solve quadratic equations with real coefficients that yield complex roots, using the discriminant to identify them. We also learned to avoid common pitfalls, like forgetting to check the quadrant when calculating the argument or making sign errors during division. You are now equipped with the conceptual depth and the strategic mindset required to ace this chapter. Stay calm, practice the NCERT Exemplar problems, and trust your logic. You have mastered Complex Numbers. See you in the next chapter!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-maths-04-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>
