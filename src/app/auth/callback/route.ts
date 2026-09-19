@@ -5,15 +5,30 @@ import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import type { Database, AppRole } from "@/lib/db/types";
 
 function getRedirectOrigin(request: NextRequest): string {
-  const forwardedHost = request.headers.get("x-forwarded-host");
-  const forwardedProto = request.headers.get("x-forwarded-proto") || "https";
-  if (forwardedHost) {
-    return `${forwardedProto}://${forwardedHost}`;
+  // `x-forwarded-host` is attacker-controllable on Vercel, and a wrong host here
+  // writes the session cookie against the wrong domain — the user is then
+  // "logged in" to a host the app never reads again, which presents as a silent
+  // logout. So the canonical origin is preferred, in this order:
+  //
+  //   1. the actual request host, when running locally — otherwise a dev server
+  //      would bounce sign-ins to the production domain and the session cookie
+  //      would be written for the wrong host;
+  //   2. NEXT_PUBLIC_APP_URL — the canonical deployed origin;
+  //   3. the platform-provided production host;
+  //   4. the request origin as a last resort.
+  const host = request.headers.get("host") ?? "";
+  const isLocalHost = /^(localhost|127\.0\.0\.1|\[::1\])(:\d+)?$/.test(host);
+  if (isLocalHost) {
+    const proto = request.nextUrl.protocol.replace(":", "") || "http";
+    return `${proto}://${host}`;
   }
-  const host = request.headers.get("host");
-  if (host && !host.startsWith("localhost") && !host.startsWith("127.0.0.1")) {
-    return `https://${host}`;
-  }
+
+  const configured = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/+$/, "");
+  if (configured) return configured;
+
+  const prodHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+  if (prodHost) return `https://${prodHost}`;
+
   const origin = request.nextUrl.origin;
   if (process.env.NODE_ENV === "production" && origin.startsWith("http://")) {
     return origin.replace("http://", "https://");
@@ -47,8 +62,22 @@ export async function GET(request: NextRequest) {
   const rawNext = request.nextUrl.searchParams.get("next") ?? "/app/dashboard";
   const redirectPath =
     rawNext.startsWith("/") && !rawNext.startsWith("//") ? rawNext : "/app/dashboard";
-  const targetUrl = new URL(redirectPath, origin);
-  const response = NextResponse.redirect(targetUrl);
+
+  // ── The cookie race, and why this redirects to /auth/complete instead ──
+  //
+  // A redirect carrying `Set-Cookie` is committed by the browser only after it
+  // receives the response. The follow-up request for the destination arrives at
+  // middleware before those cookies are applied, so middleware sees no session
+  // and 307s the freshly-logged-in user back to /login. The race is timing
+  // dependent, which is why Google sign-in worked sometimes and not others.
+  //
+  // Routing through a client-side hop fixes it structurally: the browser fully
+  // commits the cookies while rendering /auth/complete, then navigates with
+  // `location.replace`, so the destination request is a real document request
+  // that carries the session.
+  const completeUrl = new URL("/auth/complete", origin);
+  completeUrl.searchParams.set("next", redirectPath);
+  const response = NextResponse.redirect(completeUrl);
 
   if (!code) {
     return response;
@@ -165,6 +194,8 @@ export async function GET(request: NextRequest) {
     }
   }
 
-  // Everyone redirects directly to targetUrl (/app/dashboard or requested next page)
+  // The response already points at /auth/complete (see the cookie-race note
+  // above). /auth/complete loads in the browser, the session cookies are
+  // committed, and it then navigates client-side to the real destination.
   return response;
 }

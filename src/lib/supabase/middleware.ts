@@ -3,7 +3,15 @@ import { createServerClient } from "@supabase/ssr";
 import type { Database } from "@/lib/db/types";
 import { getSupabaseConfig, isSupabaseConfigured } from "@/lib/supabase/env";
 
+// Paths that must never be gated and must never trigger the signed-in
+// redirect. `/auth/*` is included deliberately: the OAuth callback and the
+// post-callback hop both set/read cookies, and routing them through the
+// "already signed in → go to dashboard" branch would interrupt an in-flight
+// exchange. `/auth/complete` in particular is the page that exists to let the
+// browser commit those cookies — it must be reachable regardless of session
+// state, or the login loop returns.
 const PUBLIC_AUTH_PATHS = new Set(["/login", "/signup"]);
+const PUBLIC_AUTH_PREFIXES = ["/auth/"];
 
 /**
  * Session middleware — stay-signed-in edition.
@@ -81,10 +89,16 @@ export async function updateSession(request: NextRequest) {
 
   const path = request.nextUrl.pathname;
   const isPortalPath = path.startsWith("/app");
-  const isPublicAuthPath = PUBLIC_AUTH_PATHS.has(path);
+  const isPublicAuthPath =
+    PUBLIC_AUTH_PATHS.has(path) || PUBLIC_AUTH_PREFIXES.some((p) => path.startsWith(p));
 
   if (isPortalPath && !session) {
-    return withCookies(NextResponse.redirect(new URL("/login", request.url)));
+    // Preserve the destination so an expired session returns the user to where
+    // they were, instead of dumping them on the dashboard after re-auth.
+    const loginUrl = new URL("/login", request.url);
+    const target = path + (request.nextUrl.search ?? "");
+    if (target && target !== "/app/dashboard") loginUrl.searchParams.set("next", target);
+    return withCookies(NextResponse.redirect(loginUrl));
   }
 
   if (session && isPublicAuthPath) {

@@ -78,6 +78,10 @@ function friendlyAuthError(message: string): string {
 export function AuthCard({ mode }: AuthCardProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
+  // Separate from isPending: the OAuth redirect leaves the page, so the pending
+  // state must survive until the browser actually navigates away. Otherwise the
+  // button snaps back to "Google" and the round-trip looks hung.
+  const [googlePending, setGooglePending] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -163,8 +167,13 @@ export function AuthCard({ mode }: AuthCardProps) {
   };
 
   const handleGoogleAuth = () => {
+    if (googlePending) return;
+    setGooglePending(true);
+    toast.loading("Opening Google sign-in…", { id: "google-auth" });
     startTransition(async () => {
       if (!configured) {
+        setGooglePending(false);
+        toast.dismiss("google-auth");
         toast.error("Add your Supabase environment variables to enable Google login.");
         return;
       }
@@ -182,8 +191,21 @@ export function AuthCard({ mode }: AuthCardProps) {
       });
 
       if (error) {
+        // Only reset on failure — on success the browser is already leaving,
+        // and clearing the state would flash the idle button during teardown.
+        setGooglePending(false);
+        toast.dismiss("google-auth");
         toast.error(friendlyAuthError(error.message));
+        return;
       }
+
+      // The SDK resolves once it has navigated the window. If we are still here
+      // seconds later the navigation was blocked (popup blocker, WebView quirk),
+      // so surface it rather than leaving a permanently disabled button.
+      setTimeout(() => {
+        setGooglePending(false);
+        toast.dismiss("google-auth");
+      }, 8000);
     });
   };
 
@@ -278,11 +300,11 @@ export function AuthCard({ mode }: AuthCardProps) {
         <Button
           variant="outline"
           className="h-11 border-slate-200 bg-white shadow-sm transition-all hover:bg-slate-50"
-          disabled={isPending}
+          disabled={isPending || googlePending}
           onClick={handleGoogleAuth}
         >
-          <GoogleIcon />
-          Google
+          {googlePending ? <Loader2Icon className="size-4 animate-spin mr-2" /> : <GoogleIcon />}
+          {googlePending ? "Redirecting to Google…" : "Google"}
         </Button>
 
         {!configured && (

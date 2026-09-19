@@ -44,13 +44,30 @@ export function SessionGuardian() {
     window.addEventListener("focus", recheckOnFocus);
     window.addEventListener("online", recheckOnFocus);
 
+    // Sign-in fires before the session is necessarily committed to storage, so
+    // refreshing immediately can reach the server without a session and bounce
+    // the user to /login. Defer past the storage write. The Supabase callback
+    // runs synchronously before this handler, but cookie/storage persistence is
+    // not guaranteed to have flushed, hence the rAF + timeout hop.
+    const refreshAfterCommit = () => {
+      requestAnimationFrame(() => {
+        setTimeout(() => router.refresh(), 50);
+      });
+    };
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event) => {
       if (event === "SIGNED_IN") {
-        router.refresh();
-      } else if (event === "SIGNED_OUT" && window.location.pathname.startsWith("/app")) {
-        router.refresh();
+        refreshAfterCommit();
+      } else if (event === "SIGNED_OUT") {
+        // Previously only refreshed inside /app/*, which left stale server
+        // state after a sign-out elsewhere until the next navigation. Refresh
+        // on any path that had a session to invalidate.
+        refreshAfterCommit();
+      } else if (event === "TOKEN_REFRESHED") {
+        // A refreshed token means server components may hold a stale one.
+        refreshAfterCommit();
       }
     });
 

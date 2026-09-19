@@ -262,6 +262,9 @@ export async function requireAuthContext() {
   }
 
   if (!context.user) {
+    // Middleware normally catches this first and already carries `next`, so
+    // reaching here means the session died between middleware and render.
+    // Redirecting to a bare /login would discard where the user was going.
     redirect("/login");
   }
 
