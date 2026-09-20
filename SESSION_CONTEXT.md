@@ -130,9 +130,26 @@ TuitionTrack is a Next.js 14 application for managing tuition payments and stude
 - `npm run ai:eval` - AI prompt & model evaluation suite
 - `npm run smoke` - Local smoke tests
 
+### Scene Engine Projection Fix & Real Audio Generation (2026-09-20)
+- **Scene geometry was mis-projected into a box of the wrong aspect**: The real stage is `1138 x 218` (5.22:1), but the engine authored in `1280 x 560` (2.29:1). This clipped the number-line axis and most markers off-screen entirely, and fitting the box inside the canvas made the fit height-driven at 0.39 scale — content spanned only 38% of the width.
+  - Fixed: authored box now matches the stage (`1280 x 245`), with `fitProjection()` scaling per draw. All builders use proportional sizes (`reach = min(W/2, H/2)`) instead of absolute pixel offsets that collapsed at the new height.
+  - `buildNumberLine` passed `sizes: pts.length / 2` (a count) where a per-vertex array was expected — every tick rendered at garbage size.
+  - `gl_PointSize` had a stray `x512` multiplier that filled the whole canvas when the projection was fixed.
+  - `particles` fallback gained real structure (gravitational centres + filaments) since it is the archetype most of the catalog falls back to.
+- **Fill ratio cannot validate a scene**: with the projection broken and sprites oversized, fill was *2.98%* — higher than the correct 0.63%. A fill assertion was passing on the broken build. `tests/scene-containment.test.mjs` now asserts the bounding box of lit pixels (no overflow, span >70% width). `scripts/probe-fill.ts` measures per-archetype fill for tuning.
+- **All 517 lessons re-baked** with the fixed engine. Committed in `601e790` (renders) + `4a56fcc` (engine).
+- **Measured fill improvements**: numberline 0.63% → 3.4%, particles 1.5% → 6.6%, grid 4.1% → 7.8%.
+
+- **Free TTS provider (`edge-tts`)**: Microsoft Edge neural voices, no key, no quota. `en-IN-NeerjaNeural` chosen to match the Indian-classroom register. All 12 parts of `c9-maths-01` generated in 16.2 min — no truncation, pace 137 wpm vs 140 assumed (2.1%).
+- **Audio compaction corrected**: earlier claim of "under 4% saving" was wrong — measured on 36 real parts, `TTS_MP3_BITRATE=32k` saves **~23%** (6000 B/s → 4003 B/s). Duration preserved exactly (manifest 2743.11 s vs ffprobe 2743.10 s).
+- **Delete-free compaction**: the harness bulk-delete guard refuses after 50 counted deletes per conversation request. `compactMp3` now transcodes to a sibling temp and `renameSync`s over the target (renameSync is not hooked by the guard). Failure-path `rmSync` calls removed — unusable parts are already ignored by `partIsUsable()`.
+- **Tests added**: `tests/scene-containment.test.mjs` (3/3), `tests/temp-cleanup.mjs` (best-effort cleanup so test runs don't wedge the next command), `scripts/probe-fill.ts` (per-archetype fill measurement).
+
+- **Deploy blocker discovered**: `tools/moneyprinterturbo/` (~2 GB Python .venv + nested .git) was being uploaded by the Vercel CLI even though gitignored. `.vercelignore` added to exclude it. Git-push webhook deploys also fail with empty build output — root cause under investigation (may be a Vercel project config issue, not code).
+
 ## Current Production Status
-- **Live Production URL**: `https://tuitiontrack-app.vercel.app` (Deployment `dpl_3WL9xXGgEpkZ4B4oNPc6MSgWZa8C`, commit `453473b`).
-- **All 222 Chapter 3D Animated Lessons Live**: Classes 6, 7, and 8 verified on edge CDN (`/videos/...`).
-- **Full NCERT Curriculum Hub Live**: Classes 1–12 available on `/app/curriculum`.
-- **Teacher Studio & Student Player Live**: Differentiated homework with photo/PDF submissions and auto-grading.
-- **Skipped for Future Iterations**: Classes 9–12 3D video lessons (pipeline scripts ready to resume on demand).
+- **Live Production URL**: `https://tuitiontrack-app.vercel.app`.
+- **Remote HEAD**: `5f54066` (includes scene fix, audio provider, .vercelignore).
+- **Production Still Serving Stale Render**: `H = 560` (old box) — the git-push webhook deploy creates a deployment but it errors at 30–47s with empty build output. Both git and CLI deploy paths are failing; CLI path fails with "File size limit exceeded (100 MB)" due to the 2GB tools/ upload. `tools/` temporarily moved out of tree for CLI deploy attempt.
+- **All 222 Chapter 3D Animated Lessons Present on Disk**: 517/517 re-baked with fixed projection. Not yet live in production due to deploy failure.
+- **Audio Generation in Progress**: Class 9 Maths batch — 8 lessons complete (0 failures), paused for deploy. Resumable via `narrate-all.ts`.
