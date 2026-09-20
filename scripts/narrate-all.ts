@@ -17,7 +17,7 @@ import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { ALL_LESSONS } from "../src/lib/learn/video-catalog";
 import { extendedPath } from "../src/lib/learn/lesson-research";
-import { readNarrationManifest, narrateLesson } from "../src/lib/learn/narration";
+import { readNarrationManifest, narrateLesson, narrationProviderReady } from "../src/lib/learn/narration";
 
 const args = process.argv.slice(2);
 const onlyArg = args.find((a) => a.startsWith("--only="))?.slice("--only=".length) ?? "";
@@ -88,6 +88,7 @@ if (statusOnly) {
     } else partial++;
   }
   console.log(`narration coverage (${candidates.length} lessons with research):`);
+  console.log(`  provider : ${narrationProviderReady().provider}${narrationProviderReady().ok ? "" : " (NO KEY)"}`);
   console.log(`  complete : ${complete}`);
   console.log(`  partial  : ${partial}`);
   console.log(`  missing  : ${empty}`);
@@ -99,6 +100,14 @@ const queue = candidates.filter((l) => !(covered(l.slug) && !force));
 const run = limit ? queue.slice(0, limit) : queue;
 
 async function main(): Promise<void> {
+  // Fail once, clearly, rather than once per lesson.
+  const ready = narrationProviderReady();
+  if (!ready.ok && !statusOnly) {
+    console.error(`TTS provider "${ready.provider}" is not configured: ${ready.reason}`);
+    console.error(`set it in .env.local, or switch provider with TTS_PROVIDER=gemini|openai`);
+    process.exit(2);
+  }
+
   console.log(`narration run: ${run.length} lesson(s) to generate (${candidates.length} candidates, ${candidates.length - queue.length} already complete)`);
   if (!run.length) {
     console.log("nothing to do — all narration already generated. Use --force to regenerate.");

@@ -129,7 +129,9 @@ export function chunkForTts(text: string, maxChars = TTS_MAX_CHARS): string[] {
 }
 
 // ── Gemini TTS call ───────────────────────────────────────────────────────
-type TtsResult = { pcm: Buffer; mimeType: string };
+// Gemini returns headerless PCM that must be transcoded; OpenAI returns a
+// finished MP3. `container` tells the caller which path to take.
+type TtsResult = { pcm: Buffer; mimeType: string; container: "pcm" | "mp3" };
 
 class TtsError extends Error {
   transient: boolean;
@@ -141,6 +143,80 @@ class TtsError extends Error {
     this.transient = transient;
     this.retryAfterMs = retryAfterMs;
   }
+}
+
+// ── provider abstraction ───────────────────────────────────────────────────
+// Gemini is the default and the only one verified live, but a single provider
+// is a single point of failure: an exhausted key stalls the whole curriculum.
+// TTS_PROVIDER selects the backend so an alternative credential can be dropped
+// in without touching this file:
+//   gemini  (default) — GEMINI_API_KEY
+//   openai            — OPENAI_API_KEY, tts-1 / gpt-4o-mini-tts (returns MP3)
+type ProviderName = "gemini" | "openai";
+
+function activeProvider(): ProviderName {
+  const p = (process.env.TTS_PROVIDER ?? "gemini").toLowerCase();
+  return p === "openai" ? "openai" : "gemini";
+}
+
+function apiKeyFor(provider: ProviderName): string {
+  const key = provider === "openai" ? process.env.OPENAI_API_KEY : process.env.GEMINI_API_KEY;
+  if (!key) {
+    throw new Error(
+      provider === "openai"
+        ? "OPENAI_API_KEY is not set (TTS_PROVIDER=openai)"
+        : "GEMINI_API_KEY is not set — cannot synthesize narration",
+    );
+  }
+  return key;
+}
+
+// True when the selected provider holds a usable credential. Lets the driver
+// report a clear setup error instead of failing once per lesson.
+export function narrationProviderReady(): { ok: boolean; provider: ProviderName; reason?: string } {
+  const provider = activeProvider();
+  const envVar = provider === "openai" ? "OPENAI_API_KEY" : "GEMINI_API_KEY";
+  return process.env[envVar] ? { ok: true, provider } : { ok: false, provider, reason: `${envVar} is not set` };
+}
+
+const OPENAI_TTS_URL = "https://api.openai.com/v1/audio/speech";
+const OPENAI_TTS_MODEL = process.env.OPENAI_TTS_MODEL ?? "tts-1";
+const OPENAI_TTS_VOICE = process.env.OPENAI_TTS_VOICE ?? "alloy";
+
+// OpenAI-compatible speech endpoint. Unlike Gemini this returns a finished
+// audio container (MP3), so the caller must NOT run it through the PCM path.
+async function synthesizeChunkOpenai(text: string, apiKey: string): Promise<{ audio: Buffer; container: "mp3" }> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), TTS_CALL_TIMEOUT_MS);
+  let res: Response;
+  try {
+    res = await fetch(OPENAI_TTS_URL, {
+      method: "POST",
+      headers: { authorization: `Bearer ${apiKey}`, "content-type": "application/json" },
+      body: JSON.stringify({
+        model: OPENAI_TTS_MODEL,
+        voice: OPENAI_TTS_VOICE,
+        input: text,
+        response_format: "mp3",
+      }),
+      signal: controller.signal,
+    });
+  } catch (e) {
+    throw new TtsError(`network: ${(e as Error).message}`, true);
+  } finally {
+    clearTimeout(timer);
+  }
+
+  if (!res.ok) {
+    const raw = await res.text();
+    if (res.status === 429) {
+      const m = /retry after ([0-9.]+)/i.exec(raw) ?? /"retry_after":\s*([0-9.]+)/.exec(raw);
+      const waitMs = m ? Math.ceil(Number(m[1]) * 1000) + 1500 : 0;
+      throw new TtsError(`openai HTTP 429: ${raw.slice(0, 160)}`, true, waitMs);
+    }
+    throw new TtsError(`openai HTTP ${res.status}: ${raw.slice(0, 160)}`, res.status >= 500);
+  }
+  return { audio: Buffer.from(await res.arrayBuffer()), container: "mp3" };
 }
 
 async function synthesizeChunk(text: string, apiKey: string, model: string): Promise<TtsResult> {
@@ -200,7 +276,7 @@ async function synthesizeChunk(text: string, apiKey: string, model: string): Pro
     // A safety block or an empty candidate — not retryable, and a real signal.
     throw new TtsError("no audio in response (possible safety block)", false);
   }
-  return { pcm: Buffer.from(inline.data, "base64"), mimeType: inline.mimeType ?? "" };
+  return { pcm: Buffer.from(inline.data, "base64"), mimeType: inline.mimeType ?? "", container: "pcm" };
 }
 
 const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms));
@@ -211,13 +287,23 @@ const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms
 // 429 is special. The batch driver sets TTS_RATE_WAITS>0 to opt into waiting
 // out the quota window (the server states the exact delay); without that, a
 // single interactive call should fail fast rather than hang for a minute.
-async function synthesizeChunkWithRetry(text: string, apiKey: string): Promise<TtsResult> {
+async function synthesizeChunkWithRetry(text: string): Promise<TtsResult> {
+  const provider = activeProvider();
+  const apiKey = apiKeyFor(provider);
   const rateWaits = Number(process.env.TTS_RATE_WAITS ?? 0);
   const failures: string[] = [];
-  for (const model of TTS_MODELS) {
+
+  // OpenAI takes no model fallback chain — one model, one voice.
+  const models = provider === "openai" ? ["openai"] : TTS_MODELS;
+
+  for (const model of models) {
     let err: TtsError | null = null;
     for (let attempt = 0; attempt <= (rateWaits > 0 ? rateWaits : 0); attempt++) {
       try {
+        if (provider === "openai") {
+          const r = await synthesizeChunkOpenai(text, apiKey);
+          return { pcm: r.audio, mimeType: "audio/mpeg", container: "mp3" };
+        }
         return await synthesizeChunk(text, apiKey, model);
       } catch (e) {
         err = e instanceof TtsError ? e : new TtsError(String(e), true);
@@ -233,7 +319,7 @@ async function synthesizeChunkWithRetry(text: string, apiKey: string): Promise<T
       }
     }
     failures.push(err?.message ?? "unknown");
-    if (TTS_MODELS.length > 1) console.warn(`    [tts] ${model} unavailable, trying next model`);
+    if (models.length > 1) console.warn(`    [tts] ${model} unavailable, trying next model`);
   }
   throw new Error(`all TTS models failed — ${failures.join(" | ")}`);
 }
@@ -307,14 +393,34 @@ function partIsUsable(slug: string, part: number, manifest: NarrationManifest | 
   }
 }
 
+// Exact duration of an encoded audio file, via ffprobe. Used for providers
+// that hand back a finished container, where PCM byte arithmetic does not
+// apply. Falls back to ffmpeg's stderr parse when ffprobe is unavailable.
+function probeAudioSeconds(file: string): number {
+  const probe = process.env.FFPROBE_PATH ?? "ffprobe";
+  try {
+    const out = execFileSync(probe, ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", file], {
+      encoding: "utf8",
+    });
+    const n = Number(out.trim());
+    if (Number.isFinite(n) && n > 0) return n;
+  } catch {
+    /* fall through to ffmpeg */
+  }
+  return 0;
+}
+
 // ── per-chapter generation ────────────────────────────────────────────────
 export async function narrateLesson(
   lessonItem: VideoLesson,
   opts: { apiKey?: string; force?: boolean; onLog?: (line: string) => void } = {},
 ): Promise<NarrationManifest> {
   const log = opts.onLog ?? ((l: string) => console.log(l));
+  const provider = activeProvider();
+  // opts.apiKey only makes sense for Gemini (the CLI's --key escape hatch).
   const apiKey = opts.apiKey ?? process.env.GEMINI_API_KEY;
-  if (!apiKey) throw new Error("GEMINI_API_KEY is not set — cannot synthesize narration");
+  if (provider === "gemini" && !apiKey) throw new Error("GEMINI_API_KEY is not set — cannot synthesize narration");
+  if (provider === "openai" && !process.env.OPENAI_API_KEY) throw new Error("OPENAI_API_KEY is not set (TTS_PROVIDER=openai)");
 
   const ep = extendedPath(lessonItem.slug);
   if (!existsSync(ep)) throw new Error(`${lessonItem.slug}: no extended research yet`);
@@ -328,8 +434,8 @@ export async function narrateLesson(
   const previous = opts.force ? null : readNarrationManifest(lessonItem.slug);
   const manifest: NarrationManifest = {
     slug: lessonItem.slug,
-    model: TTS_MODELS[0],
-    voice: TTS_VOICE,
+    model: provider === "openai" ? `openai:${OPENAI_TTS_MODEL}` : TTS_MODELS[0],
+    voice: provider === "openai" ? OPENAI_TTS_VOICE : TTS_VOICE,
     generatedAt: new Date().toISOString(),
     parts: previous ? previous.parts.filter((p) => partIsUsable(lessonItem.slug, p.part, previous)) : [],
     totalSeconds: 0,
@@ -349,28 +455,51 @@ export async function narrateLesson(
     }
 
     const buffers: Buffer[] = [];
+    let container: "pcm" | "mp3" = "pcm";
     for (let c = 0; c < chunks.length; c++) {
-      const result = await synthesizeChunkWithRetry(chunks[c], apiKey);
+      const result = await synthesizeChunkWithRetry(chunks[c]);
       buffers.push(result.pcm);
+      container = result.container;
       // Free-tier TTS rate-limits per minute; a short gap avoids burning retries.
       if (c < chunks.length - 1) await sleep(Number(process.env.TTS_GAP_MS ?? 1200));
     }
 
-    const pcm = Buffer.concat(buffers);
+    const audio = Buffer.concat(buffers);
     const outPath = partFilePath(lessonItem.slug, partNo);
-    try {
-      pcmToMp3(pcm, outPath);
-    } catch (e) {
-      // A partial MP3 must never be mistaken for a finished part.
+    let seconds: number;
+    if (container === "mp3") {
+      // The provider already returned a finished MP3 — write it straight out.
+      // Its exact length is measured from the file, not inferred from bytes.
       try {
-        rmSync(outPath, { force: true });
-      } catch {
-        /* nothing to clean */
+        writeFileSync(outPath, audio);
+        seconds = probeAudioSeconds(outPath);
+      } catch (e) {
+        try {
+          rmSync(outPath, { force: true });
+        } catch {
+          /* nothing to clean */
+        }
+        throw new Error(`writing ${lessonItem.slug} part ${partNo} failed: ${(e as Error).message.slice(0, 200)}`);
       }
-      throw new Error(`ffmpeg transcode failed for ${lessonItem.slug} part ${partNo}: ${(e as Error).message.slice(0, 200)}`);
+      if (!(seconds > 0)) {
+        rmSync(outPath, { force: true });
+        throw new Error(`no duration measurable for ${lessonItem.slug} part ${partNo}`);
+      }
+    } else {
+      try {
+        pcmToMp3(audio, outPath);
+      } catch (e) {
+        // A partial MP3 must never be mistaken for a finished part.
+        try {
+          rmSync(outPath, { force: true });
+        } catch {
+          /* nothing to clean */
+        }
+        throw new Error(`ffmpeg transcode failed for ${lessonItem.slug} part ${partNo}: ${(e as Error).message.slice(0, 200)}`);
+      }
+      seconds = audio.length / BYTES_PER_SECOND;
     }
 
-    const seconds = pcm.length / BYTES_PER_SECOND;
     const bytes = statSync(outPath).size;
     const record: NarrationPart = {
       part: partNo,
