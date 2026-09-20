@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Deep Water, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-english-03-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Psychology of Fear and the Power of Will -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Psychology of Fear and the Power of Will</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Understanding the psychological impact of deep-seated phobias</div>
+              <div id="qx0-p1" class="qe-bullet">• Fear as a limiting force that shrinks one's social and physical world</div>
+              <div id="qx0-p2" class="qe-bullet">• The duality of the narrative: The weight of fear vs. the power of will</div>
+              <div id="qx0-p3" class="qe-bullet">• Distinguishing between physical sensation and mental terror</div>
+              <div id="qx0-p4" class="qe-bullet">• The central theme: Resilience and the reclamation of personal freedom</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":346406009,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic shot of a person standing at the edge of a vast, dark, swirling ocean, transitioning into a close-up of a determined human eye reflecting a bright light.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D cinematic shot of a person standing at the edge of a vast, dark, swirling ocean, transitioning into a close-up of a determined human eye reflecting a bright light.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Biographical Context: William Douglas and the Theme of Resilience -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Biographical Context: William Douglas and the Theme of Resilience</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Autobiographical Nature: A real-life account of William O. Douglas</div>
+              <div id="qx1-p1" class="qe-bullet">• Core Theme: Resilience—the ability to recover from intense trauma</div>
+              <div id="qx1-p2" class="qe-bullet">• Fear vs. Mastery: Moving from psychological paralysis to personal agency</div>
+              <div id="qx1-p3" class="qe-bullet">• The Definition of Resilience: Not the absence of fear, but overcoming it</div>
+              <div id="qx1-p4" class="qe-bullet">• The Blueprint: Using discipline and willpower to dismantle hydrophobia</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2309365836,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on one side, a silhouette of a man trapped in dark, swirling water; on the other, the same man climbing a steep, sunlit mountain peak.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation: on one side, a silhouette of a man trapped in dark, swirling water; on the other, the same man climbing a steep, sunlit mountain peak.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): The Childhood Trauma: The California Beach Incident and Early Phobia -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">The Childhood Trauma: The California Beach Incident and Early Phobia</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Origin of fear: The California beach incident during childhood</div>
+              <div id="qx2-p1" class="qe-bullet">• Nature of the waves: Overwhelming, repetitive, and unpredictable</div>
+              <div id="qx2-p2" class="qe-bullet">• The sensation of helplessness: Losing footing and being tossed by waves</div>
+              <div id="qx2-p3" class="qe-bullet">• Psychological impact: The birth of an irrational hydrophobia</div>
+              <div id="qx2-p4" class="qe-bullet">• Seed vs. Storm: Childhood trauma as the foundation for later terror</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":2845838350,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic recreation of a small boy struggling against massive, crashing Pacific waves on a sandy shore.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D cinematic recreation of a small boy struggling against massive, crashing Pacific waves on a sandy shore.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): The Misadventure at the YMCA Pool: Detailed Sequence of Events -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">The Misadventure at the YMCA Pool: Detailed Sequence of Events</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• The YMCA pool: A perceived safe environment with a gradual nine-foot drop.</div>
+              <div id="qx3-p1" class="qe-bullet">• The Incident: A large boy tosses Douglas into the deep end without warning.</div>
+              <div id="qx3-p2" class="qe-bullet">• The Plan: Douglas intends to jump from the bottom to reach the surface.</div>
+              <div id="qx3-p3" class="qe-bullet">• The Failed Attempts: Two violent, unsuccessful jumps resulting in suffocating water.</div>
+              <div id="qx3-p4" class="qe-bullet">• The Physical Toll: Lung pain, throbbing head, and the onset of unconsciousness.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2521126994,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic sequence showing a slow-motion descent into murky, yellow-tinted water, transitioning from a frantic struggle to a silent, dark void.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D cinematic sequence showing a slow-motion descent into murky, yellow-tinted water, transitioning from a frantic struggle to a silent, dark void.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): The Physical and Mental Struggle: Analyzing the Sensation of Drowning -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">The Physical and Mental Struggle: Analyzing the Sensation of Drowning</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Physical Struggle: Suffocation, burning lungs, and paralyzed limbs</div>
+              <div id="qx4-p1" class="qe-bullet">• The Paradox of Panic: Thrashing increases oxygen depletion and sinking</div>
+              <div id="qx4-p2" class="qe-bullet">• Mental Transition: From 'stark terror' to a strange, eerie calm</div>
+              <div id="qx4-p3" class="qe-bullet">• Biological Reality: Hypoxia leading to drowsiness and loss of fear</div>
+              <div id="qx4-p4" class="qe-bullet">• The Final Descent: The peaceful 'blackness' and surrender of the will</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2230610366,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a frantic, bubbling underwater struggle on one side and a slow-motion, darkening descent into a calm, silent void on the other.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A split-screen 3D animation showing a frantic, bubbling underwater struggle on one side and a slow-motion, darkening descent into a calm, silent void on the other.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): The Aftermath: How Fear Paralyzed Douglas's Social and Physical Life -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">The Aftermath: How Fear Paralyzed Douglas's Social and Physical Life</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Fear transitioned from a momentary panic to a lingering psychological presence.</div>
+              <div id="qx5-p1" class="qe-bullet">• The phobia caused 'anticipatory anxiety,' haunting him even on dry land.</div>
+              <div id="qx5-p2" class="qe-bullet">• Social life was impacted: he could no longer enjoy fishing, canoeing, or boating.</div>
+              <div id="qx5-p3" class="qe-bullet">• Physical symptoms included paralyzed limbs and racing heart near water.</div>
+              <div id="qx5-p4" class="qe-bullet">• The trauma led to a 'diminished life,' limiting his freedom and joy.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3630192660,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a silhouette of Douglas standing on a sunny pier, but a dark, shadowy hand made of water ripples reaches out from the lake to grip his shadow.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D animation showing a silhouette of Douglas standing on a sunny pier, but a dark, shadowy hand made of water ripples reaches out from the lake to grip his shadow.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Overcoming the Obstacle: The Decision to Hire an Instructor -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Overcoming the Obstacle: The Decision to Hire an Instructor</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• The transition from a victim of fear to an active seeker of solutions.</div>
+              <div id="qx6-p1" class="qe-bullet">• The psychological importance of hiring a professional instructor.</div>
+              <div id="qx6-p2" class="qe-bullet">• The technical setup: Using a rope, a belt, and an overhead pulley system.</div>
+              <div id="qx6-p3" class="qe-bullet">• The methodical process: Mastering breathing and movement piece by piece.</div>
+              <div id="qx6-p4" class="qe-bullet">• The distinction between technical skill and psychological freedom.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3135313341,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a cross-section of a swimming pool with a rope and pulley system, demonstrating the controlled movement of a swimmer.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D animation showing a cross-section of a swimming pool with a rope and pulley system, demonstrating the controlled movement of a swimmer.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): The Systematic Training: Breaking Down the Technical Learning Process -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">The Systematic Training: Breaking Down the Technical Learning Process</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• The Safety Mechanism: Use of a belt, rope, and pulley system for security.</div>
+              <div id="qx7-p1" class="qe-bullet">• Phase 1: Mastering rhythmic exhalation under water and inhalation above.</div>
+              <div id="qx7-p2" class="qe-bullet">• Phase 2: Overcoming leg paralysis through repetitive kicking exercises.</div>
+              <div id="qx7-p3" class="qe-bullet">• Phase 3: Integrating breathing, kicking, and strokes into a unified skill.</div>
+              <div id="qx7-p4" class="qe-bullet">• The Instructor's Method: Breaking a complex fear into manageable sub-tasks.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1706566198,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D diagram showing a pulley system overhead, with a rope descending to a swimmer, transitioning into a split-screen view of breathing cycles and leg-kicking mechanics.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D diagram showing a pulley system overhead, with a rope descending to a swimmer, transitioning into a split-screen view of breathing cycles and leg-kicking mechanics.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Conquering Residual Fear: Solo Swimming and Testing the Limits -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Conquering Residual Fear: Solo Swimming and Testing the Limits</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Distinction between technical skill and psychological freedom.</div>
+              <div id="qx8-p1" class="qe-bullet">• The concept of 'residual fear' that lingers after training.</div>
+              <div id="qx8-p2" class="qe-bullet">• Testing limits at Lake Wentworth to face unpredictable nature.</div>
+              <div id="qx8-p3" class="qe-bullet">• The psychological shift: Mocking fear instead of fleeing from it.</div>
+              <div id="qx8-p4" class="qe-bullet">• Final triumph at Warm Lake: Achieving absolute self-confidence.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3413878466,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a disciplined swimmer in a pool transitioning into a lone, determined swimmer in a vast, misty mountain lake.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation showing a disciplined swimmer in a pool transitioning into a lone, determined swimmer in a vast, misty mountain lake.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Literary Analysis: Symbolism, Imagery, and Narrative Style -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Literary Analysis: Symbolism, Imagery, and Narrative Style</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• First-person narrative provides deep psychological intimacy.</div>
+              <div id="qx9-p1" class="qe-bullet">• Sensory imagery (yellow water, blackness) creates visceral terror.</div>
+              <div id="qx9-p2" class="qe-bullet">• Water symbolizes both the paralyzing force of fear and the medium of growth.</div>
+              <div id="qx9-p3" class="qe-bullet">• Thematic core: 'All we have to fear is fear itself.'</div>
+              <div id="qx9-p4" class="qe-bullet">• Rhythmic prose shifts to mirror the physical sensations of panic.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":1376031610,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows swirling, dark, chaotic water textures, while the other shows a calm, structured grid representing disciplined training.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation: one side shows swirling, dark, chaotic water textures, while the other shows a calm, structured grid representing disciplined training.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Misinterpreting Themes and Character Motivations -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Misinterpreting Themes and Character Motivations</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Avoid treating the story as a simple swimming manual; it is a psychological study.</div>
+              <div id="qx10-p1" class="qe-bullet">• Motivation is about reclaiming life and freedom, not just learning a skill.</div>
+              <div id="qx10-p2" class="qe-bullet">• Distinguish between the instructor's training and Douglas's personal willpower.</div>
+              <div id="qx10-p3" class="qe-bullet">• Fear is not 'gone'; it is 'mastered' and 'dominated' through persistence.</div>
+              <div id="qx10-p4" class="qe-bullet">• Understand the Roosevelt quote: the fear of death is more paralyzing than death itself.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1087411122,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a technical swimming lesson, the other shows a dark, metaphorical shadow representing fear being pushed back by a glowing light of willpower.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation: one side shows a technical swimming lesson, the other shows a dark, metaphorical shadow representing fear being pushed back by a glowing light of willpower.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Character Sketches, RTCs, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Character Sketches, RTCs, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Character Sketch: William Douglas as a symbol of resilience</div>
+              <div id="qx11-p1" class="qe-bullet">• Character Sketch: The Instructor as a methodical mentor</div>
+              <div id="qx11-p2" class="qe-bullet">• RTC Strategy: Analyze emotional tone and sensory imagery</div>
+              <div id="qx11-p3" class="qe-bullet">• Theme Mastery: 'All we have to fear is fear itself'</div>
+              <div id="qx11-p4" class="qe-bullet">• Exam Tip: Connect physical struggle to mental triumph</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1128213106,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a silhouette of a man struggling in dark water on one side, and the same man swimming confidently in a bright, sunlit lake on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a silhouette of a man struggling in dark water on one side, and the same man swimming confidently in a bright, sunlit lake on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Deep Water today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Psychology of Fear and the Power of Will <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Biographical Context: William Douglas and the Theme of Resilience <small>5:00</small></button>
+          <button type="button" data-seek="600">3. The Childhood Trauma: The California Beach Incident and Early Phobia <small>10:00</small></button>
+          <button type="button" data-seek="900">4. The Misadventure at the YMCA Pool: Detailed Sequence of Events <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. The Physical and Mental Struggle: Analyzing the Sensation of Drowning <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. The Aftermath: How Fear Paralyzed Douglas's Social and Physical Life <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Overcoming the Obstacle: The Decision to Hire an Instructor <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. The Systematic Training: Breaking Down the Technical Learning Process <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Conquering Residual Fear: Solo Swimming and Testing the Limits <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Literary Analysis: Symbolism, Imagery, and Narrative Style <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Misinterpreting Themes and Character Motivations <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Character Sketches, RTCs, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone, and welcome to our deep dive into one of the most moving autobiographical accounts in your Class 12 English curriculum. Today, we begin our journey into 'Deep Water' by William Douglas. Before we look at the specific events of his life, we must first understand the core theme that binds this entire narrative together: the profound psychology of fear and the indomitable power of the human will. Have you ever felt a sudden, paralyzing terror? Perhaps it was a dark room, a high ledge, or even a simple shadow. Fear is not just an emotion; it is a physiological and psychological response that can hijack our entire existence. In 'Deep Water,' Douglas doesn't just tell us about a fear of water; he explores how fear becomes a shadow that follows you, limiting your experiences and shrinking your world. This chapter is a masterclass in understanding how a single traumatic event can create a phobia that lingers for years. But more importantly, it is a study of resilience. The central question the text poses is: once fear has taken root in your mind, how do you pull it out? We are going to analyze how Douglas moves from a state of total paralysis to a state of absolute conquest. We will look at the distinction between the physical sensation of drowning and the mental terror of dying. This is not just a story about swimming; it is a story about the human spirit's ability to reclaim its freedom. As we progress through this series, keep this duality in mind: the overwhelming weight of fear versus the steady, disciplined application of will. We will see that fear is often more about the anticipation of terror than the terror itself. This introduction sets the stage for a journey from darkness into light, from helplessness to mastery. As we move forward into the biographical details, remember that the 'Deep Water' Douglas refers to is both a literal body of water and a metaphorical state of mind where one feels lost and overwhelmed. Let us prepare to explore how a man faced his deepest demons and emerged not just a survivor, but a conqueror.","Welcome back. In our previous segment, we touched upon how fear is not just a physical sensation but a psychological barrier. Now, to truly understand the depth of this memoir, we must step away from the water for a moment and look at the man behind the words: William O. Douglas. It is important to realize that 'Deep Water' is not just a fictional story about a boy who almost drowns; it is an autobiographical account. This means every terror, every gasp for air, and every victory was lived by the author himself. When we read his words, we are reading his actual testimony. Now, let us look at the core theme that binds this entire narrative together: Resilience. In literature, resilience is defined as the capacity to recover quickly from difficulties or the ability to spring back into shape after being compressed. Douglas does not just show us a man who survives a near-death experience; he shows us a man who refuses to let that experience define the rest of his life. Think about the timeline of his life. Most people, after experiencing a trauma as profound as the one at the YMCA pool, might develop a lifelong aversion to water. They might avoid lakes, oceans, or even swimming pools to stay safe. But Douglas chooses a different path. He identifies the fear, he acknowledges its power, and then he systematically dismantles it. This is the essence of resilience. It is not the absence of fear, but the mastery over it. As we analyze his journey, notice how he transitions from a state of 'paralysis'—where fear dictates his movements—to a state of 'agency,' where he dictates his own destiny. This transition is what makes the chapter a study in human willpower. Douglas’s life serves as a blueprint for overcoming 'hydrophobia,' or the irrational fear of water, through sheer grit. He teaches us that fear is a shadow that grows larger when we turn our backs on it, but shrinks when we walk directly toward it. As we move forward in this series, keep this biographical context in mind. Every time he describes a struggle with a breathing technique or a sudden panic attack, remember that this was a real human being fighting a real psychological battle to reclaim his life. His resilience is not a sudden burst of courage, but a slow, disciplined, and painful process of rebuilding himself piece by piece. This sets the stage for the specific trauma that triggered this lifelong battle, which we will explore in our next segment.","Welcome back. In our previous segment, we looked at William Douglas’s life and the core theme of resilience. Now, we must dive into the very origin of his terror. To understand why the YMCA pool incident was so devastating, we first have to understand that Douglas’s fear of water was not a sudden occurrence. It was a deep-seated, psychological wound that began much earlier, during his childhood. Let us travel back to when Douglas was a very young boy, visiting a beach in California with his father. This is the foundational moment of his phobia. Imagine a young, innocent child standing by the vast, roaring ocean. To a child, the ocean is not just water; it is a living, breathing, unpredictable entity. Douglas recalls the overwhelming sensation of the waves. They weren't just gentle ripples; they were massive, crashing forces. He describes how the waves would continually sweep over his legs, knocking him down and making him lose his footing. This is a crucial detail for your exams. It wasn't a single accident, but a repetitive, overwhelming experience of being overpowered by nature. Every time he tried to stand, a wave would surge in, pulling the sand from beneath his feet and tossing his small body around. This created a sense of helplessness. He felt that the ocean was a giant, uncontrollable force that could swallow him at any moment. This experience planted the first seed of 'hydrophobia'—the irrational and intense fear of water. Notice the psychological shift here. It wasn't just about getting wet or being scared of a splash; it was the realization of his own vulnerability. The sheer scale of the Pacific Ocean compared to his small frame instilled a sense of insignificance and terror. This childhood incident established a pattern of fear. Even after leaving the beach, the memory of those crashing waves stayed with him. It wasn't a memory he could easily shake off; it became a part of his subconscious. This is what we call a 'primordial fear.' It is a fear that feels ancient and deeply rooted in the survival instinct. As he grew older, this fear didn't fade; instead, it simmered beneath the surface, waiting for a trigger. This brings us to the concept of 'early phobia.' A phobia is different from simple fear. Fear is a rational response to danger, but a phobia is an intense, irrational, and often paralyzing dread. For Douglas, the sight or even the thought of deep water triggered a physical and emotional reaction. His heart would race, his breath would tighten, and a sense of panic would take over. This childhood trauma at the California beach set the stage for everything that followed. It created the psychological landscape upon which the later YMCA misadventure would act. Without this foundational trauma, the incident at the pool would have just been a scary moment; because of this childhood history, it became a life-altering battle with death. As we move forward, keep this distinction in mind: the California incident was the 'seed,' and the YMCA incident was the 'storm' that nearly destroyed him. Understanding this connection is key to analyzing Douglas's character development and his eventual triumph over fear.","Now that we understand the underlying phobia Douglas carried from his childhood, we must look at the specific event that turned a manageable fear into a life-threatening trauma. This is the core of the chapter: the misadventure at the YMCA swimming pool. Unlike the treacherous Yakima River, the YMCA pool was considered safe. It was only nine feet deep at the deep end, and the drop-off was gradual. This sense of safety is what lured Douglas into a moment of vulnerability. One day, while Douglas was sitting alone by the pool, waiting for others to arrive so he could practice, a big bruiser of a boy—a much larger teenager—approached him. Without any provocation or warning, this boy picked Douglas up and tossed him into the deep end. Imagine the sudden shock. One moment you are sitting peacefully, and the next, you are plunging into the water. As Douglas hit the bottom, a massive fear seized him. But, and this is crucial for your exams, he did not lose his wits. He didn't panic in a way that made him lose consciousness immediately. Instead, he devised a plan. He decided that as he sank, he would make a big jump, come to the surface, and paddle to the edge of the pool. He thought, 'By that time, I will be safe.' He went down, hit the bottom, and then, with all his strength, he jumped upward. He expected to break the surface and breathe. But he didn't. Instead, he came up slowly. He saw nothing but dirty yellow water. He was still underwater. This is where the physical sensation of drowning begins to take over. He tried to jump again. He used all his strength, but the result was the same. He rose slowly, gasping for air, only to find himself back in that suffocating, yellow expanse. The sequence of events here is a cycle of failed attempts. First, the sudden toss. Second, the calculated plan to jump. Third, the terrifying realization that the plan failed. Fourth, the second attempt, which was even more exhausting. He felt his lungs were ready to burst. He felt a throbbing in his head and a pounding in his ears. The more he struggled, the more he felt himself sinking. He was exhausted, and the terror was no longer just mental; it was a visceral, physical battle for survival. He felt as if he were being paralyzed. The water seemed to be closing in on him from all sides. He describes a sensation of being gripped by a heavy, suffocating weight. He tried to jump a third time, but he lacked the strength. His limbs felt like lead. He felt a sense of peace, but it was a terrifying, death-like peace. He felt he was floating in space, disconnected from the world. This wasn't the peaceful sleep he had imagined; it was the onset of unconsciousness. He felt his lungs aching and his heart pounding wildly, and then, suddenly, everything went black. This specific sequence—the transition from a calculated plan to a frantic struggle, and finally to a state of total exhaustion and near-death—is what defines the 'misadventure.' It wasn't just an accident; it was a psychological and physical descent into the abyss of death.","Now that we have witnessed the terrifying moment Douglas was thrown into the deep end of the YMCA pool, we must pause to analyze the sheer intensity of what he experienced. This isn't just a story of falling into water; it is a profound study of the human body and mind under the ultimate threat of death. Let's break down this struggle into two distinct layers: the physical agony and the psychological terror. First, let's look at the physical sensation. Douglas describes a series of frantic, instinctive attempts to save himself. As he sank, his lungs felt like they were ready to burst. He describes a sensation of suffocating, a feeling of being choked by the very element he was trying to breathe. He tried to jump upward, hoping to reach the surface, but the more he struggled, the more he sank. This is a crucial physiological detail: the more you panic and thrash in deep water, the more oxygen you consume, and the faster you sink. He describes his limbs feeling heavy, as if they were paralyzed by the weight of the water and the exhaustion of his muscles. His legs felt paralyzed, and his lungs were aching with a burning sensation. Now, let's shift our focus to the mental struggle, which is perhaps even more harrowing. Douglas describes a terrifying transition from panic to a strange, eerie calm. Initially, there was a 'stark terror' that seized him. This was a primal, overwhelming fear that paralyzed his ability to think rationally. He was experiencing what psychologists call the 'fight or flight' response, but in this case, there was no way to fight and nowhere to fly. He was trapped. However, as the lack of oxygen began to affect his brain, something strange happened. The terror began to subside. He describes a sense of drowsiness, a feeling of being sleepy and peaceful. This is a very important literary and biological detail. When the brain is deprived of oxygen, known as hypoxia, the person often loses the ability to feel fear and instead enters a state of semi-consciousness or delirium. Douglas describes this as a 'blackness' that swept over his brain. It wasn't a painful blackness, but a peaceful one. He felt as if he were floating in space, disconnected from the physical struggle. He stopped fighting. He stopped struggling. He felt a sense of release. This transition from the violent, muscular struggle of the body to the quiet, drifting surrender of the mind is one of the most powerful parts of the narrative. He mentions that 'the terror ended and I felt quite peaceful.' This is the moment where the struggle moves from the external world of splashing and gasping to the internal world of fading consciousness. It is a moment of profound vulnerability. He was no longer a boy fighting for life; he was a soul drifting toward the unknown. By analyzing these two layers—the physical burning of the lungs and the psychological descent into a peaceful blackness—we can understand why this experience left such a deep, lasting scar on his psyche. It wasn't just a near-death experience; it was a total sensory and mental breakdown.","Now that we have witnessed the terrifying struggle for survival at the YMCA pool, we must examine the most devastating part of this experience: the aftermath. Fear is not just a momentary feeling of panic; for William Douglas, it became a lingering, suffocating presence that reshaped his entire existence. This is the psychological fallout of trauma. After the incident, the fear of water did not simply fade away; it intensified and began to colonize his mind. Douglas describes how the terror would return whenever he was near water. It wasn't just a mild discomfort; it was a paralyzing force. Think about the word 'paralyzed.' It means he was no longer in control of his own reactions. Even when he was safe on dry land, the memory of that suffocating sensation would haunt him. This fear began to seep into his social life and his recreational activities. He wanted to enjoy the simple pleasures of life—things that most people take for granted. He wanted to go fishing, to enjoy canoeing, and to go boating with his friends. But the 'hand of fear' gripped him tightly. Every time he thought about being in a boat or near a lake, the old terror would resurface, making it impossible for him to function. This is a crucial point for your exams: the fear was not just physical, it was an emotional and social barrier. It stripped him of his joy. Let's look at the physical manifestations of this fear. He describes how his legs would become paralyzed with fear when he was near water. His heart would race, and that sense of impending doom would take over. This is what psychologists call 'anticipatory anxiety.' He wasn't just afraid of drowning in the moment; he was afraid of the *possibility* of drowning, which made him avoid water altogether. This avoidance is a classic symptom of a phobia. His life became smaller. The world, which should have been vast and full of adventure, became limited to the safe, dry spaces he could control. He was living a diminished life. The tragedy here is that Douglas was a person who loved the outdoors, yet he was forced into a self-imposed exile from the water. This period of his life was characterized by a profound sense of loss—not the loss of life, but the loss of the ability to live fully. As you analyze this for your long-answer questions, remember that the 'aftermath' is the bridge between the trauma and his eventual triumph. You cannot understand his later determination to hire an instructor unless you first understand the depth of this paralysis. He wasn't just fighting a fear of water; he was fighting to reclaim his lost life and his lost freedom. The fear had become a thief, stealing his ability to participate in the world around him.","In our previous segment, we witnessed the harrowing aftermath of the YMCA pool incident—how the terror of drowning didn't just stay in the water, but followed William Douglas into his daily life. It paralyzed his social life, ruined his fishing trips, and cast a shadow over every joy he sought in nature. But today, we reach the most critical turning point in this narrative: the moment where fear meets the iron will of human determination. Douglas realizes that his fear is no longer just a memory; it is a barrier to living. He decides that he must conquer this phobia, not through sheer willpower alone, but through a structured, disciplined approach. This is the decision to hire an instructor. Notice the psychological shift here. He moves from being a victim of his circumstances to an active agent of his own recovery. He doesn't just wish the fear away; he seeks professional help. He hires an instructor to teach him how to swim, which is essentially a metaphor for learning how to navigate life's challenges. The instructor begins a systematic process. This wasn't a quick fix. It was a slow, methodical, and almost scientific deconstruction of the act of swimming. The instructor used a rope and a belt. He attached the rope to a belt that Douglas wore, and then he attached the other end of the rope to a pulley that moved back and forth on an overhead cable. This is a vital detail for your exams. Why a rope and pulley? Because it provided a psychological safety net. It allowed Douglas to feel the water without the immediate threat of sinking to the bottom. For months, the instructor worked on Douglas, piece by piece. He taught him how to exhale under water and how to inhale above water. Think about the technicality of this. It sounds simple, but for someone with a deep-seated phobia of water, the very act of putting one's face in the water is a battle of nerves. The instructor was patient. He didn't rush the process. He broke down the complex movement of swimming into tiny, manageable components. First, it was breathing. Then, it was movement. Then, it was coordination. This part of the chapter highlights the importance of 'gradual exposure' in overcoming trauma. Douglas wasn't thrown into the deep end immediately; he was guided through a controlled environment. The instructor was building Douglas's confidence layer by layer. By the end of this training period, the instructor had 'built a swimmer.' But here is the nuance you must capture for your long-answer questions: the instructor had built a swimmer, but he had not yet eliminated the fear. The instructor had provided the technical skill, the mechanics of swimming, but the psychological battle was still Douglas's to fight alone. The instructor's job was to provide the tools; the application of those tools in the face of terror was the student's responsibility. This distinction is crucial for understanding the theme of self-reliance. We see here that while mentors and teachers are essential, the final victory over one's inner demons is a solitary journey. The instructor's method was systematic, technical, and disciplined, turning a terrified boy into a person who knew the mechanics of the water. But as we will see in the next part, knowing how to swim and being free from the fear of water are two very different things.","Now that William Douglas has made the crucial decision to hire an instructor, we enter the most important phase of his journey: the actual, methodical process of overcoming his phobia. This isn't just about learning to swim; it is about the systematic deconstruction of fear through repetitive, technical training. The instructor did not simply throw him into the deep end. Instead, he used a step-by-step approach that turned a terrifying experience into a manageable series of physical tasks. First, let's look at the mechanical setup. The instructor put a belt around Douglas, attached to a rope, which went through a pulley on an overhead cable. At the other end of the rope, a heavy weight was attached. This was a brilliant psychological and physical safety net. It allowed Douglas to practice in the water while knowing that, even if he panicked, the rope would prevent him from sinking to the bottom. This provided the 'safety cushion' his traumatized mind desperately needed. Now, let's break down the three core stages of this technical training. Stage one: Breathing. The instructor taught him how to exhale under water and inhale above water. Think about the physics here. When Douglas was drowning previously, his panic was fueled by the desperate, uncontrolled struggle for air. By teaching him to exhale rhythmically while submerged, the instructor was teaching him to control his physiological response to being underwater. He learned to let the air out steadily, which prevented the sudden, gasping panic that leads to choking. Stage two: Movement. Once the breathing was somewhat controlled, the instructor focused on the mechanics of limb movement. Douglas had to learn how to kick his legs. This is a crucial detail in the text. He spent weeks just kicking his legs at the side of the pool. He describes how his legs felt paralyzed and stiff at first. This wasn't just physical fatigue; it was the residual tension of fear. He had to fight the instinct to freeze. He had to train his muscles to move independently of his panicked brain. Stage three: Integration. This is where the individual skills—breathing, kicking, and arm strokes—were combined into a cohesive swimming motion. The instructor worked with him day by day, piece by piece. It was a slow, painstaking process. The text emphasizes that the instructor 'built a swimmer' out of Douglas. This phrasing is vital. It implies that Douglas was not a swimmer who was being taught; he was a collection of fears and uncoordinated movements that were being systematically reconstructed into a functional human being. The instructor's method was one of 'fragmentation.' He broke the overwhelming task of 'swimming' into tiny, non-threatening sub-tasks. This is a masterclass in overcoming a phobia. By the end of this period, the instructor could say, 'Now, you can swim.' But notice the nuance here: the instructor had completed his job, but Douglas's journey was not yet over. The technical training had conquered the water, but it had not yet fully conquered the 'residual fear' that lingered in the back of his mind. This transition from technical proficiency to psychological mastery is what sets the stage for our next lesson.","So, we have seen how William Douglas worked tirelessly with his instructor. He had learned the technicalities—how to exhale underwater, how to inhale above water, and how to coordinate his limbs. But as the instructor said, 'Now you can swim.' For the instructor, the job was done. But for Douglas, the real battle was just beginning. You see, there is a massive difference between being able to swim and being free from the fear of water. Even after the formal training ended, Douglas realized that a 'residual fear'—a leftover, lingering terror—still haunted him. This is a crucial psychological point in the chapter. The instructor had built the machine, but Douglas had to learn to drive it through the storms of his own mind. To test if he had truly conquered his phobia, Douglas decided to go to Lake Wentworth in New Hampshire. He didn't just want to swim in a controlled environment like the YMCA pool; he wanted to face the vast, open, and unpredictable nature of a large lake. As he dived into the cold water of Lake Wentworth, he felt that old, familiar terror rising. It was as if the fear was waiting for him, ready to seize him the moment he felt vulnerable. He swam about a hundred yards, and for a moment, the terror returned. He felt tiny and helpless against the expanse of the water. But instead of panicking or turning back, Douglas did something extraordinary. He faced the fear head-on. He mocked the terror, saying, 'Well, Mr. Terror, what do you think you can do to me?' This is a moment of immense psychological strength. He was no longer a victim; he was a challenger. He swam on, and the terror gradually subsided. He realized that the fear was only as powerful as he allowed it to be. However, he wasn't entirely satisfied. He wanted to be absolutely certain that the fear would never return to haunt his fishing trips or canoeing expeditions. So, he went to the Warm Lake. This was a smaller, more intimate setting, but it was deep and challenging. He swam across the lake and back. When he emerged, he felt a deep sense of triumph. He had finally conquered the fear that had paralyzed him for years. This part of the story teaches us that true mastery is not just about acquiring a skill; it is about the mental endurance required to face the remnants of our trauma. Douglas's journey from the suffocating depths of the YMCA pool to the triumphant laps of Warm Lake is a testament to the fact that fear can be defeated, but only through persistent, individual confrontation.","Welcome back. We have journeyed through William Douglas's harrowing experience and his triumphant recovery. Now, we move from the 'what' to the 'how.' In this section, we will dissect the literary craftsmanship that makes 'Deep Water' more than just a memoir; it is a profound piece of literature. Let us begin with the narrative style. Douglas employs an autobiographical, first-person narrative. This is crucial because it allows for an intimate, psychological exploration. We aren't just watching a man drown; we are feeling his lungs burn and his mind fracture. The prose is intensely subjective, shifting from calm, descriptive passages to frantic, staccato sentences during the moments of crisis. This shift in rhythm mimics the physiological state of panic. Next, let us examine the imagery. Douglas uses sensory imagery to ground the reader in his terror. He doesn't just say he was scared; he describes the 'yellow water' that seemed to overwhelm him. He speaks of the 'stark terror' that seized his heart and the sensation of 'blackness' sweeping over his brain. This visual and tactile imagery transforms an abstract emotion like fear into a physical presence that the reader can almost touch. Now, let's dive into the symbolism. The most prominent symbol is, quite obviously, the water itself. However, water is dualistic here. On one hand, it represents death, the unknown, and the paralyzing grip of phobia. It is the 'deep water' that swallows his joy. On the other hand, water represents the medium of transformation. By mastering the water, Douglas masters himself. The YMCA pool is not just a swimming facility; it symbolizes the psychological battlefield where the subconscious struggle against trauma takes place. Even the act of 'breathing' becomes symbolic. Initially, his struggle to breathe represents his loss of control over life. By the end, his controlled breathing represents his reclaimed agency and vitality. We should also look at the theme of 'The Will to Live.' This is the philosophical backbone of the text. Douglas quotes Roosevelt: 'All we have to fear is fear itself.' This isn't just a quote; it is the thematic resolution. The narrative structure follows a classic arc: the inciting incident of trauma, the rising action of debilitating fear, the climax of his struggle against the residual terror, and finally, the resolution of triumph. This structure reinforces the idea that overcoming fear is not a single event, but a process of gradual, disciplined conquest. By analyzing these elements, we see that Douglas isn't just telling us a story about swimming; he is using the language of water and breath to map the human spirit's capacity to endure and transcend.","Welcome back. We have journeyed through William Douglas's harrowing experience and his ultimate triumph. But before we move to our final exam masterclass, we must address a crucial area where many students lose marks in their board exams. Even if you know the story, misinterpreting the deeper layers can lead to shallow answers. Let us look at the first major pitfall: treating 'Deep Water' as just a simple survival story. If you write that this is merely a story about a boy learning to swim, you are missing the core. This is not a manual on swimming; it is an autobiographical exploration of the psychology of fear. The water is a metaphor for the paralyzing nature of trauma. When you answer questions, always link his physical struggle in the pool to his mental struggle against fear. The second pitfall involves misinterpreting Douglas's motivation. Some students argue that he hired an instructor simply because he wanted to be a good swimmer. This is a superficial reading. His motivation was much deeper—it was a quest for reclamation. He wanted to reclaim his life from the grip of terror. He wasn't just learning a skill; he was fighting to regain his freedom to enjoy fishing, canoeing, and boating. The third pitfall is a misunderstanding of the theme of 'Willpower.' Many students write that Douglas overcame fear through sheer luck or because the instructor was very good. While the instructor's systematic method was vital, the text emphasizes that the instructor 'made' him a swimmer, but Douglas had to 'make' himself a swimmer. The instructor provided the tools, but the will to face the residual terror—the fear that returned when he was alone in the middle of the lake—was entirely Douglas's. Do not credit the instructor for the victory; credit the instructor for the training, and Douglas for the conquest. Fourthly, be careful with the characterization of fear itself. Do not describe fear as something that simply 'goes away' once the training is over. Douglas's journey shows that fear is persistent. Even after the training, when he was alone in the YMCA pool, the terror returned. A common mistake is to say 'he was no longer afraid.' The correct interpretation is that 'he had learned to dominate his fear.' There is a massive difference between the absence of fear and the mastery over it. Finally, avoid the pitfall of ignoring the philosophical dimension of the text. When Douglas quotes Roosevelt, saying, 'All we have to fear is fear itself,' students often treat it as a decorative quote. In reality, this is the thesis of the entire chapter. It explains that the sensation of death is peaceful, but the fear of death is what is terrifying. If you can weave this distinction into your long-form answers, you will move from a standard response to an exceptional one. Remember, in English literature, the 'how' and the 'why' are always more important than the 'what.' Don't just tell the examiner what happened; tell them what it meant.","Welcome to the final segment of our journey through Deep Water. We have traveled from the terrifying waves of the California beach to the disciplined training at the YMCA pool, and now, it is time to prepare you for the examination hall. Let us begin with the Character Sketches, as these are high-scoring areas in your long-answer questions. First, let us analyze William Douglas. He is not just a victim of a childhood accident; he is a symbol of human resilience and iron will. His character arc moves from vulnerability and paralyzing fear to self-reliance and triumph. When writing about him, use keywords like 'determined,' 'persevering,' and 'methodical.' He doesn't just wish the fear away; he confronts it through systematic training. Next, we look at the Instructor. While he is a secondary character, he represents the bridge between fear and mastery. He is patient, professional, and technical. He breaks down a complex, terrifying task into small, manageable steps, proving that any great skill is built through incremental progress. Now, let's move to Reference to Context, or RTC questions. These are the short extracts from the text followed by specific questions. When you encounter an RTC, always look for the 'emotional tone.' For instance, if the extract describes the 'blackness' and 'suffocation' in the pool, the tone is one of terror and helplessness. If it describes the 'joy of swimming' at the end, the tone is triumphant. A common tip for RTCs: do not just repeat the text; interpret the underlying feeling. For example, if asked why Douglas felt 'terror,' don't just say he was drowning; say he was experiencing the primal fear of death. Moving on to the Full Chapter Recap, let's connect the dots. The chapter is a psychological study. It starts with the 'seed of fear' planted at the beach, which grows into a 'monstrous phobia' after the YMCA misadventure. This phobia is not just a physical limitation; it is a mental barrier that ruins his social life and hobbies like fishing and canoeing. The turning point is his decision to take action. He hires an instructor, undergoes rigorous training, and most importantly, he undergoes a psychological battle. Even after the training, the 'residual fear' remains, which he conquers through sheer willpower by swimming alone in Lake Wentworth. The core theme is the famous quote by Roosevelt: 'All we have to fear is fear itself.' This means that the sensation of fear is more crippling than the actual danger. To score maximum marks, ensure you mention the sensory imagery used by Douglas—the 'stark terror,' the 'pounding heart,' and the 'shaking limbs.' This shows the examiner you have read the text deeply. Remember, in your answers, always link the physical struggle of swimming to the mental struggle of overcoming life's obstacles. You are now ready to tackle any question on Deep Water. Review your notes, practice your character sketches, and approach your exams with the same determination that Douglas showed in the deep water. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-english-03-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Political Parties, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c10-civics-04-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Why Political Parties are the Heart of Democracy -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Why Political Parties are the Heart of Democracy</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Political parties are the essential players in a democratic system.</div>
+              <div id="qx0-p1" class="qe-bullet">• What if there were no political parties? Imagine only independent candidates.</div>
+              <div id="qx0-p2" class="qe-bullet">• Independent candidates struggle to form a cohesive government.</div>
+              <div id="qx0-p3" class="qe-bullet">• Parties bridge the gap between citizens and the government.</div>
+              <div id="qx0-p4" class="qe-bullet">• Parties group diverse public demands into organized political programs.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":3792908694,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a chaotic crowd of individual people transitioning into organized, colorful groups representing different political platforms, eventually forming a structured government building.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D animation showing a chaotic crowd of individual people transitioning into organized, colorful groups representing different political platforms, eventually forming a structured government building.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Defining Political Parties: Meaning, Components, and Functions -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Defining Political Parties: Meaning, Components, and Functions</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Political Party: A group contesting elections to hold power</div>
+              <div id="qx1-p1" class="qe-bullet">• Three Components: Leaders, Active Members, and Followers</div>
+              <div id="qx1-p2" class="qe-bullet">• Function 1: Contesting elections and putting forward policies</div>
+              <div id="qx1-p3" class="qe-bullet">• Function 2: Making laws and forming/running the government</div>
+              <div id="qx1-p4" class="qe-bullet">• Function 3: Role of Opposition and shaping public opinion</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":3619360701,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D flowchart appearing in mid-air, connecting 'Leaders', 'Members', and 'Followers' to a central 'Political Party' icon, which then branches out into seven functional icons.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D flowchart appearing in mid-air, connecting 'Leaders', 'Members', and 'Followers' to a central 'Political Party' icon, which then branches out into seven functional icons.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Necessity of Political Parties: What happens without them? -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Necessity of Political Parties: What happens without them?</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Imagine a democracy with only independent candidates.</div>
+              <div id="qx2-p1" class="qe-bullet">• Independent candidates lack a collective platform or vision.</div>
+              <div id="qx2-p2" class="qe-bullet">• No shared ideology means no way to form a stable government.</div>
+              <div id="qx2-p3" class="qe-bullet">• Difficulty in making large-scale policy decisions without parties.</div>
+              <div id="qx2-p4" class="qe-bullet">• Parties provide voters with organized choices and accountability.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":3466416249,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen animation: one side shows a chaotic crowd of individuals shouting different directions, the other shows organized groups moving in unison toward a common goal.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen animation: one side shows a chaotic crowd of individuals shouting different directions, the other shows organized groups moving in unison toward a common goal.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Party Systems I: One-Party vs. Two-Party Systems -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Party Systems I: One-Party vs. Two-Party Systems</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Party System: The way parties are organized and compete for power.</div>
+              <div id="qx3-p1" class="qe-bullet">• One-Party System: Only one party controls the government (e.g., China).</div>
+              <div id="qx3-p2" class="qe-bullet">• One-Party System is non-democratic as it lacks real competition.</div>
+              <div id="qx3-p3" class="qe-bullet">• Two-Party System: Two major parties dominate the electoral process.</div>
+              <div id="qx3-p4" class="qe-bullet">• Two-Party System (e.g., USA, UK) offers stability but limited choice.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2579088965,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows a single large pillar representing China's one-party rule; Right side shows two heavy pillars (Democrats vs Republicans) balancing a scale.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A split-screen 3D animation: Left side shows a single large pillar representing China's one-party rule; Right side shows two heavy pillars (Democrats vs Republicans) balancing a scale.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Party Systems II: Multi-Party Systems and Alliances -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Party Systems II: Multi-Party Systems and Alliances</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Multi-Party System: More than two parties compete for power.</div>
+              <div id="qx4-p1" class="qe-bullet">• Advantage: Represents a wider range of social and ideological interests.</div>
+              <div id="qx4-p2" class="qe-bullet">• Disadvantage: Can lead to political instability and fragmented power.</div>
+              <div id="qx4-p3" class="qe-bullet">• Coalition Government: Multiple parties joining hands to form a government.</div>
+              <div id="qx4-p4" class="qe-bullet">• Alliance Dynamics: Balancing diverse interests vs. risk of government collapse.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":730875919,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D digital map of a parliament floor where various colored blocks representing different parties merge to form a single large structure, then occasionally shake as small blocks pull away.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D digital map of a parliament floor where various colored blocks representing different parties merge to form a single large structure, then occasionally shake as small blocks pull away.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): National vs. Regional Parties: Criteria and Classification -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">National vs. Regional Parties: Criteria and Classification</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• National Party: 6% votes in Lok Sabha/Assemblies + 4 Lok Sabha seats</div>
+              <div id="qx5-p1" class="qe-bullet">• National Party: 2% of total Lok Sabha seats from different states</div>
+              <div id="qx5-p2" class="qe-bullet">• State Party: 6% votes in State Assembly + 2 Assembly seats</div>
+              <div id="qx5-p3" class="qe-bullet">• National parties influence the whole country; State parties focus on regions</div>
+              <div id="qx5-p4" class="qe-bullet">• The coexistence of both leads to coalition politics and alliances</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":1119734673,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing a map of India with glowing national party icons spreading across the whole map, contrasted with a single state highlighted with distinct regional party icons.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D split-screen animation showing a map of India with glowing national party icons spreading across the whole map, contrasted with a single state highlighted with distinct regional party icons.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Political Parties in India: Historical Context and Evolution -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Political Parties in India: Historical Context and Evolution</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Origins: The role of the Indian National Congress since 1885</div>
+              <div id="qx6-p1" class="qe-bullet">• Post-Independence: The era of One-Party Dominance (The Congress System)</div>
+              <div id="qx6-p2" class="qe-bullet">• Transition: Shift from single-party dominance to a multi-party system</div>
+              <div id="qx6-p3" class="qe-bullet">• Rise of Regionalism: Emergence of parties representing local identities</div>
+              <div id="qx6-p4" class="qe-bullet">• Coalition Era: The importance of alliances in modern Indian politics</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":1456800690,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D timeline flowing from a sepia-toned map of colonial India to a vibrant, multi-colored modern digital map of India showing various party symbols popping up.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D timeline flowing from a sepia-toned map of colonial India to a vibrant, multi-colored modern digital map of India showing various party symbols popping up.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Challenges to Political Parties I: Lack of Internal Democracy -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Challenges to Political Parties I: Lack of Internal Democracy</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Political parties face several structural challenges in a democracy.</div>
+              <div id="qx7-p1" class="qe-bullet">• Power often concentrates in the hands of a few top leaders.</div>
+              <div id="qx7-p2" class="qe-bullet">• Ordinary party members frequently lack a voice in decision-making.</div>
+              <div id="qx7-p3" class="qe-bullet">• Many parties fail to hold regular and transparent internal elections.</div>
+              <div id="qx7-p4" class="qe-bullet">• Lack of internal democracy prevents new, merit-based leaders from emerging.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":1241813398,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation of a large pyramid where a tiny group at the peak holds glowing keys, while a large crowd of workers at the base looks upward through a glass ceiling.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D animation of a large pyramid where a tiny group at the peak holds glowing keys, while a large crowd of workers at the base looks upward through a glass ceiling.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Challenges to Political Parties II: Dynastic Succession and Money Power -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Challenges to Political Parties II: Dynastic Succession and Money Power</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Dynastic Succession: Leadership passing through family lines instead of merit.</div>
+              <div id="qx8-p1" class="qe-bullet">• Impact of Dynasty: Talented grassroots workers are denied leadership roles.</div>
+              <div id="qx8-p2" class="qe-bullet">• Money Power: High election costs favor wealthy candidates over ordinary citizens.</div>
+              <div id="qx8-p3" class="qe-bullet">• The Cycle of Corruption: Wealthy candidates may prioritize donors over public interest.</div>
+              <div id="qx8-p4" class="qe-bullet">• Criminalization: The dangerous link between money, muscle power, and politics.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4167190732,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a family tree turning into a political ladder, the other shows a scale tipping heavily toward a bag of money over a ballot box.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation: one side shows a family tree turning into a political ladder, the other shows a scale tipping heavily toward a bag of money over a ballot box.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Challenges to Political Parties III: Lack of Meaningful Choice -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Challenges to Political Parties III: Lack of Meaningful Choice</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• The core issue: Voters often face a lack of distinct ideological alternatives.</div>
+              <div id="qx9-p1" class="qe-bullet">• Convergence of policies: Parties often adopt similar economic and social stances.</div>
+              <div id="qx9-p2" class="qe-bullet">• Personality vs. Ideology: Competition shifts from ideas to symbols and leaders.</div>
+              <div id="qx9-p3" class="qe-bullet">• Consequences: Voter apathy and disillusionment with the democratic process.</div>
+              <div id="qx9-p4" class="qe-bullet">• The need for substantive differences to ensure a healthy democracy.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4136067967,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing two different paths diverging in a forest, which then merge into a single, identical road, symbolizing the loss of choice.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D split-screen showing two different paths diverging in a forest, which then merge into a single, identical road, symbolizing the loss of choice.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): How Parties can be Reformed: Legal and Institutional Measures -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">How Parties can be Reformed: Legal and Institutional Measures</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Mandatory organizational elections and filing of income tax returns</div>
+              <div id="qx10-p1" class="qe-bullet">• Election Commission monitors candidate expenditure during polls</div>
+              <div id="qx10-p2" class="qe-bullet">• No legal limit currently exists on total party election spending</div>
+              <div id="qx10-p3" class="qe-bullet">• Mandatory candidate affidavits disclosing assets and criminal cases</div>
+              <div id="qx10-p4" class="qe-bullet">• Supreme Court interventions to curb the criminalization of politics</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1695371926,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a legal gavel hitting a desk on one side, and a digital filing cabinet labeled 'Tax &amp; Affidavits' on the other.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D split-screen showing a legal gavel hitting a desk on one side, and a digital filing cabinet labeled 'Tax &amp; Affidavits' on the other.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Answer Writing, Map Work, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Answer Writing, Map Work, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Use the Point-Heading method for 5-mark questions</div>
+              <div id="qx11-p1" class="qe-bullet">• Highlight keywords like 'Dynastic Succession' and 'Internal Democracy'</div>
+              <div id="qx11-p2" class="qe-bullet">• Identify National Party headquarters on the map of India</div>
+              <div id="qx11-p3" class="qe-bullet">• Distinguish between National and State parties clearly</div>
+              <div id="qx11-p4" class="qe-bullet">• Recap: Functions, Systems, Challenges, and Reforms</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":707404260,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a student writing structured points on one side and a glowing digital map of India with party symbols appearing on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a student writing structured points on one side and a glowing digital map of India with party symbols appearing on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Political Parties today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Why Political Parties are the Heart of Democracy <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Defining Political Parties: Meaning, Components, and Functions <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Necessity of Political Parties: What happens without them? <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Party Systems I: One-Party vs. Two-Party Systems <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Party Systems II: Multi-Party Systems and Alliances <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. National vs. Regional Parties: Criteria and Classification <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Political Parties in India: Historical Context and Evolution <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Challenges to Political Parties I: Lack of Internal Democracy <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Challenges to Political Parties II: Dynastic Succession and Money Power <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Challenges to Political Parties III: Lack of Meaningful Choice <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. How Parties can be Reformed: Legal and Institutional Measures <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Answer Writing, Map Work, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey through Class 10 Civics. Today, we are starting a very important chapter: Political Parties. Before we dive into definitions and types, let's start with a simple question. When you watch the news, or when you see people protesting, or when you see a government making new laws, what is the common thread connecting all these activities? It is the presence of political parties. Imagine a massive, bustling marketplace. For that market to function, you need traders, buyers, and a system of exchange. In the grand marketplace of democracy, political parties are the essential players that make the system work. Now, let's think about a hypothetical scenario. Imagine a country where there are no political parties at all. Imagine a country where every candidate in an election is an independent individual, running on their own. At first glance, this might sound like a very pure form of democracy, right? You might think, 'Every person is free to choose exactly who they want without being influenced by a party label.' But let's look closer. If every candidate is an independent, how will they come together to form a government? If one person wins in a district, they might have great ideas, but how will they implement them across the whole country? How will they coordinate with a person who won in a different district if they have completely different views? Without parties, there would be no collective voice. There would be no organized way to represent the diverse interests of millions of people. This is why we say political parties are the heart of democracy. They act as the bridge between the citizens and the government. They take the many, many different demands, needs, and opinions of the people and group them into a few manageable, coherent programs. Without this grouping, the government would be a chaotic collection of individuals, making it impossible to make large-scale decisions or maintain stability. In a democracy, we don't just want people to vote; we want people to have a choice between different visions for the country. One party might say, 'We will focus on industrial growth,' while another might say, 'We will focus on rural welfare.' This competition between different ideas and programs is what gives the citizens real power. So, as we move through this chapter, keep this core idea in mind: political parties are not just groups of people seeking power; they are the organized vehicles through which the will of the people is transformed into the actions of the government. In the next part of our series, we will look at exactly what constitutes a political party and the specific components that make them work. Let's get started!","Welcome back! In our last video, we discussed why political parties are considered the heart of democracy. Now, let's dive deep into the core of our topic. What exactly is a political party? If we look at it formally, a political party is a group of people who come together to contest elections and hold power in the government. They agree on some policies and programs for the society with a view to promote the collective good. But a political party is not just a crowd of people; it is a structured organization. To understand this clearly, we must look at its three essential components. First, the Leaders. These are the individuals who formulate policies, contest elections, and guide the party's direction. Second, the Active Members. These are the dedicated workers who participate in party activities, organize rallies, and work at the grassroots level to connect with the public. Third, the Followers. These are the citizens who believe in the party's ideology and vote for them during elections. Without these three elements, a party cannot function. Now, once we know what a party is, we must ask: what do they actually do? This brings us to the functions of political parties. Let's break them down into seven key roles. Number one: They contest elections. In most democracies, elections are fought mainly among the candidates put up by different political parties. Number two: They put forward different policies and programs. Every party presents a different set of views on how the country should be run. This allows voters to choose which direction they want their nation to take. Number three: They play a decisive role in making laws. While laws are debated and passed in the legislature, most of these laws are basically based on the promises and ideologies of the political parties in power. Number four: They form and run the government. The party that wins the majority of seats in the legislature forms the government, recruits ministers, and makes major policy decisions. Number five: They play the role of the Opposition. This is a crucial function. The parties that lose the elections do not just sit idle; they voice different views and criticize the government for its failures or wrong policies. They keep the ruling party in check. Number six: They shape public opinion. Parties raise and highlight issues that are important to the people. Through their speeches, protests, and media presence, they influence how citizens think about social and economic problems. And finally, number seven: They act as a link between the government and the people. Since it is difficult for every citizen to interact directly with the administration, political parties provide a platform for people to express their needs and for the government to communicate its actions. So, to recap: a political party consists of leaders, active members, and followers, and they function by contesting elections, making laws, running the government, acting as opposition, and shaping public opinion. Understanding these mechanics is vital before we move on to see what would happen if these parties simply didn't exist.","Now that we understand what a political party is and how it functions, a very important question arises. Why do we actually need them? It might seem like political parties cause a lot of noise and conflict, but imagine for a moment a world without them. Let us try to imagine a different scenario. Suppose there are no political parties in a democracy. In this hypothetical situation, every candidate in an election would be an independent. This means they would be contesting elections on their own, without any party affiliation or common platform. Now, think about the implications of this. If every candidate is an independent, how will they represent the people? An independent candidate can be elected, but they will be unable to make any major promises to the people because they do not belong to a group that can implement those promises. In a democracy, we want to know: if a party wins, what will its policies be? What will its vision for the country be? Without parties, there is no collective program. Each candidate would just focus on their own local constituency, their own small interests. This leads us to our first major problem: the lack of accountability and large-scale policy making. If there are no parties, who will form the government? If a group of independent candidates manages to win a majority, how will they work together? They would have no shared ideology, no common discipline, and no way to coordinate their decisions. It would be like a ship with a hundred captains but no single direction. Every time a major law needs to be passed, these independent members would have to negotiate individually. This would lead to massive instability and chaos in the administration. Furthermore, without parties, the voters would face a huge problem in making a choice. When you vote for a party, you are not just voting for a person; you are voting for a set of ideas, a manifesto, and a vision for the nation. You are saying, 'I agree with this direction for my country.' But if there are only independent candidates, you are only choosing an individual. You have no way of knowing how they will behave once they reach the legislature or how they will interact with other elected members. In short, without political parties, the representative democracy we know today would simply collapse. We would be left with a system where individual interests overpower the collective will of the people, and where the government would be too fragmented to function effectively. Therefore, political parties are not just an addition to democracy; they are a fundamental necessity for its survival and smooth functioning. They act as the bridge between the people and the government, turning individual voices into organized political power.","Welcome back. In our previous segment, we understood why political parties are an essential part of any democracy. But how do these parties actually organize themselves within a country? Does every democracy have many parties competing, or is it just a few? To answer this, we need to look at what we call 'Party Systems.' A party system is the way political parties are organized and how they compete for power in a country. There are three main types of party systems: One-party, Two-party, and Multi-party systems. Today, we are going to focus on the first two. Let's start with the One-Party System. In this system, only one party is allowed to control and run the government. Now, before we look at examples, let's ask a critical question: Is a one-party system democratic? According to the principles of democracy, the answer is no. Democracy requires competition, and competition requires more than one choice. If there is only one party, the people have no real choice during elections. Even if elections are held, they are often just a formality because no other party can win. A classic example of this is China. In China, the Communist Party of China rules the country. While there might be elections, only members of the Communist Party or eight smaller parties allied to it are allowed to contest. This means the ultimate power remains strictly with the Communist Party. Because there is no real opposition, a one-party system lacks the accountability that a healthy democracy needs. Now, let's move to the second type: the Two-Party System. This is quite different. In a two-party system, although more than two parties may exist, only two major parties have a serious chance of winning elections and forming the government. This system is often seen in countries like the United States and the United Kingdom. In the United States, you primarily see the Democrats and the Republicans competing for the Presidency and control of Congress. In the United Kingdom, the struggle is usually between the Labour Party and the Conservative Party. The beauty of the two-party system is that it provides stability. Because power usually shifts between two clear sides, the government tends to be stable and decisions can be made more decisively. It also makes it very clear to the voters who will be in power if they vote for Party A or Party B. However, the downside is that it can limit the range of political opinions. If you have a view that doesn't fit into the platform of either major party, you might feel left out or unrepresented. To summarize our comparison: The One-Party system is non-democratic because it eliminates competition, whereas the Two-Party system is democratic but offers a more limited choice compared to other systems. As we move forward in our series, we will explore the third type—the Multi-Party system—which is the system we see in India. But for now, remember these two: One-party means no choice, and two-party means a choice between two major forces. Understanding these structures helps us understand why different countries experience different levels of political competition and stability.","Welcome back. In our previous session, we compared the One-Party and Two-Party systems. Now, we move to a more complex and common reality in many modern democracies: the Multi-Party System. In a multi-party system, more than two parties have the capacity to contest elections and win a significant number of seats in the legislature. Unlike the two-party system, where power usually shifts between two major players, a multi-party system allows for a wider variety of ideologies and social groups to be represented. Think about the political landscape of many European countries or, most notably, our own India. In such a system, the competition is not just between two giants, but among several players, each representing different interests. Now, you might ask: is this system always better? Not necessarily. The biggest challenge of a multi-party system is that it can lead to political instability. Because so many parties are competing, it often becomes difficult for a single party to secure a clear majority in the legislature. When no single party wins enough seats to form a government on its own, we encounter a very important political phenomenon: the Coalition Government. A coalition occurs when several political parties join hands to form an alliance. They come together to reach a common minimum program, essentially agreeing on a set of shared policies to run the government. This is often called an 'Alliance' or a 'Front.' For example, in India, we have seen various alliances like the National Democratic Alliance or the United Progressive Alliance. While alliances allow for greater representation of diverse interests, they also bring their own set of complications. In a coalition, the government must constantly balance the conflicting demands of different partner parties. If one small partner disagrees with a major policy, they might threaten to withdraw support, which could cause the entire government to collapse. This makes the decision-making process slower and more prone to compromise. So, to summarize this section: while a multi-party system offers more choices and better representation of social diversity, it also risks political instability and complex governance through coalitions. As we move forward, we will look at how we distinguish between the different types of parties operating within these systems.","Welcome back. In our previous segment, we explored the different types of party systems, such as one-party, two-party, and multi-party systems. Now, we move to a very important distinction in the Indian political landscape: the difference between National Parties and Regional, or State, Parties. You might wonder, how does the Election Commission of India decide if a party is 'National' or 'Regional'? It is not based on popularity alone, but on specific, measurable criteria regarding votes and seats. Let us look at the rules first. For a political party to be recognized as a National Party, it must fulfill at least one of the following conditions: First, it must secure at least six percent of the total votes in the Lok Sabha elections or in the elections to the Legislative Assembly of several states, and along with that, it must win at least four seats in the Lok Sabha. Second, it must win at least two percent of the total seats in the Lok Sabha, which means at least four seats, after contesting elections from different states. Now, let us look at the criteria for a State Party. A party can be recognized as a State Party if it secures at least six percent of the total votes in an election to the Legislative Assembly of a particular state and wins at least two seats in that state assembly. This distinction is crucial because it determines how much influence a party has on a scale. A National Party, like the Bharatiya Janata Party or the Indian National Congress, has a presence across the entire country and its policies impact the whole nation. On the other hand, a State Party, such as the Samajwadi Party in Uttar Pradesh or the DMK in Tamil Nadu, focuses primarily on the interests, culture, and issues of a specific state or region. In India, we see a unique phenomenon where both types of parties coexist. This often leads to the formation of coalitions. When several regional parties join hands with a national party to form a government at the center, we call this an alliance. This multi-layered system ensures that while national issues are addressed, the specific needs of different states are not ignored. To summarize, the classification depends on the percentage of votes and the number of seats won in either the Lok Sabha or the State Legislative Assemblies. Understanding this helps us see why India's democracy is so diverse and how power is distributed between the center and the states.","Welcome back. In our previous segment, we looked at how different party systems function globally. Now, let us zoom in on our own country. To understand why Indian politics looks the way it does today, we must travel back in time to look at its historical context and evolution. The story of political parties in India is not just about elections; it is the story of our struggle for independence and the building of a modern nation. Long before we became a free republic, the seeds of organized political activity were sown during the colonial era. The most significant milestone was the formation of the Indian National Congress in eighteen eighty-five. While it began as a platform for elite discussion, it eventually transformed into a massive mass movement that led the struggle against British rule. This era established a tradition of organized political struggle that remains the bedrock of our democracy. After independence in nineteen forty-seven, the landscape changed. For the first few decades, India was characterized by what political scientists call a 'One-Party Dominant System.' This does not mean India was a one-party state like some other nations; rather, it meant that one single party, the Indian National Congress, held overwhelming dominance in the parliamentary elections at both the center and in most state legislatures. This dominance was so strong that the opposition parties, though they existed, were often fragmented and lacked the strength to challenge the ruling party effectively. This period is often referred to as the 'Congress System.' However, as time progressed, the political landscape began to shift. The dominance of a single party started to wane, and new political forces began to emerge. This evolution was driven by several factors: the rise of regional identities, the mobilization of different social groups, and the changing economic aspirations of the people. We began to see the emergence of strong regional parties that represented specific linguistic, cultural, or regional interests. This led to a transition from a one-party dominant system to a multi-party system where coalitions became a necessity. By the late eighties and throughout the nineties, the era of coalition politics became prominent. No single party was able to secure a clear majority in the Lok Sabha on its own, forcing different parties with varying ideologies to come together to form governments. This era brought a new dynamic to Indian politics, where regional players became 'kingmakers' at the national level. We saw the rise of various alliances, such as the National Democratic Alliance and the United Progressive Alliance. This evolution shows us that Indian politics has moved from a centralized, single-party-led structure to a much more complex, diverse, and competitive multi-party landscape. Understanding this journey from the Congress-led era to the era of coalitions is essential to understanding the current political dynamics of India. As we move forward, we will examine the specific challenges that these evolving parties face today.","Welcome back. In our previous session, we looked at how political parties have evolved in India. But today, we must confront a difficult question: Are these parties truly working for the people, or are they facing internal crises? While political parties are essential for democracy, they face several significant challenges. Today, we are diving deep into the first major challenge: The Lack of Internal Democracy. Now, think about this. In a democracy, we believe in equality, the right to vote, and the right to participate. But does this same spirit exist inside the political parties themselves? Often, the answer is no. One of the most common problems we observe is that power tends to concentrate in the hands of a few top leaders. In many political parties, the ordinary members and even the lower-level workers do not have any say in how the party is run. They are often treated as mere voters during elections, but once the election is over, their influence vanishes. This brings us to the core issue: the absence of internal elections. In an ideal democratic party, there should be regular, transparent, and fair elections to choose the party president and the executive committee. However, in reality, many parties do not hold these internal elections at all. Instead, decisions regarding candidate selection, policy formulation, and leadership changes are made behind closed doors by a small group of high-ranking officials. This lack of transparency means that the common party worker has no way to rise through the ranks based on merit. If you are a dedicated worker with great ideas, your path to leadership is often blocked unless you have connections with the top brass. This concentration of power leads to a lack of accountability. When a small group makes all the decisions, they are not accountable to the party members or the general public. This creates a gap between the party's stated ideology and its actual functioning. Furthermore, when internal democracy is missing, it becomes very difficult for new and talented leaders to emerge. The party becomes stagnant, relying on the same old faces for decades. This prevents the infusion of fresh perspectives and modern ideas that a growing nation like India needs. To summarize, the lack of internal democracy means that the democratic values we celebrate in our Parliament are often missing within the very parties that form that Parliament. This is a serious structural flaw that weakens the democratic fabric of our country. As we move forward, we will see how this lack of democracy often leads to other problems, like dynastic succession, but for now, remember that a party cannot truly represent the people if it does not practice democracy within its own organization.","Welcome back. In our previous session, we discussed how the lack of internal democracy makes parties inaccessible to ordinary citizens. Today, we dive into the second major challenge that weakens our democratic fabric: Dynastic Succession and the influence of Money Power. Let us first look at Dynastic Succession. In many political parties, especially in India, the top positions are often controlled by members of one family. This is what we call dynastic succession. When leaders are chosen based on their family lineage rather than their merit or hard work, it creates a serious problem. Why is this a challenge? First, it denies hardworking and talented party workers the opportunity to rise to leadership positions. If you are a dedicated worker but not part of a powerful family, your path to the top is often blocked. Second, it makes the party less democratic. When power stays within a single family, the party becomes a family enterprise rather than a public institution. This leads to a lack of accountability, as leaders feel they owe their position to their bloodline rather than the voters or the party members. Now, let us turn to the second, and perhaps even more pervasive, challenge: Money and Muscle Power. Politics has become incredibly expensive today. From organizing massive election rallies to conducting door-to-door campaigns and managing social media, the costs are skyrocketing. This creates a massive disadvantage for honest, middle-class, or grassroots candidates who do not have vast resources. Because of this high cost, political parties often feel pressured to nominate candidates who are wealthy. This leads to a dangerous cycle: wealthy candidates use their money to win elections, and once in power, they may focus more on protecting their financial interests or those of their donors rather than the public interest. This is often linked to the influence of 'muscle power' as well. To ensure victory, some parties resort to using intimidation or even criminal elements to influence voters or disrupt the electoral process. This 'criminalization of politics' is a direct result of the intersection between money and power. When money can buy influence and muscle power can secure votes, the democratic principle of 'one person, one vote, one value' is threatened. Instead of a battle of ideas, elections can turn into a battle of bank balances and brute force. To summarize, both dynastic succession and money power act as barriers to true representation. One prevents talented individuals from entering leadership, while the other allows wealth to dictate political outcomes. As we move forward, we will see how these challenges impact the choices available to you, the voter.","Welcome back. In our previous segments, we discussed how internal democracy, dynastic succession, and the influence of money and muscle power weaken our political parties. Now, we move to the third and perhaps most critical challenge facing modern democracies: the lack of meaningful choice for the voters. Think about the last time you went to vote. Did you feel that the candidates or the parties offered you fundamentally different ideologies? Or did it feel like you were just choosing between different faces of the same system? In many democracies, including India, this has become a significant problem. When we look at the political landscape, we often notice that while there are many different parties, the policy differences between them are becoming increasingly negligible. This means that regardless of which party you vote for, the basic direction of the country, the economic policies, and the social priorities remain largely the same. This phenomenon is what we call a lack of meaningful choice. In a healthy democracy, political parties should act as different vehicles of thought. One party might advocate for heavy state intervention and social welfare, while another might push for free-market capitalism and privatization. One might prioritize environmental protection, while another focuses on rapid industrialization. These differences allow citizens to choose a path that aligns with their personal values and vision for the nation. However, when parties converge on most major issues, the competition becomes purely about personality, caste, or religion rather than ideology. This turns elections into a battle of symbols and slogans rather than a debate on national development. When the choices are not meaningful, voters often feel disillusioned. They feel that their vote doesn't truly change the direction of the government. This disillusionment can lead to voter apathy, where people stop participating in the democratic process altogether because they feel 'all parties are the same.' Furthermore, when parties lack ideological distinction, they tend to adopt populist measures just to win votes, rather than long-term sustainable policies. This 'race to the bottom' can harm the economic and social fabric of the country. In the Indian context, we see this when major national parties, despite their different historical origins, often end up supporting similar economic reforms or reacting similarly to global geopolitical shifts. While regional parties often provide a different flavor by focusing on local issues, the overarching national policy direction often remains uniform. This brings us to a vital question: Is a multi-party system effective if all parties move in the same direction? The answer lies in the quality of competition. For a democracy to thrive, competition must be based on 'substantive differences.' This means that the choices presented to the electorate must involve real trade-offs. If you vote for Party A, you should expect a different set of priorities than if you vote for Party B. Without this, the multi-party system becomes a mere formality, a shell of democracy without its soul. As we move into our next lesson, we will look at how we can fix these deep-seated issues through legal and institutional reforms. But for now, reflect on this: Does your vote represent a choice of direction, or just a choice of person?","Welcome back. In our previous session, we discussed the serious challenges facing political parties, such as money power, dynastic succession, and the lack of internal democracy. Now, the big question arises: Can we fix this? Can we reform these institutions to make them more accountable to the people? The answer is yes, but it is not a simple task. There are two ways to look at this. First, we can look at the reforms that have already been implemented through legal and institutional measures. Second, we can look at what more needs to be done. Let's start with what is already in place. One of the most significant legal steps taken in India is the regulation of internal affairs through the law. For instance, according to the law, it is mandatory for political parties to hold organizational elections and file their income tax returns. This is an attempt to bring some level of transparency to how parties operate and how they manage their finances. However, as we have seen, simply making it a law does not always guarantee compliance. Another important measure is the regulation of money power. The Election Commission of India plays a crucial role here. It monitors the expenditure of candidates during elections. While the law limits how much a candidate can spend on their campaign, there is a major loophole: there are no legal limits on how much a political party itself can spend on electioneering. This is a significant gap that allows massive amounts of unaccounted money to flow into politics. Now, let's look at the third major legal measure: the regulation of criminalization. The Supreme Court has taken several proactive steps to prevent people with criminal backgrounds from entering the legislature. For example, the Court has made it mandatory for every candidate to file an affidavit. In this affidavit, the candidate must disclose their assets and liabilities, as well as any pending criminal cases against them. This is intended to give voters the right to know the background of the people they are voting for. By making this information public, the intention is to let the voters decide whether a candidate's criminal record should disqualify them in the eyes of the public. But does this solve everything? Not quite. While the information is available, the actual conviction rate in many cases remains low, and many candidates still manage to win despite these disclosures. So, we have seen these three pillars: mandatory organizational elections, income tax filings, and the requirement of candidate affidavits. These are the legal and institutional tools currently at our disposal. But as we move forward, we must ask ourselves: are these measures enough to tackle the deep-rooted issues of dynastic politics and the lack of meaningful choice? In our next and final session, we will discuss the additional reforms that civil society and citizens can demand to truly strengthen our democracy. For now, remember that while the law provides the framework, the actual health of a democracy depends on how strictly these laws are enforced and how vigilant the citizens remain.","Welcome to the final session of our journey through Political Parties. We have covered everything from the basic definition to the complex challenges facing our democracy. Now, it is time to transition from learning to performing. This session is your Exam Masterclass. First, let us talk about Answer Writing. In your Board Exams, how you present your knowledge is just as important as what you know. For a five-mark question, never write a single long paragraph. Instead, use the 'Point-Heading' method. For example, if a question asks about the functions of political parties, do not just write a story. Write a clear heading like 'Formulating Policies and Programmes', then follow it with two to three lines of explanation. This makes it easy for the examiner to award marks. Use keywords like 'Legitimate access to government machinery', 'Role in shaping public opinion', and 'Contesting elections'. If you are discussing challenges, use terms like 'Dynastic Succession' or 'Lack of Internal Democracy'. For three-mark questions, three distinct points with brief explanations are sufficient. Now, let us move to Map Work and Identification. While Political Parties is a theoretical chapter, you must be able to identify the headquarters of major National Parties on an outline map of India. You should know where the headquarters of the Bharatiya Janata Party is in New Delhi, the Indian National Congress in New Delhi, and the locations of regional powerhouses like the Trinamool Congress in West Bengal or the DMK in Tamil Nadu. Being able to locate these on a map demonstrates a spatial understanding of political influence. Finally, let us do a lightning-fast Full Chapter Recap to cement your memory. We started by understanding that political parties are organized groups that seek to contest elections and hold power. We learned that a party consists of three components: the leaders, the active members, and the followers. We explored why parties are necessary—because without them, every candidate would be independent, making it impossible to form a coherent government or provide meaningful choices to voters. We compared the One-Party system of China, the Two-Party system of the USA and UK, and the Multi-Party system of India, where coalitions like the NDA and UPA play a vital role. We distinguished between National Parties, which have a pan-India presence, and State Parties, which are regional. We then tackled the dark side: the challenges of internal democracy, the influence of money and muscle power, and the rise of dynastic politics. We concluded with the reform measures, such as the anti-defection law and the mandatory filing of affidavits. Remember, the goal of reforms is to make parties more transparent and accountable. If you master these points, structure your answers clearly, and keep your maps ready, you are not just prepared for the exam; you are prepared to understand the very pulse of Indian democracy. Good luck with your preparations!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c10-civics-04-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

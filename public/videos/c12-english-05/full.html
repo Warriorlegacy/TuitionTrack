@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Indigo, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-english-05-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Why Gandhi's Struggle for Champaran Matters Today -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Why Gandhi's Struggle for Champaran Matters Today</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Why study a 1917 historical event in the modern era?</div>
+              <div id="qx0-p1" class="qe-bullet">• Champaran: The first successful application of Satyagraha.</div>
+              <div id="qx0-p2" class="qe-bullet">• The transition from individual fear to collective courage.</div>
+              <div id="qx0-p3" class="qe-bullet">• Core themes: Self-reliance, dignity, and non-violent resistance.</div>
+              <div id="qx0-p4" class="qe-bullet">• Moving from the plight of peasants to the awakening of a nation.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1004791661,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A cinematic 3D transition starting from a modern classroom morphing into a sepia-toned, dusty landscape of 1917 Champaran fields.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A cinematic 3D transition starting from a modern classroom morphing into a sepia-toned, dusty landscape of 1917 Champaran fields.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Contextual Background: The Sharecropping System and British Exploitation -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Contextual Background: The Sharecropping System and British Exploitation</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• The mandatory 15 percent Indigo cultivation rule</div>
+              <div id="qx1-p1" class="qe-bullet">• Indigo as a high-demand cash crop for European textiles</div>
+              <div id="qx1-p2" class="qe-bullet">• The shift from crop surrender to forced monetary compensation</div>
+              <div id="qx1-p3" class="qe-bullet">• The impact of synthetic dyes on the Indigo market</div>
+              <div id="qx1-p4" class="qe-bullet">• Systemic debt and the cycle of peasant exploitation</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":370637819,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a lush indigo field on one side and a distressed Indian farmer handing over a small bag of coins to a wealthy British landlord on the other.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D split-screen showing a lush indigo field on one side and a distressed Indian farmer handing over a small bag of coins to a wealthy British landlord on the other.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): The Arrival of Rajkumar Shukla: The Catalyst of Change -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">The Arrival of Rajkumar Shukla: The Catalyst of Change</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Rajkumar Shukla: A poor but 'resolute' sharecropper.</div>
+              <div id="qx2-p1" class="qe-bullet">• The Lucknow Convention: Where the encounter began.</div>
+              <div id="qx2-p2" class="qe-bullet">• Persistence: Shukla followed Gandhi across multiple cities.</div>
+              <div id="qx2-p3" class="qe-bullet">• The Catalyst: Shukla's determination triggered the movement.</div>
+              <div id="qx2-p4" class="qe-bullet">• The Partnership: Shukla's urgency met Gandhi's leadership.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":1770410699,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D map of India showing a glowing trail moving from Lucknow to Ahmedabad and Calcutta, following a small silhouette representing Shukla.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D map of India showing a glowing trail moving from Lucknow to Ahmedabad and Calcutta, following a small silhouette representing Shukla.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): The Legal and Social Landscape of Champaran in 1917 -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">The Legal and Social Landscape of Champaran in 1917</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• The Tinkathia System: A legal trap forcing indigo cultivation on 15% of land.</div>
+              <div id="qx3-p1" class="qe-bullet">• Legalized Extortion: Laws were used as tools for British planters to exploit peasants.</div>
+              <div id="qx3-p2" class="qe-bullet">• The Three-Tier Social Hierarchy: British planters, Indian intermediaries, and peasants.</div>
+              <div id="qx3-p3" class="qe-bullet">• A Culture of Fear: Peasants faced social, economic, and legal marginalization.</div>
+              <div id="qx3-p4" class="qe-bullet">• Lack of Social Cohesion: Isolated communities lacked the strength to resist authority.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":333182985,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: left side shows a heavy, iron-bound legal contract; right side shows a dark, fractured social pyramid of people.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A split-screen 3D animation: left side shows a heavy, iron-bound legal contract; right side shows a dark, fractured social pyramid of people.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Gandhi's Journey: From Muzaffarpur to Motihari -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Gandhi's Journey: From Muzaffarpur to Motihari</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Gandhi travels to Muzaffarpur to gather legal intelligence.</div>
+              <div id="qx4-p1" class="qe-bullet">• Stayed with Professor Malkani to connect with local sympathizers.</div>
+              <div id="qx4-p2" class="qe-bullet">• Gandhi critiques lawyers for charging high fees to poor peasants.</div>
+              <div id="qx4-p3" class="qe-bullet">• The British order Gandhi to leave Champaran immediately.</div>
+              <div id="qx4-p4" class="qe-bullet">• Massive peasant gathering in Motihari creates a standoff with officials.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":1603017112,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D map animation showing a path moving from Lucknow to Muzaffarpur, then to Motihari, transitioning into a cinematic recreation of a crowded courthouse surrounded by thousands of peasants.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D map animation showing a path moving from Lucknow to Muzaffarpur, then to Motihari, transitioning into a cinematic recreation of a crowded courthouse surrounded by thousands of peasants.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): The Conflict of Authority: Gandhi vs. The British Officials -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">The Conflict of Authority: Gandhi vs. The British Officials</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• The British order Gandhi to leave Champaran immediately.</div>
+              <div id="qx5-p1" class="qe-bullet">• Gandhi's response: Obeying the law but following his conscience.</div>
+              <div id="qx5-p2" class="qe-bullet">• The concept of Civil Disobedience is introduced here.</div>
+              <div id="qx5-p3" class="qe-bullet">• The Motihari courtroom becomes a site of moral struggle.</div>
+              <div id="qx5-p4" class="qe-bullet">• Mass mobilization of peasants paralyzes British officials.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2370141432,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a stern British official signing a decree on one side, and Gandhi calmly writing a letter on the other, transitioning into a wide shot of a massive crowd gathering outside a colonial courthouse.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D split-screen showing a stern British official signing a decree on one side, and Gandhi calmly writing a letter on the other, transitioning into a wide shot of a massive crowd gathering outside a colonial courthouse.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): The Civil Disobedience Movement: Legal Battles and Mass Mobilization -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">The Civil Disobedience Movement: Legal Battles and Mass Mobilization</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Civil Disobedience: Obeying law but refusing unjust orders</div>
+              <div id="qx6-p1" class="qe-bullet">• The Conscience Clause: Gandhi's refusal to follow immoral commands</div>
+              <div id="qx6-p2" class="qe-bullet">• Spontaneous Mobilization: Thousands of peasants gather at Motihari</div>
+              <div id="qx6-p3" class="qe-bullet">• Breaking the Myth: The loss of British psychological control</div>
+              <div id="qx6-p4" class="qe-bullet">• Power Shift: Officials seeking Gandhi's help to manage the crowd</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1059432865,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic pan over a massive, swirling crowd of peasants surrounding a colonial courthouse, transitioning to a close-up of a stunned British official looking out from a balcony.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D cinematic pan over a massive, swirling crowd of peasants surrounding a colonial courthouse, transitioning to a close-up of a stunned British official looking out from a balcony.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): The Investigation: Gathering Evidence and the Role of Peasants -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">The Investigation: Gathering Evidence and the Role of Peasants</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Gandhi shifted from political protest to a data-driven legal investigation.</div>
+              <div id="qx7-p1" class="qe-bullet">• Peasants transitioned from passive victims to active witnesses and participants.</div>
+              <div id="qx7-p2" class="qe-bullet">• Thousands of testimonies were collected to document systematic exploitation.</div>
+              <div id="qx7-p3" class="qe-bullet">• The sheer volume of evidence forced the British to appoint an inquiry commission.</div>
+              <div id="qx7-p4" class="qe-bullet">• This phase exemplifies Satyagraha: using truth and facts as a weapon of resistance.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1928416032,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D time-lapse animation showing Gandhi moving through a village, with glowing lines of light connecting him to various peasants, representing the flow of information and testimonies being recorded into a massive ledger.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D time-lapse animation showing Gandhi moving through a village, with glowing lines of light connecting him to various peasants, representing the flow of information and testimonies being recorded into a massive ledger.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): The Settlement: Terms of the Refund and Economic Impact -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">The Settlement: Terms of the Refund and Economic Impact</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• The planters offered a twenty-five percent refund after the investigation.</div>
+              <div id="qx8-p1" class="qe-bullet">• Gandhi accepted the lower amount to break the prestige of the British planters.</div>
+              <div id="qx8-p2" class="qe-bullet">• The victory was moral and psychological rather than purely financial.</div>
+              <div id="qx8-p3" class="qe-bullet">• The settlement effectively ended the exploitative sharecropping system.</div>
+              <div id="qx8-p4" class="qe-bullet">• It empowered peasants by proving that organized protest yields results.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":428773423,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a pile of gold coins shrinking on one side, while a silhouette of a peasant standing tall and dignified grows on the other.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D split-screen showing a pile of gold coins shrinking on one side, while a silhouette of a peasant standing tall and dignified grows on the other.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Character Analysis: Leadership Traits of Gandhi and Shukla -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Character Analysis: Leadership Traits of Gandhi and Shukla</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Rajkumar Shukla: The power of tenacity and unwavering determination.</div>
+              <div id="qx9-p1" class="qe-bullet">• Shukla as the Catalyst: Turning a local grievance into a national cause.</div>
+              <div id="qx9-p2" class="qe-bullet">• Gandhi's Empathy: Leading through listening and grassroots engagement.</div>
+              <div id="qx9-p3" class="qe-bullet">• Strategic Non-Violence: Using Civil Disobedience as a legal tool.</div>
+              <div id="qx9-p4" class="qe-bullet">• Transformational Leadership: Empowering peasants to overcome fear.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2815788661,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on the left, a determined Shukla walking through various Indian landscapes; on the right, Gandhi sitting among peasants, listening intently.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation: on the left, a determined Shukla walking through various Indian landscapes; on the right, Gandhi sitting among peasants, listening intently.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Misinterpreting Themes and Historical Nuances -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Misinterpreting Themes and Historical Nuances</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Distinguish between economic justice and political revolution</div>
+              <div id="qx10-p1" class="qe-bullet">• Identify Rajkumar Shukla as the 'catalyst' rather than just a peasant</div>
+              <div id="qx10-p2" class="qe-bullet">• Connect the refusal of Charles Freer Andrews to the theme of Self-Reliance</div>
+              <div id="qx10-p3" class="qe-bullet">• Clarify that Civil Disobedience was non-violent and moral, not chaotic</div>
+              <div id="qx10-p4" class="qe-bullet">• Understand that the loss of prestige was more significant than the 25 percent refund</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":3535638821,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side showing a chaotic protest (labeled 'Incorrect') and the other showing a calm, organized legal gathering (labeled 'Correct Satyagraha').</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation: one side showing a chaotic protest (labeled 'Incorrect') and the other showing a calm, organized legal gathering (labeled 'Correct Satyagraha').</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Answer Writing, RTCs, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Answer Writing, RTCs, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Use the 'Cause-Action-Impact' formula for long answers.</div>
+              <div id="qx11-p1" class="qe-bullet">• Be specific in RTCs: identify characters and exact contexts.</div>
+              <div id="qx11-p2" class="qe-bullet">• Key Themes: Self-reliance, Fearlessness, and Satyagraha.</div>
+              <div id="qx11-p3" class="qe-bullet">• Recap: From sharecropping exploitation to psychological victory.</div>
+              <div id="qx11-p4" class="qe-bullet">• Keywords to use: Civil Disobedience, Autonomy, and Mass Mobilization.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":3831676099,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a student writing structured notes, the other side shows a glowing mind-map connecting 'Gandhi', 'Shukla', and 'Self-reliance'.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation: one side shows a student writing structured notes, the other side shows a glowing mind-map connecting 'Gandhi', 'Shukla', and 'Self-reliance'.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Indigo today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Why Gandhi's Struggle for Champaran Matters Today <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Contextual Background: The Sharecropping System and British Exploitation <small>5:00</small></button>
+          <button type="button" data-seek="600">3. The Arrival of Rajkumar Shukla: The Catalyst of Change <small>10:00</small></button>
+          <button type="button" data-seek="900">4. The Legal and Social Landscape of Champaran in 1917 <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Gandhi's Journey: From Muzaffarpur to Motihari <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. The Conflict of Authority: Gandhi vs. The British Officials <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. The Civil Disobedience Movement: Legal Battles and Mass Mobilization <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. The Investigation: Gathering Evidence and the Role of Peasants <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. The Settlement: Terms of the Refund and Economic Impact <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Character Analysis: Leadership Traits of Gandhi and Shukla <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Misinterpreting Themes and Historical Nuances <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Answer Writing, RTCs, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone, and welcome to our comprehensive study of the chapter 'Indigo' from your Class 12 English Flamingo textbook. Before we dive into the historical dates and the complex legal battles, we need to ask ourselves a fundamental question: Why are we studying a story about indigo farming from 1917 in the twenty-first century? It might seem like a distant piece of history, but the essence of Champaran is deeply relevant to our lives today. When we read Louis Fischer's account, we aren't just reading about a crop or a colonial policy; we are reading about the birth of a new kind of leadership and the awakening of a nation. The struggle in Champaran was the first real application of Satyagraha on Indian soil. It was the moment when the fear that had gripped the Indian masses for centuries began to dissolve. Think about it—what is more important than the courage to stand up against an injustice that seems insurmountable? In today's world, where we often face systemic inequalities, social pressures, or even small-scale bullying, the lessons of Champaran teach us about self-reliance and the power of organized, non-violent resistance. This chapter isn't just about the plight of sharecroppers; it is about the transition of India from a collection of oppressed individuals to a unified force of citizens. We will see how a single, persistent man named Rajkumar Shukla acted as the spark, and how Mahatma Gandhi turned that spark into a flame that changed the course of history. As we progress through this series, I want you to look beyond the indigo plants and the British officials. Look for the human emotions—the desperation of the peasants, the stubbornness of the landlords, and the calm, calculated determination of Gandhi. We will analyze how Gandhi didn't just fight for a refund of money, but for the dignity of the human spirit. This introduction sets the stage for a journey that moves from individual suffering to collective empowerment. So, as we move into our next segment where we explore the harsh realities of the sharecropping system, keep this question in mind: How can we use the principles of truth and self-reliance to tackle the challenges of our own time? Let us begin our deep dive into the heart of Champaran.","Welcome back. In our previous segment, we understood why Gandhi's struggle in Champaran remains a cornerstone of Indian history. Now, to truly grasp the gravity of his actions, we must step back in time and understand the suffocating economic reality that the peasants of Champaran were living under. This wasn't just a simple case of unfairness; it was a deeply entrenched, systemic form of exploitation known as the Sharecropping System. Let's break down exactly how this worked. At the heart of this system was the Indigo plant. During the British Raj, Indigo was a highly valuable cash crop in Europe, used extensively as a blue dye for the textile industry. Because of this high demand, the British planters—who were mostly European landlords—controlled the fertile lands of Champaran. Now, here is the crux of the injustice. Under a long-standing arrangement, the Indian peasants were compelled to grow Indigo on a specific portion of their holdings. Specifically, they had to plant Indigo on fifteen percent of their total land area. This was not a choice; it was a mandatory contractual obligation. Once the Indigo crop was harvested, the entire yield had to be surrendered to the British landlords as a form of rent. Imagine being a farmer, working your own soil, only to be forced to grow a crop that you cannot eat, solely to pay for the land you already own. This was the first layer of oppression. But the exploitation didn't end with the harvest. The British planters were not just demanding crops; they were demanding money. As the years passed, the market for natural Indigo began to decline because of the invention of synthetic dyes in Germany. This made natural Indigo less profitable for the British. However, instead of releasing the peasants from their unfair contracts, the landlords saw an opportunity for even greater greed. They approached the peasants with a new, even more sinister proposal. They told the farmers that if they wanted to be released from the mandatory fifteen percent Indigo cultivation agreement, they would have to pay a heavy compensation fee. This was essentially a bribe disguised as a legal settlement. The landlords used their political and economic power to coerce the poor, illiterate peasants into signing agreements they didn't fully understand. Many peasants, desperate to escape the grueling cycle of Indigo farming, agreed to pay these 'compensation' amounts. But the exploitation was a moving target. Once the peasants paid the initial compensation, the landlords would often find new ways to extract more money through various taxes and arbitrary fines. This created a cycle of permanent debt. The peasants were trapped in a loop of poverty, working land that was technically theirs, but under terms that made them nothing more than serfs on their own soil. This system was designed to drain the wealth of the Indian peasantry and funnel it directly into the pockets of the British planters. It was a legalised form of robbery. When we look at Champaran through this lens, we see that Gandhi wasn't just fighting a legal battle; he was fighting against a massive, organized economic machine designed to crush the spirit and the livelihood of the Indian farmer. Understanding this systemic cruelty is essential because it explains why the peasants were so ready to follow a leader like Gandhi. They weren't just looking for a lawyer; they were looking for liberation from a system that had systematically stripped them of their dignity and their sustenance. In our next segment, we will see how this atmosphere of despair set the stage for the arrival of a man who would change everything: Rajkumar Shukla.","Welcome back. In our previous segment, we explored the crushing weight of the sharecropping system that held the peasants of Champaran in a state of perpetual debt and fear. Now, we come to the turning point of the entire narrative. Every great movement needs a spark, and in the story of Champaran, that spark was a man named Rajkumar Shukla. Now, don't mistake Shukla for a powerful leader or a wealthy landlord. Louis Fischer describes him as 'resolute.' This is the most important word to remember for your exams. Shukla was a poor, illiterate sharecropper, but he possessed a quality that even the mighty British Empire could not withstand: persistence. He traveled to the annual convention of the Indian National Congress in Lucknow. At this time, Mahatma Gandhi was a prominent figure, though not yet the undisputed leader of the nation. Shukla had a singular, burning purpose: he wanted Gandhi to visit Champaran and witness the injustice of the indigo system firsthand. But getting Gandhi's attention was not easy. Gandhi was a man of many commitments, traveling constantly across the country. Shukla did not just ask once and walk away. He followed Gandhi. He followed him from Lucknow to Cawnpore, then to Ahmedabad, and even to Calcutta. Imagine the sheer willpower required for a poor peasant to shadow a national leader across the vast geography of India, all while having no money and no official status. This is what we call a 'catalyst.' In chemistry, a catalyst is a substance that speeds up a reaction without being consumed itself. Shukla was the catalyst who accelerated the movement for Champaran's freedom. During this pursuit, Shukla's character is revealed. He wasn't just a beggar for help; he was a man on a mission. He stayed with Gandhi, waiting patiently, showing a level of determination that eventually wore down Gandhi's defenses. Gandhi realized that this man was not a casual visitor or a political opportunist. He saw the desperation in Shukla's eyes and the sincerity in his persistence. Eventually, Gandhi realized that if he did not go to Champaran, this man would continue to follow him, and more importantly, the plight of the peasants would remain unheard. This encounter is crucial because it shifts the story from a systemic problem to a personal mission. It shows us that history is not just made by great leaders in high offices, but often by the quiet, stubborn determination of ordinary individuals. As Gandhi finally agreed to go, the stage was set for a confrontation that would change the course of the Indian independence movement. We see here that leadership is a partnership: Shukla provided the direction and the urgency, while Gandhi provided the strategy and the national platform. Without Shukla's refusal to take 'no' for an answer, the Champaran Satyagraha might never have happened. As we move into the next part, we will look at the specific legal and social hurdles that awaited Gandhi once he stepped onto the soil of Champaran.","Welcome back. Now that we understand how Rajkumar Shukla brought Gandhi to Bihar, we must look closely at the world Gandhi stepped into. To understand the significance of the Champaran movement, we cannot just look at the farmers; we must look at the entire machinery of power that governed them in 1917. This was a landscape defined by two things: a rigid, exploitative legal structure and a deeply fractured social hierarchy. Let us first examine the legal landscape. In 1917, Champaran was not governed by the rule of law in the sense of justice; it was governed by the rule of contract. The entire economy of the district was built upon the 'tinkathia' system. Under this legal arrangement, the British planters forced the peasants to grow indigo on fifteen percent of their landholdings and, more importantly, they forced them to surrender the entire indigo harvest as rent. This wasn't just a bad deal; it was a legal trap. The contracts were written in a way that left the peasants with no recourse. If a peasant wanted to stop growing indigo, he couldn't. If he wanted to change his crop to something more profitable, like rice, the law stood in his way. The British planters held the legal authority to dictate what was grown on Indian soil. This created a system of 'legalized extortion.' The courts and the local administration were not neutral observers; they were often extensions of the planters' interests. When we talk about the legal landscape, we are talking about a system where the law was used as a weapon of the powerful against the powerless. Now, let us shift our gaze to the social landscape. This is equally crucial for your exam answers. The society of Champaran was divided into three distinct layers. At the top were the British planters, who held absolute economic and social dominance. They lived in a world of privilege, completely detached from the suffering of the locals. Below them was a small class of Indian intermediaries—local landlords or officials who often collaborated with the British to maintain their own status. And at the very bottom, forming the vast majority of the population, were the peasants. But these peasants were not just poor; they were socially marginalized. They lived in a state of constant fear. This fear was not just of physical violence, but of social and economic ruin. The social fabric was characterized by a profound sense of helplessness. The peasants had been conditioned to believe that the British authorities were invincible and that their plight was an unchangeable destiny. There was a complete lack of social cohesion among the oppressed. They were isolated, scattered across villages, and lacked the organizational strength to challenge the status quo. This is why Gandhi’s arrival was so revolutionary. He wasn't just fighting a legal battle; he was walking into a social vacuum where the people had lost their sense of agency. He entered a landscape where the law was an instrument of oppression and the social structure was designed to keep the masses in a state of perpetual submission. As we move forward, remember this: Gandhi’s struggle was not just about indigo or money; it was about dismantling this specific landscape of legal tyranny and social despair.","Now that we understand the desperate situation of the peasants and how Rajkumar Shukla convinced Gandhi to visit Champaran, let us step into the actual movement. This part of the chapter is crucial because it shows Gandhi not just as a leader, but as a meticulous investigator and a man of action. After leaving Lucknow, Gandhi did not head straight to the villages of Champaran. Instead, he first went to Muzaffarpur. Why Muzaffarpur? Because it was the district headquarters and a major center of communication and legal activity. Gandhi needed to gather more information before making a direct confrontation with the British. Here, he stayed with Professor Malkani, a man who was a sympathizer of the cause. This detail is important because it shows that the movement was already finding local support among the educated class. While in Muzaffarpur, Gandhi did something very specific: he interviewed lawyers who were handling the cases of the indigo sharecroppers. He wanted to understand the legal nuances of the contracts the peasants were forced to sign. However, Gandhi did something quite unexpected here. He scolded the lawyers. He told them that taking high fees from these poor, crushed peasants was not the right way to serve the cause. He believed that if the lawyers were only interested in money, they were not truly helping the struggle for justice. This teaches us a key lesson about Gandhi's philosophy: true service is about sacrifice, not professional gain. Once he had gathered enough intellectual ammunition, Gandhi proceeded to Motihari, which was the headquarters of the Champaran district. This is where the real tension begins. As soon as Gandhi arrived, the British authorities began to exert pressure. They didn't want him poking around in their exploitative system. The officials ordered him to leave the district immediately. They issued a formal notice demanding his departure. But Gandhi did not simply obey, nor did he rebel with violence. He chose a third path: he obeyed the order to leave, but he wrote on the notice that he would disobey it if he were compelled to do so. This is the seed of Civil Disobedience. He was essentially saying, 'I respect the law, but I respect the truth and the suffering of my people more.' When he was summoned to court, the tension in Motihari reached a breaking point. Thousands of peasants, drawn by the news of Gandhi's presence, began to gather around the courthouse. This was a spontaneous, massive mobilization. The British officials were completely baffled. They had expected a single man to be easily intimidated, but instead, they were facing a sea of humanity. The officials were unable to control the crowd, and they had to seek help from higher authorities. This moment is a turning point in Indian history. It was the first time the British realized that their power was not absolute if the people stood together. The sheer number of peasants in Motihari acted as a shield for Gandhi. It showed that the struggle was no longer just about one man or one lawyer; it had become a mass movement. As we move forward, keep in mind how Gandhi's methodical approach—from interviewing lawyers in Muzaffarpur to the mass gathering in Motihari—transformed a local grievance into a national phenomenon.","Now that we have followed Gandhi's journey from Muzaffarpur to the heart of Motihari, we arrive at the most dramatic turning point of the chapter. This is where the theoretical struggle for justice meets the hard reality of colonial power. Imagine the scene: Gandhi has just arrived in Motihari, and the local authorities are not welcoming him with open arms. Instead, they are treating him as a suspicious outsider. The British officials, acting under the weight of imperial pride, issue him a formal order to leave the Champaran district immediately. They aren't just asking him to go; they are commanding him to depart under the threat of legal consequences. But here, we see the first major clash of ideologies. To the British, authority was derived from written laws and the power to command. To Gandhi, authority was derived from the voice of conscience and the truth of the people's suffering. When Gandhi receives this official notice, he does not react with anger or violence. He does not argue or try to negotiate his way out of the order. Instead, he does something much more radical: he obeys the order to leave, but he does so with a clear statement of intent. He writes to the officials that he is willing to obey the law, but he cannot in good conscience obey an order that forces him to ignore the plight of the peasants. This is the birth of what we call Civil Disobedience. The officials, perhaps thinking they have won, expect him to disappear. But instead, Gandhi appears in court. This is where the tension reaches a breaking point. The courtroom in Motihari becomes a theater of political struggle. The prosecutor demands a punishment for Gandhi's defiance of the law. The judge is caught in a dilemma: he must uphold the British law, but he is faced with a man who is not a criminal in the traditional sense, but a person acting on moral necessity. As the trial progresses, something extraordinary happens. The crowd of peasants begins to gather around the courthouse. This isn't just a small group of protesters; it is a massive, spontaneous mobilization of the oppressed. The British officials are paralyzed. They realize that their power relies on the fear of the people, but that fear has vanished. They are faced with a 'conflict of authority' where the legal authority of the British state is being challenged by the moral authority of a single man and the collective will of thousands. The officials are so overwhelmed by the sheer number of peasants that they are unable to control the situation. They actually have to ask Gandhi for help to regulate the crowd! Think about the irony here: the very man they summoned to arrest is now the only person capable of maintaining order. This moment proves that the British could control the law, but they could no longer control the people. This clash wasn't just about a piece of paper or a court order; it was a fundamental struggle between the 'rule of law' used as a tool of oppression and the 'rule of justice' used as a tool of liberation. This tension sets the stage for the massive investigation that follows.","Welcome back. In our previous segment, we saw Gandhi arrive in Motihari and face the direct confrontation with British authority. Now, we enter the most dramatic turning point of the Champaran episode: the birth of Civil Disobedience in India. When Gandhi was summoned to appear in court, he did not act like a common criminal. He did not flee, nor did he hide. Instead, he chose to obey the summons, but with a profound twist. He stated clearly that he was willing to obey the law, but he could not obey an order that forced him to act against his conscience. This is the very essence of Civil Disobedience. It is the refusal to obey an unjust law, while simultaneously accepting the legal consequences of that refusal. As the trial approached, something extraordinary happened. The British officials, who were used to absolute control, found themselves facing an unexpected force: the people. As news of Gandhi's legal battle spread, thousands of peasants from the surrounding villages began to gather around the courthouse in Motihari. This was not a planned political rally; it was a spontaneous, massive mobilization. The sheer volume of the crowd was overwhelming. The British officials were caught completely off guard. They had expected to deal with one man, Gandhi, but they were suddenly faced with a sea of humanity. This mass mobilization served a dual purpose. First, it acted as a shield for Gandhi. The officials realized that if they tried to use force against Gandhi in the middle of such a massive crowd, it could trigger a full-scale riot or a revolution. Second, it broke the myth of British invincibility. For the first time, the peasants realized that their collective presence could intimidate the mighty colonial administration. The officials were forced to seek Gandhi's help to regulate the crowd. Think about the irony here! The very man they were trying to prosecute was now the one they were asking to maintain order. This moment shifted the power dynamic entirely. The legal battle was no longer just about a single man's presence in court; it had become a struggle between the authority of the state and the conscience of the people. This was the first time in the Indian independence movement that the principle of non-violent resistance was tested on such a large, practical scale. The officials were paralyzed by the scale of the mobilization. They realized that the traditional methods of coercion and fear were no longer working against a population that had found its voice through Gandhi's leadership. This wasn't just a legal skirmish; it was the moment the Champaran movement transitioned from a local grievance to a national symbol of defiance.","Now that we have seen how Gandhi challenged the legal authority of the British officials, we move into the most critical phase of the Champaran movement: the systematic investigation. This wasn't just a political protest; it was a massive, data-driven legal battle. Gandhi realized that to defeat the British in a court of law, he couldn't rely on mere emotions or slogans. He needed hard, undeniable facts. This brings us to the heart of the chapter: the role of the peasants. Gandhi began a massive inquiry, and for this, he needed the cooperation of the local people. He traveled from village to village, collecting thousands of testimonies. Think about the scale of this task. He wasn't just talking to a few leaders; he was talking to the common sharecroppers, the men who had been oppressed for generations. He interviewed hundreds of peasants, and they, in turn, provided him with the names of the landlords, the specific amounts of rent they had been forced to pay, and the details of the illegal compensation they had been coerced into giving. This is a crucial point for your exams: the peasants were not just victims; they became active participants and witnesses in their own liberation. They provided the raw evidence that formed the backbone of Gandhi's case. The sheer volume of information was overwhelming. Gandhi and his team recorded statements from thousands of peasants. This wasn't just a collection of complaints; it was a documented history of exploitation. The British officials, who were used to seeing the peasants as a silent, submissive mass, were suddenly faced with a mountain of organized, written evidence. This changed the entire dynamic of the conflict. It moved from a clash of personalities between Gandhi and the officials to a confrontation between documented truth and colonial injustice. As Gandhi gathered these testimonies, he was also doing something much deeper than legal work. He was building the confidence of the peasants. By listening to them, by validating their suffering, and by treating their words as legal evidence, he was teaching them the power of truth and the importance of organized resistance. This phase of the movement proves that Gandhi's method was always rooted in 'Satyagraha'—the force of truth. He didn't want to just win a legal battle; he wanted to expose the truth of the sharecropping system to the entire world. The evidence gathered during this investigation was so overwhelming that it eventually forced the British government to appoint an official commission of inquiry. This commission could not ignore the massive amount of testimony provided by the peasants. This part of the story highlights a key theme: the transition from individual grievance to collective, organized action. The peasants' willingness to speak up and stand by their words was the turning point that turned a local dispute into a national movement. When you write your answers, remember that the investigation was the bridge between the initial protest and the final settlement. It was the process that turned anger into evidence and victims into witnesses.","Welcome back. In our previous segment, we saw how Gandhi meticulously gathered evidence to prove the injustice of the indigo plantation system. Now, we reach the turning point of the Champaran movement: the negotiation and the final settlement. This is a crucial moment because it demonstrates Gandhi's unique approach to conflict resolution. After the investigation, the British planters were caught in a corner. They could no longer deny the illegal extortion of money from the peasants. A commission was appointed, and the question was no longer whether the peasants had been cheated, but how much of their money should be returned. The planters, who had previously been adamant, suddenly offered a twenty-five percent refund. To many, this might have seemed like a poor deal. After all, the peasants were owed much more. However, Gandhi accepted this twenty-five percent settlement. This is a point that students often struggle to explain in exams. Why would a leader fight so hard only to accept a fraction of the money? The reason is deeply psychological and political. Gandhi explained that the amount of the refund was less important than the fact that the landlords had been forced to surrender part of their prestige. For the first time, the mighty British planters had been compelled to yield to a demand from the peasants. This broke the myth of their invincibility. It was a moral victory that outweighed the financial gain. By accepting this, Gandhi shifted the focus from mere monetary compensation to the restoration of human dignity. But let us look closer at the economic impact. While the immediate cash inflow was limited, the settlement had a massive ripple effect. It effectively ended the long-standing system of coercive sharecropping in Champaran. The planters began to realize that they could no longer exploit the peasantry with impunity. Furthermore, the settlement provided the peasants with a sense of agency. They realized that they had rights and that those rights could be defended through organized, non-violent struggle. This part of the chapter also highlights Gandhi's pragmatism. He wasn't just a dreamer; he was a strategist who understood that a partial victory achieved through legal and social pressure is often more sustainable than a total victory that leads to endless litigation or violence. This settlement laid the groundwork for the social and economic upliftment of the Champaran region. It wasn't just about the money; it was about changing the power dynamic between the ruler and the ruled. As we move forward, keep this distinction in mind: the twenty-five percent was a financial compromise, but a total political triumph. This distinction is exactly what examiners look for in long-answer questions regarding Gandhi's leadership style in this chapter.","Welcome back. Having understood the legal and economic victories in Champaran, we must now look at the human element. Why did this movement succeed? It wasn't just about laws; it was about the people. Today, we analyze the leadership traits of the two central figures: Rajkumar Shukla and Mahatma Gandhi. Let us start with Rajkumar Shukla. Often, students mistake Shukla for a mere side character, but he was the indispensable catalyst. His primary leadership trait was tenacity. Think about it. He was an illiterate, poor sharecropper, yet he followed Gandhi from Lucknow to Cawnpore, then to Ahmedabad, and finally to Calcutta. He didn't just ask once; he persisted until Gandhi agreed to visit Champaran. This is what we call 'unwavering determination.' Shukla possessed a clear vision of the problem and the courage to seek out the right person to solve it. He wasn't a leader of a mass movement, but he was a leader of a cause. Without his dogged persistence, the Champaran movement might never have been ignited. Now, let us turn to Mahatma Gandhi. Gandhi's leadership in Champaran is a masterclass in what we call 'transformational leadership.' First, let's look at his 'Empathetic Approach.' Gandhi didn't just arrive as a lawyer; he arrived as a listener. He spent immense time gathering facts directly from the peasants. He understood their fear, their poverty, and their sense of injustice. He didn't dictate solutions; he empowered them to find their own voice. Second, we see his 'Strategic Pragmatism.' When the British officials ordered him to leave, he didn't just flee or start a violent riot. He chose Civil Disobedience. He accepted the legal consequences of his actions to prove a moral point. This was a calculated, non-violent confrontation that paralyzed the British administration's authority without shedding blood. Third, Gandhi exhibited 'Fearlessness and Moral Integrity.' He stood his ground against the Lieutenant Governor and the British judicial system. He showed the peasants that the British law was not an invincible force, but something that could be challenged through truth and unity. Finally, his leadership was 'Inclusive.' He didn't work in isolation. He involved lawyers like Rajendra Prasad and local peasants in the investigation process. He turned a legal dispute into a mass movement by making the peasants stakeholders in their own liberation. To summarize the comparison: if Shukla provided the 'spark' through his persistence, Gandhi provided the 'flame' through his strategic non-violence and moral authority. Shukla showed us that even an individual with no resources can initiate change, while Gandhi showed us how to turn that individual spark into a systemic revolution. As you prepare for your exams, remember that the success of Champaran was a synergy between the persistence of the oppressed and the strategic genius of the leader.","Welcome back. Now that we have traversed the entire journey of the Champaran movement, it is time to pause and look at where most students lose marks in their examinations. When we study 'Indigo', it is easy to fall into certain traps of interpretation. Let us address the first major pitfall: viewing this chapter merely as a story of political rebellion. If you write that Gandhi was fighting to overthrow the British government in Champaran, you are technically incorrect. The nuance here is that Gandhi's struggle was initially about legal rights and economic justice, not political independence. He was fighting for the removal of an unjust system, specifically the landlord system and the exploitative sharecropping contracts. This distinction is vital for high-scoring answers. The second pitfall involves the character of Rajkumar Shukla. Many students describe him simply as a 'persistent peasant.' While true, this is an incomplete analysis. You must describe him as the 'catalyst.' Without his dogged determination, the movement might never have gained national momentum. He represents the agency of the common man. Third, let us look at the theme of Self-Reliance. A common mistake is to think Gandhi's victory was solely due to his legal brilliance or the refund of money. While the twenty-five percent refund was a victory, the real victory was the psychological shift in the peasants. Gandhi refused the help of Charles Freer Andrews because he wanted the Indians to learn to rely on themselves. If you miss this connection between the economic settlement and the concept of 'Atma-Nirbharta' or self-reliance, your thematic analysis will be shallow. Fourth, students often misinterpret the 'Civil Disobedience' aspect. They think it was a violent protest. You must clarify that this was a non-violent, legalistic confrontation. Gandhi was not breaking laws to cause chaos; he was breaking an unjust order to uphold a higher moral law. This is the essence of Satyagraha. Finally, be careful with the historical nuance of the settlement. Do not focus only on the amount of money. The percentage—twenty-five percent—was less important to Gandhi than the fact that the landlords had been forced to surrender part of their prestige. The loss of prestige was a greater blow to the British authority than the loss of the money itself. Keep these nuances in mind to elevate your answers from basic to exceptional.","Welcome to the final segment of our series on Louis Fischer's 'Indigo'. We have journeyed through the dusty lanes of Champaran, witnessed the tenacity of Rajkumar Shukla, and seen the triumph of Satyagraha. Now, it is time to transition from understanding the story to mastering the examination. Let us begin with the Exam Masterclass. When you face long-answer questions, do not just recount the plot. The examiners are looking for analytical depth. For instance, if a question asks about the significance of the Champaran movement, do not simply say it was about indigo. Instead, use the 'Cause-Action-Impact' formula. State the cause: the exploitative sharecropping system. State the action: Gandhi's non-violent civil disobedience and legal mobilization. State the impact: the breaking of fear and the beginning of self-reliance. This structure ensures you hit all the marking criteria. Next, let's tackle Reference to Context, or RTCs. In RTC questions, you are given a snippet of text and asked to identify the speaker or the context. A common pitfall here is being too vague. If the passage describes a 'resolute' person, don't just say 'a peasant'. Be specific: 'Rajkumar Shukla, the illiterate but determined peasant who compelled Gandhi to visit Champaran.' Precision earns marks. Now, let's look at the most critical themes for your RTCs and short answers. First, the theme of Self-Reliance. Remember, Gandhi refused help from Charles Freer Andrews because he wanted Indians to rely on themselves. This is a recurring theme in his leadership. Second, the theme of Fearlessness. The victory in Champaran was not just economic; it was psychological. The peasants learned to face the British without terror. Third, the concept of Satyagraha. It is not passive resistance; it is the active pursuit of truth through non-violence. Let's move to our Full Chapter Recap to consolidate everything. We started with the plight of the sharecroppers under the long-term contract system. We saw Rajkumar Shukla, the catalyst, whose persistence brought Gandhi to Bihar. We followed Gandhi's strategic move to Muzaffarpur to gather facts, followed by his confrontation with the British authorities in Motihari. We witnessed the power of spontaneous mass mobilization when thousands of peasants gathered at the courthouse, making the British officials feel powerless. We saw the meticulous investigation where evidence was collected from thousands of peasants, leading to the official inquiry. Finally, we saw the settlement where the landlords agreed to a twenty-five percent refund, a victory not for the amount, but for the principle of acknowledging the peasants' rights. As you prepare, keep these three pillars in mind: the historical context of British exploitation, the character traits of Gandhi and Shukla, and the socio-political shift from fear to self-reliance. Use keywords like 'sharecropping', 'civil disobedience', 'autonomy', and 'self-reliance' in your answers to signal to the examiner that you have a deep grasp of the text. Practice writing your answers under timed conditions to ensure you can articulate these complex ideas clearly. You have studied the history; now, master the art of expressing it. Good luck with your exams!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-english-05-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

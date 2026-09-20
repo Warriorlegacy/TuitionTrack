@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Water Resources, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c10-geography-03-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Global Water Crisis and Why Water Resources Matter -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Global Water Crisis and Why Water Resources Matter</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Water covers 71% of Earth's surface, but most is saline ocean water.</div>
+              <div id="qx0-p1" class="qe-bullet">• Only about 3% of Earth's water is freshwater.</div>
+              <div id="qx0-p2" class="qe-bullet">• Most freshwater is trapped in glaciers and ice caps.</div>
+              <div id="qx0-p3" class="qe-bullet">• Growing population and industrialization are driving water demand.</div>
+              <div id="qx0-p4" class="qe-bullet">• Water resources are critical for food security and socio-economic stability.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":459035956,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic zoom-out starting from a single water droplet, expanding to a human cell, then a person drinking, and finally transitioning to a high-definition view of Earth showing the vast blue oceans versus the tiny, shrinking patches of freshwater.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D cinematic zoom-out starting from a single water droplet, expanding to a human cell, then a person drinking, and finally transitioning to a high-definition view of Earth showing the vast blue oceans versus the tiny, shrinking patches of freshwater.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): The Hydrological Cycle and Availability of Water on Earth -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">The Hydrological Cycle and Availability of Water on Earth</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• The Hydrological Cycle: A continuous movement of water through evaporation and precipitation.</div>
+              <div id="qx1-p1" class="qe-bullet">• Evapotranspiration: The combined process of evaporation from water and transpiration from plants.</div>
+              <div id="qx1-p2" class="qe-bullet">• Precipitation: Water falling to Earth as rain, snow, sleet, or hail.</div>
+              <div id="qx1-p3" class="qe-bullet">• Total Water Distribution: 71% of Earth is water, but most is saline ocean water.</div>
+              <div id="qx1-p4" class="qe-bullet">• Freshwater Availability: Only about 2.5% is fresh, and less than 1% is easily accessible.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":982549876,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cross-section of Earth showing the sun heating the ocean, vapor rising to form clouds, rain falling over mountains, and water flowing through rivers into underground aquifers.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D cross-section of Earth showing the sun heating the ocean, vapor rising to form clouds, rain falling over mountains, and water flowing through rivers into underground aquifers.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Water Scarcity: Causes, Quantitative vs. Qualitative Scarcity -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Water Scarcity: Causes, Quantitative vs. Qualitative Scarcity</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Water Scarcity: Not just a lack of water, but a crisis of availability and quality.</div>
+              <div id="qx2-p1" class="qe-bullet">• Quantitative Scarcity: Shortage in the actual volume of water available.</div>
+              <div id="qx2-p2" class="qe-bullet">• Causes of Quantitative Scarcity: Population growth, intensive farming, and urbanization.</div>
+              <div id="qx2-p3" class="qe-bullet">• Qualitative Scarcity: Water is present but unfit for use due to contamination.</div>
+              <div id="qx2-p4" class="qe-bullet">• Causes of Qualitative Scarcity: Industrial effluents, sewage, and chemical runoff.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3610531308,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows a drying riverbed (Quantitative); Right side shows a clear river turning murky and dark with chemical sludge (Qualitative).</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen 3D animation: Left side shows a drying riverbed (Quantitative); Right side shows a clear river turning murky and dark with chemical sludge (Qualitative).</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Multi-Purpose River Projects: Benefits and the Concept of Dams -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Multi-Purpose River Projects: Benefits and the Concept of Dams</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Definition of a Dam: A barrier built across a river to create a reservoir.</div>
+              <div id="qx3-p1" class="qe-bullet">• Multi-Purpose Projects: Systems designed for multiple simultaneous uses.</div>
+              <div id="qx3-p2" class="qe-bullet">• Jawaharlal Nehru's Vision: Dams as the 'Temples of Modern India'.</div>
+              <div id="qx3-p3" class="qe-bullet">• Key Benefits: Irrigation, Hydroelectricity, and Flood Control.</div>
+              <div id="qx3-p4" class="qe-bullet">• Additional Uses: Domestic supply, Navigation, Fisheries, and Tourism.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1426013387,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cross-section animation showing a river being blocked by a dam, water rising into a reservoir, and water being diverted into irrigation canals and hydroelectric turbines.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D cross-section animation showing a river being blocked by a dam, water rising into a reservoir, and water being diverted into irrigation canals and hydroelectric turbines.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): The Social and Environmental Impact of Large Dams and Projects -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">The Social and Environmental Impact of Large Dams and Projects</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Submergence of vast forest areas and loss of biodiversity</div>
+              <div id="qx4-p1" class="qe-bullet">• Disruption of natural river flow and nutrient-rich sediment transport</div>
+              <div id="qx4-p2" class="qe-bullet">• Impact on aquatic life and migratory patterns of fish</div>
+              <div id="qx4-p3" class="qe-bullet">• Large-scale displacement of local and tribal communities</div>
+              <div id="qx4-p4" class="qe-bullet">• Social conflicts and movements like Narmada Bachao Andolan</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":3429718481,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a lush forest being slowly submerged by a rising reservoir on one side, and a map of downstream erosion and silt depletion on the other.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A split-screen 3D animation showing a lush forest being slowly submerged by a rising reservoir on one side, and a map of downstream erosion and silt depletion on the other.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Rainwater Harvesting: Traditional Methods and Regional Variations -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Rainwater Harvesting: Traditional Methods and Regional Variations</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Tankas in Rajasthan: Underground storage for pure 'Palar Pani'</div>
+              <div id="qx5-p1" class="qe-bullet">• Khadins and Johads: Earthen embankments for soil moisture and recharge</div>
+              <div id="qx5-p2" class="qe-bullet">• Guls and Kuls: Diversion channels used in Himalayan hilly terrains</div>
+              <div id="qx5-p3" class="qe-bullet">• Eris: Traditional tank irrigation systems in South India</div>
+              <div id="qx5-p4" class="qe-bullet">• Decentralized approach: Low-cost, community-led, and eco-friendly</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":3132860928,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A 3D map of India transitioning into localized split-screen animations showing a Rajasthani Tanka, a Himalayan Gul, and a South Indian Eri.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D map of India transitioning into localized split-screen animations showing a Rajasthani Tanka, a Himalayan Gul, and a South Indian Eri.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Rooftop Rainwater Harvesting: Techniques and Case Studies -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Rooftop Rainwater Harvesting: Techniques and Case Studies</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Catchment: The surface (roof) that collects rainfall.</div>
+              <div id="qx6-p1" class="qe-bullet">• Filtration: Using sand and gravel to remove impurities.</div>
+              <div id="qx6-p2" class="qe-bullet">• Storage vs. Recharge: Storing in tanks or replenishing groundwater.</div>
+              <div id="qx6-p3" class="qe-bullet">• Rajasthan Case Study: Traditional underground Tankas for drinking water.</div>
+              <div id="qx6-p4" class="qe-bullet">• Tamil Nadu Case Study: Mandatory rooftop harvesting for all buildings.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":696097280,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cross-section animation of a house showing rain falling on a roof, flowing through pipes, passing through a sand-gravel filter, and entering an underground storage tank.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D cross-section animation of a house showing rain falling on a roof, flowing through pipes, passing through a sand-gravel filter, and entering an underground storage tank.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Bamboo Drip Irrigation and Other Traditional Water Management Systems -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Bamboo Drip Irrigation and Other Traditional Water Management Systems</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Bamboo Drip Irrigation: A precision system from Meghalaya using bamboo pipes.</div>
+              <div id="qx7-p1" class="qe-bullet">• Water delivery: Uses gravity to transport water drop-by-drop to plant roots.</div>
+              <div id="qx7-p2" class="qe-bullet">• Rajasthan's Khadins and Johads: Earthen structures to capture runoff and recharge groundwater.</div>
+              <div id="qx7-p3" class="qe-bullet">• Stepwells (Baolis/Vavs): Deep, engineered structures for reliable water access.</div>
+              <div id="qx7-p4" class="qe-bullet">• Benefits: Low cost, eco-friendly, and promotes community-led conservation.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":965360594,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing a bamboo pipe network in a Meghalayan hillside on one side, and a Rajasthani Khadin field capturing rainwater on the other.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D split-screen animation showing a bamboo pipe network in a Meghalayan hillside on one side, and a Rajasthani Khadin field capturing rainwater on the other.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Comparison: Multi-Purpose Projects vs. Rainwater Harvesting -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Comparison: Multi-Purpose Projects vs. Rainwater Harvesting</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Scale: Macro-level (Dams) vs. Micro-level (Rainwater Harvesting)</div>
+              <div id="qx8-p1" class="qe-bullet">• Management: Centralized State Control vs. Decentralized Local Control</div>
+              <div id="qx8-p2" class="qe-bullet">• Impact: Large-scale displacement vs. Eco-friendly groundwater recharge</div>
+              <div id="qx8-p3" class="qe-bullet">• Function: Industrial/National needs vs. Domestic/Local needs</div>
+              <div id="qx8-p4" class="qe-bullet">• Strategy: Integrated approach is essential for water security</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4155707838,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows a massive dam with turbines and vast fields; Right side shows a village with rooftop pipes leading to a clean underground storage tank.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation: Left side shows a massive dam with turbines and vast fields; Right side shows a village with rooftop pipes leading to a clean underground storage tank.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Map Work: Major Dams and River Systems in India -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Map Work: Major Dams and River Systems in India</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Salal Dam: Located on the Chenab River, Jammu and Kashmir</div>
+              <div id="qx9-p1" class="qe-bullet">• Bhakra Nangal: Situated on the Sutlej River in the North</div>
+              <div id="qx9-p2" class="qe-bullet">• Hirakud Dam: Built on the Mahanadi River in Odisha</div>
+              <div id="qx9-p3" class="qe-bullet">• Sardar Sarovar: Located on the Narmada River in Gujarat</div>
+              <div id="qx9-p4" class="qe-bullet">• Nagarjuna Sagar &amp; Tungabhadra: Krishna and Kaveri river systems</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":523300569,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A high-definition 3D relief map of India where rivers glow in blue and dam icons pop up with labels as they are mentioned.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A high-definition 3D relief map of India where rivers glow in blue and dam icons pop up with labels as they are mentioned.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Mistakes, Critical Thinking, and Data Interpretation -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Mistakes, Critical Thinking, and Data Interpretation</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Distinguish between Quantitative and Qualitative scarcity</div>
+              <div id="qx10-p1" class="qe-bullet">• Provide balanced arguments: Benefits vs. Social/Environmental costs</div>
+              <div id="qx10-p2" class="qe-bullet">• Link urban problems to specific harvesting solutions</div>
+              <div id="qx10-p3" class="qe-bullet">• Analyze trends in graphs: Look for patterns and correlations</div>
+              <div id="qx10-p4" class="qe-bullet">• Use precise geographical terminology for higher marks</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1313563931,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a polluted river (qualitative scarcity) next to a dried-up lake (quantitative scarcity), transitioning into a data dashboard with rising bar graphs.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a polluted river (qualitative scarcity) next to a dried-up lake (quantitative scarcity), transitioning into a data dashboard with rising bar graphs.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Question Patterns, Answer Writing, and Full Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Question Patterns, Answer Writing, and Full Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Mastering Objective, Short, and Long Answer formats</div>
+              <div id="qx11-p1" class="qe-bullet">• Structure answers using bullet points and sub-headings</div>
+              <div id="qx11-p2" class="qe-bullet">• Map Work: Practice locating major Indian dams</div>
+              <div id="qx11-p3" class="qe-bullet">• Quantitative vs. Qualitative scarcity: Key distinction</div>
+              <div id="qx11-p4" class="qe-bullet">• Critical evaluation: Balancing dam benefits and costs</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"grid","seed":1013846177,"hue":190}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a well-structured exam paper on one side and a rotating 3D map of India highlighting major dams on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation showing a well-structured exam paper on one side and a rotating 3D map of India highlighting major dams on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Water Resources today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Global Water Crisis and Why Water Resources Matter <small>0:00</small></button>
+          <button type="button" data-seek="300">2. The Hydrological Cycle and Availability of Water on Earth <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Water Scarcity: Causes, Quantitative vs. Qualitative Scarcity <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Multi-Purpose River Projects: Benefits and the Concept of Dams <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. The Social and Environmental Impact of Large Dams and Projects <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Rainwater Harvesting: Traditional Methods and Regional Variations <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Rooftop Rainwater Harvesting: Techniques and Case Studies <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Bamboo Drip Irrigation and Other Traditional Water Management Systems <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Comparison: Multi-Purpose Projects vs. Rainwater Harvesting <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Map Work: Major Dams and River Systems in India <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Mistakes, Critical Thinking, and Data Interpretation <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Question Patterns, Answer Writing, and Full Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey through the vital world of Water Resources. Before we dive into the technicalities of dams or harvesting techniques, we need to ask a fundamental question: Why are we even studying this? Look around you. Water is the essence of life. Every living organism, from the smallest bacteria to the largest blue whale, and certainly every human being, depends on water to survive. But here is the paradox that defines our modern era. We live on a planet that is often called the 'Blue Planet' because nearly seventy-one percent of its surface is covered by water. It looks like we have an endless supply, doesn't it? But if you look closer, the reality is quite different. Out of all that water, ninety-seven percent is salt water found in our oceans. This water is essential for regulating Earth's temperature, but it is not drinkable for humans or useful for our crops. That leaves us with only about three percent of freshwater. And even within that tiny three percent, most of it is locked away in hard-to-reach places like glaciers, ice caps, and deep underground aquifers. This means the actual amount of water available for our daily use—for drinking, washing, cooking, and farming—is incredibly small. This brings us to the heart of our chapter: the global water crisis. We are currently facing a situation where the demand for water is growing much faster than the natural supply. Why is this happening? First, our population is exploding. More people means more mouths to feed, which means more water is needed for agriculture. Second, rapid industrialization requires massive amounts of water for processing and cooling. Third, urbanization is changing how we use land and water, often leading to waste and pollution. We aren't just facing a shortage of water; we are facing a crisis of management and quality. When we talk about water resources, we aren't just talking about rivers and lakes; we are talking about the socio-economic stability of our nations. Water is linked to food security, energy production, and even political peace between countries. If a river flows through two different nations, how they share that water becomes a matter of international importance. In this chapter, we will explore how we have historically managed these resources, the massive engineering projects like dams that were built to control water, and the criticisms they face. We will also look at how traditional wisdom, like rainwater harvesting, offers sustainable solutions. By the end of this series, you will understand that water is not just a commodity, but a precious, finite resource that requires careful stewardship. Let's begin our deep dive into the science and sociology of water.","Welcome back. In our previous session, we discussed why water is the lifeblood of our planet and why the global crisis is such a pressing concern. Now, let us dive into the science of how water moves and how much of it is actually available for us to use. To understand water scarcity, we must first understand the Hydrological Cycle. You might have heard this called the Water Cycle. It is a continuous, never-ending process by which water moves from the Earth's surface to the atmosphere and back again. This cycle ensures that water is constantly being redistributed across the globe. It begins with evaporation, where solar energy heats up the water in our oceans, lakes, and rivers, turning it into water vapor that rises into the air. But it isn't just evaporation from liquid bodies. Plants also play a massive role through a process called transpiration. This is when plants release water vapor through tiny pores in their leaves. When we combine evaporation and transpiration, we call it evapotranspiration. As this warm, moist air rises higher into the atmosphere, it cools down. This cooling causes the water vapor to condense into tiny droplets, forming clouds. This stage is known as condensation. Eventually, when these droplets become too heavy to stay suspended in the air, they fall back to Earth due to gravity. This is precipitation. Depending on the temperature, precipitation can take many forms, such as rain, snow, sleet, or hail. Once the water reaches the ground, it follows several paths. Some of it flows over the land surface as runoff, eventually making its way into streams, rivers, and finally the oceans. Some of it soaks into the ground through a process called infiltration, replenishing our groundwater supplies or aquifers. This entire cycle is a closed system. This means that the total amount of water on Earth remains relatively constant; we aren't gaining new water from space, nor are we losing it into space. However, the problem lies in the distribution. Let's look at the numbers. If you look at a globe, it looks like we have an abundance of water because about seventy-one percent of the Earth's surface is covered by water. But don't let that fool you. Most of that water is salt water found in our vast oceans. Salt water is not suitable for drinking, agriculture, or most industrial processes without extremely expensive desalination. When we look at the freshwater component, it accounts for only about two point five percent of the total water on Earth. Even that tiny amount is not equally accessible. About sixty-eight point seven percent of that freshwater is locked away in glaciers and ice caps, mostly in Antarctica and Greenland. Another thirty percent is stored underground as groundwater. This leaves us with less than one percent of the Earth's total water available as surface water in rivers, lakes, and ponds for human use. So, while the Hydrological Cycle is a magnificent, self-sustaining machine that recycles our water, the actual 'usable' portion is incredibly small. We are essentially living on a planet with a very limited budget of fresh, liquid water. Understanding this imbalance is the first step toward understanding why managing our water resources is so critical for our survival.","In our previous segment, we understood that while water covers most of the Earth, only a tiny fraction is available as freshwater. Now, we must address a critical question: If water is a renewable resource through the hydrological cycle, why are we facing a global crisis? Why is there a shortage of water even in areas with high rainfall? This brings us to the core concept of our lesson: Water Scarcity. It is vital to understand that water scarcity is not just about the lack of water; it is categorized into two distinct types: Quantitative Scarcity and Qualitative Scarcity. Let us first examine Quantitative Scarcity. This refers to a shortage in the actual volume or quantity of water available. This is often driven by a growing population. As the number of people increases, the demand for water for domestic use, food production, and industrial activities rises exponentially. A larger population means more food is required, which leads to intensive agriculture. Intensive farming requires massive amounts of water for irrigation, often depleting groundwater levels faster than they can be recharged. Furthermore, urbanization plays a huge role. As cities expand, more water is diverted to meet the needs of dense populations, and the natural recharge of aquifers is hindered by concrete surfaces. Another major cause of quantitative scarcity is the unequal access to water among different social groups. In many regions, while some sectors or classes have surplus water, others face extreme shortages. Now, let us shift our focus to the second, and perhaps more deceptive, type: Qualitative Scarcity. You might ask, how can there be a scarcity if there is plenty of water? The answer lies in the quality. Qualitative scarcity occurs when the water available is unfit for human consumption or use due to pollution. Even if a river or a lake is full of water, if that water is contaminated, it is effectively scarce. What are the primary pollutants? First, we have domestic sewage and industrial effluents. Factories often discharge untreated chemical waste directly into water bodies, making them toxic. Second, excessive use of chemical fertilizers and pesticides in agriculture leads to runoff. These chemicals seep into the groundwater or wash into rivers, poisoning the water supply. Third, the improper disposal of solid waste and plastic contributes to the degradation of water quality. So, to summarize, quantitative scarcity is a problem of 'how much' water we have, driven by population growth and over-exploitation. Qualitative scarcity is a problem of 'how good' the water is, driven by pollution and mismanagement. It is important to realize that a region might not be suffering from a lack of rainfall, yet it might face severe water stress because its existing water sources are too polluted to use. Understanding this distinction is the first step toward finding sustainable solutions for water management.","Welcome back. In our previous session, we understood why water scarcity is becoming a global crisis. Today, we shift our focus from the problem to one of the most significant engineering responses to water management: Multi-Purpose River Projects. To understand this, we first need to understand what a dam actually is. Imagine a massive, thick wall built across a flowing river. This wall is called a dam. It obstructs the natural flow of the river, creating a large reservoir of water behind it. This reservoir acts like a giant storage tank. Now, why do we call these projects 'multi-purpose'? In the past, dams were built primarily for a single reason, like irrigation. But modern large-scale projects are designed to serve multiple objectives simultaneously. This is why Jawaharlal Nehru, our first Prime Minister, famously referred to these dams as the 'Temples of Modern India.' He believed they would integrate the development of agriculture with the rapid industrialization of the country. Let us look at the specific benefits. The first and most crucial benefit is Irrigation. By storing river water in reservoirs, we can release it through canals to reach fields in areas where rainfall is seasonal or insufficient. This ensures food security for a growing population. Second, these projects are vital for Electricity Generation, also known as Hydroelectric Power. The force of falling water from a height is used to turn turbines, creating clean, renewable energy. Third, dams help in Flood Control. During heavy monsoon rains, rivers can overflow and devastate downstream areas. Dams allow engineers to regulate the flow of water, storing the excess and releasing it gradually. Fourth, they provide Water Supply for domestic and industrial use. Large cities and massive manufacturing plants depend on these reservoirs for their daily water needs. Fifth, we see benefits in Navigation. The controlled water levels in certain stretches of rivers can make them navigable for transport. Sixth, these projects support Inland Fisheries. The large reservoirs create artificial lakes that are excellent habitats for fish breeding. Finally, they are often used for Recreation and Tourism, providing spots for boating and water sports. So, to summarize, a multi-purpose project is not just a wall of concrete; it is a complex system designed to manage water for agriculture, power, flood control, and industry all at once. However, as we will explore in our next lesson, these very benefits come with significant social and environmental costs that we must critically examine.","In our previous segment, we discussed how multi-purpose river projects are designed to serve various needs like irrigation, electricity, and flood control. However, every technological solution comes with a cost. Today, we are going to look at the darker side of these massive engineering marvels: their social and environmental impacts. While dams are often called the 'Temples of Modern India,' as Jawaharlal Nehru once said, they have also become centers of intense social conflict and ecological disruption. Let us first look at the environmental impact. When we build a large dam, we are essentially creating a massive artificial lake, or a reservoir, behind the dam wall. This process leads to the large-scale submergence of vast areas of forest and agricultural land. This isn't just about losing trees; it is about the destruction of entire ecosystems. When forests are submerged, the biodiversity of that region is lost forever. Furthermore, the decomposition of organic matter, like trees and plants, trapped under the water in the reservoir can lead to the release of greenhouse gases, contributing to climate change. Another major environmental issue is the change in the river's natural flow. Rivers are living systems that carry nutrients and sediment. When a dam is built, it traps the silt and sediments at the bottom of the reservoir. This prevents the nutrients from reaching the downstream floodplains. As a result, the soil fertility of the downstream areas decreases, and the riverbed downstream begins to erode more easily. This also affects aquatic life. Many fish species depend on the natural flow and seasonal changes of a river to migrate and breed. A dam acts as a physical barrier, cutting off these migratory paths and disrupting the life cycles of many aquatic organisms. Now, let's shift our focus to the social impact, which is perhaps even more sensitive. The most significant social issue is large-scale displacement. To build these massive reservoirs, thousands of local communities, often tribal groups and small-scale farmers, are forced to leave their ancestral lands. These people lose their homes, their livelihoods, and their cultural identity. Often, the benefits of the dam, like electricity or water for large-scale industrial farming, go to urban centers or wealthy landowners, while the local communities who suffer the displacement receive very little in return. This creates a sense of injustice and leads to intense social movements. You might have heard of movements like the Narmada Bachao Andolan or the Tehri Dam Andolan. These are powerful social movements that have fought for the rights of displaced people and for more sustainable ways of managing water. These movements highlight a critical question: who really benefits from these projects, and who pays the price? Another social issue is the impact on downstream communities. While dams are built to control floods, they can sometimes cause unpredictable flooding if water is released suddenly during heavy rains. This can devastate the lives of people living downstream. In summary, while multi-purpose projects offer significant developmental advantages, they also bring about massive ecological changes and profound social displacement. As we move forward in this chapter, we must ask ourselves if there are better, more equitable ways to manage our water resources. In the next part, we will explore a much more localized and community-driven approach: Rainwater Harvesting.","Moving forward from our discussion on large-scale dams, we now turn our attention to a much more localized, sustainable, and community-driven approach to water management: Rainwater Harvesting. While multi-purpose projects focus on massive storage, traditional rainwater harvesting focuses on capturing what nature provides right at our doorstep. In India, we have a rich history of ingenious water conservation techniques that have evolved over centuries to suit specific climatic conditions and topographical features. Let us explore how different regions of our country have mastered the art of catching rain. First, let us look at the arid and semi-arid regions of Rajasthan. In these areas, where rainfall is scanty and evaporation is high, people developed a unique system of underground tanks called 'Tankas'. These are often built inside the main house or the courtyard. The rainwater from the rooftops is diverted through a pipe into these tanks. The first spell of rain is usually not collected as it cleans the roof; subsequent rains are stored. This stored water, known as 'Palar Pani' in local dialect, is considered the purest form of natural water. Another fascinating method in Rajasthan is the use of 'Khadins' and 'Johads'. A Khadin is a long earthen embankment built across a slope to capture runoff. This water saturates the soil, allowing farmers to grow crops in the moist earth even after the rains have ceased. Similarly, Johads are small earthen check dams that capture rainwater and help in recharging the groundwater table. Now, let us travel to the hilly regions of the Himalayas and the North-Eastern states. In these areas, the terrain is steep, making large-scale storage difficult. Here, we see the use of 'Guls' or 'Kuls'. These are diversion channels built in the mountains to carry water from glacial streams to the agricultural fields. In the North-East, particularly in Meghalaya, the community relies on sophisticated methods to manage the heavy rainfall and hilly slopes. Moving towards the Deccan Plateau and parts of South India, we see the prevalence of 'Eris' or tank irrigation systems. These are man-made reservoirs or tanks constructed in natural depressions to collect surface runoff. These tanks are interconnected, meaning the overflow from one tank feeds into the next, ensuring efficient distribution across the landscape. Even in the dry regions of Tamil Nadu, traditional methods like 'Eris' have been used for centuries to sustain agriculture and provide drinking water. What is common across all these diverse methods—from the Tankas of Rajasthan to the Guls of the Himalayas—is the principle of decentralization. Unlike large dams, these traditional methods do not require massive displacement of people or cause large-scale ecological disruption. They are community-managed, low-cost, and perfectly synchronized with the local ecosystem. By studying these regional variations, we realize that there is no 'one size fits all' solution for water scarcity. Instead, the solution lies in understanding our local geography and reviving these time-tested traditional wisdoms to build a water-secure future.","Welcome back. In our previous segment, we explored how traditional community-based rainwater harvesting methods vary across different regions of India. Now, we are going to zoom in on a very specific, highly effective, and modern application of this concept: Rooftop Rainwater Harvesting. This is a method where rainwater is collected from the surface of a roof and stored for future use or directed into the ground to recharge groundwater levels. Let us first understand the technical components of a typical rooftop harvesting system. It starts with the catchment area, which is the surface that directly receives the rainfall—in this case, your house roof. Next, we have the transport mechanism, usually a network of PVC pipes or bamboo gutters that carry the water from the roof. Before the water enters the storage tank, it must pass through a filtration unit. This unit often contains layers of sand, gravel, and charcoal to remove debris, leaves, and suspended particles. Once filtered, the water is either stored in an above-ground tank for immediate domestic use, like washing or gardening, or it is directed into a recharge pit or a well to replenish the underground water table. This process of recharging the groundwater is crucial because it helps prevent saltwater intrusion in coastal areas and raises the water level in dried-up wells. Now, let us look at some real-world case studies that demonstrate the success of this technique. First, let us travel to the state of Rajasthan, specifically the semi-arid regions. Here, the traditional 'Tankas' are a perfect example. Tankas are large, underground storage tanks, often built inside the main house or in the courtyard. They are connected to the sloping roofs of the houses through a system of pipes. When it rains, the water travels down the pipes, through a filtration process, and into the Tanka. This stored water is used during the dry summer months and is considered a reliable source of drinking water. Interestingly, in these regions, the stored rainwater is often cooler than the external temperature, providing a natural cooling effect to the rooms above. Moving to the hilly regions of Meghalaya, we see a different application. While Meghalaya is famous for its bamboo drip irrigation, rooftop harvesting is also used to manage the heavy monsoon runoff to ensure water availability during the shorter dry spells. Finally, let us look at a very modern and mandatory success story: Tamil Nadu. Tamil Nadu is a pioneer in water conservation policy. It was the first state in India to make rooftop rainwater harvesting compulsory for all buildings, both residential and commercial. This legal mandate has led to a significant rise in groundwater levels across the state. Even in urban centers like Chennai, where water scarcity is a perennial issue, these systems have provided a vital buffer during the summer. By implementing these systems, households reduce their dependence on municipal water supplies and tankers. To summarize the technical flow: Catchment leads to Transport, which leads to Filtration, which finally leads to either Storage or Groundwater Recharge. Understanding these mechanics allows us to see that rainwater harvesting is not just an ancient tradition, but a scalable, scientific solution to the modern water crisis.","Welcome back. In our previous segment, we explored how rooftop rainwater harvesting helps conserve water at the household level. Now, let us shift our focus from the rooftops to the fields. While large dams are modern engineering marvels, India has a rich, ancient history of managing water through ingenious, low-cost, and eco-friendly traditional methods. One of the most fascinating examples is the Bamboo Drip Irrigation System. This system is primarily practiced in the hilly, high-rainfall regions of Meghalaya. Imagine a landscape where the terrain is steep and water needs to be transported over long distances to reach specific plants. In these areas, farmers use bamboo pipes to create a sophisticated network. They take water from perennial springs or streams and direct it through these bamboo channels. The water flows through a series of interconnected bamboo pipes, which are split longitudinally to form channels. These channels act like natural conduits, guiding the water from a higher elevation down to the plant roots. The most remarkable part is the precision. This system is designed to deliver water drop by drop, directly to the base of the plant. This minimizes evaporation and ensures that not a single drop is wasted on the surrounding soil. It is a perfect example of sustainable engineering that works in harmony with nature. But the wisdom of our ancestors wasn't limited to the Northeast. Across the diverse geography of India, different communities developed unique water management systems tailored to their specific climate and topography. Let us look at the arid and semi-arid regions of Rajasthan. Here, water is a precious commodity. In many parts of Rajasthan, particularly in the semi-arid areas, people use 'Khadins' and 'Johads'. A Khadin is a long earthen embankment built across a slope to capture runoff rainwater. This water saturates the soil, allowing farmers to grow crops in the moist earth even after the rains have ceased. Similarly, Johads are small earthen check dams that capture rainwater, helping to recharge the groundwater table and providing water for livestock and irrigation. Moving towards the hilly terrains of the Western Ghats and parts of Central India, we see the use of 'Tankas' or small ponds. In some regions, stepwells, known as 'Baolis' or 'Vavs', were constructed. These were not just water storage structures but also served as social gathering spaces. These stepwells were engineered to reach deep into the water table, ensuring a steady supply of water even during the scorching summer months. In the floodplains of Bengal, people developed 'Inundation Canals' to manage the seasonal overflow of rivers, using the silt-rich water to fertilize their fields. Why are these traditional methods still relevant today? First, they are incredibly cost-effective. They use locally available materials like bamboo, stone, and earth. Second, they are environmentally sustainable. Unlike large dams, they do not cause massive displacement of people or destroy large forest ecosystems. Third, they promote community participation. These systems are often managed and maintained by the local community, fostering a sense of shared responsibility for water conservation. As we face increasing water scarcity, looking back at these traditional systems provides us with vital lessons in efficiency, sustainability, and living in balance with our natural environment.","Welcome back. In our previous sections, we looked at the grand scale of multi-purpose river projects and the localized, traditional wisdom of rainwater harvesting. Now, it is time to bring these two concepts together. We often ask: if we have massive dams, why do we still need to harvest rainwater? To answer this, we must compare them across three main dimensions: scale, impact, and sustainability. Let us start with the scale of operation. Multi-purpose projects, like the Bhakra Nangal or Hirakud, are macro-level interventions. They are designed to manage entire river basins. They serve multiple sectors simultaneously: irrigation for vast agricultural tracts, hydroelectricity generation for industries and cities, flood control, and even inland navigation. They are centralized systems managed by the state. On the other hand, rainwater harvesting is a micro-level or meso-level approach. It focuses on catching water where it falls—on rooftops, in small community ponds, or through check dams. It is decentralized, meaning the management is often in the hands of individual households or local village communities. Now, let us look at the environmental and social impact, which is where the debate gets intense. Large dams, while providing massive benefits, come with a heavy price tag. They cause large-scale displacement of local communities, often tribal populations, who lose their ancestral lands. They lead to the submergence of vast forest areas, causing loss of biodiversity. They also alter the natural flow of rivers, which can lead to sedimentation and affect aquatic life. In contrast, rainwater harvesting is an eco-friendly, low-impact method. It does not require the displacement of people or the destruction of forests. In fact, it helps in recharging groundwater levels, which actually combats the very scarcity that large dams try to manage. However, we must be realistic. Rainwater harvesting has limitations in scale. It cannot power a massive steel plant or irrigate millions of hectares of farmland during a drought. It is a supplement, not a total replacement for large-scale water management. This brings us to the concept of sustainability and reliability. Multi-purpose projects are highly dependent on seasonal rainfall and monsoon patterns. If the monsoon fails, the reservoir levels drop, and the entire system—electricity, irrigation, and water supply—is threatened. This is why we see water conflicts between states over river sharing. Rainwater harvesting, while also dependent on rain, provides a localized buffer. It reduces the immediate pressure on large-scale infrastructure and provides a reliable source for domestic and small-scale agricultural use. To summarize our comparison: Multi-purpose projects are 'Top-Down' approaches—large, centralized, high-cost, and high-impact. Rainwater harvesting is a 'Bottom-Up' approach—small, decentralized, low-cost, and environmentally restorative. In a modern, water-stressed India, we do not have to choose one over the other. Instead, we need an integrated approach. We need the large-scale infrastructure of dams to support our national economy and industrial growth, but we must pair it with the widespread adoption of rainwater harvesting to ensure local water security, groundwater recharge, and ecological balance. Think of it this way: dams manage the surplus of the river, while rainwater harvesting manages the potential of the rain. Both are essential components of a resilient water management strategy.","Welcome back. Now that we have understood the theory behind multi-purpose projects and the environmental debates surrounding them, it is time to apply this knowledge to the map of India. In your Board Examinations, map work is a scoring section where you must accurately locate specific dams and identify the river systems they belong to. Let us begin our journey from the North to the South. First, look at the Himalayan region. We have the Salal Project. This dam is located on the Chenab River in Jammu and Kashmir. Remember, the Chenab is one of the major tributaries of the Indus. Moving towards the plains of Punjab and Haryana, we find the Bhakra Nangal Project. This is a massive multi-purpose project built on the Sutlej River. It is crucial for irrigation in the northern states. Now, let us move towards the East. In Odisha, we find the Hirakud Dam. This is a very important landmark on your map because it is built on the Mahanadi River. It is often cited in textbooks as one of the longest dams in the world. As we move towards Central India, look at the Narmada River. On this river, we have the Sardar Sarovar Dam in Gujarat. This project is vital for the water security of Gujarat and Rajasthan. Next, let us look at the Deccan Plateau. On the Krishna River, we find the Nagarjuna Sagar Dam, which spans the border of Andhra Pradesh and Telangana. Further south, on the Kaveri River, we have the Tungabhadra Dam. Note that the Kaveri is a major river of South India, and its management is a significant topic in water politics. To master this, do not just memorize the name of the dam; always associate it with its parent river. For example, if a question asks you to locate a dam on the Mahanadi, your finger should immediately go to Hirakud. A common mistake students make is confusing the river with the state. Always practice by drawing the river lines first, then placing the dam symbol on the correct bend of the river. Let's do a quick mental drill. If I say 'Sutlej', you should think 'Bhakra Nangal'. If I say 'Chenab', you think 'Salal'. If I say 'Narmada', you think 'Sardar Sarovar'. This mental mapping will ensure you don't lose marks due to silly errors. Take your physical outline map of India right now. I want you to mark these six major dams and label their respective rivers. This hands-on practice is the only way to ensure your spatial memory is sharp for the exam. Once you have marked these, you will see how the river systems form the lifeline of our country's economy.","Welcome back. We have covered the vast landscape of water resources, from the grandeur of multi-purpose projects to the wisdom of traditional rainwater harvesting. Now, before we move to our final exam masterclass, we need to sharpen your analytical tools. In the board exams, it is not just about what you know, but how you apply it. Let us start with common mistakes students make. The first is confusing quantitative scarcity with qualitative scarcity. Remember, quantitative scarcity refers to the absolute lack of water volume, often due to over-exploitation or drought. Qualitative scarcity, however, means water is present, but it is unfit for use because of pollution from domestic or industrial waste. Do not use these terms interchangeably. Another common error is failing to provide a balanced view when discussing dams. If a question asks about multi-purpose projects, do not just list the benefits like irrigation and electricity. To score full marks, you must mention the social and environmental costs, such as displacement of local communities and loss of biodiversity. This shows the examiner you have a holistic understanding. Now, let us move to critical thinking. The board often asks 'Why' or 'How' questions. Instead of just saying 'Rainwater harvesting is good,' you must explain the mechanism. For example, if asked about the importance of rooftop harvesting in urban areas, your answer should link high concrete coverage, which prevents groundwater recharge, to the necessity of capturing runoff to replenish aquifers. This is critical thinking in action. Next, let us tackle data interpretation. In Geography, you will often see pie charts or bar graphs showing water usage or declining groundwater levels. When you see a graph, do not just read the numbers. Look for the trend. Is the line going up or down? Is the gap between two years widening? For instance, if a graph shows increasing industrial water consumption alongside decreasing agricultural use, your interpretation should suggest a shift in the economic structure of that region. Always look for the 'why' behind the data. If you see a sudden dip in water availability in a specific state, check if the data correlates with high population density or intensive cropping patterns like paddy cultivation in semi-arid zones. Finally, a tip on terminology. Be precise. Do not just say 'water management.' Use terms like 'integrated water resource management' or 'watershed management' when the context allows. This precision elevates your answer from a general statement to a geographical analysis. Let us practice a mental exercise. Imagine a scenario where a new large dam is proposed in a hilly region. A student might say, 'It will provide water.' A critical thinker will say, 'While it will provide irrigation and hydroelectricity, it may lead to sedimentation in the reservoir and disrupt the natural flow of the river, affecting downstream ecosystems.' That is the level of depth we are aiming for. Keep these distinctions in mind, and you will be ready to tackle even the most complex application-based questions.","Welcome to the final segment of our journey through Water Resources. We have covered everything from the hydrological cycle to the nuances of rainwater harvesting. Now, it is time to transition from learning to scoring. Let us master the exam pattern. In your Class 10 Board exams, this chapter typically yields questions across three categories. First, the Objective Type questions. These often focus on specific facts, such as identifying a dam on a map or naming a specific traditional harvesting technique like the 'Guls' or 'Kuls' of the Himalayas. Second, we have Short Answer questions, usually three marks. These require you to explain causes and effects. For example, 'Explain the difference between quantitative and qualitative water scarcity.' Here, you must mention that quantitative scarcity is about the volume of water, while qualitative scarcity is about the pollution levels. Third, the Long Answer questions, which are five marks. These are the heavy hitters. You might be asked to 'Critically evaluate multi-purpose river projects.' To score full marks here, do not just list the benefits like irrigation and electricity; you must also discuss the social and environmental costs, such as displacement of local communities and loss of biodiversity. Now, let us talk about the art of answer writing. Never write long, unbroken paragraphs. Examiners love structure. Use bullet points for every point you make. If a question asks for the advantages of dams, use sub-headings like 'Hydroelectric Power,' 'Flood Control,' and 'Irrigation.' This makes your answer easy to scan and grade. For map-based questions, practice locating the Salal, Bhakra Nangal, Tehri, Rana Pratap Sagar, Sardar Sarovar, Hirakud, Nagarjuna Sagar, and Tungabhadra dams. Precision is key here; ensure your dot is exactly on the river line. Let us do a lightning-fast recap of the entire chapter to cement your knowledge. We started with the reality that while water is renewable through the hydrological cycle, it is not infinite. We explored how water scarcity is driven by over-exploitation, unequal access, and growing populations. We looked at the dual nature of multi-purpose projects—how they serve as the 'Temples of Modern India' but also trigger social conflicts and ecological damage. We then moved to the sustainable solutions: traditional rainwater harvesting, rooftop systems, and unique methods like bamboo drip irrigation in Meghalaya. We compared the large-scale engineering of dams with the localized, community-driven approach of rainwater harvesting. Remember, the core theme of this chapter is the balance between human demand and ecological preservation. As you prepare, focus on the 'why' and the 'how.' Why is a dam controversial? How does rooftop harvesting work? If you can answer those, you are ready. Stay confident, use clear headings, and always relate your answers to real-world examples. You have worked hard through all twelve parts of this series. Now, go out there and ace your geography exam. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c10-geography-03-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

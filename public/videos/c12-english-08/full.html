@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Going Places, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c12-english-08-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Psychology of Adolescent Fantasies and Escapism -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Psychology of Adolescent Fantasies and Escapism</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Adolescence: A transitional phase between childhood and adulthood.</div>
+              <div id="qx0-p1" class="qe-bullet">• Psychology of Fantasy: Constructing mental worlds to cope with reality.</div>
+              <div id="qx0-p2" class="qe-bullet">• Escapism: A mental diversion from unpleasant or limiting environments.</div>
+              <div id="qx0-p3" class="qe-bullet">• The Gap: The tension between working-class reality and celebrity glamour.</div>
+              <div id="qx0-p4" class="qe-bullet">• Fantasy as a Shield: Using imagination to bridge socio-economic divides.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2698313126,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a grey, cramped industrial room, the other a vibrant, golden-hued dreamscape of a football stadium.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A split-screen 3D animation: one side shows a grey, cramped industrial room, the other a vibrant, golden-hued dreamscape of a football stadium.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Character Analysis: The Dreamer vs. The Realist (Sophie vs. Jansie) -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Character Analysis: The Dreamer vs. The Realist (Sophie vs. Jansie)</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Sophie: The Escapist Dreamer seeking glamour and prestige</div>
+              <div id="qx1-p1" class="qe-bullet">• Jansie: The Pragmatic Realist grounded in socio-economic truth</div>
+              <div id="qx1-p2" class="qe-bullet">• Sophie's dreams serve as a defense mechanism against her reality</div>
+              <div id="qx1-p3" class="qe-bullet">• Jansie represents the voice of social and economic limitations</div>
+              <div id="qx1-p4" class="qe-bullet">• The contrast highlights the struggle between idealism and pragmatism</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4090851896,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows Sophie in a glowing, golden-hued boutique, the other shows Jansie in a sharp, grey-toned factory setting.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation: one side shows Sophie in a glowing, golden-hued boutique, the other shows Jansie in a sharp, grey-toned factory setting.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Setting the Scene: The Socio-Economic Contrast of the Working Class -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Setting the Scene: The Socio-Economic Contrast of the Working Class</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• The setting acts as a 'cage' that triggers Sophie's escapism.</div>
+              <div id="qx2-p1" class="qe-bullet">• Contrast between cramped working-class reality and glamorous fantasies.</div>
+              <div id="qx2-p2" class="qe-bullet">• Socio-economic limitations: The inevitability of the biscuit factory.</div>
+              <div id="qx2-p3" class="qe-bullet">• The environment as an antagonist to Sophie's ambitions.</div>
+              <div id="qx2-p4" class="qe-bullet">• Jansie's pragmatism vs. Sophie's rejection of their social class.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1475484117,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows a dim, cramped, grey-toned kitchen; Right side shows a bright, golden-hued, high-fashion boutique.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A split-screen 3D animation: Left side shows a dim, cramped, grey-toned kitchen; Right side shows a bright, golden-hued, high-fashion boutique.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): The Hero Worship Phenomenon: Analyzing the Danny Casey Obsession -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">The Hero Worship Phenomenon: Analyzing the Danny Casey Obsession</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Hero worship as a psychological coping mechanism for escapism.</div>
+              <div id="qx3-p1" class="qe-bullet">• Danny Casey symbolizes glamour and a life beyond socio-economic limits.</div>
+              <div id="qx3-p2" class="qe-bullet">• The distinction between celebrity admiration and personal projection.</div>
+              <div id="qx3-p3" class="qe-bullet">• How obsession bridges the gap between reality and adolescent fantasy.</div>
+              <div id="qx3-p4" class="qe-bullet">• Danny Casey as a catalyst for Sophie's internal conflict.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3829526910,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a grey, cramped kitchen; the other shows a glowing, golden silhouette of a football player amidst a cheering stadium.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A split-screen 3D animation: one side shows a grey, cramped kitchen; the other shows a glowing, golden silhouette of a football player amidst a cheering stadium.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Plot Breakdown Part I: Sophie's Elaborate Fabrications and Motivations -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Plot Breakdown Part I: Sophie's Elaborate Fabrications and Motivations</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Analyzing the 'Danny Casey' myth as a tool for escapism</div>
+              <div id="qx4-p1" class="qe-bullet">• The psychological function of creating a 'super-identity'</div>
+              <div id="qx4-p2" class="qe-bullet">• Escapism: Using fantasy to counter socio-economic limitations</div>
+              <div id="qx4-p3" class="qe-bullet">• The escalation from simple exaggerations to complex delusions</div>
+              <div id="qx4-p4" class="qe-bullet">• Motivation: Seeking social validation and personal significance</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":754389055,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a grey, cramped kitchen; the other shows a vibrant, golden-hued dreamscape of a fashion boutique.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A split-screen 3D animation: one side shows a grey, cramped kitchen; the other shows a vibrant, golden-hued dreamscape of a fashion boutique.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Plot Breakdown Part II: The Conflict of Reality and Imagination -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Plot Breakdown Part II: The Conflict of Reality and Imagination</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• The psychological tug-of-war between fantasy and truth</div>
+              <div id="qx5-p1" class="qe-bullet">• Cognitive dissonance: Living in two worlds simultaneously</div>
+              <div id="qx5-p2" class="qe-bullet">• Fantasy as a survival mechanism against socio-economic limits</div>
+              <div id="qx5-p3" class="qe-bullet">• The tension of the 'waiting scene' by the canal</div>
+              <div id="qx5-p4" class="qe-bullet">• The inevitable collision of dreams with harsh reality</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2940361630,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a grey, cramped working-class kitchen, the other shows a vibrant, glowing cinematic dreamscape of a football stadium.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A split-screen 3D animation: one side shows a grey, cramped working-class kitchen, the other shows a vibrant, glowing cinematic dreamscape of a football stadium.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Literary Devices: Symbolism, Imagery, and Irony in 'Going Places' -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Literary Devices: Symbolism, Imagery, and Irony in 'Going Places'</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Symbolism: Danny Casey as the symbol of unattainable dreams and social mobility.</div>
+              <div id="qx6-p1" class="qe-bullet">• Symbolism: The 'Boutique' representing Sophie's desire for elegance and status.</div>
+              <div id="qx6-p2" class="qe-bullet">• Imagery: Contrast between the cramped, sensory reality and luminous fantasies.</div>
+              <div id="qx6-p3" class="qe-bullet">• Situational Irony: How escapism intensifies the pain of Sophie's actual reality.</div>
+              <div id="qx6-p4" class="qe-bullet">• Dramatic Irony: The reader's awareness of the emptiness of Sophie's expectations.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2734031852,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a dim, cluttered kitchen in sepia tones, the other shows a bright, glowing football stadium in vibrant colors.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A split-screen 3D animation: one side shows a dim, cluttered kitchen in sepia tones, the other shows a bright, glowing football stadium in vibrant colors.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Thematic Exploration: Adolescent Daydreaming and Socio-Economic Constraints -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Thematic Exploration: Adolescent Daydreaming and Socio-Economic Constraints</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Daydreaming as a psychological defense mechanism against reality.</div>
+              <div id="qx7-p1" class="qe-bullet">• The link between poverty and the need for escapism.</div>
+              <div id="qx7-p2" class="qe-bullet">• Socio-economic constraints as a 'cage' for social mobility.</div>
+              <div id="qx7-p3" class="qe-bullet">• Compensatory fantasy: Dreaming to offset social limitations.</div>
+              <div id="qx7-p4" class="qe-bullet">• The tension between working-class reality and glamorous ambition.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3752110143,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: Left side shows a dim, cramped, grey-toned kitchen; Right side shows a bright, golden-hued, cinematic vision of a high-end boutique.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A split-screen 3D animation: Left side shows a dim, cramped, grey-toned kitchen; Right side shows a bright, golden-hued, cinematic vision of a high-end boutique.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Textual Deep Dive: Detailed Line-by-Line Analysis of Key Passages -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Textual Deep Dive: Detailed Line-by-Line Analysis of Key Passages</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Analyzing word choice: 'Boutique' vs 'Shop' to show socio-economic aspiration.</div>
+              <div id="qx8-p1" class="qe-bullet">• The significance of 'The Canal' as a setting for isolated fantasies.</div>
+              <div id="qx8-p2" class="qe-bullet">• Character contrast: Sophie's airy dreams vs. her father's 'burdened' reality.</div>
+              <div id="qx8-p3" class="qe-bullet">• Jansie's role: Using 'wild stories' to anchor the narrative in realism.</div>
+              <div id="qx8-p4" class="qe-bullet">• The symbolic shift from 'Danny Casey' to a mere 'figure' in the final scenes.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1128375496,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: On the left, a dimly lit, cramped working-class kitchen; on the right, a glowing, ethereal boutique filled with silk garments.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation: On the left, a dimly lit, cramped working-class kitchen; on the right, a glowing, ethereal boutique filled with silk garments.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Vocabulary Workshop: Contextual Meanings and Advanced Word Usage -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Vocabulary Workshop: Contextual Meanings and Advanced Word Usage</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Mastering Contextual Meaning: How surroundings change word definition</div>
+              <div id="qx9-p1" class="qe-bullet">• Key Terms: Seduction (temptation), Melancholy (deep sadness), Practical (grounded)</div>
+              <div id="qx9-p2" class="qe-bullet">• Elevating Vocabulary: Use 'Fabricate' instead of 'Imagine', 'Escapism' instead of 'Daydreaming'</div>
+              <div id="qx9-p3" class="qe-bullet">• Describing Setting: Use 'Socio-economically disadvantaged' instead of 'Poor'</div>
+              <div id="qx9-p4" class="qe-bullet">• Advanced Nuance: Understanding 'Precarious' dreams and 'Proletarian' realities</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3008325720,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D floating dictionary where words transform into glowing icons representing their meaning, such as a 'melancholy' word turning into a blue raindrop.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D floating dictionary where words transform into glowing icons representing their meaning, such as a 'melancholy' word turning into a blue raindrop.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Common Pitfalls: Misinterpreting Character Intent and Theme Nuances -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Common Pitfalls: Misinterpreting Character Intent and Theme Nuances</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Avoid labeling Sophie as a 'liar'; use 'escapism' and 'coping mechanism' instead.</div>
+              <div id="qx10-p1" class="qe-bullet">• View Jansie as a 'pragmatic realist' rather than just an unimaginative character.</div>
+              <div id="qx10-p2" class="qe-bullet">• Analyze Danny Casey as a 'projection of desire' rather than just a celebrity crush.</div>
+              <div id="qx10-p3" class="qe-bullet">• Interpret the ending as 'melancholic realization' rather than a successful fantasy.</div>
+              <div id="qx10-p4" class="qe-bullet">• Connect adolescent daydreaming directly to socio-economic constraints.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3418489980,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a vibrant, glowing fantasy world of Sophie, the other a grey, dusty, realistic street, with a bridge representing the gap between them.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation: one side shows a vibrant, glowing fantasy world of Sophie, the other a grey, dusty, realistic street, with a bridge representing the gap between them.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Answer Writing Techniques, RTCs, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Answer Writing Techniques, RTCs, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Use the P-E-E Formula: Point, Evidence, and Explanation for long answers.</div>
+              <div id="qx11-p1" class="qe-bullet">• Identify Speaker and Subtext in Reference to Context (RTC) questions.</div>
+              <div id="qx11-p2" class="qe-bullet">• Contrast Sophie (the dreamer) with Jansie (the realist) to add depth.</div>
+              <div id="qx11-p3" class="qe-bullet">• Link character motivations to socio-economic themes and constraints.</div>
+              <div id="qx11-p4" class="qe-bullet">• Avoid mere summary; focus on analysis and literary significance.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3053322439,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a glowing, ethereal version of Sophie's dream on one side and a gritty, realistic depiction of her small kitchen on the other, with golden text overlays of exam tips.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A 3D split-screen showing a glowing, ethereal version of Sophie's dream on one side and a gritty, realistic depiction of her small kitchen on the other, with golden text overlays of exam tips.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Going Places today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Psychology of Adolescent Fantasies and Escapism <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Character Analysis: The Dreamer vs. The Realist (Sophie vs. Jansie) <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Setting the Scene: The Socio-Economic Contrast of the Working Class <small>10:00</small></button>
+          <button type="button" data-seek="900">4. The Hero Worship Phenomenon: Analyzing the Danny Casey Obsession <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Plot Breakdown Part I: Sophie's Elaborate Fabrications and Motivations <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Plot Breakdown Part II: The Conflict of Reality and Imagination <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Literary Devices: Symbolism, Imagery, and Irony in 'Going Places' <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Thematic Exploration: Adolescent Daydreaming and Socio-Economic Constraints <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Textual Deep Dive: Detailed Line-by-Line Analysis of Key Passages <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Vocabulary Workshop: Contextual Meanings and Advanced Word Usage <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Common Pitfalls: Misinterpreting Character Intent and Theme Nuances <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Answer Writing Techniques, RTCs, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone, and welcome to our deep dive into the Class 12 English chapter, 'Going Places' by A.R. Barton. Before we even open the textbook to look at the characters, we need to understand the 'why' behind the story. Why does the protagonist, Sophie, live in a world of her own? To understand this, we must explore the psychology of adolescent fantasies and the mechanism of escapism. Adolescence is a unique, transitional phase of human development. It is that bridge between the protected innocence of childhood and the harsh, often unyielding responsibilities of adulthood. During this period, the human mind undergoes intense emotional shifts. One of the most prominent features of this stage is the tendency to daydream. But these aren't just simple daydreams; they are elaborate, complex mental structures. In 'Going Places', we see this through Sophie, who constructs entire lives for herself that have no basis in her actual reality. Now, let's look at the psychological term 'Escapism'. Escapism is a mental diversion from the unpleasant or boring aspects of daily life. Think about Sophie's environment for a moment. She lives in a working-class household, a place defined by economic limitations, cramped spaces, and the repetitive grind of manual labor. When the reality of one's surroundings feels suffocating or offers no path for upward mobility, the mind seeks a 'safety valve'. This is where fantasy comes in. For an adolescent, fantasy acts as a psychological shield. It allows them to temporarily inhabit a world where they are glamorous, successful, or loved by icons. It is a way to cope with the gap between 'what is' and 'what could be'. In the context of this story, the gap is massive. On one side, you have the gritty, soot-covered reality of a working-class neighborhood, and on the other, you have the glittering, high-stakes world of professional football and celebrity culture. Sophie uses her imagination to bridge this gap. She doesn't just admire a celebrity like Danny Casey; she integrates him into her personal narrative to make her own life feel significant. This is a crucial distinction: she isn't just a fan; she is a creator of a private reality. As we progress through this chapter, keep this psychological lens in mind. Every time Sophie tells a lie or weaves a tale, don't just ask 'is she lying?'. Instead, ask 'what is she trying to escape from?'. We are looking at the tension between the human desire for greatness and the socio-economic constraints that keep us grounded. This tension is the heartbeat of the story. As we move forward into our character analysis, remember that Sophie's behavior isn't just 'childishness'; it is a sophisticated, albeit tragic, psychological response to her environment. We will soon see how this differs from her friend Jansie, who represents the grounded, realistic side of the adolescent spectrum. But for now, hold onto this concept: fantasy is often a symptom of a reality that is too difficult to face. Let's prepare to see how these psychological patterns manifest in the lives of our characters.","Welcome back to our deep dive into A.R. Barton's 'Going Places'. In our last segment, we touched upon the psychological roots of adolescent escapism. Now, we move to the heart of the story: the striking character contrast between the two protagonists, Sophie and Jansie. This isn't just a difference in personality; it is a clash of two different ways of surviving life. Let us begin with Sophie. Sophie is the quintessential dreamer. She is a girl whose mind lives in a world of 'what ifs' and 'could bes'. She doesn't just want a better life; she wants a life that is cinematic, glamorous, and entirely detached from her current reality. When Sophie talks about owning a boutique, becoming an actress, or a fashion designer, she isn't planning a career; she is constructing a sanctuary. Her fantasies are her defense mechanism against the drab, grey reality of her working-class existence. Notice how her language is filled with longing. She uses words that suggest luxury and prestige, even though her surroundings are defined by smallness and struggle. Sophie’s dreaming is an act of rebellion. By imagining herself in high-society circles, she is mentally escaping the socio-economic limitations placed upon her by her birth. However, there is a danger in Sophie's approach. Her dreams are not grounded in any practical steps. They are purely escapist, leading her into a state of melancholy when reality inevitably intrudes. Now, let us look at the polar opposite: Jansie. If Sophie is the wind, Jansie is the earth. Jansie is the realist. She is a girl who understands the gravity of their social standing. When Sophie speaks of grand ambitions, Jansie is the one who brings the conversation back to the ground. She knows that they are both destined for the local biscuit factory. Jansie isn't being 'boring' or 'unimaginative' on purpose; she is being pragmatic. She understands the concept of social boundaries. To Jansie, life is not something you dream into existence; it is something you navigate based on the tools you have. She represents the voice of social consciousness. While Sophie looks upward at the stars, Jansie looks forward at the path laid out before her. This creates a fascinating tension between the two friends. Jansie’s realism acts as a foil to Sophie’s idealism. Without Jansie, we wouldn't realize just how extreme Sophie's delusions are. Without Sophie, Jansie would simply be another face in the crowd of the working class. The author uses this duo to show two different survival strategies. Sophie survives by pretending the world is different than it is. Jansie survives by accepting the world as it is. This brings us to a crucial point for your exams: the conflict is not just between Sophie and Jansie, but between the human desire for greatness and the harsh limitations of socio-economic reality. Sophie’s dreams are beautiful but fragile, while Jansie’s reality is stable but suffocating. As we move forward, keep asking yourself: is Sophie's dreaming a form of madness, or is it a necessary way to keep her spirit alive in a world that offers her very little?","Welcome back. In our previous segment, we looked at the psychological tug-of-war between Sophie’s dreams and Jansie’s realism. Now, we must ask a crucial question: Why is this divide so sharp? To understand Sophie’s desperate need to escape, we have to look closely at the world she is trying to leave behind. Auseel Prasad, the author, doesn't just describe a setting; he uses the setting to build a cage. Let's look at the physical environment first. The story is set in a typical working-class neighborhood. When we read the descriptions, we see small, cramped living spaces. The houses are not grand estates; they are modest, perhaps even decaying, structures that reflect a life of limited means. This is a world of 'earning a living,' not 'living a life of luxury.' Notice how the author describes the atmosphere. It is heavy with the scent of routine and the weight of necessity. This isn't just background noise; it is a socio-economic reality. In this setting, every penny is accounted for. The family's lifestyle is dictated by what they can afford, which creates a sense of claustrophobia. For Sophie, the walls of her home feel like they are closing in. This is why her fantasies about owning a boutique or being an actress are so intense. They aren't just whims; they are survival mechanisms against a bleak reality. Now, let's contrast this with the 'world of glamour' she imagines. Sophie dreams of high-end boutiques, fashion, and the bright lights of stardom. This creates a stark socio-economic contrast. On one side, we have the gritty, dusty, and predictable reality of the working class—where jobs are manual, wages are low, and the future is often pre-determined. On the other side, we have the shimmering, untouchable world of celebrity and luxury. This contrast is the engine that drives the entire plot. The socio-economic status of Sophie’s family acts as a gravity that pulls her down, while her imagination acts as a balloon trying to fly away. Even the way characters speak and interact reflects this. There is a sense of communal living, but it is a living born of shared struggle rather than shared joy. Jansie represents the acceptance of this status quo. She understands that in their socio-economic bracket, one must be practical. She knows that 'the biscuit factory' is a likely destination for them both. This isn't being pessimistic; it is being realistic about their class position. For Sophie, however, the factory is a symbol of social death. The setting, therefore, is not just a place; it is a character in itself. It is the antagonist that Sophie is fighting against every single day through her daydreams. As we move forward, keep this tension in mind: the struggle between the hard, unyielding ground of her economic reality and the soft, limitless sky of her imagination.","Welcome back. In our previous segment, we looked at the stark contrast between Sophie’s wild dreams and Jansie’s grounded realism. Now, we dive into the heart of the story: the phenomenon of hero worship, specifically through the lens of Sophie’s obsession with Danny Casey. Why does a teenage girl in a working-class neighborhood become so consumed by a professional football player she has never even met? To understand this, we must look beyond just 'fandom.' This is a psychological mechanism. For Sophie, Danny Casey is not just an athlete; he is a symbol of a life she desperately wants to lead. He represents glamour, success, and an escape from the 'smallness' of her reality. When we analyze this obsession, we see it functions as a coping mechanism. Sophie’s environment is predictable, cramped, and socio-economically limited. By projecting her desires onto Danny Casey, she creates a mental space where she is special, where she is part of the elite, and where magic is possible. This is what we call 'transcendence through celebrity.' Note how the text treats Danny Casey. He is described with a sense of aura. He isn't just a player; he is a figure of perfection. For Sophie, the obsession is so intense that it blurs the line between public figure and personal acquaintance. This is a crucial point for your exams: Sophie’s obsession is a symptom of her dissatisfaction with her social standing. She uses Danny Casey to bridge the gap between her actual life—working in a boutique—and her imagined life—being a woman of high status. This phenomenon is common in adolescence, where the boundary between fantasy and reality is often porous. As you read the text, look for how her descriptions of him become increasingly intimate. She doesn't just admire his skill; she imagines his character, his conversations, and his presence in her life. This isn't just 'liking' a celebrity; it is a total psychological immersion. In your long-answer questions, if you are asked about the role of Danny Casey, do not simply say he is a football player. Instead, argue that he serves as a catalyst for Sophie's escapism. He is the vessel into which she pours all her unfulfilled ambitions. He is the 'hero' who provides the illusion of a different world. This obsession is both her greatest joy and her greatest source of eventual melancholy, as the collision with reality becomes inevitable. Let's keep this psychological layer in mind as we move toward her specific fabrications in the next part.","Welcome back. Now that we have established the stark contrast between Sophie’s wild imagination and Jansie’s grounded realism, let us dive into the core of the narrative. In this segment, we are breaking down the plot by examining Sophie's elaborate fabrications and, more importantly, the psychological motivations behind them. Why does Sophie lie? Why does she construct these intricate, beautiful, yet entirely false worlds? Let us look at the first major fabrication: the meeting with Danny Casey. Sophie doesn't just say she saw him; she crafts a cinematic encounter. She describes him in detail, almost as if she is writing a script for a movie. This isn't just a simple lie to impress her friends; it is a way for her to inhabit a world that is more glamorous than her reality. Her reality is a small, cramped house, a father who is weary from hard labor, and a future that seems pre-determined by her socio-economic status. By inventing this meeting, she temporarily escapes the suffocating atmosphere of her working-class life. Notice how her fabrications often involve high-status settings or people of immense celebrity. This is a classic psychological defense mechanism called escapism. She uses these stories to build a mental barrier between herself and the mundane chores or the inevitable factory job that awaits her. Then, we have her second layer of fabrication: the idea of owning a boutique or becoming a fashion designer. While her father and Jansie see her working in a biscuit factory, Sophie sees herself in a world of silk, velvet, and high fashion. These are not just idle dreams; they are elaborate mental constructions designed to provide her with a sense of identity and agency. She feels that her current identity—a girl from a poor family—is insufficient. Therefore, she creates a 'super-identity' through these lies. We must also analyze the motivation of 'social validation.' Sophie craves the awe and admiration that comes with being 'special.' When she tells these stories, she isn't just lying to others; she is trying to convince herself that she belongs to a different echelon of society. However, there is a tragic nuance here. Her fabrications are so detailed and so deeply felt that the line between truth and fiction begins to blur even for her. This leads to a state of cognitive dissonance, where her internal world is in constant conflict with the external world. As we move through the text, pay close attention to how her lies escalate. They start as small exaggerations and evolve into full-blown delusions. This escalation is crucial because it sets the stage for the inevitable collision with reality that we will discuss in the next part. Remember, Sophie's lies are not born out of malice or a desire to deceive for gain; they are born out of a desperate, adolescent need to feel significant in a world that treats her as insignificant. Her motivations are rooted in a profound sense of inadequacy caused by her socio-economic constraints. She is not just lying to her family; she is lying to escape the gravity of her own life.","Welcome back. In our previous segment, we explored how Sophie constructs her elaborate lies to escape her mundane life. Now, we move into the heart of the story: the psychological tug-of-war between what is real and what is imagined. This is the central conflict of 'Going Places'. To understand this, we must look at how Sophie’s internal world begins to collide with her external reality. Sophie does not just daydream; she lives in a state of constant cognitive dissonance. She knows, deep down, that her family lives in a small, cramped house and that her father works a grueling job, yet she chooses to inhabit a mental space where she is a boutique owner or a fashion icon. This isn't just simple lying; it is a survival mechanism. The conflict arises when the weight of her reality starts to press against the fragile walls of her fantasy. Think about the Danny Casey episode. When Sophie tells her brother Geoff about meeting the football star, she isn't just telling a story; she is attempting to bridge the gap between her working-class existence and the glamorous world of celebrity. The tension builds because the more vivid her imagination becomes, the more painful her reality feels. We see this tension manifest in her interactions with Geoff. Geoff is her window to the outside world, a quiet, brooding figure who represents a bridge between her dreams and the harsh truth. When she shares her fantasy with him, she is looking for validation. She wants the reality to bend to her will. However, the conflict reaches its peak in the quiet, lonely moments of her waiting. Remember the scene where she sits by the canal, waiting for Danny Casey to actually show up? This is the moment where imagination and reality are at their most volatile. She is physically in a dirty, realistic setting, but mentally, she is in a romantic encounter. The tragedy of the story lies in the inevitable collapse of this fantasy. Reality is a relentless force. It is represented by the smell of the kitchen, the fatigue of her father, and the practical, grounded nature of Jansie. As the story progresses, we see that Sophie’s imagination is a beautiful but dangerous trap. It provides temporary relief from her socio-economic constraints, but it leaves her more isolated than before. By the end of this conflict, we realize that Sophie’s 'going places' is not a physical journey, but a mental flight that ultimately leads to a crash landing into the realization of her own limitations. This conflict is what makes the story a profound study of adolescent psychology rather than just a simple tale of a girl with a crush.","Welcome back. In our previous segment, we explored the clash between Sophie's vivid imagination and the harsh reality of her socio-economic status. Now, we are going to look at how A.R. Barton uses specific literary tools to deepen this conflict. To truly master this chapter for your exams, you must understand three key devices: Symbolism, Imagery, and Irony. Let us start with Symbolism. A symbol is an object or person that represents a larger, abstract idea. In this story, the most potent symbol is Danny Casey himself. He is not just a football player; he represents the 'unattainable dream.' To Sophie, Casey is a gateway to a glamorous, upper-class life that is far removed from her biscuit factory reality. Another subtle symbol is the 'boutique.' Sophie dreams of owning a boutique, which symbolizes her desire for sophistication, elegance, and social mobility. It is her mental escape from the grimy, working-class streets. Next, let us discuss Imagery. Imagery is the use of descriptive language that appeals to our senses, helping us 'see' or 'feel' the story. Barton uses starkly contrasting imagery to highlight the divide between Sophie's world and her dreams. Think about the description of her home. The imagery here is heavy, cramped, and suffocating. We see the 'small, cluttered kitchen' and the 'smell of cooking.' This sensory detail grounds the reader in the reality of poverty. In sharp contrast, when Sophie describes her imagined meetings with Danny Casey, the imagery becomes luminous and ethereal. The descriptions of the cafe or the seaside are filled with light and space. This sensory shift tells us that Sophie’s dreams are 'bright' while her reality is 'dim.' Finally, we come to the most crucial device for high-order thinking questions: Irony. Irony is a contrast between expectation and reality. There are two main types of irony at play here. First, there is Situational Irony. Sophie spends all her mental energy building a fantasy world to escape her life, but the very act of daydreaming makes her reality even more painful. The more she imagines her greatness, the more she suffers when she realizes she is just a girl from a working-class family. Second, we see Dramatic Irony. This occurs when the reader knows something that the character does not, or when the gap between a character's belief and the truth is glaring. We, the readers, know that Danny Casey is never coming to the canal to meet her. We watch Sophie sit by the water, waiting with intense anticipation, and this creates a sense of pathos—a feeling of pity. We see the tragedy of her loneliness while she remains convinced of her romantic destiny. When you write your long-form answers, do not just say 'the story uses irony.' Instead, say, 'The author employs situational irony to highlight the psychological toll of escapism on an adolescent mind.' This level of analysis is what will move your score from a standard answer to an exceptional one. Remember, the symbols represent her desires, the imagery represents her environment, and the irony represents her tragic misunderstanding of life.","Welcome back. In our previous segment, we looked at the conflict between reality and imagination. Now, we are going to dive into the heart of A.R. Barton's story. We are exploring the complex relationship between adolescent daydreaming and socio-economic constraints. This is not just a story about a girl with a big imagination; it is a profound study of how poverty and social limitations drive the human mind toward escapism. Let us first look at the concept of adolescent daydreaming. Adolescence is a transitional phase. It is a time when the gap between who a person is and who they want to be is at its widest. For Sophie, this gap is a canyon. She lives in a world of small, cramped rooms, heavy lifting, and predictable futures. To survive this mental claustrophobia, she creates a secondary world. Her daydreams are not just idle thoughts; they are a psychological defense mechanism. When the reality of her life feels too heavy, she builds a sanctuary of glamour, fame, and romance. This brings us to our second major theme: socio-economic constraints. Notice the setting described by the author. The house is described with words that suggest lack of space and lack of luxury. Her father is a man of hard labor, a man whose life is defined by the physical grind of the working class. This environment is rigid. In Sophie's world, your destiny is often decided by your birth and your economic status. There is no room for 'boutiques,' 'fashion design,' or 'high-end management' in a household where survival is the primary goal. This is where the tragedy lies. The socio-economic reality acts as a cage. Sophie's dreams of becoming a boutique owner are not just 'ambitions'; they are acts of rebellion against her social class. She is trying to dream her way out of a life that has already been mapped out for her by her economic circumstances. We must also analyze the tension between these two forces. The more restrictive the socio-economic environment becomes, the more elaborate and intense the daydreams become. This is a direct correlation. If Sophie lived in a middle-class household with access to the arts and higher education, her fantasies might be more grounded. But because her reality offers no upward mobility, her mind leaps to the extreme—to meeting a football superstar like Danny Casey. This is what we call 'compensatory fantasy.' She is compensating for her lack of social capital by accumulating imaginary social prestige. As students, when you analyze this in your exams, do not just say 'Sophie is a dreamer.' Instead, say 'Sophie uses escapism as a psychological tool to navigate the limitations imposed by her working-class background.' Understand that her daydreaming is a symptom of her environment. The author uses the contrast between the gritty, realistic descriptions of the kitchen and the polished, glowing descriptions of Sophie's fantasies to highlight this struggle. In conclusion, the theme is a tug-of-war. On one side, you have the crushing weight of socio-economic reality, and on the other, you have the soaring, fragile wings of adolescent imagination. The story suggests that while dreams provide temporary relief, they can also lead to a painful collision with reality when the two finally meet. Keep this duality in mind as we move toward our deep-dive analysis in the next section.","Welcome back. Having understood the themes and characters, we now move into the most critical part of your exam preparation: the Textual Deep Dive. We are going to dissect specific passages from A.R. Barton's 'Going Places' to understand how the author uses language to build Sophie's world. Let us look at the first crucial passage where Sophie describes her dream boutique. She says, 'It’ll be a boutique, a small shop, with fashionable clothes.' Notice the word 'boutique' instead of just 'shop.' This choice of vocabulary is intentional. It reflects Sophie's aspiration to transcend her working-class reality. A 'shop' is functional; a 'boutique' is an experience of luxury. This single word establishes the gap between her current socio-economic status and her imagined future. Next, let us analyze the passage where she discusses her meeting with Danny Casey. She tells Jansie, 'I met him... by the canal.' Pay close attention to the setting: 'the canal.' The canal is a quiet, secluded, and somewhat desolate place. By placing her fantasy in such a lonely setting, the author subtly hints at the isolation of her dreams. It is a private world she has constructed, away from the prying eyes of her realistic family. Now, let us examine the description of her father's reaction to her stories. The text describes him as 'burdened' and 'dismissive.' When he looks at her, there is a sense of weary frustration. This is a vital textual detail. His reaction isn't just anger; it is the exhaustion of a man who knows the harsh reality of their lives. The contrast between Sophie's light, airy fabrications and her father's heavy, grounded presence is a masterclass in characterization through dialogue and reaction. We must also look at the passage regarding Jansie's warnings. Jansie says, 'You and your wild stories.' The adjective 'wild' is key here. It categorizes Sophie's thoughts not as mere lies, but as something untamed and potentially dangerous to her mental well-being. Jansie acts as the anchor to reality, and the text uses her grounded language to highlight Sophie's linguistic escapism. Finally, let's look at the closing imagery of Sophie sitting by the canal, waiting. The author writes about her 'waiting for a figure to appear.' The use of the word 'figure' instead of 'Danny' is significant. It suggests that she is no longer waiting for a real person, but for a symbol, a ghost of her own making. She is waiting for a shadow. This transition from a person to a 'figure' marks the tragic shift from a crush to a complete psychological detachment from reality. As you prepare your Reference to Context answers, remember to point out these specific word choices. Do not just say 'Sophie dreams'; say 'Sophie uses aspirational vocabulary like boutique to distance herself from her socio-economic reality.' This level of detail is what earns the highest marks in your board exams.","Welcome back. In our previous session, we explored the deep emotional conflict between Sophie's dreams and her reality. Now, it is time to sharpen your linguistic tools. To score high in your Class 12 exams, you must move beyond simple definitions and master 'contextual meaning'—understanding how a word's sense changes based on the sentences surrounding it. Let us begin with the core vocabulary from A.R. Barton's text. First, consider the word 'seduced'. In a literal sense, it might mean romantic persuasion, but in the context of Sophie’s life, it refers to being lured away by the temptation of a glamorous, imaginary world. She is 'seduced' by the idea of being a boutique owner or an actress. Notice how the author uses this to show her vulnerability to fantasy. Next, let us look at 'melancholy'. This isn't just being 'sad'. It is a deep, pensive, and long-lasting sadness. When we see the contrast between Sophie's excitement and the drabness of her surroundings, 'melancholy' describes the underlying tone of her socio-economic reality. Moving to the character of Jansie, we encounter the word 'practical'. While it seems simple, in this text, 'practical' acts as a foil to Sophie's 'wild' imagination. It implies a grounded, realistic, and almost cautious approach to life. Then, we have the term 'gesturing'. The author uses specific verbs for movement to show character traits. When Sophie describes her meetings with Danny Casey, her gestures are expansive and dreamy, whereas the reality of the biscuit factory workers is marked by heavy, repetitive, and mundane movements. Let us elevate your vocabulary for the exam. Instead of saying Sophie 'imagines' things, use terms like 'fabricates', 'constructs elaborate fantasies', or 'indulges in escapism'. Instead of saying she is 'unrealistic', use 'idealistic' or 'delusional'. Instead of saying the setting is 'poor', use 'socio-economically disadvantaged' or 'starkly proletarian'. Understanding these nuances allows you to write sophisticated answers. For example, if a question asks about the conflict in the story, don't just say 'Sophie wants a better life'. Instead, write: 'The narrative explores the tension between Sophie's escapist tendencies and the grim, deterministic reality of her working-class environment.' This level of precision is what examiners look for. We will also look at 'precarious'. Sophie's dreams are precarious—meaning they are uncertain, unstable, and likely to collapse. This word perfectly captures the fragility of her mental constructs. Finally, let's touch upon 'resentment'. This is the subtle emotion felt by the characters toward their fixed social status. By mastering these words, you aren't just learning English; you are learning to decode the subtext of the human condition presented in the story. Practice using these words in your own sentences before our next session on common pitfalls.","Welcome back. We have analyzed the characters, the setting, and the themes of 'Going Places'. Now, it is time for the most critical part of our series: avoiding the common traps that students fall into during examinations. When you write your answers, the difference between an average score and a top-tier score lies in how deeply you understand the nuances of A.R. Barton's writing. Let us address the first major pitfall: misinterpreting Sophie's character as merely 'dishonest' or a 'liar'. If you describe Sophie as a liar in your exam, you are missing the psychological depth of the story. Sophie is not lying to deceive others for personal gain; she is engaging in 'escapism'. Her fabrications are a defense mechanism against the grim, suffocating reality of her socio-economic background. She isn't a villain; she is a dreamer struggling with the weight of her circumstances. When writing about her, use terms like 'aspirational daydreaming' or 'psychological coping mechanism' rather than 'deceitful'. The second pitfall involves the character of Jansie. Many students mistake Jansie for being 'unimaginative' or 'boring'. This is a superficial reading. Jansie is actually the voice of 'pragmatism'. She is not lacking imagination; she is possessing 'situational awareness'. She understands the limitations of their social class. While Sophie lives in the 'what if', Jansie lives in the 'what is'. In your answers, frame Jansie as the 'grounded realist' who provides a necessary foil to Sophie's idealism. The third pitfall is a misunderstanding of the theme of 'Hero Worship'. Do not simply say Sophie likes Danny Casey because he is a good football player. That is too simple. The theme is about the 'projection of desires'. Sophie uses Danny Casey as a canvas onto which she paints her own longing for glamour, excitement, and a life beyond the biscuit factory. The obsession is not about the athlete; it is about the 'idea' of the athlete. This leads us to the fourth pitfall: misinterpreting the ending. Some students view the ending as a 'triumph of imagination' where Sophie finally achieves her dream. This is incorrect. The ending is actually quite melancholic. It is a moment of 'internalized disappointment'. When Sophie sits by the canal, waiting for a man who will never come, the story is highlighting the tragic gap between her internal world and the external reality. It is a study in the loneliness of the dreamer. Finally, watch out for the 'Socio-Economic Trap'. Do not treat the poverty in the story as just a background setting. It is a driving force. The socio-economic constraints are the 'antagonist' of the story. They are what push Sophie into her fantasies. If you fail to connect her daydreaming to her economic reality, your thematic analysis will be incomplete. Remember, in English Literature, the 'why' is always more important than the 'what'. Do not just tell the examiner what Sophie did; tell them why her psychological state compelled her to do it. Mastering these nuances will ensure that your answers reflect a sophisticated understanding of the text.","Welcome to the final segment of our journey through 'Going Places'. We have explored Sophie's world of dreams and Jansie's world of reality; now, it is time to transform that understanding into high-scoring exam answers. Let's start with the 'Exam Masterclass'. When you face long-answer questions, do not just retell the story. Instead, use the 'P-E-E' formula: Point, Evidence, and Explanation. For example, if asked about Sophie's escapism, your Point is that she uses fantasy to flee her socio-economic reality. Your Evidence is her claim about meeting Danny Casey. Your Explanation connects this back to the theme of adolescent yearning. Avoid vague adjectives; instead of saying Sophie is 'unrealistic', use terms like 'delusional' or 'prone to escapism'. Next, let's tackle Reference to Context questions, or RTCs. In RTCs, you are often given a snippet of dialogue. Always identify the speaker and the listener first. Then, look for the subtext. If Sophie says, 'I'll have my own boutique,' don't just say she wants a shop. Explain that this represents her refusal to accept her working-class destiny. A common mistake students make is ignoring the contrast between characters. In any RTC involving Sophie and Jansie, always mention how Jansie acts as the 'foil' to Sophie's character. Now, let's move to our Full Chapter Recap to solidify your memory. We began by understanding the psychology of adolescent fantasies—how teenagers use dreams to cope with mundane lives. We analyzed the central conflict: Sophie, the dreamer, versus Jansie, the realist. We saw how the setting—the cramped, working-class household—acts as a cage that fuels Sophie's desire to fly away. We explored the 'Hero Worship' phenomenon through Danny Casey, who isn't just a footballer to Sophie, but a symbol of perfection. We tracked the plot from her initial fabrications to the heartbreaking moment where reality crashes into her imagination, leaving her with a sense of melancholy. We also touched upon the literary devices, specifically the irony that Sophie's dreams actually make her more miserable in the long run. We looked at the vocabulary, moving from simple descriptions to words like 'melancholy', 'gesticulating', and 'prodigious'. Remember, the theme is not just about dreaming; it is about the tension between socio-economic constraints and human aspiration. As you prepare, keep these three tips in mind: First, always link character actions to the broader theme. Second, use textual evidence to support every claim. Third, pay attention to the tone of the story, which shifts from whimsical to somber. You are now fully equipped to tackle any question on 'Going Places'. Master the technique, and the marks will follow. Good luck with your preparations!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c12-english-08-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

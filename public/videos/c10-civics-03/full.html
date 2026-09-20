@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Gender, Religion and Caste, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c10-civics-03-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Why Gender, Religion, and Caste Shape Our Democracy -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Why Gender, Religion, and Caste Shape Our Democracy</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Social identities like gender, religion, and caste deeply influence political life.</div>
+              <div id="qx0-p1" class="qe-bullet">• Gender: Examining the public-private divide and women's political roles.</div>
+              <div id="qx0-p2" class="qe-bullet">• Religion: Understanding communalism and the importance of Secularism.</div>
+              <div id="qx0-p3" class="qe-bullet">• Caste: Analyzing how caste affects voting and how politics shapes caste identity.</div>
+              <div id="qx0-p4" class="qe-bullet">• Goal: Understanding how democracy manages social divisions through representation.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2530736518,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D rotating model of the Indian Parliament, surrounded by floating icons representing a woman, a religious symbol, and a community group, symbolizing the intersection of society and state.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D rotating model of the Indian Parliament, surrounded by floating icons representing a woman, a religious symbol, and a community group, symbolizing the intersection of society and state.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Gender and Politics: Public/Private Division and Sexual Division of Labour -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Gender and Politics: Public/Private Division and Sexual Division of Labour</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Gender is a social construct, not just a biological difference.</div>
+              <div id="qx1-p1" class="qe-bullet">• Public/Private Division: Women in the home, men in the public sphere.</div>
+              <div id="qx1-p2" class="qe-bullet">• Sexual Division of Labour: Socially assigned roles based on gender.</div>
+              <div id="qx1-p3" class="qe-bullet">• Domestic work is often unpaid and undervalued in economic terms.</div>
+              <div id="qx1-p4" class="qe-bullet">• The division limits women's access to political decision-making.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1922489709,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a woman managing a busy household on the left and a man in a corporate/political setting on the right, with a dividing line representing the 'Public/Private' barrier.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation showing a woman managing a busy household on the left and a man in a corporate/political setting on the right, with a dividing line representing the 'Public/Private' barrier.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Gender Inequality: Women's Political Representation and Feminist Movements -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Gender Inequality: Women's Political Representation and Feminist Movements</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Low female representation in Lok Sabha and State Assemblies limits policy impact.</div>
+              <div id="qx2-p1" class="qe-bullet">• Political representation is essential for addressing gender-specific issues.</div>
+              <div id="qx2-p2" class="qe-bullet">• Feminist movements seek equality in both private and public spheres.</div>
+              <div id="qx2-p3" class="qe-bullet">• One-third reservation for women exists in local government (Panchayats).</div>
+              <div id="qx2-p4" class="qe-bullet">• The struggle continues for reservation in higher legislative bodies.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3964004491,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a low-occupancy Parliament hall on one side and a vibrant, growing protest of diverse women on the other.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D split-screen showing a low-occupancy Parliament hall on one side and a vibrant, growing protest of diverse women on the other.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Religion, Communalism, and Politics: Defining Communalism and its Manifestations -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Religion, Communalism, and Politics: Defining Communalism and its Manifestations</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Communalism: Using religion to assert dominance over other groups.</div>
+              <div id="qx3-p1" class="qe-bullet">• Core Idea: Assuming religious identity is the sole basis of social community.</div>
+              <div id="qx3-p2" class="qe-bullet">• Manifestation 1: Everyday prejudices and religious stereotypes.</div>
+              <div id="qx3-p3" class="qe-bullet">• Manifestation 2: Political mobilization using sacred symbols and leaders.</div>
+              <div id="qx3-p4" class="qe-bullet">• Manifestation 3: Extreme forms like majoritarianism or demands for separatism.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":2718539183,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D flowchart showing 'Religion' splitting into 'Personal Faith' (peaceful) and 'Communalism' (a chain reaction leading to political mobilization and social conflict).</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D flowchart showing 'Religion' splitting into 'Personal Faith' (peaceful) and 'Communalism' (a chain reaction leading to political mobilization and social conflict).</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Secularism: The Constitutional Framework and Indian Model of Secularism -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Secularism: The Constitutional Framework and Indian Model of Secularism</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Secularism: Separation of religion from state power</div>
+              <div id="qx4-p1" class="qe-bullet">• No official state religion in the Indian Constitution</div>
+              <div id="qx4-p2" class="qe-bullet">• Fundamental Rights: Articles 15 and 25-28 protect religious freedom</div>
+              <div id="qx4-p3" class="qe-bullet">• Indian Model: Principled distance vs. Western strict separation</div>
+              <div id="qx4-p4" class="qe-bullet">• State intervention is permitted to ensure social justice and equality</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3698771180,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D scale balancing a religious symbol on one side and a Constitution book on the other, with a glowing shield representing the State protecting both.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D scale balancing a religious symbol on one side and a Constitution book on the other, with a glowing shield representing the State protecting both.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Caste and Politics: How Caste Influences Political Mobilization and Voting -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Caste and Politics: How Caste Influences Political Mobilization and Voting</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Caste influences politics through candidate selection based on constituency demographics.</div>
+              <div id="qx5-p1" class="qe-bullet">• Political parties use caste-based mobilization to build large 'Vote Banks'.</div>
+              <div id="qx5-p2" class="qe-bullet">• Caste mobilization can sometimes lead to social tension and communal conflict.</div>
+              <div id="qx5-p3" class="qe-bullet">• Politics influences caste by encouraging groups to organize and form larger coalitions.</div>
+              <div id="qx5-p4" class="qe-bullet">• The 'Politicization of Caste' transforms rigid hierarchies into fluid interest groups.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":3855489258,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation: one side shows a political map with caste-colored zones, the other shows small caste icons merging into larger, organized political blocks.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A 3D split-screen animation: one side shows a political map with caste-colored zones, the other shows small caste icons merging into larger, organized political blocks.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Politics in Caste: Caste Groups, Coalitions, and Political Identity -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Politics in Caste: Caste Groups, Coalitions, and Political Identity</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Politics in Caste: A two-way relationship between social identity and power.</div>
+              <div id="qx6-p1" class="qe-bullet">• Caste Expansion: Small groups merge to form larger, more powerful coalitions.</div>
+              <div id="qx6-p2" class="qe-bullet">• New Identities: Emergence of political categories like 'Backward' and 'Forward'.</div>
+              <div id="qx6-p3" class="qe-bullet">• Democratic Empowerment: Marginalized groups use caste to demand rights and resources.</div>
+              <div id="qx6-p4" class="qe-bullet">• The Risk: Potential for social fragmentation and narrow identity-based politics.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":4102156254,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D motion graphic showing small, separate colored spheres (sub-castes) slowly drifting together to merge into larger, glowing clusters (coalitions) as a political map of India pulses in the background.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D motion graphic showing small, separate colored spheres (sub-castes) slowly drifting together to merge into larger, glowing clusters (coalitions) as a political map of India pulses in the background.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Intersectionality: How Gender, Religion, and Caste Overlap in Social Reality -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Intersectionality: How Gender, Religion, and Caste Overlap in Social Reality</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Intersectionality: The overlap of gender, religion, and caste identities.</div>
+              <div id="qx7-p1" class="qe-bullet">• Social identities are not silos; they interact to create unique experiences.</div>
+              <div id="qx7-p2" class="qe-bullet">• Double/Triple Burden: How multiple identities compound discrimination.</div>
+              <div id="qx7-p3" class="qe-bullet">• Why 'Women's Issues' are not a monolith in a diverse society.</div>
+              <div id="qx7-p4" class="qe-bullet">• The importance of an intersectional lens for inclusive democratic policies.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":2967471956,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D model of a glowing Venn diagram where three rings—Gender, Religion, and Caste—overlap, with the central intersection glowing brighter to represent complex social reality.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D model of a glowing Venn diagram where three rings—Gender, Religion, and Caste—overlap, with the central intersection glowing brighter to represent complex social reality.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Case Studies and Real-World Examples: Analyzing Social Divisions in India -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Case Studies and Real-World Examples: Analyzing Social Divisions in India</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Panchayati Raj: How reservation changes local development priorities.</div>
+              <div id="qx8-p1" class="qe-bullet">• Communalism: The use of religious symbols for political mobilization.</div>
+              <div id="qx8-p2" class="qe-bullet">• Caste Coalitions: How caste groups act as organized political vote banks.</div>
+              <div id="qx8-p3" class="qe-bullet">• Politics in Caste: Sub-castes merging to gain political bargaining power.</div>
+              <div id="qx8-p4" class="qe-bullet">• Intersectionality in Practice: How multiple identities create layered inequality.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2649974273,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing a local village council meeting, a political rally, and a complex social web diagram connecting gender, religion, and caste icons.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A 3D split-screen animation showing a local village council meeting, a political rally, and a complex social web diagram connecting gender, religion, and caste icons.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Common Mistakes: Avoiding Conceptual Confusion in Social Science Answers -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Common Mistakes: Avoiding Conceptual Confusion in Social Science Answers</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Don't confuse Communalism (division) with Secularism (equality).</div>
+              <div id="qx9-p1" class="qe-bullet">• Distinguish Sexual Division of Labour from Gender Inequality.</div>
+              <div id="qx9-p2" class="qe-bullet">• Differentiate 'Caste in Politics' from 'Politics in Caste'.</div>
+              <div id="qx9-p3" class="qe-bullet">• Use Intersectionality to show how identities overlap.</div>
+              <div id="qx9-p4" class="qe-bullet">• Avoid absolute statements; use words like 'often' or 'tends to'.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":1328496262,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation showing two diverging paths: one labeled 'Conceptual Clarity' with organized icons, and one labeled 'Common Errors' with tangled, messy threads.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A 3D split-screen animation showing two diverging paths: one labeled 'Conceptual Clarity' with organized icons, and one labeled 'Common Errors' with tangled, messy threads.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Exam Technique: How to Structure Long Answers and Analyze Data/Cartoons -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Exam Technique: How to Structure Long Answers and Analyze Data/Cartoons</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Use the I-B-C formula: Introduction, Body, and Conclusion.</div>
+              <div id="qx10-p1" class="qe-bullet">• Break long answers into sub-headings and bullet points.</div>
+              <div id="qx10-p2" class="qe-bullet">• Analyze cartoons using the O-I-M technique: Observe, Interpret, Message.</div>
+              <div id="qx10-p3" class="qe-bullet">• Don't just read data; analyze trends using comparative words.</div>
+              <div id="qx10-p4" class="qe-bullet">• Underline key terms and use headings to improve readability.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":858613575,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a messy, unorganized paragraph transforming into a clean, structured answer with clear headings and underlined keywords.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D split-screen showing a messy, unorganized paragraph transforming into a clean, structured answer with clear headings and underlined keywords.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Full Chapter Recap and High-Yield Question Drill -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Full Chapter Recap and High-Yield Question Drill</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Recap: Gender (Public/Private), Religion (Communalism/Secularism), Caste (Mobilization)</div>
+              <div id="qx11-p1" class="qe-bullet">• High-Yield: How Communalism challenges democratic values</div>
+              <div id="qx11-p2" class="qe-bullet">• High-Yield: Dimensions of Gender Inequality in India</div>
+              <div id="qx11-p3" class="qe-bullet">• High-Yield: The reciprocal relationship between Caste and Politics</div>
+              <div id="qx11-p4" class="qe-bullet">• Exam Technique: Use the P-E-E method (Point, Explanation, Example)</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":2785448879,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D digital study desk where textbook concepts transform into glowing, organized icons and structured mind-maps as the teacher speaks.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A 3D digital study desk where textbook concepts transform into glowing, organized icons and structured mind-maps as the teacher speaks.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Gender, Religion and Caste today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Why Gender, Religion, and Caste Shape Our Democracy <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Gender and Politics: Public/Private Division and Sexual Division of Labour <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Gender Inequality: Women's Political Representation and Feminist Movements <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Religion, Communalism, and Politics: Defining Communalism and its Manifestations <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Secularism: The Constitutional Framework and Indian Model of Secularism <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Caste and Politics: How Caste Influences Political Mobilization and Voting <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Politics in Caste: Caste Groups, Coalitions, and Political Identity <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Intersectionality: How Gender, Religion, and Caste Overlap in Social Reality <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Case Studies and Real-World Examples: Analyzing Social Divisions in India <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Common Mistakes: Avoiding Conceptual Confusion in Social Science Answers <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Exam Technique: How to Structure Long Answers and Analyze Data/Cartoons <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Full Chapter Recap and High-Yield Question Drill <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our deep dive into Class 10 Civics. Today, we are starting a very important chapter: Gender, Religion, and Caste. Now, you might ask, why are we studying these three specific social divisions in a Civics lesson? Isn't politics about parties, elections, and government policies? Well, yes, it is. But to understand how democracy truly works in a diverse country like India, we must understand the social identities that people carry with them every single day. In this first part, we are going to explore the fundamental connection between social divisions and political life. Think about the world around you. When people vote, do they only think about the economy or infrastructure? Often, they also think about their identity—their gender, their religious community, or their caste. This is not necessarily a bad thing, but it is a reality of how society is structured. Our chapter is divided into three major pillars. The first pillar is Gender. We will look at how the division of work between men and women is not just a domestic issue, but a political one. We will discuss how the 'private' sphere of the home and the 'public' sphere of politics have historically been separated, and how feminist movements have fought to bridge that gap. The second pillar is Religion. This is a sensitive but crucial topic. We will examine how religious identity can lead to communalism, where one religion is seen as superior to others, and how this can threaten the very fabric of a democracy. Most importantly, we will study Secularism—the constitutional principle that ensures India remains a home for all faiths. The third pillar is Caste. This is a unique feature of Indian society. We will analyze how caste influences political mobilization—how people vote based on caste identities—and conversely, how politics itself can influence and change the nature of caste groups. Now, a very important question for your exams: Does social division always lead to conflict? The answer is no. Social divisions can be expressed in politics in two ways. One way is through healthy competition and representation, where marginalized groups use politics to demand their rights. The other way is through unhealthy conflict, where divisions lead to tension, violence, or even the breakdown of democratic values. Our goal in this chapter is to understand this fine line. We want to see how democracy can actually become a tool to manage these differences rather than a tool to deepen them. As we move through this series of twelve lessons, we will not just learn definitions; we will analyze how these identities shape the laws of our land and the lives of every citizen. So, keep your textbooks ready, because we are about to unpack the complex, beautiful, and sometimes challenging social reality of India. Let's begin our journey into the heart of Indian democracy.","Welcome back. In our previous session, we looked at how social identities shape democracy. Today, we dive deep into the first major dimension: Gender. Now, when we talk about gender in politics, we aren't talking about biological differences between men and women. We are talking about the social roles that society assigns to them. This brings us to a crucial concept: the Public/Private division. If you look at most traditional households, you will notice a pattern. Most of the work done inside the home—cooking, cleaning, washing clothes, and looking after children—is seen as the responsibility of women. This is the 'private' sphere. On the other hand, the work done outside the home—earning money, participating in community decisions, and holding political office—is seen as the domain of men. This is the 'public' sphere. This division is not natural; it is socially constructed. This leads us to a very important term: the Sexual Division of Labour. This term describes a system where all work inside the home is either done by the women of the family or organized by them through domestic help, while men are expected to work outside to earn a livelihood. Think about it: even though women do a massive amount of work, it is often undervalued and unpaid. Because this work is confined to the 'private' sphere, it is often ignored in our economic statistics and, more importantly, in our political discussions. This is where the problem begins. When women's work is not recognized as 'productive' or 'economic' work, they are excluded from the decision-making processes that shape society. This creates a gap between the gendered division of labor and political power. Even though women constitute half of the population, their presence in the public sphere—in parliaments, legislatures, and leadership roles—has historically been very low. The sexual division of labour essentially traps women in the private domain, making it harder for them to enter the public arena of politics. So, to summarize this concept: the division is not about biology, but about social roles. The private sphere is seen as women's territory, and the public sphere is seen as men's territory. This division is maintained through the sexual division of labour, which limits women's participation in the political life of the nation. Understanding this is the first step to understanding why gender inequality persists in our political systems.","Welcome back. In our previous segment, we discussed how the sexual division of labour creates a gap between the public and private spheres. But how does this inequality translate into actual power? To understand this, we must look at women's political representation. In a democracy, the strength of your voice depends on your ability to participate in decision-making. However, if women are not represented in the halls of power, the laws and policies made will often fail to address their specific needs. Let's look at the data. Globally and in India, the representation of women in legislatures is very low. In India, the proportion of women in the Lok Sabha has historically been quite low, often struggling to cross even fifteen percent. Even in State Assemblies, the numbers are much lower. This is a significant problem because when women are absent from politics, their issues—like domestic violence, reproductive rights, or equal pay—remain secondary in the political agenda. Now, you might ask, what is being done to change this? This brings us to the concept of Feminist Movements. When we use the term 'Feminist', we are referring to a movement aimed at achieving equality in personal and family life as well as in public affairs. It is a movement that seeks to challenge the patriarchal structures that keep women subordinate. Feminist movements have fought for various rights: the right to vote, the right to education, and the right to work. These movements have been instrumental in shifting the conversation from 'women's issues' to 'human rights'. In India, the struggle has been multi-faceted. It involves fighting against social evils like dowry and domestic violence, while also pushing for legal reforms. A very important development in the Indian political context is the attempt to introduce reservations for women. You may have heard about the Women's Reservation Bill. While women's representation in local government bodies—the Panchayats and Municipalities—is already quite high due to the one-third reservation policy, the struggle for similar reservation in the Lok Sabha and State Assemblies has been long and complex. This reservation is not just about giving seats to women; it is about ensuring that the perspective of half the population is integrated into the very foundation of our governance. To summarize this section: gender inequality is not just a social issue; it is a political issue. Low political representation means low influence, and low influence means the needs of women are often ignored. Feminist movements act as the catalyst for change, pushing the state to recognize these inequalities and implement corrective measures like reservations. As we move forward, remember that political power is the tool used to transform social status. If women do not hold power, social status is unlikely to change.","Welcome back. In our previous session, we looked at how religion enters the political arena. Today, we are diving deep into a very sensitive but crucial concept: Communalism. To understand this, we first need to distinguish between religion as a personal belief and religion as a political tool. In a democracy, people have the right to follow any faith. However, problems arise when religion is used to create divisions. So, what exactly is communalism? Communalism is a situation where a particular religious group tries to establish its own dominance over other religious groups. It is based on the idea that people who follow the same religion have common interests, and these interests are different from, or even hostile to, the interests of people belonging to other religions. This is the core logic of communalism. It assumes that religion is the principal basis of a social community. Now, let us look at how this manifests in politics. Communalism doesn't just appear in one form; it shows up in various ways, ranging from everyday beliefs to extreme violence. The first manifestation is in our everyday beliefs. This includes religious prejudices, stereotypes of other communities, and the belief in the superiority of one's own religion over others. These are often subtle, but they form the foundation of communal thinking. The second manifestation is in political mobilization. This is when politicians use sacred symbols, religious leaders, or emotional appeals to religious sentiments to bring voters together. They might say, 'We must protect our faith,' to create a sense of unity within one group by making them fear another group. This is a very common tactic used during election campaigns. The third manifestation is the quest for political dominance. For a majority community, this might take the form of 'majoritarian dominance,' where they try to impose their will on everyone else. For a minority community, it might manifest as a desire to form a separate political unit or even a separate nation. This is the most extreme and dangerous form of communalism. Finally, the most violent manifestation is communal riots and massacres. When communalism reaches its peak, it leads to large-scale violence, loss of life, and deep social fractures, as we have seen in various parts of history. It is important to remember that communalism is not about being religious; it is about using religion to create 'us versus them' identities. While religious identity can be a source of community and values, communalism turns that identity into a weapon of political power. As students of civics, your task is to recognize these patterns. When you see political rhetoric that relies on religious fear rather than policy or development, you are witnessing the manifestation of communalism. Understanding this distinction is vital for protecting the democratic fabric of our nation.","Welcome back. In our previous session, we explored how communalism can become a threat to democracy when religion is used to create divisions. Today, we look at the constitutional shield that protects our nation from this: Secularism. Now, what exactly is secularism? In a simple sense, it is the principle of separating religion from the state. But in a diverse country like India, this separation isn't just a simple wall; it is a complex, active framework. Let's start with the core idea. A secular state is one that does not officially promote any one religion as the state religion. Unlike some countries where a specific religion has special status, the Indian Constitution ensures that the state remains neutral. This neutrality is not just a passive lack of interest; it is an active commitment to equality. The Indian Constitution provides several fundamental rights that form the backbone of our secularism. First, Article 15 prohibits discrimination on grounds of religion, race, caste, sex, or place of birth. This is crucial because it ensures that no citizen is denied access to public spaces, shops, or government services based on their faith. Second, Article 25 to 28 give every citizen the freedom to profess, practice, and propagate any religion of their choice. This means you have the right to follow your rituals, celebrate your festivals, and share your beliefs. Now, this brings us to a very important distinction. Students often ask: 'Is the Indian model of secularism the same as the Western model?' The answer is no. In many Western countries, there is a 'strict separation' or a 'wall of separation' between the church and the state. In those models, the state cannot interfere in religious affairs at all, and religion cannot influence state policy. However, the Indian model is different. We follow what is often called 'principled distance.' This means that while the state does not have a religion, it can and does intervene in religious matters to achieve social justice. For example, the state can intervene to abolish social evils like untouchability or to ensure that women have equal rights in religious institutions. This intervention is not seen as an attack on religion, but as a way to uphold the constitutional values of equality and dignity. Another unique feature of Indian secularism is that the state provides support to religious communities to protect their identity. This includes providing subsidies for pilgrimages or allowing religious institutions to manage their own educational affairs. This is why we say that in India, secularism is not about the absence of religion, but about the equal respect for all religions, a concept we call Sarva Dharma Sambhava. To summarize, the Indian model is a balancing act. It protects the individual's right to practice their faith while also ensuring that religious practices do not violate the fundamental rights of others or the principles of equality. It is a dynamic framework designed to manage the immense diversity of our society. As you prepare for your exams, remember that Indian secularism is characterized by three things: the absence of a state religion, the freedom of individuals to practice faith, and the state's power to intervene for the sake of social reform and equality.","Welcome back. In our previous sessions, we explored how social divisions like gender and religion shape our democracy. Today, we dive into a very specific and complex dimension: how caste influences politics. Now, many people ask, 'Does politics just follow caste, or does caste follow politics?' The answer is that it is a two-way street. Let us first look at how caste influences politics. In a country like India, where caste is deeply rooted, political parties often find it easier to mobilize voters by appealing to their caste identities. This is what we call 'Caste-based Mobilization.' When elections approach, political parties tend to choose candidates based on the caste composition of the constituency. Why? Because they want to ensure that the majority caste in that area feels represented. This makes the voters feel that their specific interests are being voiced in the legislature. Furthermore, political parties often form 'Caste Coalitions.' They try to bring together different sub-castes or even different castes that share similar socio-economic interests to create a large, winning vote bank. You might hear terms like 'Vote Banks' in the news. This refers to a large group of voters who consistently vote for a particular party, often because of their caste identity. However, we must be careful. While this mobilization can give a voice to marginalized groups, it also has a darker side. It can lead to tensions, conflict, and even violence between different caste groups, turning elections into a battle of identities rather than a debate on development or policy. Now, let us flip the perspective. How does politics influence caste? This is a crucial concept for your exams. Politics does not just reflect caste; it also transforms it. When caste groups enter the political arena, they stop being isolated, small units. To gain more power, they try to become larger and more organized. This happens through a process of negotiation and coalition. For example, several smaller castes might come together to form a larger social group to demand better resources or representation. We call this 'Politicization of Caste.' Instead of caste being a rigid, unchanging hierarchy, politics makes it more fluid. Caste groups start acting like interest groups, much like labor unions or farmers' associations, demanding their rights from the state. They use the democratic tools of voting, campaigning, and lobbying to assert their presence. So, to summarize this two-way relationship: Caste influences politics through candidate selection and vote-bank mobilization, while politics influences caste by forcing groups to organize, expand, and negotiate for power. This dynamic is what makes the relationship between caste and democracy in India so unique and constantly evolving. As we move forward, remember that while caste plays a role, it is not the only factor. Economic status, education, and regional issues also play massive roles in how people vote.","Welcome back. In our previous segment, we discussed how caste influences voting patterns and political mobilization. But now, we need to look at a much deeper, more complex dimension. We often ask: Does politics simply reflect caste, or does caste also change because of politics? The answer is that it is a two-way street. While we have seen how caste affects politics, we must now understand how politics affects caste. This is what we call 'Politics in Caste.' First, let us understand how caste groups transform when they enter the political arena. In a democracy, caste groups do not remain static or isolated. Instead, they attempt to become larger and more organized. A small caste group might try to merge with other similar castes to form a larger coalition. For example, several sub-castes might come together to form a 'backward caste' group or a 'dominant caste' group to increase their bargaining power with the government. This process of expansion is a direct result of political competition. Second, let us look at the concept of 'Coalitions.' In modern Indian politics, no single caste can win an election alone. Therefore, political parties engage in complex calculations. They form 'caste coalitions' by appealing to multiple caste groups simultaneously. This leads to the formation of various political identities. A person might identify as a member of a specific caste, but in the voting booth, they might act as part of a larger 'vote bank' composed of several allied castes. Third, we must discuss the concept of 'New Types of Caste Groups.' Politics has given rise to new categories like 'Backward' and 'Forward' caste groups. These are not traditional religious or ritualistic categories, but political ones. These labels are used to demand reservations, better access to education, and more representation in government jobs. Fourth, let us examine the 'Positive Side' of this phenomenon. While many criticize caste-based politics for creating divisions, there is a significant democratic advantage. When caste enters politics, it allows marginalized and oppressed groups to voice their grievances. It provides a platform for those who were historically silenced to demand their share in power and resources. It turns caste from a purely social hierarchy into a tool for political negotiation and empowerment. However, we must also be aware of the 'Negative Side.' The intense focus on caste can lead to tensions between different groups, potentially causing social fragmentation. It can sometimes lead to 'identity politics' where the goal is not development for all, but only for one's own caste group. To summarize this complex relationship: Politics does not just use caste; it reshapes it. It forces caste groups to organize, merge, and form new identities to compete for power. This creates a dynamic where social identity and political strategy are constantly influencing one another. As you prepare for your exams, remember this distinction: 'Caste in Politics' refers to how caste affects elections, while 'Politics in Caste' refers to how political processes change the structure and organization of caste groups themselves.","Welcome back. So far, we have looked at gender, religion, and caste as three distinct pillars of social division. We studied how gender roles are assigned, how religious identities can lead to communalism, and how caste structures influence political voting patterns. But in the real world, people do not live as just one identity. A person is not only a woman, or only a member of a certain religion, or only part of a specific caste. They are all of these things at once. This brings us to a crucial concept in sociology and political science: Intersectionality. Think of it as a crossroad where different social identities meet. When these identities overlap, they create unique experiences of discrimination or privilege that cannot be understood by looking at one factor alone. Let us take an example. Imagine a woman living in a rural village. If we only look at her gender, we see she faces the sexual division of labour. If we only look at her caste, we see the hierarchy of social status. But if we look at both, we see that a woman from a marginalized caste faces a double or even triple burden. She may face gender-based discrimination from men, and she may face caste-based discrimination from higher-caste individuals, including women from those higher castes. This is the essence of intersectionality. It tells us that the experience of a Dalit woman is fundamentally different from the experience of an upper-caste woman, even though they both face gender inequality. Similarly, a religious minority might face challenges that are compounded by their economic status or their caste identity. In our political system, this means that 'women's issues' are not a monolith. A policy that helps urban, upper-caste women might not reach the needs of rural, tribal, or lower-caste women. This is why, when we analyze social reality, we must avoid the mistake of oversimplification. We cannot simply say 'women face inequality' and assume it is the same for everyone. We must ask: 'Which women? What is their religious background? What is their caste position?' This intersectional lens is vital for making democracy truly inclusive. If our laws and political movements only address one layer of identity, they leave the most vulnerable people behind. For example, if a movement fights for women's rights but ignores the specific struggles of women from oppressed castes, it is not truly representing all women. In the context of Indian politics, political parties often try to navigate these overlaps. They might create 'coalitions' of identities to build a larger vote bank. They might target a specific intersection, such as 'women from a particular religious community,' to gain support. Understanding these overlaps helps us see why certain social groups remain marginalized despite various constitutional protections. It explains why social movements often have to work on multiple fronts at once—fighting for gender equality, fighting against communalism, and fighting against casteism simultaneously. As you prepare for your exams, remember this: social divisions are not separate silos. They are interconnected webs. When you write an answer about any social division, try to think about how it might interact with another. This depth of analysis is what distinguishes a good answer from a great one. In our next segment, we will move from theory to practice by looking at specific case studies and real-world examples to see these intersections in action.","Welcome back. In our previous section, we explored how gender, religion, and caste overlap through intersectionality. Now, it is time to step out of the textbook definitions and look at how these forces actually play out in the real world. To truly understand social divisions, we must analyze specific case studies. Let us start with a case study on Gender and Political Participation. Consider the data from the Panchayati Raj institutions in India. Since the 73rd and 74th Constitutional Amendments, one-third of seats in local government bodies have been reserved for women. In real-world observations, we see that when women enter these local leadership roles, the focus of development shifts. For example, studies show that women leaders are more likely to prioritize investments in clean drinking water, sanitation, and primary education—issues that directly affect the daily lives of women. This is a practical example of how gendered perspectives change political priorities. Next, let us look at a case study involving Religion and Communalism. We often see how political mobilization uses religious symbols to create a sense of 'us versus them.' A real-world example can be seen during election cycles in various states, where certain religious festivals or historical narratives are used to polarize voters. This is not just about faith; it is about how religious identity is converted into a political tool to consolidate a vote bank. This demonstrates the transition from religious identity to communalism, where one religion is pitted against another for political gain. Now, let us analyze a case study on Caste and Political Mobilization. Think about the phenomenon of 'Caste Coalitions' or 'Vote Banks.' In many Indian elections, we observe that political parties do not just appeal to individuals; they appeal to entire caste groups. For instance, a party might promise specific reservation benefits or social dignity to a particular Dalit or OBC community to secure their collective vote. This shows how caste is not just a social division but a powerful political interest group. However, there is a flip side. We also see 'Politics in Caste,' where smaller sub-castes merge to form larger, more powerful political blocks to negotiate better with the state. Finally, let us look at a complex, real-world scenario where all three intersect. Imagine a rural woman from a marginalized caste belonging to a minority religious group. Her experience of inequality is not just about her gender, her religion, or her caste in isolation. If she seeks access to a public well, she might face gendered barriers, caste-based discrimination, and religious exclusion all at once. This is the reality of social stratification in India. By studying these specific instances, we see that social divisions are not static categories; they are dynamic forces that interact with the democratic process every single day. As you prepare for your exams, remember that when you write about these topics, using these real-world patterns will make your answers much more impactful.","Welcome back. We have covered the complexities of gender, religion, and caste. Now, as we approach the examination phase, we need to talk about something crucial: how to avoid common conceptual traps. In Social Science, many students lose marks not because they don't know the content, but because they confuse closely related terms. Let's tackle the first major pitfall: the confusion between Communalism and Secularism. Many students write that 'Communalism is the practice of secularism' or vice versa. This is fundamentally wrong. Remember, Communalism is a situation where religion is used to create divisions and promote the interests of one religious group over others. It is a challenge to democracy. Secularism, on the other hand, is the constitutional solution to communalism. It is the principle that the state has no official religion and treats all faiths equally. When writing your answers, never use these terms interchangeably. Next, let's look at the Gender section. A very common mistake is confusing the 'Sexual Division of Labour' with 'Gender Inequality'. While they are linked, they are not the same. The Sexual Division of Labour refers to the social pattern where women are expected to do all housework and men are expected to work outside. Gender Inequality is the broader result of this and other factors, such as the gap in literacy rates or political representation. If a question asks about the division of labour, focus on the roles assigned to men and women. If it asks about inequality, focus on the lack of opportunities and rights. Now, let's address the Caste section. Students often struggle to distinguish between 'Caste in Politics' and 'Politics in Caste'. This is a high-yield area for examiners. 'Caste in Politics' means how caste identity influences elections, such as parties choosing candidates based on the caste composition of a constituency. 'Politics in Caste' is the opposite; it is how political mobilization changes the caste structure itself. This happens when smaller caste groups form coalitions or join together to become a bigger political force. If you swap these two definitions in an exam, you will lose the core of the answer. Another mistake is treating Gender, Religion, and Caste as isolated silos. In reality, they overlap. This is what we call intersectionality. If you are writing a long answer about a woman's experience in rural India, do not just talk about her gender. Mention how her caste or her religious community might further influence her access to resources. This shows the examiner that you have a deep, nuanced understanding. Finally, avoid the trap of making 'Absolute Statements'. In Social Science, avoid saying 'Caste is the only reason for voting patterns' or 'Religion always causes conflict'. Use qualifying words like 'often', 'tends to', 'can lead to', or 'is a significant factor'. This makes your answer academically sound and prevents you from making sweeping generalizations that are factually incorrect. By keeping these distinctions clear—Communalism versus Secularism, Division of Labour versus Inequality, and Caste in Politics versus Politics in Caste—you will move from a basic understanding to an advanced, scoring level of analysis.","Welcome back. We have covered the complex layers of gender, religion, and caste. Now, it is time to ensure your hard work translates into top marks. In the Board Exams, knowing the content is only half the battle; the other half is how you present it. Let's start with the five-mark long answers. A common mistake students make is writing one massive, unbroken paragraph. Never do this. For a long answer, follow the 'I-B-C' formula: Introduction, Body, and Conclusion. Your introduction should define the core concept. If the question is about communalism, start by defining what communalism means in a political context. Next, move to the Body. This is where you earn your marks. Use sub-headings. If you are discussing the impact of caste on politics, use sub-headings like 'Caste in Politics' and 'Politics in Caste'. Under each heading, write short, crisp paragraphs. Use bullet points for features, causes, or consequences. This makes it easy for the examiner to see that you know the points. Finally, provide a Conclusion. Summarize your main argument or link it back to the democratic values of the Indian Constitution. Now, let's talk about the tricky part: Data and Cartoons. In Civics, cartoons are not just drawings; they are political commentaries. When you see a cartoon in your paper, do not just describe what you see. Use the 'O-I-M' technique: Observe, Interpret, and Message. First, Observe. State what is literally happening. For example, 'The cartoon shows a woman standing behind a curtain while men discuss laws.' Second, Interpret. Connect the symbols to the chapter. 'The curtain represents the private/public division of labour.' Third, Message. What is the cartoonist trying to say about society or democracy? This is where the marks are. When analyzing data or statistical tables—perhaps regarding women's representation in Parliament—do not just repeat the numbers. Do not just say 'Women's participation is ten percent.' Instead, analyze the trend. Say, 'The data indicates a significant gap between gender population and political representation, suggesting a need for more reservation.' Always use comparative words like 'significantly higher,' 'stagnant,' or 'declining.' Lastly, a tip on handwriting and presentation. Use a black pen for headings and a blue pen for the text. Underline key terms like 'Secularism,' 'Patriarchy,' or 'Casteism' when you use them. This guides the examiner's eye to your knowledge. Remember, an organized answer sheet suggests an organized mind. Practice these techniques with the previous year's questions, and you will find that even the toughest questions become manageable. In our next video, we will do a full chapter recap and a high-yield question drill to get you exam-ready.","Welcome to the final stretch of our journey through Gender, Religion, and Caste. We have covered how social divisions shape our democratic fabric, and now, it is time to transition from learning to scoring. This session is your Exam Masterclass. We will begin with a rapid-fire recap of the three pillars. First, Gender: remember the distinction between the private and public division of labour and how feminist movements seek political representation to bridge the gap. Second, Religion: focus on the transition from religious identity to communalism, where one religion is pitted against another, and how our Constitution provides the shield of Secularism. Third, Caste: understand the dual relationship—how caste influences politics through vote banks, and how politics influences caste through the formation of coalitions. Now, let us move into our High-Yield Question Drill. I will present a question, give you a moment to think, and then provide the model structure. Question one: A five-mark question on 'How does communalism pose a challenge to democracy?' To score full marks, do not just define communalism. You must list its manifestations: the belief in religious superiority, the quest for political dominance, and the use of sacred symbols to create conflict. Structure your answer with clear headings. Question two: 'Explain the ways in which women face inequality in India.' Here, students often forget the economic aspect. You must mention the sexual division of labour, the declining child sex ratio, and the lack of representation in legislative bodies. Mention the 'Gender Gap' in literacy and wages to add weight to your answer. Question three: 'Discuss the relationship between caste and politics.' This is a classic. You must explain that while caste can lead to tension, it also allows marginalized groups to demand their share of power. Use terms like 'vote banks' and 'political mobilization.' Now, let us address the 'Common Pitfalls' section. Many students confuse 'Communalism' with 'Secularism.' Remember, Communalism is a problem, while Secularism is the constitutional solution. Another mistake is treating Caste as a static entity. In your answers, always mention that caste identities are fluid and change through political negotiation. For your long-form answers, follow the 'P-E-E' method: Point, Explanation, and Example. If you are analyzing a cartoon or a data table in the exam, always start by identifying the source, then describe the trend, and finally, link it back to the social division being discussed. For example, if a graph shows low female literacy, do not just say it is low; explain that this reflects the historical gender division of labour. Finally, a quick tip on time management. Do not spend more than ten minutes on a five-mark question. Use bullet points instead of long, dense paragraphs. This makes your answer sheet examiner-friendly. You have mastered the concepts; now, master the presentation. You are ready to ace your boards. Good luck!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c10-civics-03-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

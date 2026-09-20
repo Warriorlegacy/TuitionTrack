@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>The Address, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c11-english-14-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: The Psychology of War, Loss, and Memory -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: The Psychology of War, Loss, and Memory</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• War's impact: Moving beyond physical battles to internal psychological devastation.</div>
+              <div id="qx0-p1" class="qe-bullet">• The nature of loss: The vacuum left by the disappearance of family and security.</div>
+              <div id="qx0-p2" class="qe-bullet">• Memory as a double-edged sword: A source of connection versus a source of pain.</div>
+              <div id="qx0-p3" class="qe-bullet">• Objects as vessels: How material items hold the essence of lost identities.</div>
+              <div id="qx0-p4" class="qe-bullet">• The survival instinct: The tension between reclaiming the past and moving forward.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3899539015,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A cinematic 3D transition from a chaotic, blurred battlefield to a silent, dimly lit room with a single, dusty antique chair.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A cinematic 3D transition from a chaotic, blurred battlefield to a silent, dimly lit room with a single, dusty antique chair.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Contextual Background: Post-War Holland and the Refugee Experience -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Contextual Background: Post-War Holland and the Refugee Experience</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Historical Setting: Post-World War II Holland and the aftermath of Nazi occupation.</div>
+              <div id="qx1-p1" class="qe-bullet">• The Refugee Experience: Displacement of families and the loss of domestic stability.</div>
+              <div id="qx1-p2" class="qe-bullet">• The Concept of Safekeeping: The thin line between protection and opportunistic theft.</div>
+              <div id="qx1-p3" class="qe-bullet">• Social Dislocation: How war changes the meaning and value of personal belongings.</div>
+              <div id="qx1-p4" class="qe-bullet">• The Shift in Value: From cherished family heirlooms to mere material possessions.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":494546545,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a warm, lit dining room with family heirlooms; the other side shows a grey, desolate post-war street with shadows of moving figures.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A split-screen 3D animation: one side shows a warm, lit dining room with family heirlooms; the other side shows a grey, desolate post-war street with shadows of moving figures.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Character Analysis: The Narrator's Emotional Journey and Motivation -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Character Analysis: The Narrator's Emotional Journey and Motivation</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• The Narrator's journey: From nostalgic seeking to psychological liberation.</div>
+              <div id="qx2-p1" class="qe-bullet">• Motivation: Seeking physical anchors to reconnect with her lost mother.</div>
+              <div id="qx2-p2" class="qe-bullet">• The Disillusionment: Objects lose their meaning when severed from their context.</div>
+              <div id="qx2-p3" class="qe-bullet">• The Turning Point: Realizing material possessions cannot restore lost lives.</div>
+              <div id="qx2-p4" class="qe-bullet">• Resolution: Choosing to forget the address as an act of survival and agency.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2183440993,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation: one side shows a warm, glowing memory of a dining table, the other shows the same objects looking cold, dusty, and out of place in a dark room.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D split-screen animation: one side shows a warm, glowing memory of a dining table, the other shows the same objects looking cold, dusty, and out of place in a dark room.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Plot Breakdown Part I: The First Visit to Number 46, Marconi Street -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Plot Breakdown Part I: The First Visit to Number 46, Marconi Street</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• The Narrator's physical arrival at Number 46, Marconi Street.</div>
+              <div id="qx3-p1" class="qe-bullet">• Mrs. Dorling's cold and suspicious reaction to the visit.</div>
+              <div id="qx3-p2" class="qe-bullet">• The significance of the green knitted cardigan.</div>
+              <div id="qx3-p3" class="qe-bullet">• The tension between recognition and denial.</div>
+              <div id="qx3-p4" class="qe-bullet">• The failure of the first attempt to reclaim the past.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2124701392,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D cinematic shot of a narrow, grey street leading to a dark wooden door that opens only slightly, revealing a cold, unsmiling face.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A 3D cinematic shot of a narrow, grey street leading to a dark wooden door that opens only slightly, revealing a cold, unsmiling face.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Plot Breakdown Part II: The Confrontation with Mrs. Dorling -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Plot Breakdown Part II: The Confrontation with Mrs. Dorling</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• The visual confirmation: The green knitted cardigan.</div>
+              <div id="qx4-p1" class="qe-bullet">• Mrs. Dorling's psychological defense: Denial and coldness.</div>
+              <div id="qx4-p2" class="qe-bullet">• The door as a symbol of exclusion and rejection.</div>
+              <div id="qx4-p3" class="qe-bullet">• Materialism vs. Human Connection: The shift in Mrs. Dorling's character.</div>
+              <div id="qx4-p4" class="qe-bullet">• The narrator's disillusionment: The realization that the past cannot be reclaimed.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":723730852,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a warm, glowing memory of the cardigan, the other shows a cold, dimly lit doorway with Mrs. Dorling's suspicious eyes.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A split-screen 3D animation: one side shows a warm, glowing memory of the cardigan, the other shows a cold, dimly lit doorway with Mrs. Dorling's suspicious eyes.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Thematic Exploration: Materialism vs. Emotional Attachment -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Thematic Exploration: Materialism vs. Emotional Attachment</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Mrs. Dorling represents pure materialism and opportunistic acquisition.</div>
+              <div id="qx5-p1" class="qe-bullet">• The narrator views objects as emotional vessels of memory and identity.</div>
+              <div id="qx5-p2" class="qe-bullet">• The 'loss of soul' in objects when removed from their original context.</div>
+              <div id="qx5-p3" class="qe-bullet">• The conflict between the desire to remember and the need to move on.</div>
+              <div id="qx5-p4" class="qe-bullet">• The resolution: Choosing emotional liberation over material obsession.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1698348054,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a cold, metallic view of silver objects; the other shows the same objects glowing with warm, golden light and ghostly silhouettes of a happy family.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A split-screen 3D animation: one side shows a cold, metallic view of silver objects; the other shows the same objects glowing with warm, golden light and ghostly silhouettes of a happy family.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Symbolism and Imagery: The Significance of 'The Address' -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Symbolism and Imagery: The Significance of 'The Address'</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• The Address: A symbol of both connection to the past and alienation.</div>
+              <div id="qx6-p1" class="qe-bullet">• Belongings as 'Vessels of Memory': Objects carrying emotional weight.</div>
+              <div id="qx6-p2" class="qe-bullet">• Visual Dissonance: The 'strange' and 'cluttered' arrangement of items.</div>
+              <div id="qx6-p3" class="qe-bullet">• Decontextualization: How war strips objects of their original meaning.</div>
+              <div id="qx6-p4" class="qe-bullet">• The Act of Forgetting: Symbolizing liberation and moving forward.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2611080445,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D transition showing a beautiful antique teapot morphing into a cold, dusty object in a cluttered, dark room.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A 3D transition showing a beautiful antique teapot morphing into a cold, dusty object in a cluttered, dark room.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Literary Devices: Irony, Flashbacks, and Narrative Tone -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Literary Devices: Irony, Flashbacks, and Narrative Tone</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Situational Irony: The objects lose their meaning once they are reclaimed.</div>
+              <div id="qx7-p1" class="qe-bullet">• Flashbacks: Used to contrast pre-war warmth with post-war emptiness.</div>
+              <div id="qx7-p2" class="qe-bullet">• Narrative Tone: Restrained, melancholic, and emotionally detached.</div>
+              <div id="qx7-p3" class="qe-bullet">• The function of memory: Flashbacks provide emotional context for objects.</div>
+              <div id="qx7-p4" class="qe-bullet">• Exam Tip: Use words like 'resigned' and 'somber' to describe the tone.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2596016757,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a warm, glowing dining room from the past, the other shows the same objects in a cold, dimly lit, cluttered room.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A split-screen 3D animation: one side shows a warm, glowing dining room from the past, the other shows the same objects in a cold, dimly lit, cluttered room.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Detailed Textual Analysis: Key Passages and Vocabulary Building -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Detailed Textual Analysis: Key Passages and Vocabulary Building</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Analyzing the paradox: 'A room I knew and did not know'</div>
+              <div id="qx8-p1" class="qe-bullet">• Vocabulary: Feigned ignorance, Dislocation, and Sentimental Value</div>
+              <div id="qx8-p2" class="qe-bullet">• The transition from Nostalgia to Repulsion</div>
+              <div id="qx8-p3" class="qe-bullet">• Understanding the irony in the narrator's decision to forget</div>
+              <div id="qx8-p4" class="qe-bullet">• Key terms for exam success: Melancholy, Estrangement, and Detachment</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1968349069,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on the left, warm-toned memories of the objects in a cozy home; on the right, the same objects appearing cold, grey, and out of place in Mrs. Dorling's room.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation: on the left, warm-toned memories of the objects in a cozy home; on the right, the same objects appearing cold, grey, and out of place in Mrs. Dorling's room.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Common Student Mistakes: Misinterpreting Intent and Character Nuance -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Common Student Mistakes: Misinterpreting Intent and Character Nuance</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Mistake 1: Viewing the narrator's motive as greed rather than emotional connection.</div>
+              <div id="qx9-p1" class="qe-bullet">• Mistake 2: Labeling Mrs. Dorling as a simple villain instead of a wartime opportunist.</div>
+              <div id="qx9-p2" class="qe-bullet">• Mistake 3: Misidentifying 'alienation' and 'disillusionment' as mere anger.</div>
+              <div id="qx9-p3" class="qe-bullet">• Mistake 4: Failing to recognize the irony in the significance of the address.</div>
+              <div id="qx9-p4" class="qe-bullet">• Mistake 5: Treating the text as a physical war story instead of a psychological study.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3276592843,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: on one side, a glowing, warm memory of an object; on the other, the same object looking cold, grey, and out of place in a cluttered room.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation: on one side, a glowing, warm memory of an object; on the other, the same object looking cold, grey, and out of place in a cluttered room.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Critical Thinking Activity: Comparing Nostalgia with Obsession -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Critical Thinking Activity: Comparing Nostalgia with Obsession</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Defining Nostalgia: A bittersweet longing for the past.</div>
+              <div id="qx10-p1" class="qe-bullet">• Defining Obsession: An irrational and consuming preoccupation.</div>
+              <div id="qx10-p2" class="qe-bullet">• The Narrator's Shift: From seeking connection to seeking liberation.</div>
+              <div id="qx10-p3" class="qe-bullet">• Materialism vs. Meaning: Why objects lose their soul in new settings.</div>
+              <div id="qx10-p4" class="qe-bullet">• The Resolution: Choosing to forget the address to move forward.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2374874599,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a warm, glowing memory of a tea set; the other shows the same set in a cold, cluttered, and dark room.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation: one side shows a warm, glowing memory of a tea set; the other shows the same set in a cold, cluttered, and dark room.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Answer Writing Techniques and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Answer Writing Techniques and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Use precise adjectives: opportunistic, materialistic, and empathetic</div>
+              <div id="qx11-p1" class="qe-bullet">• Focus on themes: psychological displacement and the futility of materialism</div>
+              <div id="qx11-p2" class="qe-bullet">• Structure answers: Introduction, Textual Evidence, and Thematic Conclusion</div>
+              <div id="qx11-p3" class="qe-bullet">• Key Concept: Forgetting the address is an act of emotional liberation</div>
+              <div id="qx11-p4" class="qe-bullet">• Keywords for high marks: Nostalgia, Resilience, and Identity</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3169533827,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a dusty, cluttered antique room, the other shows a clean, bright, empty modern space, symbolizing the transition from memory to moving on.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split-screen 3D animation: one side shows a dusty, cluttered antique room, the other shows a clean, bright, empty modern space, symbolizing the transition from memory to moving on.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix The Address today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: The Psychology of War, Loss, and Memory <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Contextual Background: Post-War Holland and the Refugee Experience <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Character Analysis: The Narrator's Emotional Journey and Motivation <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Plot Breakdown Part I: The First Visit to Number 46, Marconi Street <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Plot Breakdown Part II: The Confrontation with Mrs. Dorling <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Thematic Exploration: Materialism vs. Emotional Attachment <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Symbolism and Imagery: The Significance of 'The Address' <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Literary Devices: Irony, Flashbacks, and Narrative Tone <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Detailed Textual Analysis: Key Passages and Vocabulary Building <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Common Student Mistakes: Misinterpreting Intent and Character Nuance <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Critical Thinking Activity: Comparing Nostalgia with Obsession <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Answer Writing Techniques and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello, students. Today, we begin our journey into one of the most poignant stories in your Class 11 English curriculum: 'The Address' by Marga Minco. Before we dive into the plot, we need to understand the heavy emotional landscape this story inhabits. This isn't just a story about a woman looking for her belongings; it is a profound psychological study of how war reshapes the human soul. When we talk about war, we often focus on battles, dates, and politics. But Marga Minco shifts our lens to the aftermath—the silent, internal devastation that follows the noise of conflict. The first pillar of our discussion today is the psychology of loss. Loss in this story is not just the loss of people, but the loss of a way of life. Imagine having your entire world—your home, your family, your sense of security—stripped away in an instant. This creates a vacuum in the human psyche. The narrator is navigating a world that looks the same on the surface, but for her, the emotional geography has completely changed. This leads us to our second pillar: the complex relationship between memory and trauma. Memory can be a sanctuary, a place where we go to feel close to what we have lost. However, memory can also be a burden. For the narrator, remembering is a double-edged sword. It provides a connection to her past, but it also highlights the painful void of her present. We must ask ourselves: Is remembering a way to heal, or is it a way to stay stuck in the pain? This brings us to the third pillar: the concept of 'belonging.' Objects, as we will see later, are more than just physical things. They are vessels for memory. A silver spoon or a tablecloth isn't just metal or fabric; it is a tangible link to a person who is no longer there. When these objects are removed from their original context, they lose their soul. The psychology of the story explores how humans try to reclaim their identity through these material remnants. As we move through this chapter, keep this central tension in mind: the struggle between the desire to remember and the necessity of forgetting in order to survive. The narrator is caught in a psychological tug-of-war. She wants to reclaim her past, yet she realizes that the past, once touched, might become unrecognizable or even haunting. This introduction sets the stage for a narrative that is less about 'what happened' and more about 'how it felt' to survive the unthinkable. As we prepare to enter the streets of post-war Holland in our next session, I want you to reflect on this question: If you lost everything that defined you, would you try to find it again, or would you walk away to start anew? Think about that, and let's prepare to dive into the context of the story.","Welcome back. In our last segment, we touched upon the heavy psychological weight of memory. Now, to truly understand why the narrator feels so disconnected from her belongings, we must step back from the personal story and look at the historical landscape of the time. We are looking at post-war Holland. To understand this story, you must understand the atmosphere of a country recovering from the Nazi occupation during the Second World War. Imagine a society where the social fabric has been torn apart. The war wasn't just a political event; it was a deeply personal trauma that redefined how people lived, who they trusted, and what they valued. When we talk about 'Post-War Holland,' we are talking about a period of profound transition. On one hand, there was the physical rebuilding of cities, but on the other, there was a massive, invisible emotional rebuilding happening. Let's focus on the 'Refugee Experience' mentioned in our title. In the context of this story, the narrator represents a class of people who were displaced—not just physically, but emotionally. During the war, many Jewish families in Holland had to make impossible choices. They had to decide what to carry, what to leave behind, and who to trust with their most precious possessions. This brings us to the concept of 'safekeeping.' You see, Mrs. Dorling wasn't just a neighbor; she was a person who stepped into the role of a 'protector' during a time of chaos. This was a common phenomenon. People used the cover of war to 'rescue' items from families who were likely to be deported or killed. However, there is a thin, dark line between 'safekeeping' and 'opportunism.' This is the tension that drives the entire plot. The narrator's mother trusted Mrs. Dorling because, in a time of war, trust is a survival mechanism, even if it is misplaced. The refugee experience is characterized by this sense of loss—not just the loss of life, but the loss of 'home' as a stable concept. For the narrator, her home was no longer a place of comfort; it was a place of disappearance. When the war ended, the survivors returned to a world that looked the same but felt entirely different. The objects they once owned—the silver cutlery, the antique plates, the heavy vases—had been moved, renamed, and integrated into the lives of strangers. This creates a sense of 'dislocation.' Even if you reclaim your physical things, the context that gave them meaning is gone. The war had changed the value of these objects. Before the war, they were symbols of family heritage and domestic warmth. Post-war, in the hands of someone like Mrs. Dorling, they become mere 'possessions' or trophies of survival. As we move forward, keep this historical tension in mind: the conflict between the sanctity of memory and the cold reality of post-war materialism. The narrator is not just looking for plates; she is navigating the wreckage of a world that was destroyed by conflict and rebuilt on the foundations of survival and, sometimes, greed.","Welcome back. In our previous segment, we established the grim backdrop of post-war Holland. Now, let us dive deep into the heart of Marga Minco's story: the narrator herself. To understand 'The Address,' you must understand that this is not just a story about lost belongings; it is a psychological study of a survivor. The narrator's journey is not linear; it is a complex oscillation between the desire to remember and the desperate need to forget. Let us break her character down into three distinct emotional phases. First, we have the Phase of Nostalgic Seeking. When the narrator decides to visit Number 46, Marconi Street, she is driven by a profound sense of loss. This isn't greed. It is a search for continuity. For her, those silver cutlery sets, the antique plates, and the heavy tablecloth are not just objects; they are physical anchors to a life that was violently interrupted by the war. She believes that by seeing these things, she might reconnect with the mother she lost. Her motivation here is restorative. She wants to reclaim a piece of her identity that was stripped away during the Holocaust. However, as we see in the text, this motivation is tinged with a certain vulnerability. She is searching for a ghost through the medium of material things. Second, we encounter the Phase of Disillusionment. This is the turning point of her emotional arc. When she finally stands in Mrs. Dorling's living room, something unexpected happens. She expects to feel a sense of homecoming, but instead, she feels a profound sense of alienation. This is a crucial psychological nuance. The objects, once so precious, now look 'strange' in a different setting. They have lost their 'soul' because they have been severed from their original context. The narrator realizes that the objects are merely shells. They are being used by people who do not understand their history or their emotional weight. This realization triggers a shift from nostalgia to repulsion. She sees the 'tasteless manner' in which her family's treasures are arranged, and it makes her feel like a stranger in her own history. This is where her character shows immense strength. She doesn't cling to the objects out of a sense of ownership; she recognizes that they no longer belong to her world. Finally, we reach the Phase of Resolution and Catharsis. This is the most important part of her journey. The narrator makes a conscious, painful, yet liberating decision: she decides to forget the address. This is not an act of defeat; it is an act of survival. She realizes that to move forward, she must leave the past behind. Her motivation shifts from 'reclaiming the past' to 'protecting her future.' By choosing to forget, she is reclaiming her agency. She refuses to let the trauma of the war and the clutter of dead memories define her existence. She chooses the emptiness of her small, rented room over the heavy, suffocating presence of a stolen past. As students, you must note this: her journey is a transition from being a victim of memory to being a master of her own life. She moves from a state of emotional dependency on the past to a state of psychological independence. When analyzing her in your exams, do not just call her 'sad.' Call her 'resilient.' She is a character who undergoes a process of emotional shedding to survive the weight of history.","Welcome back. Now that we understand the narrator's internal motivation, let's step directly into the heart of the story. We are moving from the psychological buildup to the actual action. This part of the chapter covers the narrator's very first attempt to reclaim her past by visiting the address she has memorized so carefully: Number 46, Marconi Street. Imagine the scene. The narrator is walking through a quiet, perhaps slightly desolate, post-war street. She is looking for a specific door. This isn't just a physical journey; it is a journey into her own memory. When she arrives at Number 46, she finds herself standing before a woman who opens the door just a crack. This woman is Mrs. Dorling. As soon as the narrator speaks and identifies herself, the reaction from Mrs. Dorling is not one of warmth or recognition. Instead, it is one of coldness and immediate suspicion. Mrs. Dorling's face shows no sign of welcome. She stands there, blocking the doorway, almost as if she is trying to physically prevent the narrator from entering her space. The narrator describes a moment of intense tension. She is looking for a connection to her mother, to her old life, but she is met with a wall of indifference. Mrs. Dorling's first words are essentially a denial. She says, 'I don't know you,' even though the narrator knows for a fact that this woman was the one who took their belongings during the war. This is a crucial moment of conflict. The narrator is searching for her identity through these objects, but the person holding them refuses to acknowledge her existence. Let's look at the sensory details Marga Minco uses here. The narrator notices how Mrs. Dorling is wearing her mother's green knitted cardigan. This is a massive clue. It is a piece of clothing that belongs to the narrator's past, yet it is being worn by a stranger who treats her like an intruder. This creates a sharp sense of irony and discomfort. The narrator feels a sudden urge to leave. The atmosphere is heavy, unwelcoming, and suffocating. She realizes that the person she expected to find—someone who might offer a sense of continuity—is actually a barrier. The visit is a failure in terms of emotional connection, but it is a success in terms of confirmation. The narrator confirms that the belongings are indeed there, behind that door, but she also confirms that the person guarding them has no intention of returning them. This first encounter sets the tone for the entire struggle between the past and the present. It establishes the theme of how people change, or how they reveal their true nature, when faced with the spoils of someone else's misfortune. As she walks away from Number 46, the narrator is left with a sense of profound emptiness. She has found the address, but she has not found her home. We will see how this realization shapes her next steps in the next segment.","Welcome back. In our previous segment, we saw the narrator arrive at Number 46, Marconi Street, only to be met with a cold, closed door. Now, let us dive into the heart of the tension: the actual confrontation with Mrs. Dorling. This is not just a meeting; it is a psychological clash between a woman seeking her past and a woman guarding stolen loot. When the door finally opens a crack, the narrator is met with a face that is completely devoid of warmth. Mrs. Dorling stands there, and her reaction is immediate and defensive. She doesn't recognize the narrator—or rather, she pretends not to. This is a crucial moment of denial. She looks at the narrator with an expression that says, 'You are a stranger, and you have no business here.' The narrator, however, is certain. She notices the green knitted cardigan that Mrs. Dorling is wearing. This is the 'smoking gun' of the story. The narrator remembers it clearly from her mother's belongings. This small, tactile detail confirms that she is at the right house and that Mrs. Dorling is indeed the woman who took their possessions. But instead of an apology or a welcome, the narrator is met with a chilling refusal. Mrs. Dorling says, 'I can't help you,' and begins to close the door. The narrator is left standing on the doorstep, feeling a sense of profound rejection. Think about the power dynamic here. Mrs. Dorling uses the door as a physical and emotional barrier. She is protecting the material wealth she has acquired, which was originally the narrator's family's property. The narrator's attempt to reconnect with her past is treated as an intrusion. This confrontation highlights the theme of dehumanization that often follows war. Mrs. Dorling has transitioned from a 'helpful acquaintance' during the war to a cold, opportunistic stranger in the peace. She has prioritized the objects over the human connection. For the narrator, this moment is a turning point. The hope she carried—the hope that seeing these objects would bring back her mother or the feeling of her old life—is suddenly met with the harsh reality of theft and indifference. The narrator realizes that the woman standing before her is not the person her mother trusted. This encounter is characterized by a lack of empathy. There is no shared history acknowledged, only a desperate attempt by Mrs. Dorling to maintain a lie. As we analyze this, notice the narrator's internal monologue. She isn't just angry; she is disillusioned. The confrontation serves to strip away the narrator's illusions about the continuity of her old life. The objects are there, but the soul of the home they belonged to is gone, replaced by the cold greed of Mrs. Dorling. This sets the stage for the narrator's eventual decision to leave the past behind.","Welcome back. In our previous segment, we saw the narrator face the cold, unwelcoming reality of Mrs. Dorling's house. Now, we must dive deeper into the heart of Marga Minco's story. We are going to explore a profound conflict that defines the human condition during times of crisis: the clash between Materialism and Emotional Attachment. This isn't just a story about stolen spoons or antique plates; it is a study of how we value things. Let's start by looking at Mrs. Dorling. To her, the belongings of the narrator's mother are merely 'possessions.' She views them through the lens of materialism. In her eyes, these objects represent status, utility, and perhaps, an opportunity for gain. She treats the silver cutlery and the heavy Hanukkah candle holder as trophies of survival and acquisition. For Mrs. Dorling, the value of an object is intrinsic to its physical presence and its cost. Now, contrast this with the narrator. For the narrator, these objects are not just 'things.' They are vessels of memory. When she looks at the tea set or the woolen tablecloth with the burn mark, she isn't seeing fabric or ceramic; she is seeing her mother's touch, the warmth of her old home, and the life that existed before the war tore everything apart. This is the essence of emotional attachment. The objects serve as a bridge to a lost past. However, the story introduces a complex twist in this theme. As the narrator sits in the room surrounded by her family's belongings, she experiences a strange phenomenon. The objects, once so precious, suddenly feel 'strange' and 'lifeless' in their new, cluttered, and tasteless environment. This is a crucial turning point. She realizes that the emotional connection she had with these items was tied to the people and the atmosphere of her former life. Once the people are gone and the context is destroyed, the objects lose their soul. They become mere matter. This leads us to the narrator's ultimate decision: to forget the address. By deciding to leave the belongings behind, she is choosing to prioritize her emotional healing over material recovery. She realizes that clinging to these physical remnants is an act of obsession that prevents her from moving forward. She chooses to detach herself from the material world to preserve her mental peace. So, the central theme teaches us that while objects can hold memories, they cannot replace the reality of the people we have lost. Materialism seeks to possess, but emotional attachment seeks to remember. In the end, the narrator learns that true liberation comes from letting go of the physical past to embrace the living present.","Welcome back. In our previous segment, we looked at the tense confrontation between the narrator and Mrs. Dorling. Now, we are going to dive deeper into the soul of the story. To truly understand Marga Minco's 'The Address', we must look beyond the plot and examine the symbols and imagery that give the narrative its haunting emotional weight. The most significant symbol, of course, is the title itself: 'Number 46, Marconi Street'. In most stories, an address is a way to find home. But here, the address becomes a symbol of a lost world. It represents a bridge between a painful past and an uncertain present. For the narrator, the address is initially a destination of hope—a place where her mother's belongings reside. However, as the story progresses, the address transforms into a symbol of alienation. It is a physical location that holds her memories, but once she sees those memories in a strange, tasteless environment, the address loses its sanctity. It becomes just a number on a street, stripped of its emotional warmth. Next, let us analyze the imagery of the 'belongings' themselves. The silver cutlery, the white teapot, the antique plates, and the heavy woolen tablecloth are not just household items. They are 'vessels of memory'. Marga Minco uses sensory imagery to make these objects feel alive. Think about the description of the tea service. When the narrator sees the tea being poured, the objects are no longer just metal and ceramic; they are echoes of her mother's voice and the life they once led. However, there is a crucial shift in the imagery. When the narrator enters Mrs. Dorling's house, the imagery becomes 'cluttered' and 'oppressive'. The objects are described as being arranged in a way that feels 'strange' and 'unnatural'. This is a powerful use of imagery to show the disconnection between the object and its original meaning. The objects have been 'decontextualized'. They are in a house that doesn't belong to them, used by people who don't value their history. This creates a sense of visual dissonance. The 'tasteless manner' in which the items are displayed serves as a metaphor for the loss of culture and dignity that war brings. Finally, we must discuss the symbol of 'the address' as an act of letting go. At the end of the story, the narrator decides to forget the address. This is a profound symbolic gesture. Forgetting the address is not an act of amnesia; it is an act of liberation. By deciding that 'the address' no longer matters, she is choosing to stop living in the shadow of the past. The address symbolizes the weight of nostalgia that can become a burden. By releasing the address, she is reclaiming her identity in the present. She realizes that while the objects are part of her past, they cannot define her future. The transition from wanting to 'possess' the objects to wanting to 'forget' the address marks her psychological evolution from a victim of war to a survivor of it. As you prepare your answers, remember that the objects are not just things; they are the ghosts of a life interrupted.","Welcome back. In our previous segment, we explored the tension between the narrator and Mrs. Dorling. Now, we are going to peel back the layers of Marga Minco's writing style. To truly master this chapter for your exams, you must look beyond 'what' happened and understand 'how' it is told. We will focus on three pillars: Irony, Flashbacks, and Narrative Tone. Let us start with Irony. Irony occurs when there is a gap between expectation and reality. In 'The Address', we see a profound sense of situational irony. The narrator travels all the way to Number 46, Marconi Street, seeking her mother's precious belongings to reclaim her past. However, when she finally sees them, they lose their value. The objects that were once symbols of warmth and family identity become 'strange' and 'lifeless' in a new, cold environment. The irony is that the very things she sought to find her connection to her mother actually become the reason she decides to forget her mother's past. The search for connection leads to the necessity of detachment. Next, let us discuss Flashbacks. This story is not told in a straight, linear line. Instead, it moves through the narrator's memory. The narrative structure relies heavily on flashbacks to bridge the gap between the 'pre-war' world and the 'post-war' reality. When the narrator looks at the silver cutlery or the heavy tea table, the story jumps back to her childhood. These flashbacks serve two purposes. First, they provide the necessary context for why these objects matter. Without them, we would just see old plates; with them, we see a lost way of life. Second, they create a sharp emotional contrast. The bright, secure memories of the past are juxtaposed against the grey, lonely reality of the present. This technique allows the reader to feel the weight of the narrator's loss. Finally, let's analyze the Narrative Tone. The tone is perhaps the most important element for your long-answer questions. The tone is not angry, nor is it overly sentimental. Instead, it is characterized by a sense of 'detachment' and 'melancholy.' It is a restrained, somber tone. The narrator speaks about her trauma with a quiet dignity. She does not scream about her loss; she observes it. This clinical, almost observational tone reflects the psychological state of a survivor. It is the voice of someone who has processed so much grief that they have become numb. This numbness is what allows her to make the final, difficult decision to leave the belongings behind. When writing your answers, avoid saying the narrator is 'sad.' Instead, use words like 'resigned,' 'melancholic,' or 'emotionally detached.' Understanding these devices will help you move from simple comprehension to high-level literary analysis. Let's move to the next section where we dive into the specific vocabulary used in these key passages.","Welcome back. Now that we have explored the themes and literary devices, it is time to dive deep into the actual text. In this segment, we will dissect specific passages that are crucial for your board exams and build a robust vocabulary to help you write sophisticated answers. Let us look at the first critical passage: the narrator's description of the room during her second visit. She says, 'It was a room I knew and did not know.' This is a profound paradox. She knows the objects—the silver cutlery, the table cloth, the antique plates—because they were part of her childhood. But she does not 'know' the room because the atmosphere is oppressive, stale, and stripped of its original soul. The objects have lost their 'life' because they are now disconnected from the people who loved them. When you write about this in an exam, use the term 'dislocation.' The objects are dislocated from their rightful context. Now, let us look at the vocabulary used to describe Mrs. Dorling's reaction. The text uses words like 'unwelcoming' and 'curt.' Mrs. Dorling’s behavior is not just rude; it is calculated. She shows no sign of recognition, which we call 'feigned ignorance.' She pretends not to know the narrator to avoid the moral obligation of returning the belongings. Another key phrase is 'the belongings that had once lived in my house.' Notice the verb 'lived.' Marga Minco personifies these objects. They weren't just things; they had a life, a history, and a connection to her mother. This brings us to a very important vocabulary word for your answers: 'Sentimental Value.' The narrator realizes that the value of these items is not their material worth, but their sentimental value, which has been tarnished by the cold, tasteless way Mrs. Dorling displays them. Let us analyze the description of the tea setting. The narrator mentions the 'heavy tea pot' and the 'white teapot with the gold rim.' These specific details serve a purpose. They evoke a sense of 'nostalgia'—a sentimental longing for the past. However, as the narrator looks at them, the nostalgia turns into 'repulsion.' This is a crucial transition. She moves from wanting to reclaim her past to wanting to forget it. This leads us to the final significant passage: her decision to leave. She says, 'Of all the things I had to forget, that would be the easiest.' This is deeply ironic. Forgetting is never easy, especially when it involves losing a mother and a home. But here, forgetting is an act of survival. She chooses to let go of the physical remnants to save her mental peace. To excel in your answers, try to incorporate these high-level words: 'Melancholy' for the sad tone, 'Estrangement' for the feeling of being a stranger in a familiar place, and 'Detachment' for her final decision to leave the address behind. Remember, the examiner is looking for your ability to connect these specific words to the narrator's psychological state. If you can explain how 'materialism' leads to 'estrangement,' you will score much higher. Let's pause here and ensure you have noted these terms in your notebooks.","Welcome back. Now that we have analyzed the text deeply, let's pivot to something crucial for your exams: avoiding the common traps that students fall into when writing long-form answers. In 'The Address', the nuance is everything. The first major mistake I see is misinterpreting the Narrator's intent. Many students write that the narrator goes to Marconi Street out of greed or a desire to reclaim her material possessions. This is incorrect. If you write this in your exam, you will lose marks for character analysis. The narrator's motivation is not 'possession'; it is 'connection'. She is looking for a link to her past, to her mother, and to a life that no longer exists. The objects are merely physical anchors for her memories. When she decides to leave them behind, it is not because she is giving up on her belongings, but because she is choosing to move on from the trauma. Secondly, students often misread Mrs. Dorling's character as a simple 'villain'. While she is certainly opportunistic and cold, describing her merely as an 'evil woman' is too shallow for a Class 11 response. Instead, describe her as a personification of wartime opportunism. She represents the segment of society that used the chaos of war to strip others of their dignity and belongings under the guise of 'safekeeping'. She is a character defined by a lack of empathy and a survivalist instinct that borders on theft. Another frequent error is misinterpreting the tone of the second visit. Students often describe the narrator as 'angry' or 'resentful' when she sees her family belongings in Mrs. Dorling's house. However, the text suggests a sense of 'estrangement' or 'disconnection'. The objects have lost their 'soul' because they are stripped of their original context. They look 'strange' in that new, cluttered environment. The narrator feels a sense of alienation, not just anger. If you use the word 'alienation' or 'disillusionment' instead of just 'sadness', your answer will stand out to the examiner. Fourthly, watch out for how you handle the theme of 'The Address' itself. Don't just say the address is a location. Students often miss the irony. The address, 46 Marconi Street, was once a symbol of hope and a place of refuge for her mother's things, but by the end, it becomes a symbol of a past that must be forgotten. It transforms from a destination of hope to a place of painful realization. Finally, avoid the mistake of treating the story as a simple 'war story'. This is not a story about battles or soldiers; it is a psychological study of the aftermath of war. It is about the 'internal' displacement of a person who has lost her home, her family, and her sense of belonging. Always focus on the emotional landscape rather than just the physical events. Remember, in English literature, how a character feels is often more important than what a character does. Keep these nuances in mind to elevate your writing from descriptive to analytical.","Welcome back. Having explored the emotional landscape of Marga Minco's 'The Address,' we now move into a high-order thinking segment. In your exams, especially in long-answer questions, you won't just be asked what happened; you will be asked to analyze the human psyche. Today, we are dissecting a very fine line: the boundary between nostalgia and obsession. Let's start by defining our terms. Nostalgia is a sentimental longing or wistful affection for a period in the past. It is often bittersweet. It is a way of honoring what was lost. On the other hand, obsession is an idea or thought that continually preoccupies or intrudes on a person's mind. It is often irrational, consuming, and can become destructive. Now, let's look at our narrator. At the beginning of the story, her desire to visit Number 46, Marconi Street, can be viewed as nostalgia. She wants to see the objects that belonged to her mother. She wants to reconnect with a world that no longer exists because of the war. This is a natural human response to trauma. We use objects as anchors to our identity. However, as the narrative progresses, we must ask ourselves: at what point does this search turn into an obsession? If the narrator had spent her entire life wandering the streets of Holland, searching every house for her silver cutlery or her old tea set, we would call her obsessed. An obsessed person seeks the object for the sake of the object itself. They want to possess it again. But notice the narrator's turning point. When she finally enters Mrs. Dorling's house and sees her family's belongings, she feels a strange sense of detachment. She realizes that these objects, once so precious, have lost their 'soul' because they are now arranged in a tasteless, alien environment. This is the crucial distinction. An obsessed person would have fought to take the items back. They would have been consumed by the need to reclaim their material past. But our narrator does something much more profound. She decides to forget the address. She realizes that the objects are merely shells. The true essence of her past—her mother, her home, her sense of security—cannot be contained in a silver spoon or a woolen tablecloth. Her decision to leave is a rejection of obsession in favor of healing. She chooses to move forward rather than being anchored to a dead past. In your answers, if you are asked to discuss the narrator's mental state, use this framework. Contrast the 'sentimental value' of the objects with the 'material reality' of their new setting. Explain that her journey begins as a search for memory, but ends as a liberation from the past. This shows the examiner that you understand the psychological depth of the text. Remember, nostalgia looks back to remember, but obsession looks back to possess. The narrator looks back to remember, realizes the impossibility of reclaiming the past, and chooses to live in the present. This is the ultimate triumph of the human spirit over the trauma of war.","Welcome to the final segment of our series on 'The Address' by Marga Minco. We have traveled through the narrator's painful journey of reclaiming her past, only to realize that the past cannot be lived in. Now, it is time to transition from understanding the story to mastering the examination. To score high in your Class 11 English exams, you must move beyond simple storytelling. When you encounter a question, do not just say what happened; explain why it happened and what it signifies. Let us look at the three most common question types. First, the Character-Based Question. If asked about Mrs. Dorling, do not just call her 'unkind.' Use precise adjectives like 'opportunistic,' 'materialistic,' or 'lacking empathy.' Contrast her with the narrator to show depth. Second, the Theme-Based Question. If a question asks about the impact of war, do not just talk about soldiers. Talk about the 'psychological displacement' and the 'loss of identity' that civilians face. Use the phrase 'the futility of clinging to material possessions' to impress the examiner. Third, the Value-Based Question. These ask for your opinion. For example, 'Was the narrator right to leave the belongings behind?' Your answer should be a balanced argument. You can state that while the objects held memories, their physical presence in a strange environment stripped them of their soul. Now, let us do a lightning-fast recap of the entire chapter to cement your learning. We began with the heavy atmosphere of post-war Holland, where the narrator seeks a sense of belonging. We followed her to Number 46, Marconi Street, where she encountered the cold, unwelcoming Mrs. Dorling. We analyzed the tension between the narrator's nostalgia and the reality of her belongings being used as mere household items by a stranger. We explored the symbolism of 'The Address'—it was once a destination of hope, but it became a symbol of a life that no longer exists. We noted the literary use of flashbacks to bridge the gap between the pre-war warmth and the post-war emptiness. Remember, the narrator's decision to forget the address is not an act of defeat, but an act of liberation. She chooses to move forward rather than live in a museum of grief. As you prepare for your exams, keep these keywords in mind: displacement, nostalgia, materialism, detachment, and emotional resilience. Practice writing your answers in a structured format: Introduction, Body with textual evidence, and a Conclusion that links back to the theme. You are now fully equipped to tackle any question on this chapter. Happy studying!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c11-english-14-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>

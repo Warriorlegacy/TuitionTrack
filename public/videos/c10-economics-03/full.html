@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>Money and Credit, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c10-economics-03-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Why Money Matters and the Evolution of Barter -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Why Money Matters and the Evolution of Barter</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Money is more than just paper; it is a tool for economic function.</div>
+              <div id="qx0-p1" class="qe-bullet">• Barter System: Direct exchange of goods for other goods.</div>
+              <div id="qx0-p2" class="qe-bullet">• The major hurdle: Double Coincidence of Wants.</div>
+              <div id="qx0-p3" class="qe-bullet">• Problems with Barter: Lack of common value and divisibility issues.</div>
+              <div id="qx0-p4" class="qe-bullet">• Money acts as a medium of exchange to solve barter limitations.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4189891460,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation: on the left, a frustrated farmer trying to trade wheat for shoes; on the right, a smooth modern transaction using a digital wallet.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A 3D split-screen animation: on the left, a frustrated farmer trying to trade wheat for shoes; on the right, a smooth modern transaction using a digital wallet.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Barter System: Limitations, Double Coincidence of Wants, and the Need for Money -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Barter System: Limitations, Double Coincidence of Wants, and the Need for Money</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Barter System: Direct exchange of goods without the use of money.</div>
+              <div id="qx1-p1" class="qe-bullet">• Double Coincidence of Wants: Both parties must want exactly what the other offers.</div>
+              <div id="qx1-p2" class="qe-bullet">• Divisibility Problem: Difficulty in dividing certain goods for smaller trades.</div>
+              <div id="qx1-p3" class="qe-bullet">• Store of Value: Perishable goods cannot be easily saved for future use.</div>
+              <div id="qx1-p4" class="qe-bullet">• Need for Money: Acts as a medium of exchange to solve barter limitations.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1055353881,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen animation: on the left, a frustrated farmer trying to trade wheat for shoes; on the right, a smooth transaction where the farmer receives coins and then buys shoes.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D split-screen animation: on the left, a frustrated farmer trying to trade wheat for shoes; on the right, a smooth transaction where the farmer receives coins and then buys shoes.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Money as a Medium of Exchange: Modern Forms and Functions -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Money as a Medium of Exchange: Modern Forms and Functions</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Money acts as an intermediary, eliminating the need for double coincidence of wants.</div>
+              <div id="qx2-p1" class="qe-bullet">• Medium of Exchange: An item used to facilitate the buying and selling of goods.</div>
+              <div id="qx2-p2" class="qe-bullet">• Modern money includes paper notes and coins authorized by the government.</div>
+              <div id="qx2-p3" class="qe-bullet">• In India, the Reserve Bank of India issues currency on behalf of the central government.</div>
+              <div id="qx2-p4" class="qe-bullet">• Modern forms include digital payments, debit/credit cards, and cheques.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2353519298,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D split-screen showing a chaotic barter marketplace on the left transitioning into a sleek, glowing digital transaction interface on the right.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">A 3D split-screen showing a chaotic barter marketplace on the left transitioning into a sleek, glowing digital transaction interface on the right.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Understanding Credit: The Role of Interest, Collateral, and Terms of Credit -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Understanding Credit: The Role of Interest, Collateral, and Terms of Credit</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Credit: An agreement for future payment of money, goods, or services.</div>
+              <div id="qx3-p1" class="qe-bullet">• Positive Role: Helps increase earnings and business expansion.</div>
+              <div id="qx3-p2" class="qe-bullet">• Debt Trap: A situation where credit pushes a borrower into a cycle of debt.</div>
+              <div id="qx3-p3" class="qe-bullet">• Terms of Credit: Includes interest rate, collateral, documentation, and repayment.</div>
+              <div id="qx3-p4" class="qe-bullet">• Collateral: An asset owned by the borrower used as a guarantee to the lender.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4219504947,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a successful businessman expanding a factory versus a distressed farmer facing a crop failure.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">A split-screen 3D animation showing a successful businessman expanding a factory versus a distressed farmer facing a crop failure.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Formal Sector Credit: Functions of Banks and the Role of the RBI -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Formal Sector Credit: Functions of Banks and the Role of the RBI</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Formal sector includes banks and cooperatives following strict regulations.</div>
+              <div id="qx4-p1" class="qe-bullet">• Banks use deposits to provide loans while keeping a cash reserve.</div>
+              <div id="qx4-p2" class="qe-bullet">• Bank income comes from the difference between deposit and loan interest.</div>
+              <div id="qx4-p3" class="qe-bullet">• The Reserve Bank of India (R.B.I.) supervises all formal lending.</div>
+              <div id="qx4-p4" class="qe-bullet">• R.B.I. ensures credit reaches small farmers and small-scale industries.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2173461250,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D flowchart showing money flowing from depositors to a bank vault, then a portion being held as reserve while the rest flows out as loans to diverse borrowers, overseen by a central R.B.I. seal.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">A 3D flowchart showing money flowing from depositors to a bank vault, then a portion being held as reserve while the rest flows out as loans to diverse borrowers, overseen by a central R.B.I. seal.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Informal Sector Credit: Moneylenders, Traders, and the Debt Trap Cycle -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Informal Sector Credit: Moneylenders, Traders, and the Debt Trap Cycle</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Informal sector includes moneylenders, traders, employers, and relatives.</div>
+              <div id="qx5-p1" class="qe-bullet">• No organization supervises the functioning of informal lenders.</div>
+              <div id="qx5-p2" class="qe-bullet">• Lack of regulation can lead to unfair lending practices.</div>
+              <div id="qx5-p3" class="qe-bullet">• High interest rates in the informal sector increase the cost of borrowing.</div>
+              <div id="qx5-p4" class="qe-bullet">• The Debt Trap: When credit pushes a borrower into a cycle of worsening debt.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":872366130,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation: one side shows a structured bank building, the other shows a shadowy village moneylender, transitioning into a circular arrow diagram representing a farmer caught in a debt trap.</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">A split-screen 3D animation: one side shows a structured bank building, the other shows a shadowy village moneylender, transitioning into a circular arrow diagram representing a farmer caught in a debt trap.</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Comparative Analysis: Formal vs. Informal Credit and Socio-economic Impact -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Comparative Analysis: Formal vs. Informal Credit and Socio-economic Impact</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Formal Sector: Regulated by RBI; Informal Sector: Unregulated and autonomous.</div>
+              <div id="qx6-p1" class="qe-bullet">• Interest Rates: Formal is low and fixed; Informal is high and exploitative.</div>
+              <div id="qx6-p2" class="qe-bullet">• Collateral: Essential for banks; Often bypassed by informal lenders.</div>
+              <div id="qx6-p3" class="qe-bullet">• Economic Impact: Formal sector drives growth; Informal sector can cause debt traps.</div>
+              <div id="qx6-p4" class="qe-bullet">• The Debt Trap: A cycle where high interest prevents principal repayment.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":1329125788,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D comparison showing a bright, organized bank interior on the left versus a dimly lit, cluttered moneylender's office on the right, with animated arrows showing money flow and interest accumulation.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">A split-screen 3D comparison showing a bright, organized bank interior on the left versus a dimly lit, cluttered moneylender's office on the right, with animated arrows showing money flow and interest accumulation.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Self-Help Groups (SHGs): Structure, Functioning, and Empowerment of the Poor -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Self-Help Groups (SHGs): Structure, Functioning, and Empowerment of the Poor</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• SHGs consist of 15-20 members from similar socio-economic backgrounds.</div>
+              <div id="qx7-p1" class="qe-bullet">• Members make regular small savings to create a common fund.</div>
+              <div id="qx7-p2" class="qe-bullet">• Small loans are provided to members without the need for collateral.</div>
+              <div id="qx7-p3" class="qe-bullet">• Groups can access bank loans once they demonstrate regular repayment.</div>
+              <div id="qx7-p4" class="qe-bullet">• SHGs empower women socially and provide a platform for collective discussion.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1359963632,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation showing a circle of village women contributing coins to a central pot, which then transforms into a bank building as the group grows.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">A 3D animation showing a circle of village women contributing coins to a central pot, which then transforms into a bank building as the group grows.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Case Studies and Worked Examples: Analyzing Credit Scenarios and Debt Traps -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Case Studies and Worked Examples: Analyzing Credit Scenarios and Debt Traps</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Credit as an asset: Increasing income and productivity (e.g., Salim's case)</div>
+              <div id="qx8-p1" class="qe-bullet">• Credit as a liability: Leading to a debt trap (e.g., Swapna's case)</div>
+              <div id="qx8-p2" class="qe-bullet">• Defining the Debt Trap: When debt forces the sale of assets or more loans</div>
+              <div id="qx8-p3" class="qe-bullet">• Mathematical Impact: Comparing low annual vs. high monthly interest rates</div>
+              <div id="qx8-p4" class="qe-bullet">• Analysis Framework: Source, Cost, and Outcome of the credit scenario</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":3001157990,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a prosperous farmer next to a growing bank balance versus a distressed farmer next to a mounting pile of unpaid debt papers.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">A split-screen 3D animation showing a prosperous farmer next to a growing bank balance versus a distressed farmer next to a mounting pile of unpaid debt papers.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Common Mistakes: Misinterpreting Collateral, Interest Rates, and Credit Terms -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Common Mistakes: Misinterpreting Collateral, Interest Rates, and Credit Terms</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Collateral: An asset owned by the borrower used as a guarantee for the lender.</div>
+              <div id="qx9-p1" class="qe-bullet">• Collateral vs. Creditworthiness: Assets owned vs. ability to repay.</div>
+              <div id="qx9-p2" class="qe-bullet">• Terms of Credit: Includes interest rate, collateral, documentation, and repayment mode.</div>
+              <div id="qx9-p3" class="qe-bullet">• Interest Rates: Always specify if the rate is 'per annum' or 'per month'.</div>
+              <div id="qx9-p4" class="qe-bullet">• Debt Trap: A cycle where new loans are taken to pay off old ones due to low income.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":2390322696,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a formal bank officer checking a folder of documents versus an informal moneylender pointing at a piece of land, with floating text labels highlighting the four components of credit terms.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">A split-screen 3D animation showing a formal bank officer checking a folder of documents versus an informal moneylender pointing at a piece of land, with floating text labels highlighting the four components of credit terms.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Exam Techniques: How to Answer Descriptive and Data-based Questions -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Exam Techniques: How to Answer Descriptive and Data-based Questions</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Use tables for 'Distinguish Between' questions to ensure clarity.</div>
+              <div id="qx10-p1" class="qe-bullet">• Follow the 'Point-Heading-Explanation' rule for 5-mark questions.</div>
+              <div id="qx10-p2" class="qe-bullet">• Use the 'Read-Analyze-Connect' method for data-based questions.</div>
+              <div id="qx10-p3" class="qe-bullet">• Use 'because' to test Assertion and Reason connections.</div>
+              <div id="qx10-p4" class="qe-bullet">• Incorporate technical terms like 'Collateral' and 'Debt Trap' for precision.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"graph","seed":1343011348,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split-screen 3D animation showing a messy paragraph on the left transforming into a structured, bulleted list with bold headings on the right.</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A split-screen 3D animation showing a messy paragraph on the left transforming into a structured, bulleted list with bold headings on the right.</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Full Chapter Recap, Important PYQs, and Final Strategy -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Full Chapter Recap, Important PYQs, and Final Strategy</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Recap: Barter, Modern Money, Formal vs Informal, and SHGs</div>
+              <div id="qx11-p1" class="qe-bullet">• Key Question Types: Distinguish, Reasoning, and Case Studies</div>
+              <div id="qx11-p2" class="qe-bullet">• Common Pitfalls: Collateral, Demand Deposits, and RBI's role</div>
+              <div id="qx11-p3" class="qe-bullet">• The 3-Step Strategy: Define, Bullet Points, and Conclude</div>
+              <div id="qx11-p4" class="qe-bullet">• Exam Pro-Tip: Use tables for comparisons and manage time wisely</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"cell","seed":719938567,"hue":340}</script>
+          <noscript><div class="qe-scene-fallback">A 3D digital workspace where key terms like 'Formal Sector', 'Informal Sector', and 'RBI' float in glowing bubbles, organizing themselves into a structured mind map as the teacher speaks.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A 3D digital workspace where key terms like 'Formal Sector', 'Informal Sector', and 'RBI' float in glowing bubbles, organizing themselves into a structured mind map as the teacher speaks.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix Money and Credit today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Why Money Matters and the Evolution of Barter <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Barter System: Limitations, Double Coincidence of Wants, and the Need for Money <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Money as a Medium of Exchange: Modern Forms and Functions <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Understanding Credit: The Role of Interest, Collateral, and Terms of Credit <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Formal Sector Credit: Functions of Banks and the Role of the RBI <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Informal Sector Credit: Moneylenders, Traders, and the Debt Trap Cycle <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Comparative Analysis: Formal vs. Informal Credit and Socio-economic Impact <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Self-Help Groups (SHGs): Structure, Functioning, and Empowerment of the Poor <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Case Studies and Worked Examples: Analyzing Credit Scenarios and Debt Traps <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Common Mistakes: Misinterpreting Collateral, Interest Rates, and Credit Terms <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Exam Techniques: How to Answer Descriptive and Data-based Questions <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Full Chapter Recap, Important PYQs, and Final Strategy <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello everyone! Welcome to our first session on Class 10 Economics, Chapter 3: Money and Credit. Before we dive into the complex world of banks and interest rates, we need to ask a very fundamental question: What is money? When you look at a ten-rupee note or a coin in your pocket, you might think it is just a piece of paper or a small disc of metal. But in economics, money is much more than its physical form. It is a tool that makes our entire civilization function. Imagine for a moment that you wake up tomorrow and all the currency in the world has vanished. No notes, no coins, no digital balances in your bank app. How would you buy a loaf of bread? How would you pay for your school fees? This sense of confusion helps us understand why money is the backbone of modern trade. To understand why we need money, we must first look at how humans lived before it existed. Long before coins and paper notes, people used a system called the Barter System. In a barter system, goods are directly exchanged for other goods. For example, if a farmer has an excess of wheat and needs a pair of shoes, he must find a shoemaker who specifically wants wheat. This sounds simple, but it is incredibly difficult in practice. This brings us to the biggest problem of the barter system, a concept you must remember for your exams: Double Coincidence of Wants. For a trade to happen in a barter system, both parties must simultaneously want exactly what the other person is offering. If the shoemaker wants cloth instead of wheat, the transaction fails. The farmer then has to go find a cloth merchant, who might want milk instead of wheat, and the cycle continues. This search for a matching partner is time-consuming and highly inefficient. Furthermore, the barter system lacks a common measure of value. How many kilograms of wheat are equal to one pair of shoes? There is no standard unit to decide this fairly. There is also the problem of 'divisibility.' If you want to trade a cow for a small bag of rice, you cannot exactly cut a small piece of the cow to make the trade equal! All these hurdles—the difficulty of finding a double coincidence of wants, the lack of a common unit of value, and the problem of indivisibility—created a massive need for something better. We needed a 'medium' that everyone would accept, regardless of what they were producing. This is where money enters the story. Money acts as an intermediate step. Instead of searching for a shoemaker who wants wheat, the farmer can simply sell his wheat for money, and then use that money to buy shoes from anyone. Money eliminates the need for a double coincidence of wants. It serves as a common link that connects all buyers and sellers. In this series, we will explore how this simple concept of exchange evolved from gold and silver to the paper notes and digital transactions we use today, and how it eventually leads to the complex system of credit. Let's get started on this journey of understanding how value moves through our economy.","Welcome back. In our previous segment, we touched upon how trade began. Today, we dive deep into the mechanism that existed before money was invented: the Barter System. Imagine a world where there are no coins, no notes, and no digital transactions. In such a world, if you want to acquire something, you must exchange it directly for something else of value. This is known as the Barter System. While it sounds simple, it is incredibly difficult to manage in practice due to several fundamental limitations. The biggest hurdle is a concept called the 'Double Coincidence of Wants'. This is a situation where two people have to agree to sell and buy each other's commodities simultaneously. Let me give you a concrete example to make this clear. Suppose you are a farmer and you have a surplus of wheat. You want to acquire a pair of shoes. Now, for a trade to happen, you must find a shoemaker who specifically wants wheat at this exact moment. If the shoemaker wants cloth instead of wheat, your trade fails. Even if you find a cloth merchant who wants wheat, you then have to take that wheat to the shoemaker, who might still refuse it. This requirement of finding a perfect match in both needs and timing is what we call the Double Coincidence of Wants. It is a massive inefficiency in the economy. Beyond this, there is the problem of 'Divisibility'. Some goods cannot be divided into smaller parts without losing their value. Imagine you want to exchange a cow for a small bag of rice. You cannot exactly divide a living cow to get just a small amount of rice; you would have to trade the whole animal, which leads to an imbalance in value. Then, there is the issue of 'Store of Value'. In a barter system, it is very difficult to store wealth for the future. If you are a farmer, you cannot store perishable goods like tomatoes or milk for years to use as wealth. They will rot. In contrast, money allows us to store value for a long time. Finally, we face the challenge of 'Common Unit of Value'. How do you decide how many kilograms of potatoes are equal to one goat, or how many liters of milk equal one shirt? Without a standard measure, every single transaction requires a complex negotiation, which wastes time and energy. This brings us to the ultimate conclusion: the need for money. Money emerged as a solution to all these problems. It acts as an intermediate step that eliminates the need for a double coincidence of wants. Because everyone accepts money, you can sell your wheat to anyone, take that money, and then buy shoes from the shoemaker. Money serves as a 'Medium of Exchange', a common denominator that simplifies trade, allows for easy division, and provides a reliable way to store wealth. In the next part, we will explore the different modern forms that this medium of exchange has taken.","In our previous segment, we explored the struggles of the barter system and how the lack of double coincidence of wants made trade incredibly difficult. Now, let us understand how money solves these problems by acting as a medium of exchange. When we say money is a 'medium of exchange,' we mean it acts as an intermediary. It is an item that buyers give to sellers when they want to purchase goods and services. This simple function eliminates the need for two people to search for each other's specific needs. Instead, you can sell your product to anyone for money, and then use that money to buy exactly what you need from someone else. This fluidity is what drives modern economies. But what exactly constitutes 'money' today? It has evolved significantly through history. We no longer rely solely on precious metals like gold or silver coins. In modern times, money includes paper notes and coins that are officially authorized by a government. This is a crucial point for your exams: in India, the Reserve Bank of India issues currency notes on behalf of the central government. Because it is authorized by the government, no individual can legally refuse it as a means of payment in a transaction within the country. This legal tender status is what gives paper money its value. Beyond physical cash, we have entered the era of modern, non-physical forms of money. Think about your digital transactions. When you use a debit card, a credit card, or scan a QR code to pay via UPI, you are using modern forms of money. These are essentially digital representations of the money held in your bank account. Even a cheque is a modern form of money. A cheque is a paper instructing a bank to pay a specific amount from a person's account to another person. While a cheque isn't 'cash' in your pocket, it serves the exact same purpose in a transaction. These modern forms are highly efficient because they reduce the need to carry large amounts of physical currency, making trade faster and safer. To summarize the functions we have discussed: first, money acts as a medium of exchange, facilitating the buying and selling of goods. Second, it serves as a unit of account, allowing us to put a specific price tag on different items so we can compare their value. Third, it acts as a store of value, meaning you can hold onto it and use it in the future without it spoiling like agricultural produce. As we move forward in this chapter, keep in mind that this ease of exchange provided by money is what sets the stage for the complex systems of credit and banking that we will discuss next.","Welcome back. We have already established how money acts as a medium of exchange, solving the problem of the barter system. But now, let us move into a more complex dimension of money: Credit. In simple terms, credit, or loan, refers to an agreement in which the lender supplies the borrower with money, goods, or services in return for the promise of future payment. Now, credit is a double-edged sword. Depending on the situation, it can either help a person increase their income or push them into a situation of extreme hardship. Let us look at two contrasting scenarios to understand this. Imagine a shoe manufacturer, Salim. He receives a large order which requires him to buy raw materials immediately. He doesn't have the cash on hand, so he takes a loan from a lender. He uses the loan to buy materials, completes the order on time, makes a profit, and repays the loan. In this case, credit played a positive role, helping Salim increase his earnings. But now, consider Swapna, a small farmer. She takes a loan to buy seeds for the upcoming crop season. However, her crop fails due to pests. Now, she is unable to repay the loan and has to take another loan to cover the previous one. This leads her into a situation called a debt trap, where the borrower is unable to repay the loan and is forced to sell assets or land to settle the debt. This is the dark side of credit. To understand how credit works, we must look at the 'Terms of Credit'. Every loan agreement comes with specific conditions. These are known as the terms of credit. There are four main components you must remember for your exams. First is the Interest Rate. This is the extra amount the borrower must pay to the lender for using their money. A higher interest rate means a higher cost of borrowing. Second is the Collateral. This is a very important concept. Collateral is an asset that the borrower owns—such as land, building, vehicle, livestock, or even bank deposits—and uses as a guarantee to a lender until the loan is repaid. If the borrower fails to repay the loan, the lender has the right to sell the collateral to recover the money. Third is the Documentation Requirement. Lenders always ask for proof of identity, income, and employment to ensure the borrower can repay. Finally, there are the Mode of Repayment. This specifies how the money will be paid back—whether in monthly installments, quarterly, or as a lump sum, and through what medium, like cash or bank transfer. In summary, while credit can be a tool for growth, the terms of credit—especially the requirement of collateral—often act as a barrier for the poor, who frequently lack assets to pledge. Understanding these terms is crucial to understanding why credit accessibility differs across social classes.","Welcome back. In our previous session, we explored how credit works and the importance of collateral. Now, we step into the organized world of finance. When we talk about the 'Formal Sector' of credit, we are referring to loans that are provided by organized institutions like banks and cooperatives. These institutions follow strict rules and regulations set by the government and the central bank. Let's start by understanding how a bank actually works. You might wonder, where do banks get the money to lend to people? It comes from two main sources. First, they accept deposits from the public. When you put your savings into a bank account, the bank keeps a small portion of that money as a reserve to meet the immediate withdrawal needs of depositors. In India, banks are required to keep about fifteen percent of their deposits as cash to handle daily transactions. The remaining eighty-five percent is what the bank uses to extend loans to borrowers. Now, here is the core mechanism of banking: the interest rate spread. When you deposit money, the bank pays you a certain amount of interest. However, when the bank lends that same money to a borrower, it charges a much higher interest rate. The difference between the interest charged to the borrower and the interest paid to the depositor is the bank's main source of income. This is how banks remain sustainable and profitable. But who ensures that these banks don't act arbitrarily or charge exploitative rates? This is where the Reserve Bank of India, or the R.B.I., comes into play. The R.B.I. is the central authority that supervises the formal sector. It has several critical functions. First, it issues currency notes on behalf of the central government. Second, it monitors the functioning of formal banks to ensure they are following the law. The R.B.I. keeps a close eye on how much money banks are lending and to whom. It ensures that banks do not just lend to rich businessmen or large industries, but also to small-scale industries and farmers. This is a crucial part of economic development. The R.B.I. also monitors the interest rates. If banks start charging excessively high interest rates, the R.B.I. intervenes. By supervising the formal sector, the R.B.I. ensures that the credit system remains stable and that the banking system serves the needs of the entire economy, not just a privileged few. In summary, the formal sector is characterized by low interest rates, documented transactions, and strict supervision by the R.B.I., which stands in stark contrast to the informal sector we will discuss in the next part.","Now that we have understood how banks and the Reserve Bank of India regulate the formal sector, we must look at the other side of the coin. In India, a very large portion of people, especially in rural areas, do not have access to formal bank loans. Instead, they rely on the informal sector of credit. But what exactly constitutes the informal sector? Unlike banks, the informal sector consists of a diverse group of lenders. This includes moneylenders, traders, employers, relatives, friends, and even landlords. There is no organization that supervises the functioning of these lenders. This is a crucial distinction. In the formal sector, the RBI monitors everything, but in the informal sector, there are no rules or regulations to protect the borrower. Let us look at the different types of informal lenders. First, we have the local moneylender. He is often the most common source of credit for small farmers. He provides quick loans, but he often charges extremely high interest rates. Second, we have traders. Sometimes, a trader might provide goods on credit to a farmer, or lend money specifically to ensure the farmer sells the produce back to them at a lower price. Third, we have employers. In many agricultural setups, the employer provides advances to workers, which often turns into a cycle of permanent debt. Because there is no supervision, these lenders can use unfair means to get their money back. This leads us to the most critical concept of this lesson: The Debt Trap. What is a debt trap? A debt trap is a situation where a borrower is unable to repay a loan due to unforeseen circumstances, and as a result, they have to take even more loans to pay off the previous ones. Imagine a small farmer, let's call him Ram. Ram takes a loan from a moneylender to buy seeds and fertilizers. He expects a good harvest, but a sudden drought occurs, and his crops fail completely. Now, Ram has no income to repay the loan. To avoid the moneylender's pressure, he takes another loan from a different trader to pay off the first one. The interest keeps accumulating. The interest rate is so high that even if Ram has a good harvest next year, most of his profit goes into paying only the interest, not the principal amount. Eventually, the debt becomes so large that the only way to repay it is to sell his land or his assets. This is the cycle of a debt trap. In this situation, credit, which was supposed to help increase income, actually pushes the borrower into a situation of even greater hardship. This is why the informal sector can be very risky for the poor. While the formal sector requires collateral and documentation, the informal sector often provides credit without collateral, but the cost is a much higher interest rate and the risk of falling into a permanent cycle of debt. Understanding this distinction is vital for understanding why the Indian economy needs to expand formal credit to the rural areas.","Welcome back. In our previous segment, we looked at the two different worlds of lending: the formal sector, governed by the Reserve Bank of India, and the informal sector, consisting of moneylenders and traders. Now, it is time to put them side-by-side to understand why this distinction is not just about interest rates, but about the very survival of our economy. Let us begin our comparative analysis. The first and most critical difference is the source of authority and regulation. In the formal sector, banks are strictly supervised by the Reserve Bank of India. The RBI ensures that banks maintain a certain cash balance and, more importantly, that they lend not just to profit-making businesses, but also to small cultivators and small-scale industries. In contrast, the informal sector has no such supervisor. Moneylenders, landlords, or even friends and relatives operate on their own terms. This lack of regulation is where the danger lies. The second major difference is the cost of credit, which we measure through the interest rate. Formal sector loans typically carry low and fixed interest rates. Because the interest is manageable, the borrower can repay the principal and still have money left for consumption or investment. However, the informal sector is notorious for extremely high interest rates. Sometimes, these rates can exceed thirty or forty percent per annum. When interest rates are this high, a huge portion of the borrower's income goes solely toward paying the interest, leaving nothing to pay back the original loan amount. This leads us to our third point of comparison: the requirement of collateral. Formal sector credit is heavily dependent on collateral—an asset like land, property, or gold that the borrower owns and uses as a guarantee. While this provides security to the bank, it often excludes the poor who lack such assets. The informal sector, however, often provides credit without collateral, based on personal relations or social status. While this seems helpful, it is a double-edged sword. Without collateral, the lender compensates for the risk by charging much higher interest and using coercive methods for recovery. Now, let us discuss the socio-economic impact of these two sectors. This is the most vital part of our lesson. The formal sector promotes economic development. When credit is cheap and accessible, farmers can buy better seeds, small businesses can expand, and families can invest in education. This creates a cycle of growth and prosperity. On the other hand, the informal sector often leads to a phenomenon known as the 'Debt Trap.' A debt trap occurs when a borrower is unable to repay a loan due to high interest rates or unforeseen circumstances like crop failure. To repay the first loan, they take a second loan, and soon they are caught in a vicious cycle of mounting debt. In many cases, this leads to the loss of assets, such as land, or even extreme psychological distress. The socio-economic impact is clear: the formal sector helps in poverty reduction and wealth creation, while the informal sector, due to its exploitative nature, often traps the poor in a cycle of perpetual poverty. To summarize our comparison: the formal sector is regulated, low-cost, and promotes growth, whereas the informal sector is unregulated, high-cost, and carries the risk of debt traps. Understanding this gap is essential to understanding why the Indian government is working so hard to expand formal banking services to every corner of the country.","Now that we have understood the stark differences between formal and informal credit, we must ask ourselves: what happens to those who cannot access either? Many poor households, especially in rural areas, lack the collateral required by banks and find the interest rates of moneylenders to be exploitative. This is where a revolutionary concept comes into play: the Self-Help Group, or SHG. Let us look at how these groups work. An SHG typically consists of a small group of people, usually fifteen to twenty members, who belong to the same neighborhood. These members are often from similar socio-economic backgrounds. The core idea is simple: regular small savings. Each member, particularly women, contributes a small amount of money to the group's fund regularly. This could be fifty rupees or a hundred rupees, but the power lies in the collective accumulation. Once the group has saved a reasonable amount, it begins to function as a micro-bank. The most important feature is that members can take small loans from this common fund to meet their own needs. If a member is facing a small emergency or needs funds for a small business, they can borrow from the group. The key advantage here is that these loans are provided without the need for collateral. Because the members know each other and are part of the same community, there is a high level of trust and social accountability. If a member fails to repay, the group collectively ensures the recovery. Now, you might wonder, how do these groups scale up? This is the most crucial part of the SHG model. Once a group has been regularly saving and paying back its loans, it becomes eligible to apply for a loan from a formal bank. In this case, the group itself takes the loan in the name of the group, rather than an individual member. The bank lends to the group, and the group then distributes the money among its members. This effectively bypasses the 'collateral problem' that prevents the poor from accessing formal credit. But the impact of SHGs goes far beyond just money. Let's talk about empowerment. SHGs are primarily driven by women. By participating in these groups, women gain financial independence. They learn how to manage money, how to plan for future expenses, and how to run small-scale enterprises. More importantly, SHGs provide a platform for women to discuss social issues. In the monthly meetings, members don't just talk about savings; they discuss matters like health, nutrition, domestic violence, and education. This collective voice gives them the confidence to participate in local governance and fight for their rights. In essence, SHGs are not just a credit mechanism; they are a tool for social empowerment and poverty alleviation. They bridge the gap between the formal banking system and the marginalized sections of society, turning individual vulnerability into collective strength.","Welcome back. In our previous sections, we discussed the theoretical differences between formal and informal credit. Now, it is time to apply that knowledge. We are going to analyze real-world scenarios to see how credit can either be a tool for development or a trap that leads to ruin. Let us look at our first case study: The Tale of Two Farmers, Salim and Swapna. This is a classic example used to illustrate the dual nature of credit. First, let us look at Salim. Salim is a small farmer who takes a loan of ten thousand rupees from a bank at a low interest rate of eight percent per annum to buy high-quality seeds and fertilizers. Because the interest is low and the terms are fair, his crop yield increases significantly. After the harvest, Salim sells his produce, repays the loan, and still has a healthy profit left to invest in his family's future. In this scenario, credit acted as an asset. It helped Salim increase his income. Now, let us look at Swapna. Swapna is also a farmer, but she lacks collateral, so she cannot approach a bank. Instead, she turns to a local moneylender. The moneylender agrees to give her the same ten thousand rupees, but at a much higher interest rate of thirty-six percent per annum. Swapna uses the money to grow a crop, but due to heavy rains, her crop is destroyed. Because the interest rate was so high, the amount she owes grows rapidly. Even when she sells her remaining produce, the entire amount goes toward paying the interest, and she is still in debt. This is what we call a Debt Trap. A debt trap is a situation where a borrower is forced to take a new loan to pay off an old one, or is forced to sell their assets, like land, to repay the debt. Let us work through a mathematical example to understand the impact of interest rates. Suppose you borrow one thousand rupees at a simple interest rate of ten percent per annum for two years. The interest is ten percent of one thousand, which is one hundred rupees per year. So, for two years, you pay two hundred rupees in interest. Your total repayment is one thousand two hundred rupees. Now, compare this to an informal loan of one thousand rupees at a monthly interest rate of five percent. Remember, five percent per month is not the same as five percent per year. Five percent per month means sixty percent per year. In two years, at sixty percent per annum, the interest would be six hundred rupees per year. For two years, that is one thousand two hundred rupees in interest alone! Your total repayment would be two thousand two hundred rupees. See the massive difference? One loan doubled your debt, while the other barely increased it. When analyzing these scenarios in your exams, always look for three key indicators. First, the source of credit: Is it a bank or a moneylender? Second, the cost of credit: What is the interest rate and the frequency of payment? Third, the outcome: Did the credit lead to increased earnings or increased debt? If the cost of borrowing is higher than the profit earned from the activity, the borrower is heading toward a debt trap. Always remember, credit is a double-edged sword. It can be a ladder for growth if accessed through formal channels, or a chain of debt if accessed through exploitative informal channels. Keep these distinctions in mind as we move toward identifying common mistakes in the next lesson.","Welcome back. In our previous section, we looked at real-world case studies. Now, we are going to focus on a very critical area: avoiding common conceptual errors. When students sit for their board exams, they often lose marks not because they don't know the topic, but because they misinterpret the technical terms of credit. Let's start with the first big mistake: Misunderstanding Collateral. Many students think collateral is just 'security' or 'something valuable.' While that is true, the technical definition is more specific. Collateral is an asset that the borrower owns—such as land, building, vehicle, livestock, or even deposits with banks—and that the lender uses as a guarantee until the loan is repaid. The mistake happens when students fail to explain the 'why.' If a question asks about the role of collateral, don't just list assets. You must explain that collateral acts as a safety net for the lender. If the borrower fails to repay, the lender has the legal right to sell the asset to recover the money. Another error is confusing 'Collateral' with 'Creditworthiness.' Collateral is what you have; creditworthiness is your ability to pay back based on your past behavior. Now, let's move to the second major pitfall: Interest Rates. Students often treat interest rates as a single, static number. In the exam, if you are asked to compare formal and informal sectors, do not just say 'informal rates are higher.' You must explain the components. A high interest rate in the informal sector isn't just a number; it is often a combination of high monthly interest and hidden charges. Remember, the 'Effective Interest Rate' is what actually matters. For example, if a moneylender charges two percent per month, students often calculate it as twenty-four percent per year. However, in many informal setups, the interest is compounded or applied to the principal in ways that make the actual cost much higher. Always specify whether the rate is 'per annum' or 'per month' in your answers. Third, let's talk about the 'Terms of Credit.' This is a very common area for marks to slip away. Students often think 'Terms of Credit' only refers to the interest rate. This is incorrect. The Terms of Credit is a comprehensive package. It includes four distinct pillars: one, the interest rate; two, the collateral required; three, the documentation required; and four, the mode of repayment. If an exam question asks you to 'describe the terms of credit for a specific loan,' and you only mention the interest rate, you will only get a fraction of the marks. You must mention all four components. For instance, a bank loan might require land papers as collateral and a monthly EMI as the mode of repayment, whereas a small trader might only require a signature and a weekly cash payment. Finally, let's address the 'Debt Trap' misconception. Students often use 'Debt Trap' and 'High Interest' interchangeably. They are not the same. A high interest rate is a condition; a debt trap is a consequence. A debt trap occurs specifically when the borrower is forced to take a new loan to pay off an old one, or when the income generated from the loan is less than the interest being charged, leading to a cycle of increasing debt. To avoid this in your answers, always link the debt trap to the inability of the borrower to cover the interest through their productive activities. Mastering these distinctions—Collateral versus Creditworthiness, Interest components, the four pillars of Credit Terms, and the distinction between high interest and a debt trap—will ensure you write precise, high-scoring answers. Let's move to our exam techniques in the next part.","Welcome back. We have covered the entire landscape of Money and Credit, from the complexities of the barter system to the empowering role of Self-Help Groups. Now, it is time to focus on the most critical part of your preparation: how to actually write your answers in the board exam to score maximum marks. In Economics, it is not just about knowing the concept; it is about how you present that concept. Let us start with Descriptive Questions. These are usually the three-mark or five-mark questions. When you see a question like 'Distinguish between formal and informal sectors of credit,' do not write a single long paragraph. This is a common mistake. Instead, use a tabular format. On one side, write 'Formal Sector' and on the other, write 'Informal Sector.' Use specific parameters like 'Source of Funds,' 'Interest Rates,' and 'Supervision.' This makes your answer clear and easy for the examiner to grade. For five-mark questions, always follow the 'Point-Heading-Explanation' rule. First, write a brief introductory sentence. Then, provide a subheading for each point. For example, if the question is about the 'Terms of Credit,' your subheadings could be 'Interest Rate,' 'Collateral,' 'Documentation,' and 'Mode of Repayment.' Under each subheading, write two to three lines of explanation. This structure shows the examiner that your thought process is organized. Now, let us move to the trickier part: Data-based or Case-based questions. These often involve a table or a small passage about a farmer's debt or a bank's lending patterns. To master these, follow the 'Read-Analyze-Connect' method. First, read the question before you read the data. This tells your brain exactly what information to look for. Second, analyze the data carefully. If a table shows interest rates for different lenders, look for the highest and the lowest. Do not assume; only use the numbers provided. Third, connect the data to the theory we have learned. If a table shows a high rate of default in the informal sector, do not just say 'the rate is high.' Instead, explain it using the concept of the 'Debt Trap.' Say, 'As seen in the data, the high interest rates in the informal sector lead to a debt trap, where the borrower's income is consumed by interest payments.' Another common area is 'Assertion and Reason' questions. These can be confusing. To solve them, read the Assertion statement first and ask yourself, 'Is this statement true?' If it is false, you are done. If it is true, read the Reason statement and ask, 'Is this also true?' If both are true, now ask the most important question: 'Does the Reason explain WHY the Assertion is happening?' Use the word 'because' between them. If it makes sense, the answer is 'Both A and R are true and R is the correct explanation of A.' If it sounds disconnected, then R is not the correct explanation. Finally, a tip on terminology. In Economics, precision matters. Do not say 'money given by banks'; say 'credit facilities provided by formal institutions.' Do not say 'security for loan'; say 'collateral.' Using these technical terms correctly will instantly elevate the quality of your answer. Remember, your goal is to be precise, structured, and evidence-based. Practice these techniques with previous year questions, and you will see a significant difference in your scores. Let's move to our final session, the Exam Masterclass.","Welcome to the final stretch of our journey through Money and Credit. You have worked hard through every concept, from the limitations of the barter system to the empowering structure of Self-Help Groups. Now, it is time to transition from learning to mastering. We are going to consolidate everything you have learned into a high-impact revision. First, let us do a lightning-fast recap of the core pillars. Remember, money is the medium of exchange that eliminates the double coincidence of wants. We moved from commodity money to modern forms like currency and demand deposits. Then, we delved into the dual nature of credit. Credit can be a boon, helping a person increase earnings, or it can be a bane, leading to a debt trap, especially in the informal sector. We analyzed the crucial role of the Reserve Bank of India in supervising formal credit and compared it to the exploitative informal sector. Finally, we saw how Self-Help Groups provide a way for the poor to access credit without collateral. Now, let us look at the types of questions that frequently appear in your board exams. The first category is the 'Distinguish Between' type. You must be prepared to differentiate between Formal and Informal sectors. Do not just list points; use a table format. Mention the source of funds, the interest rate, and the supervising authority, which is the RBI for the formal sector. The second category is 'Reasoning Based' questions. For example, 'Why is collateral required by banks?' or 'Why do poor households still depend on informal sources?' For the first, explain that collateral acts as a guarantee against the loan. For the second, explain the lack of formal documentation and the absence of collateral. The third category involves 'Case Studies.' You might be given a scenario of a small farmer named Swapna or a trader and asked to identify if they are in a debt trap. Look for keywords like high interest rates, inability to repay, and borrowing more to pay off old loans. Now, let us address common mistakes that cost students marks. Mistake number one: confusing 'Demand Deposits' with 'Currency.' Remember, demand deposits are money kept in bank accounts that can be withdrawn on demand, often used via cheques. Mistake number two: failing to mention the RBI when discussing formal credit. The RBI is the backbone of the formal system; without mentioning it, your answer is incomplete. Mistake number three: misinterpreting the term 'Collateral.' It is not just 'money'; it is an asset like land, building, or vehicle that the borrower owns and uses as a guarantee. To score maximum marks, follow my 'Three-Step Answer Strategy.' Step one: Define the key term in the first sentence. If the question is about SHGs, start by defining them as small groups of rural poor, usually women. Step two: Use bullet points for the main body. Examiners love clarity. If you are explaining the functions of the RBI, use points like 'issues currency' and 'monitors bank reserves.' Step three: Conclude with a socio-economic impact statement. For example, if discussing formal credit, conclude by saying it is essential for the country's economic development. Finally, a quick tip on time management. Do not spend too much time on one-mark multiple-choice questions. Save your energy for the five-mark descriptive questions where you can demonstrate your depth of understanding. You have the knowledge; now you just need the precision. Stay calm, read the question twice to ensure you aren't missing a 'not' or an 'except,' and write with confidence. You are ready to ace this chapter. All the very best!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c10-economics-03-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>
