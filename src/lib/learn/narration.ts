@@ -235,11 +235,19 @@ const EDGE_VOICE = process.env.TTS_VOICE ?? "en-IN-NeerjaNeural";
 const EDGE_RATE = process.env.TTS_RATE ?? "+0%";
 const EDGE_PITCH = process.env.TTS_PITCH ?? "+0Hz";
 
-// edge-tts emits 48 kbps mono. For spoken word that is generous: at 48 kbps a
-// full 12-part lesson is ~15 MB, and the catalog (517 lessons) would be ~7.8 GB
-// — awkward to ship. Re-encoding to 32 kbps mono roughly halves it to ~5 GB
-// with no measurable loss for speech, and ffmpeg preserves the exact duration,
-// so the timeline built from the manifest stays valid.
+// edge-tts emits 48 kbps mono, which is generous for spoken word. Measured on
+// real output (36 parts, lessons c9-maths-01/03/04):
+//
+//   uncompacted  6000 B/s   ~15 MB per 12-part lesson
+//   TTS_MP3_BITRATE=32k  ~4003 B/s   ~23% smaller
+//
+// (An earlier note in this repo claimed the saving was "under 4%" — that
+// compared 32k against its own nominal rate instead of against a real
+// uncompacted file, and was wrong. The saving is real and worth taking.)
+//
+// Correctness is what matters more than size: ffmpeg preserves duration
+// exactly, so the timeline built from the manifest stays valid. Verified
+// end-to-end on c9-maths-03 — manifest 2743.11 s vs ffprobe sum 2743.10 s.
 //
 // Set TTS_MP3_BITRATE=32k to compact every part as it is written. Left unset,
 // the provider output is stored untouched.
