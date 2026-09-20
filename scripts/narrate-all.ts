@@ -16,7 +16,7 @@
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 import { ALL_LESSONS } from "../src/lib/learn/video-catalog";
-import { extendedPath } from "../src/lib/learn/lesson-research";
+import { extendedPath, type ExtendedFile } from "../src/lib/learn/lesson-research";
 import { readNarrationManifest, narrateLesson, narrationProviderReady } from "../src/lib/learn/narration";
 
 const args = process.argv.slice(2);
@@ -68,9 +68,40 @@ const candidates = ALL_LESSONS.filter((l) => existsSync(extendedPath(l.slug))).f
 
 const ledger = loadLedger();
 
+// How many narration parts a lesson actually needs = its segments that carry
+// non-empty narration text. Read from the research file so an interrupted run
+// can be told apart from a finished one.
+function requiredParts(slug: string): number {
+  const ep = extendedPath(slug);
+  if (!existsSync(ep)) return 0;
+  try {
+    const file = JSON.parse(readFileSync(ep, "utf8")) as ExtendedFile;
+    return (file.segments ?? []).filter(
+      (s) => s && typeof s.narration === "string" && s.narration.trim().length > 0,
+    ).length;
+  } catch {
+    return 0;
+  }
+}
+
+// A lesson is covered only when EVERY required part is present and usable.
+//
+// The earlier version checked that all parts *in the manifest* were usable,
+// which a half-finished lesson satisfies trivially: 9 valid parts out of 12
+// required read as "complete", so an interrupted run was never resumed. That
+// is why the count must come from the research file, not from the manifest.
 function covered(slug: string): boolean {
+  const want = requiredParts(slug);
+  if (want <= 0) return false;
   const m = readNarrationManifest(slug);
-  return !!m && m.parts.length > 0 && m.parts.every((p) => p.seconds > 1);
+  if (!m || !m.parts.length) return false;
+  const usable = m.parts.filter((p) => p.seconds > 1);
+  if (usable.length < want) return false;
+  // Every required part index must be present, not merely enough of them.
+  for (let i = 1; i <= want; i++) {
+    if (!usable.some((p) => p.part === i)) return false;
+  }
+  return true;
 }
 
 // ── status mode: report coverage, change nothing ──────────────────────────
@@ -79,19 +110,27 @@ if (statusOnly) {
   let partial = 0;
   let empty = 0;
   let seconds = 0;
+  let partsHave = 0;
+  let partsWant = 0;
   for (const l of candidates) {
+    const want = requiredParts(l.slug);
     const m = readNarrationManifest(l.slug);
-    if (!m || !m.parts.length) empty++;
-    else if (m.parts.every((p) => p.seconds > 1)) {
+    const have = m ? m.parts.filter((p) => p.seconds > 1).length : 0;
+    partsWant += want;
+    partsHave += have;
+    if (have === 0) empty++;
+    else if (covered(l.slug)) {
       complete++;
-      seconds += m.totalSeconds;
+      seconds += m!.totalSeconds;
     } else partial++;
   }
+  const pct = partsWant ? ((partsHave / partsWant) * 100).toFixed(1) : "0";
   console.log(`narration coverage (${candidates.length} lessons with research):`);
   console.log(`  provider : ${narrationProviderReady().provider}${narrationProviderReady().ok ? "" : " (NO KEY)"}`);
   console.log(`  complete : ${complete}`);
-  console.log(`  partial  : ${partial}`);
+  console.log(`  partial  : ${partial}   <- interrupted; re-run WITHOUT --force to resume`);
   console.log(`  missing  : ${empty}`);
+  console.log(`  parts    : ${partsHave}/${partsWant} (${pct}%)`);
   console.log(`  audio    : ${(seconds / 3600).toFixed(1)} h generated`);
   process.exit(0);
 }

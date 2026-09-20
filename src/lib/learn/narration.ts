@@ -24,9 +24,10 @@
 //   npx tsx src/lib/learn/narration.ts --class 9 --limit 3
 //   npx tsx src/lib/learn/narration.ts --only c9-maths-01 --force
 //   npx tsx src/lib/learn/narration.ts --class 9 --dry
-import { existsSync, mkdirSync, readFileSync, writeFileSync, statSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync, statSync, rmSync, mkdtempSync, readdirSync } from "node:fs";
 import { join } from "node:path";
-import { execFileSync } from "node:child_process";
+import { tmpdir } from "node:os";
+import { execFileSync, spawnSync } from "node:child_process";
 import { ALL_LESSONS } from "./video-catalog";
 import { extendedPath, type ExtendedFile } from "./lesson-research";
 import type { VideoLesson } from "./video-catalog";
@@ -146,20 +147,51 @@ class TtsError extends Error {
 }
 
 // ── provider abstraction ───────────────────────────────────────────────────
-// Gemini is the default and the only one verified live, but a single provider
-// is a single point of failure: an exhausted key stalls the whole curriculum.
-// TTS_PROVIDER selects the backend so an alternative credential can be dropped
-// in without touching this file:
-//   gemini  (default) — GEMINI_API_KEY
-//   openai            — OPENAI_API_KEY, tts-1 / gpt-4o-mini-tts (returns MP3)
-type ProviderName = "gemini" | "openai";
+// Gemini is the default, but a single provider is a single point of failure:
+// an exhausted key stalls the whole curriculum. TTS_PROVIDER selects the
+// backend so an alternative can be dropped in without touching this file:
+//   gemini  (default) — GEMINI_API_KEY, gemini-2.5-flash-preview-tts. Raw PCM.
+//   openai            — OPENAI_API_KEY, tts-1 / gpt-4o-mini-tts. MP3.
+//   edge              — NO KEY, NO COST. Microsoft Edge's neural voices via the
+//                       edge-tts Python package. Returns MP3. This is the
+//                       free path: `pip install edge-tts`, then
+//                       TTS_PROVIDER=edge.
+//
+// The `edge` backend shells out to a Python helper (scripts/tts_edge.py)
+// rather than calling a REST API, because edge-tts speaks a websocket
+// protocol that is far more robust to drive from its own library than to
+// reimplement here.
+type ProviderName = "gemini" | "openai" | "edge";
 
 function activeProvider(): ProviderName {
   const p = (process.env.TTS_PROVIDER ?? "gemini").toLowerCase();
-  return p === "openai" ? "openai" : "gemini";
+  if (p === "openai") return "openai";
+  if (p === "edge") return "edge";
+  return "gemini";
+}
+
+// Credential requirement differs per provider: `edge` needs none.
+function providerEnvVar(provider: ProviderName): string {
+  if (provider === "openai") return "OPENAI_API_KEY";
+  if (provider === "edge") return "";
+  return "GEMINI_API_KEY";
+}
+
+function pythonBin(): string {
+  return (
+    process.env.TTS_PYTHON ??
+    process.env.PYTHON_BIN ??
+    // The managed venv used to install edge-tts in this environment.
+    "C:/Users/Piyush/.workbuddy-ai/binaries/python/envs/default/Scripts/python.exe"
+  );
+}
+
+function edgeHelperPath(): string {
+  return process.env.TTS_EDGE_HELPER ?? join(process.cwd(), "scripts", "tts_edge.py");
 }
 
 function apiKeyFor(provider: ProviderName): string {
+  if (provider === "edge") return ""; // keyless
   const key = provider === "openai" ? process.env.OPENAI_API_KEY : process.env.GEMINI_API_KEY;
   if (!key) {
     throw new Error(
@@ -175,13 +207,122 @@ function apiKeyFor(provider: ProviderName): string {
 // report a clear setup error instead of failing once per lesson.
 export function narrationProviderReady(): { ok: boolean; provider: ProviderName; reason?: string } {
   const provider = activeProvider();
-  const envVar = provider === "openai" ? "OPENAI_API_KEY" : "GEMINI_API_KEY";
+  if (provider === "edge") {
+    // No credential, but the helper script and a python interpreter must exist.
+    if (!existsSync(edgeHelperPath())) {
+      return { ok: false, provider, reason: `edge helper not found at ${edgeHelperPath()}` };
+    }
+    return { ok: true, provider };
+  }
+  const envVar = providerEnvVar(provider);
   return process.env[envVar] ? { ok: true, provider } : { ok: false, provider, reason: `${envVar} is not set` };
 }
 
 const OPENAI_TTS_URL = "https://api.openai.com/v1/audio/speech";
 const OPENAI_TTS_MODEL = process.env.OPENAI_TTS_MODEL ?? "tts-1";
 const OPENAI_TTS_VOICE = process.env.OPENAI_TTS_VOICE ?? "alloy";
+
+// ── edge (free) provider ───────────────────────────────────────────────────
+// Microsoft Edge's online neural voices, reached through the edge-tts library.
+// No key, no account, no quota beyond a light per-request throttle. Returns a
+// finished MP3 at 24 kHz mono, the same sample rate Gemini uses.
+//
+// Default voice is en-IN-NeerjaNeural: the lesson narration is written in an
+// Indian-classroom register ("Hello students!") and the renderer's own
+// speechSynthesis fallback already prefers an en-IN voice, so this keeps the
+// accent consistent with the rest of the product.
+const EDGE_VOICE = process.env.TTS_VOICE ?? "en-IN-NeerjaNeural";
+const EDGE_RATE = process.env.TTS_RATE ?? "+0%";
+const EDGE_PITCH = process.env.TTS_PITCH ?? "+0Hz";
+
+// edge-tts emits 48 kbps mono. For spoken word that is generous: at 48 kbps a
+// full 12-part lesson is ~15 MB, and the catalog (517 lessons) would be ~7.8 GB
+// — awkward to ship. Re-encoding to 32 kbps mono roughly halves it to ~5 GB
+// with no measurable loss for speech, and ffmpeg preserves the exact duration,
+// so the timeline built from the manifest stays valid.
+//
+// Set TTS_MP3_BITRATE=32k to compact every part as it is written. Left unset,
+// the provider output is stored untouched.
+const EDGE_MP3_BITRATE = (process.env.TTS_MP3_BITRATE ?? "").trim();
+
+// Re-encode in place at the requested bitrate. Duration must not change;
+// verified against ffprobe and, if it does drift, the original is kept so the
+// measured timeline can never be invalidated by a lossy step.
+function compactMp3(path: string, bitrate: string): void {
+  const before = probeAudioSeconds(path);
+  const tmp = `${path}.compact.mp3`;
+  try {
+    execFileSync(
+      process.env.FFMPEG_PATH ?? "ffmpeg",
+      ["-y", "-v", "error", "-i", path, "-codec:a", "libmp3lame", "-b:a", bitrate, "-ac", "1", tmp],
+      { stdio: "ignore" },
+    );
+    const after = probeAudioSeconds(tmp);
+    if (after > 0 && Math.abs(after - before) <= 1) {
+      rmSync(path, { force: true });
+      // rename is not available across all sandbox setups; copy then remove.
+      writeFileSync(path, readFileSync(tmp));
+    } else {
+      console.warn(`    [tts] bitrate compaction changed duration (${before} -> ${after}) — keeping original`);
+    }
+  } catch (e) {
+    console.warn(`    [tts] bitrate compaction failed: ${(e as Error).message.slice(0, 120)} — keeping original`);
+  } finally {
+    rmSync(tmp, { force: true });
+  }
+}
+
+// The `finally` above cannot run if the process is hard-killed mid-compaction,
+// which leaves a `<part>.mp3.compact.mp3` behind. It is never valid output, so
+// sweep it on the way in rather than letting it accumulate.
+function sweepCompactLeftovers(dir: string): void {
+  try {
+    for (const f of readdirSync(dir)) {
+      if (f.endsWith(".compact.mp3")) rmSync(join(dir, f), { force: true });
+    }
+  } catch {
+    /* directory may not exist yet */
+  }
+}
+
+// Shell out to scripts/tts_edge.py. Text goes through a temp file, never argv,
+// so a long part cannot hit an argument-length limit or be mangled by quoting.
+function synthesizeChunkEdge(text: string): { audio: Buffer; container: "mp3" } {
+  const helper = edgeHelperPath();
+  if (!existsSync(helper)) {
+    throw new TtsError(`edge helper missing at ${helper}`, false);
+  }
+  const tmpDir = mkdtempSync(join(tmpdir(), "tts-edge-"));
+  const inFile = join(tmpDir, "in.txt");
+  const outFile = join(tmpDir, "out.mp3");
+  try {
+    writeFileSync(inFile, text, "utf8");
+    const res = spawnSync(
+      pythonBin(),
+      [helper, "--text-file", inFile, "--out", outFile, "--voice", EDGE_VOICE, "--rate", EDGE_RATE, "--pitch", EDGE_PITCH],
+      { encoding: "utf8", timeout: TTS_CALL_TIMEOUT_MS },
+    );
+    if (res.error) {
+      throw new TtsError(`edge spawn failed: ${res.error.message}`, true);
+    }
+    if (res.status !== 0) {
+      const msg = (res.stderr || res.stdout || "").trim().slice(0, 300);
+      // A missing package or helper is a setup problem — do not retry it.
+      const setup = /not installed|pip install|helper missing|No such file/i.test(msg);
+      throw new TtsError(`edge-tts failed (${res.status}): ${msg}`, !setup);
+    }
+    if (!existsSync(outFile) || statSync(outFile).size === 0) {
+      throw new TtsError("edge-tts produced no audio", true);
+    }
+    return { audio: readFileSync(outFile), container: "mp3" };
+  } finally {
+    try {
+      rmSync(tmpDir, { recursive: true, force: true });
+    } catch {
+      /* best effort */
+    }
+  }
+}
 
 // OpenAI-compatible speech endpoint. Unlike Gemini this returns a finished
 // audio container (MP3), so the caller must NOT run it through the PCM path.
@@ -289,12 +430,13 @@ const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms
 // single interactive call should fail fast rather than hang for a minute.
 async function synthesizeChunkWithRetry(text: string): Promise<TtsResult> {
   const provider = activeProvider();
-  const apiKey = apiKeyFor(provider);
+  // `edge` is keyless; the others need a credential.
+  const apiKey = provider === "edge" ? "" : apiKeyFor(provider);
   const rateWaits = Number(process.env.TTS_RATE_WAITS ?? 0);
   const failures: string[] = [];
 
-  // OpenAI takes no model fallback chain — one model, one voice.
-  const models = provider === "openai" ? ["openai"] : TTS_MODELS;
+  // OpenAI and edge take no model fallback chain — one voice each.
+  const models = provider === "gemini" ? TTS_MODELS : [provider];
 
   for (const model of models) {
     let err: TtsError | null = null;
@@ -302,6 +444,19 @@ async function synthesizeChunkWithRetry(text: string): Promise<TtsResult> {
       try {
         if (provider === "openai") {
           const r = await synthesizeChunkOpenai(text, apiKey);
+          return { pcm: r.audio, mimeType: "audio/mpeg", container: "mp3" };
+        }
+        if (provider === "edge") {
+          // spawnSync is synchronous — run it off the microtask queue so the
+          // event loop (and any caller awaiting us) is not needlessly blocked
+          // for the duration of a long part.
+          const r = await new Promise<{ audio: Buffer; container: "mp3" }>((resolve, reject) => {
+            try {
+              resolve(synthesizeChunkEdge(text));
+            } catch (e) {
+              reject(e);
+            }
+          });
           return { pcm: r.audio, mimeType: "audio/mpeg", container: "mp3" };
         }
         return await synthesizeChunk(text, apiKey, model);
@@ -421,6 +576,9 @@ export async function narrateLesson(
   const apiKey = opts.apiKey ?? process.env.GEMINI_API_KEY;
   if (provider === "gemini" && !apiKey) throw new Error("GEMINI_API_KEY is not set — cannot synthesize narration");
   if (provider === "openai" && !process.env.OPENAI_API_KEY) throw new Error("OPENAI_API_KEY is not set (TTS_PROVIDER=openai)");
+  if (provider === "edge" && !existsSync(edgeHelperPath())) {
+    throw new Error(`edge helper not found at ${edgeHelperPath()} (TTS_PROVIDER=edge)`);
+  }
 
   const ep = extendedPath(lessonItem.slug);
   if (!existsSync(ep)) throw new Error(`${lessonItem.slug}: no extended research yet`);
@@ -431,11 +589,14 @@ export async function narrateLesson(
   if (!segments.length) throw new Error(`${lessonItem.slug}: no narration text to speak`);
 
   mkdirSync(audioDir(lessonItem.slug), { recursive: true });
+  // Remove any half-written compaction temp from a previously killed run.
+  if (EDGE_MP3_BITRATE) sweepCompactLeftovers(audioDir(lessonItem.slug));
   const previous = opts.force ? null : readNarrationManifest(lessonItem.slug);
+  const modelLabel = provider === "openai" ? `openai:${OPENAI_TTS_MODEL}` : provider === "edge" ? `edge:${EDGE_VOICE}` : TTS_MODELS[0];
   const manifest: NarrationManifest = {
     slug: lessonItem.slug,
-    model: provider === "openai" ? `openai:${OPENAI_TTS_MODEL}` : TTS_MODELS[0],
-    voice: provider === "openai" ? OPENAI_TTS_VOICE : TTS_VOICE,
+    model: modelLabel,
+    voice: provider === "openai" ? OPENAI_TTS_VOICE : provider === "edge" ? EDGE_VOICE : TTS_VOICE,
     generatedAt: new Date().toISOString(),
     parts: previous ? previous.parts.filter((p) => partIsUsable(lessonItem.slug, p.part, previous)) : [],
     totalSeconds: 0,
@@ -472,6 +633,7 @@ export async function narrateLesson(
       // Its exact length is measured from the file, not inferred from bytes.
       try {
         writeFileSync(outPath, audio);
+        if (EDGE_MP3_BITRATE) compactMp3(outPath, EDGE_MP3_BITRATE);
         seconds = probeAudioSeconds(outPath);
       } catch (e) {
         try {

@@ -8,7 +8,6 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { narrationProviderReady } from "../src/lib/learn/narration.ts";
-
 let passed = 0;
 const check = (name, fn) => {
   try {
@@ -43,6 +42,23 @@ check("TTS_PROVIDER=openai selects openai", () => {
 check("an unknown TTS_PROVIDER falls back to gemini", () => {
   process.env.TTS_PROVIDER = "nonsense";
   assert.equal(narrationProviderReady().provider, "gemini");
+});
+
+check("TTS_PROVIDER=edge selects the free keyless provider", () => {
+  process.env.TTS_PROVIDER = "edge";
+  const r = narrationProviderReady();
+  assert.equal(r.provider, "edge");
+  // The whole point of edge is that it needs no credential. If it ever starts
+  // reporting a missing key, the "completely free" guarantee is broken.
+  assert.ok(
+    !/API_KEY/.test(r.reason ?? ""),
+    `edge must not require an API key, got: ${r.reason}`,
+  );
+});
+
+check("edge requires its helper script to exist", () => {
+  assert.match(src, /edgeHelperPath\(\)/, "edge path must resolve the helper");
+  assert.match(src, /scripts", "tts_edge\.py"/, "helper must point at scripts/tts_edge.py");
 });
 
 // 2. Readiness must reflect the credential actually needed, per provider.
@@ -83,6 +99,22 @@ check("the dispatcher maps the openai result to an mp3 container", () => {
   );
 });
 
+check("the dispatcher maps the edge result to an mp3 container", () => {
+  assert.match(
+    src,
+    /synthesizeChunkEdge\(text\)[\s\S]{0,140}container:\s*"mp3"/,
+    "dispatcher must return container mp3 for the edge provider",
+  );
+});
+
+check("edge helper writes text via file, not argv", () => {
+  // A 3,000-character part must never be passed as a command-line argument.
+  assert.match(src, /--text-file", inFile/, "edge helper must receive text via a file");
+  const helper = readFileSync("scripts/tts_edge.py", "utf8");
+  assert.match(helper, /--text-file/, "helper must accept --text-file");
+  assert.match(helper, /edge_tts\.Communicate/, "helper must drive edge_tts.Communicate");
+});
+
 check("mp3 responses bypass the PCM->MP3 transcode", () => {
   // The lesson loop must branch on container, not call pcmToMp3 blindly.
   assert.match(src, /if \(container === "mp3"\)/, "lesson loop must branch on container");
@@ -96,4 +128,27 @@ check("429 carries retryAfterMs parsed from the response", () => {
   assert.match(src, /retry in \(\[0-9\.\]\+\)s/i, "gemini 429 must parse 'retry in Ns'");
 });
 
-console.log(`\n${passed}/8 checks passed.`);
+// 5. Resume correctness. A half-finished lesson must NOT count as complete, or
+//    an interrupted run is silently never resumed. The original check only
+//    validated the parts PRESENT in the manifest, which 9-of-12 satisfies.
+const driver = readFileSync("scripts/narrate-all.ts", "utf8");
+
+check("completeness is judged against required parts, not manifest length", () => {
+  assert.match(driver, /function requiredParts\(/, "driver must compute how many parts a lesson needs");
+  assert.match(
+    driver,
+    /usable\.length < want/,
+    "covered() must compare present parts against required parts",
+  );
+  assert.match(
+    driver,
+    /for \(let i = 1; i <= want; i\+\+\)/,
+    "covered() must verify every required part index is present, not merely enough of them",
+  );
+});
+
+check("a hard interruption cannot leak a compaction temp file", () => {
+  assert.match(src, /sweepCompactLeftovers/, "engine must sweep stray .compact.mp3 files");
+});
+
+console.log(`\n${passed}/14 checks passed.`);

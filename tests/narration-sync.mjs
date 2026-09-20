@@ -23,6 +23,10 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 const args = process.argv.slice(2);
 const limit = Number(args.find((a) => a.startsWith("--limit="))?.slice(8)) || 0;
 const WPM = Number(args.find((a) => a.startsWith("--wpm="))?.slice(6)) || 140;
+// --slug=<slug>[,<slug>...] audits specific lessons instead of the head of the
+// sorted list — useful when narration exists for only part of the catalog.
+const slugArg = args.find((a) => a.startsWith("--slug="))?.slice("--slug=".length) ?? "";
+const slugs = new Set(slugArg.split(",").map((s) => s.trim()).filter(Boolean));
 // A part whose speech is shorter than its budget by more than this many
 // seconds is "silent tail" — visuals running with nothing to listen to.
 const TOLERANCE_S = 20;
@@ -38,7 +42,7 @@ const dirs = readdirSync("public/videos", { withFileTypes: true })
   .filter((s) => existsSync(`public/videos/research/${s}.extended.json`))
   .sort();
 
-const targets = limit ? dirs.slice(0, limit) : dirs;
+const targets = slugs.size ? dirs.filter((d) => slugs.has(d)) : limit ? dirs.slice(0, limit) : dirs;
 
 // Pull `data-duration="N"` off the part sections in the baked render, in order.
 // Returns null when the lesson has not been baked yet.
