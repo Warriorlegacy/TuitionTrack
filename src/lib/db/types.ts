@@ -13,6 +13,24 @@ export type SubscriptionStatus = 'active' | 'cancelled' | 'past_due';
 export type ReportStatus = 'draft' | 'approved' | 'sent' | 'failed';
 export type RiskLevel = 'low' | 'medium' | 'high';
 
+// ── Parent portal (migration 20260921) ───────────────────────────────────────
+/** Mirrors the `guardian_relationship_type` enum. Closed list — section 5. */
+export type GuardianRelationshipType = "father" | "mother" | "guardian" | "other";
+/** Mirrors the `guardian_link_status` enum. */
+export type GuardianLinkStatus = "pending" | "active" | "suspended" | "revoked";
+/** Mirrors the `parent_invite_status` enum. */
+export type ParentInviteStatus = "pending" | "accepted" | "expired" | "revoked";
+/** Mirrors the `payment_proof_status` enum (brief §37 status chain). */
+export type PaymentProofStatus =
+  | "unpaid"
+  | "payment_initiated"
+  | "proof_submitted"
+  | "under_review"
+  | "verified"
+  | "rejected"
+  | "refunded"
+  | "cancelled";
+
 export interface Database {
   __InternalSupabase: { PostgrestVersion: '12' };
   public: {
@@ -408,6 +426,110 @@ export interface Database {
       message_templates: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
       message_outbox: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
       inbound_messages: { Row: Flex; Insert: Flex; Update: Flex; Relationships: [] };
+      payment_settings: {
+        Row: {
+          id: string;
+          upi_id: string;
+          upi_display_name: string;
+          upi_qr_url: string | null;
+          payment_whatsapp_number: string;
+          currency: string;
+          instructions: string | null;
+          active: boolean;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          upi_id?: string;
+          upi_display_name?: string;
+          upi_qr_url?: string | null;
+          payment_whatsapp_number?: string;
+          currency?: string;
+          instructions?: string | null;
+          active?: boolean;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["payment_settings"]["Insert"]>;
+        Relationships: [];
+      };
+      payment_proofs: {
+        Row: {
+          id: string;
+          student_id: string;
+          guardian_user_id: string;
+          relationship_id: string | null;
+          fee_id: string | null;
+          amount: number;
+          currency: string;
+          utr_reference: string | null;
+          screenshot_storage_path: string | null;
+          screenshot_file_name: string | null;
+          status: PaymentProofStatus;
+          submitted_at: string;
+          submitted_by: string | null;
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+          review_notes: string | null;
+          rejection_reason: string | null;
+          receipt_id: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          student_id: string;
+          guardian_user_id: string;
+          relationship_id?: string | null;
+          fee_id?: string | null;
+          amount: number;
+          currency?: string;
+          utr_reference?: string | null;
+          screenshot_storage_path?: string | null;
+          screenshot_file_name?: string | null;
+          status?: PaymentProofStatus;
+          submitted_at?: string;
+          submitted_by?: string | null;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          review_notes?: string | null;
+          rejection_reason?: string | null;
+          receipt_id?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["payment_proofs"]["Insert"]>;
+        Relationships: [];
+      };
+      payment_receipts: {
+        Row: {
+          id: string;
+          receipt_number: string;
+          payment_proof_id: string | null;
+          student_id: string;
+          guardian_user_id: string;
+          amount: number;
+          currency: string;
+          issued_at: string;
+          issued_by: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          receipt_number: string;
+          payment_proof_id?: string | null;
+          student_id: string;
+          guardian_user_id: string;
+          amount: number;
+          currency?: string;
+          issued_at?: string;
+          issued_by?: string | null;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["payment_receipts"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, {
       Row: Record<string, unknown>;
@@ -427,6 +549,7 @@ export interface Database {
       subscription_plan: SubscriptionPlan;
       subscription_status: SubscriptionStatus;
       user_role: AppRole;
+      payment_proof_status: PaymentProofStatus;
     };
   };
 }
@@ -439,8 +562,9 @@ export type DbEnums = {
   subscription_plan: SubscriptionPlan;
   subscription_status: SubscriptionStatus;
   user_role: AppRole;
-  ai_provider: "openai" | "anthropic" | "google" | "groq" | "together" | "openrouter" | "huggingface" | "custom";
+      ai_provider: "openai" | "anthropic" | "google" | "groq" | "together" | "openrouter" | "huggingface" | "custom";
   ai_key_status: "active" | "revoked" | "expired";
+  payment_proof_status: PaymentProofStatus;
 };
 
 export type UserRow = Database["public"]["Tables"]["users"]["Row"];
@@ -452,4 +576,7 @@ export type TestRow = Database["public"]["Tables"]["tests"]["Row"];
 export type AnnouncementRow = Database["public"]["Tables"]["announcements"]["Row"];
 export type PerformanceRecordRow = Database["public"]["Tables"]["performance_records"]["Row"];
 export type ReportRow = Database["public"]["Tables"]["reports"]["Row"];
+export type PaymentSettingsRow = Database["public"]["Tables"]["payment_settings"]["Row"];
+export type PaymentProofRow = Database["public"]["Tables"]["payment_proofs"]["Row"];
+export type PaymentReceiptRow = Database["public"]["Tables"]["payment_receipts"]["Row"];
 export type SubscriptionRow = Database["public"]["Tables"]["subscriptions"]["Row"];

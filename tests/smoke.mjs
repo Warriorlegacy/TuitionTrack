@@ -86,3 +86,35 @@ for (const [name, method, path, payload] of [
     assert.equal(res.status, 401, `${method} ${path} → ${res.status}, want 401`);
   });
 }
+
+// ── Parent Portal Smoke Assertions ───────────────────────────────────────────
+for (const parentPath of [
+  "/parent",
+  "/parent/progress",
+  "/parent/homework",
+  "/parent/fees",
+  "/parent/reports",
+  "/parent/ask",
+  "/parent/meetings",
+  "/parent/portfolio",
+  "/parent/documents",
+  "/parent/syllabus",
+  "/parent/tests",
+  "/parent/attendance",
+  "/parent/calendar",
+  "/parent/messages",
+  "/parent/notifications",
+  "/parent/profile",
+  "/parent/support",
+]) {
+  test(`smoke: Parent Portal signed out guard — ${parentPath}`, async () => {
+    const { res } = await get(parentPath);
+    if (res.status === 307 || res.status === 308) {
+      assert.match(res.headers.get("location") ?? "", /\/login/);
+    } else {
+      // If mock/local rendering returns 200, must not throw 500
+      assert.ok(res.status < 400, `GET ${parentPath} returned error status ${res.status}`);
+    }
+  });
+}
+

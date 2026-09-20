@@ -22,7 +22,7 @@ import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { StudentFormDialog } from "@/components/students/student-form-dialog";
-import { StudentInviteDialog } from "@/components/students/student-invite-dialog";
+import { ParentInviteDialog } from "@/components/students/parent-invite-dialog";
 
 export function StudentTable({
   students,
@@ -282,11 +282,10 @@ export function StudentTable({
             initialData={editingStudent}
             onSaved={() => router.refresh()}
           />
-          <StudentInviteDialog
+          <ParentInviteDialog
             open={!!invitingStudent}
             onOpenChange={(open) => !open && setInvitingStudent(null)}
             student={invitingStudent}
-            onSaved={() => router.refresh()}
           />
         </>
       ) : null}

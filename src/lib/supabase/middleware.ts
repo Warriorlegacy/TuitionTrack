@@ -89,15 +89,26 @@ export async function updateSession(request: NextRequest) {
 
   const path = request.nextUrl.pathname;
   const isPortalPath = path.startsWith("/app");
+  // The parent portal is gated like the teacher workspace, with one deliberate
+  // exception: `/parent/invite/<token>` must render for a parent who has no
+  // session yet, because that page is how they discover they need one.
+  const isParentInvitePath = path.startsWith("/parent/invite/");
+  const isParentPath = path.startsWith("/parent") && !isParentInvitePath;
   const isPublicAuthPath =
     PUBLIC_AUTH_PATHS.has(path) || PUBLIC_AUTH_PREFIXES.some((p) => path.startsWith(p));
 
-  if (isPortalPath && !session) {
+  if ((isPortalPath || isParentPath) && !session) {
     // Preserve the destination so an expired session returns the user to where
     // they were, instead of dumping them on the dashboard after re-auth.
     const loginUrl = new URL("/login", request.url);
     const target = path + (request.nextUrl.search ?? "");
-    if (target && target !== "/app/dashboard") loginUrl.searchParams.set("next", target);
+    if (isParentPath) {
+      // Never drop the parent's intended destination — losing it means losing
+      // the invite token they arrived with.
+      loginUrl.searchParams.set("next", target || "/parent");
+    } else if (target && target !== "/app/dashboard") {
+      loginUrl.searchParams.set("next", target);
+    }
     return withCookies(NextResponse.redirect(loginUrl));
   }
 

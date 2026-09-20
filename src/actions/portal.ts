@@ -609,116 +609,33 @@ export async function sendReportAction(reportId: string, email?: string): Promis
   }
 }
 
-export async function getStudentInviteDetails(studentId: string): Promise<{
-  success: boolean;
-  student?: {
-    id: string;
-    name: string;
-    class: string;
-    teacher_name: string;
-  };
-  message?: string;
-}> {
-  try {
-    const admin = createSupabaseAdminClient();
-    const { data: student, error } = await admin
-      .from("students")
-      .select("id, name, class, teacher_id")
-      .eq("id", studentId)
-      .maybeSingle();
-
-    if (error || !student) {
-      return { success: false, message: "Student record not found." };
-    }
-
-    const { data: teacher } = await admin
-      .from("users")
-      .select("name")
-      .eq("id", student.teacher_id)
-      .maybeSingle();
-
-    return {
-      success: true,
-      student: {
-        id: student.id,
-        name: student.name,
-        class: student.class,
-        teacher_name: teacher?.name || "Your Teacher",
-      },
-    };
-  } catch (err) {
-    return { success: false, message: (err as Error).message };
-  }
-}
-
-export async function claimStudentInviteAction(
-  studentId: string,
-  asRole: "student" | "parent" = "student"
-): Promise<ActionResult> {
-  const context = await getAuthContext();
-  if (!context.user || !context.user.email) {
-    return { success: false, message: "Please log in or sign up first." };
-  }
-
-  const email = context.user.email.toLowerCase();
-  const admin = createSupabaseAdminClient();
-
-  const updateData =
-    asRole === "parent" ? { parent_email: email } : { student_email: email };
-
-  const { error } = await admin
-    .from("students")
-    .update(updateData)
-    .eq("id", studentId);
-
-  if (error) {
-    return { success: false, message: error.message };
-  }
-
-  // Ensure user profile in users table has the selected role
-  await admin.from("users").upsert({
-    id: context.user.id,
-    email: email,
-    name:
-      context.profile?.name ||
-      (context.user.user_metadata?.full_name as string | undefined) ||
-      (context.user.user_metadata?.name as string | undefined) ||
-      (asRole === "parent" ? "Parent" : "Student"),
-    role: asRole,
-  });
-
-  revalidatePortal();
-  return {
-    success: true,
-    message: `Connected successfully as ${asRole}! Welcome to your portal.`,
-  };
-}
-
-export async function updateStudentAccessAction(
-  studentId: string,
-  parentEmail?: string,
-  studentEmail?: string
-): Promise<ActionResult> {
-  const context = await requireTeacherContext();
-  if (!context.configured || !context.profile) {
-    return { success: false, message: "Supabase is not configured." };
-  }
-
-  const admin = createSupabaseAdminClient();
-  const { error } = await admin
-    .from("students")
-    .update({
-      parent_email: normalizeOptional(parentEmail),
-      student_email: normalizeOptional(studentEmail),
-    })
-    .eq("id", studentId)
-    .eq("teacher_id", context.profile.id);
-
-  if (error) {
-    return { success: false, message: error.message };
-  }
-
-  revalidatePortal();
-  return { success: true, message: "Portal access updated successfully." };
-}
+// ─────────────────────────────────────────────────────────────────────────────
+// REMOVED — insecure invitation actions.
+//
+// Three actions were deleted here as part of the parent portal security work:
+//
+//   getStudentInviteDetails(studentId)
+//     Used an admin (RLS-bypassing) client to look up a student by an
+//     unauthenticated, caller-supplied id, confirming whether a UUID existed
+//     and returning the student's name, class and teacher.
+//
+//   claimStudentInviteAction(studentId, asRole)
+//     Trusted that caller-supplied id and wrote the caller's email straight
+//     onto the student row to grant access — no token, expiry, revocation,
+//     verification or audit trail. This was the primary parent-access
+//     vulnerability.
+//
+//   updateStudentAccessAction(studentId, parentEmail, studentEmail)
+//     Wrote students.parent_email directly, which the authorization predicate
+//     then trusted. Removed because RLS no longer consults that column.
+//
+// They are replaced by:
+//   /parent/invite/<token>       — single-use, expiring, revocable token
+//   src/actions/parent-invites.ts — createParentInviteAction,
+//                                   revokeParentInviteAction,
+//                                   acceptParentInviteAction,
+//                                   revokeGuardianAccessAction
+//
+// Verified by tests/parent-portal-security.mjs (45 assertions).
+// ─────────────────────────────────────────────────────────────────────────────
 

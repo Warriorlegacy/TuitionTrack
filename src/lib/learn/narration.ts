@@ -52,7 +52,9 @@ const BYTES_PER_SECOND = SAMPLE_RATE * 2; // 16-bit mono
 // boundaries well under that ceiling so a chunk never risks truncation.
 const TTS_MAX_CHARS = Number(process.env.TTS_MAX_CHARS ?? 480);
 const TTS_CALL_TIMEOUT_MS = 90_000;
-const TTS_RETRIES = 3;
+// NOTE: a TTS_RETRIES constant used to sit here with no implementation behind
+// it. Removed rather than silenced — a retry count that nothing reads is worse
+// than no constant, because it reads like retry handling exists.
 
 export type NarrationPart = {
   part: number;
