@@ -11,6 +11,11 @@
 
 # next.js
 /.next/
+# Build-cache directories moved aside during local rebuilds (the sandbox's
+# delete guard refuses to let `next build` clear .next, so it gets renamed).
+/.next.bak-*/
+/.next.stale-*/
+/.next.discard-*/
 /out/
 
 # production
@@ -41,6 +46,9 @@ next-env.d.ts
 .*
 !/.gitignore
 !/.eslintrc.json
+# Must be tracked: it keeps the ~2 GB bundled tool + venv out of deployments.
+# The `.*` rule above would otherwise ignore it, so it would never reach CI.
+!/.vercelignore
 !/.vscode/
 # .env.example must be committable — the `.*` rule above would otherwise hide it,
 # which is why the project had no discoverable list of required variables.

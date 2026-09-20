@@ -1,0 +1,33 @@
+# Vercel uploads the *working directory*, not the git tree, so .gitignore rules
+# do not keep files out of a deployment. Without this file the CLI uploads
+# everything on disk — which reached 2.1 GB and failed the build with
+# "File size limit exceeded (100 MB)" (Vercel rejects any single file > 100 MB).
+#
+# The cause was tools/moneyprinterturbo/, a bundled video tool unrelated to the
+# tuition app: a ~2 GB Python .venv plus a nested .git. It is already gitignored
+# but was still being packaged.
+#
+# Keep this list to things that are (a) regenerable, (b) never needed at
+# runtime by the Next.js app, and (c) big. Anything under public/ that the app
+# actually serves must NOT be listed here.
+
+# Unrelated bundled tooling + its virtualenv and nested repo.
+tools/
+
+# Local build/cache output.
+.next/
+node_modules/
+tsconfig.tsbuildinfo
+
+# Test + diagnostic artefacts.
+.scene-preview/
+*.log
+
+# Agent/session scratch state.
+.agents/
+.workbuddy-ai/
+
+# Local env files — never ship secrets to a deployment.
+.env
+.env.local
+.env*.local
