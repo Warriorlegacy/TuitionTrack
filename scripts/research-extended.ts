@@ -11,6 +11,9 @@
 //   npx tsx scripts/make-extended-videos.ts [--only ...]
 // bakes public/videos/<slug>/full.html (HyperFrames 1-hour one-shot + voice).
 // The in-app Remotion ExtendedLesson reads the same JSON via resolveLessonScript.
+// MUST be first — populates process.env before src/lib/ai/provider.ts
+// snapshots it into PLATFORM_KEYS at module scope. See scripts/load-env.ts.
+import "./load-env";
 import { existsSync, mkdirSync, writeFileSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ALL_LESSONS } from "../src/lib/learn/video-catalog";
@@ -18,19 +21,6 @@ import { extendedPath, type ExtendedFile } from "../src/lib/learn/lesson-researc
 import type { VideoLesson } from "../src/lib/learn/video-catalog";
 import type { LessonSegment } from "../src/lib/ai/video";
 import { complete, stripReasoningTrace } from "../src/lib/ai/provider";
-
-// ponytail: 10-line .env loader — avoids a dotenv dependency for one script.
-try {
-  const envPath = join(process.cwd(), ".env");
-  if (existsSync(envPath)) {
-    for (const line of readFileSync(envPath, "utf8").split("\n")) {
-      const m = line.match(/^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)\s*$/);
-      if (m && process.env[m[1]] === undefined) {
-        process.env[m[1]] = m[2].replace(/^["']|["']$/g, "");
-      }
-    }
-  }
-} catch { /* env-only — platform vars still work */ }
 
 const args = process.argv.slice(2);
 const flag = (name: string): string | null => {
@@ -96,7 +86,11 @@ async function planLesson(lessonItem: VideoLesson): Promise<string[]> {
       `The ${SEGMENTS} parts must cover EVERY sub-topic of this chapter with nothing excluded: concepts, definitions, formulas, derivations, diagrams, activities, worked examples, word problems, common mistakes, exam technique.`,
       `Part 1 hooks with why the chapter matters; the last part is an exam masterclass + full recap. Reply with ONLY JSON: {"plan": ["<part 1 heading>", ... exactly ${SEGMENTS} headings]}.`,
     ].join("\n"),
-    maxTokens: 600,
+    // 600 was too small: reasoning models (groq's openai/gpt-oss-20b) spend the
+    // entire budget on the reasoning trace and emit ZERO content, so asJson()
+    // got "" and the lesson failed with the misleading "model returned no plan".
+    // The plan is 12 headings — 2000 leaves room for the trace plus the answer.
+    maxTokens: 2000,
     temperature: 0.3,
   });
   if (result.stubbed) throw new Error("no AI provider configured (stubbed)");
@@ -118,7 +112,11 @@ async function researchSegment(lessonItem: VideoLesson, plan: string[], index: n
         `Reply with ONLY JSON: {"heading": "<part heading>", "narration": "<full voice script, plain sentences a teacher speaks — formulas spelled out>", "points": ["<5 on-screen bullets, max 90 chars each>"], "visual": "<one 3D animation scene line>"}.`,
         retry ? "The previous draft was too short — expand with more explanation, worked steps, and examples." : "",
       ].join("\n"),
-      maxTokens: 2000,
+      // A ~750-word narration is ~1000 tokens; a reasoning model adds its
+      // trace on top of that and the two share one budget. At 2000 the trace
+      // could eat the whole allowance and return zero words — surfacing as
+      // "segment too thin (0 words)" after the retry also failed.
+      maxTokens: 4000,
       temperature: 0.4,
     });
     if (result.stubbed) throw new Error("no AI provider configured (stubbed)");

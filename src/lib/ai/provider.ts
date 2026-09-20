@@ -432,13 +432,30 @@ export async function complete(args: CompleteArgs): Promise<CompleteResult> {
         } else {
           const data = await res.json();
           text = asStr(asObj(asObj(data.choices?.[0]).message).content);
-          // Reasoning models (nemotron etc.) sometimes leak the thinking trace
-          // into `content` — separate field in OpenRouter's payload when present.
-          const r = asObj(data.choices?.[0]?.message)?.reasoning;
-          if (typeof r === "string" && r && !text.trim()) text = ""; // empty content + reasoning-only → empty answer
+          // Reasoning models (nemotron, groq gpt-oss, ...) put the thinking
+          // trace in `reasoning` and the answer in `content`. When the token
+          // budget runs out mid-trace, `content` comes back empty — the model
+          // never got to the answer.
+          const finish = data.choices?.[0]?.finish_reason;
           text = stripReasoningTrace(text);
+          if (!text.trim()) {
+            // An empty answer is a FAILURE, not a success. Returning it here
+            // would stop the chain and surface as a confusing downstream error
+            // (e.g. "model returned no plan") instead of trying the next
+            // provider. `length` means the budget ran out on the trace.
+            const why = finish === "length"
+              ? `hit the ${args.maxTokens ?? 600}-token cap while reasoning (raise maxTokens)`
+              : "returned empty content";
+            throw new Error(`provider ${provider.kind} ${provider.model} ${why}`);
+          }
           inTok = data.usage?.prompt_tokens ?? inTok;
           outTok = data.usage?.completion_tokens ?? approxTokens(text);
+        }
+        // Applies to every provider: a 200 with no usable text is a failure.
+        // Google returns no `finish_reason` here, so this is the safety net for
+        // providers whose branch above did not already check.
+        if (!text.trim()) {
+          throw new Error(`provider ${provider.kind} ${provider.model} returned empty content`);
         }
         return {
           text, model: provider.model, inputTokens: inTok, outputTokens: outTok,
