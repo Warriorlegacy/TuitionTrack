@@ -18,6 +18,7 @@ import {
   SparklesIcon,
   UsersIcon,
   WalletIcon,
+  Link2Icon,
 } from "lucide-react";
 import type { NavItem } from "@/lib/constants";
 import { Brand } from "@/components/brand";
@@ -39,6 +40,7 @@ const iconMap = {
   megaphone: MegaphoneIcon,
   "bar-chart-3": BarChart3Icon,
   "settings-2": Settings2Icon,
+  link: Link2Icon,
 };
 
 export function AppSidebar({

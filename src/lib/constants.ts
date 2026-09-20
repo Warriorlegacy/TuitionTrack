@@ -24,6 +24,7 @@ export const routeTitles: Record<string, string> = {
   "/app/reports": "Reports",
   "/app/settings": "Settings",
   "/app/ai-settings": "AI Settings",
+  "/app/portal-access": "Portal Access",
 };
 
 export type NavIcon =
@@ -40,7 +41,8 @@ export type NavIcon =
   | "wallet"
   | "megaphone"
   | "bar-chart-3"
-  | "settings-2";
+  | "settings-2"
+  | "link";
 
 export type NavItem = {
   href: string;
@@ -91,6 +93,12 @@ export const appNav: NavItem[] = [
     label: "Students",
     icon: "users",
     roles: ["teacher", "parent"],
+  },
+  {
+    href: "/app/portal-access",
+    label: "Portal Access",
+    icon: "link",
+    roles: ["teacher"],
   },
   {
     href: "/app/curriculum",

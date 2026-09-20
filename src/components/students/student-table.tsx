@@ -1,7 +1,15 @@
 "use client";
 
 import { useMemo, useState, useTransition } from "react";
-import { PencilLineIcon, PlusIcon, SearchIcon, Trash2Icon, Share2Icon } from "lucide-react";
+import Link from "next/link";
+import {
+  PencilLineIcon,
+  PlusIcon,
+  SearchIcon,
+  Trash2Icon,
+  Share2Icon,
+  Link2Icon,
+} from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import type { StudentRow, AppRole } from "@/lib/db/types";
@@ -11,7 +19,7 @@ import { usePortalFiltersStore } from "@/stores/use-portal-filters";
 import { roleLabels } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -125,7 +133,12 @@ export function StudentTable({
                   <TableRow key={student.id}>
                     <TableCell className="font-medium">
                       <div className="flex items-center gap-2">
-                        {student.name}
+                        <Link
+                          href={`/app/students/${student.id}`}
+                          className="hover:text-primary transition-colors flex items-center gap-1 group"
+                        >
+                          <span className="group-hover:underline">{student.name}</span>
+                        </Link>
                         {riskMap && riskMap[student.id] && riskMap[student.id] !== 'low' && (
                           <Badge 
                             variant="outline" 
@@ -237,6 +250,17 @@ export function StudentTable({
                     {canManage ? (
                       <TableCell>
                         <div className="flex justify-end gap-2">
+                          <Link
+                            href={`/app/students/${student.id}`}
+                            title="Portal Access & Student Profile"
+                            className={buttonVariants({
+                              variant: "outline",
+                              size: "icon-sm",
+                              className: "text-primary hover:text-primary hover:bg-primary/5",
+                            })}
+                          >
+                            <Link2Icon />
+                          </Link>
                           <Button
                             variant="outline"
                             size="icon-sm"

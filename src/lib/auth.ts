@@ -210,6 +210,31 @@ export async function getAuthContext(): Promise<AuthContext> {
       accessibleStudents = (data as StudentRow[] | null) ?? [];
     }
 
+    // Portal access grants support: any student for which this user has an active grant
+    try {
+      const { data: grantedData } = await supabase
+        .from("portal_access_grants")
+        .select("student:students(*)")
+        .eq("user_id", user.id)
+        .eq("status", "active");
+
+      if (grantedData && grantedData.length > 0) {
+        const extra = grantedData
+          .map((g) => (g as unknown as { student: StudentRow | null }).student)
+          .filter((s): s is StudentRow => s !== null);
+
+        const existingIds = new Set(accessibleStudents.map((s) => s.id));
+        for (const s of extra) {
+          if (!existingIds.has(s.id)) {
+            accessibleStudents.push(s);
+            existingIds.add(s.id);
+          }
+        }
+      }
+    } catch {
+      // ignore
+    }
+
     const teacherIds = Array.from(
       new Set([
         ...(effectiveRole === "teacher" ? [user.id] : []),

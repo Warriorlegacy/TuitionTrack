@@ -101,10 +101,8 @@ export function AuthCard({ mode }: AuthCardProps) {
     }
   }, []);
 
-  const nextParam =
-    typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search).get("next")
-      : null;
+  const searchObj = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+  const nextParam = searchObj ? (searchObj.get("next") || searchObj.get("returnTo")) : null;
   const safeNext =
     nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//")
       ? nextParam
