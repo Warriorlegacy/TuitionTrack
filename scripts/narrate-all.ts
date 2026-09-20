@@ -3,15 +3,15 @@
 //
 // Why a dedicated driver: the engine (src/lib/learn/narration.ts) is
 // per-lesson and idempotent — it skips parts that already have usable audio —
-// but generating 517 lessons / ~6,200 parts / ~380 h of speech against a
-// free-tier rate limit of 10 requests/minute is a multi-hour, interruptible
-// job. This driver makes it resumable and observable:
+// but generating 517 lessons / ~6,200 parts / ~380 h of speech is a long,
+// interruptible job. This driver makes it resumable and observable:
 //   * walks the whole catalog, skipping lessons already complete
-//   * writes a progress ledger so a interrupted run picks up where it stopped
-//   * backs off on HTTP 429 instead of burning its retry budget
+//   * writes a progress ledger so an interrupted run picks up where it stopped
+//   * backs off on HTTP 429 instead of burning its retry budget (gemini)
 //
 // Run:
 //   npx tsx scripts/narrate-all.ts [--only c9-maths-01] [--limit N] [--force]
+//   npx tsx scripts/narrate-all.ts --class 9 --subject maths
 //   npx tsx scripts/narrate-all.ts --status     (report coverage only)
 import { existsSync, readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
@@ -25,6 +25,9 @@ const only = new Set(onlyArg.split(",").map((s) => s.trim()).filter(Boolean));
 const limit = Number(args.find((a) => a.startsWith("--limit="))?.slice("--limit=".length)) || 0;
 const force = args.includes("--force");
 const statusOnly = args.includes("--status");
+// Staged rollout: narrate one class or subject at a time.
+const classArg = Number(args.find((a) => a.startsWith("--class="))?.slice("--class=".length));
+const subjectArg = (args.find((a) => a.startsWith("--subject="))?.slice("--subject=".length) ?? "").toLowerCase();
 
 // The batch job is long and must survive a rolling rate limit. Wait out the
 // quota window (the engine reads this and the server-stated delay) instead of
@@ -32,9 +35,12 @@ const statusOnly = args.includes("--status");
 process.env.TTS_RATE_WAITS = process.env.TTS_RATE_WAITS ?? "4";
 process.env.TTS_MAX_WAIT_MS = process.env.TTS_MAX_WAIT_MS ?? "90000";
 
-// Free-tier TTS allows ~10 requests/minute. Space calls so we rarely trip the
-// limit at all, rather than repeatedly sleeping out a 40 s window.
-const TTS_GAP_MS = process.env.TTS_GAP_MS ?? "6500";
+// Pacing is provider-dependent:
+//   gemini — ~10 requests/minute, so space calls out to avoid burning retries
+//   edge   — keyless and not meaningfully throttled; a long gap only wastes time
+const providerName = narrationProviderReady().provider;
+const defaultGap = providerName === "edge" ? "300" : "6500";
+const TTS_GAP_MS = process.env.TTS_GAP_MS ?? defaultGap;
 process.env.TTS_GAP_MS = TTS_GAP_MS;
 
 const LEDGER = join(process.cwd(), "public", "videos", "narration-progress.json");
@@ -62,9 +68,10 @@ function saveLedger(l: Ledger): void {
 }
 
 // Lessons that have narration text worth speaking AND not already complete.
-const candidates = ALL_LESSONS.filter((l) => existsSync(extendedPath(l.slug))).filter(
-  (l) => !only.size || only.has(l.slug),
-);
+const candidates = ALL_LESSONS.filter((l) => existsSync(extendedPath(l.slug)))
+  .filter((l) => !only.size || only.has(l.slug))
+  .filter((l) => !Number.isFinite(classArg) || l.classLevel === classArg)
+  .filter((l) => !subjectArg || l.subject.toLowerCase() === subjectArg);
 
 const ledger = loadLedger();
 

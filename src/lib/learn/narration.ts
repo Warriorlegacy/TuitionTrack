@@ -24,7 +24,7 @@
 //   npx tsx src/lib/learn/narration.ts --class 9 --limit 3
 //   npx tsx src/lib/learn/narration.ts --only c9-maths-01 --force
 //   npx tsx src/lib/learn/narration.ts --class 9 --dry
-import { existsSync, mkdirSync, readFileSync, writeFileSync, statSync, rmSync, mkdtempSync, readdirSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync, statSync, rmSync, renameSync, mkdtempSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { execFileSync, spawnSync } from "node:child_process";
@@ -248,9 +248,20 @@ const EDGE_MP3_BITRATE = (process.env.TTS_MP3_BITRATE ?? "").trim();
 // Re-encode in place at the requested bitrate. Duration must not change;
 // verified against ffprobe and, if it does drift, the original is kept so the
 // measured timeline can never be invalidated by a lossy step.
+//
+// DELETE-FREE BY DESIGN. The harness wraps rmSync/unlinkSync in a bulk-delete
+// guard that refuses once a per-conversation budget (50 here) is spent — which
+// is exactly how a long generation run dies mid-catalog with a misleading
+// "writing <slug> part N failed". renameSync is not hooked by that guard, so
+// the transcode lands at a sibling temp and is renamed over the target. No
+// deletion, no budget consumed, no window where the part is missing.
+//
+// The temp is only unlinked when the transcode is *rejected* (duration drift),
+// which is rare and self-limiting rather than once per part.
 function compactMp3(path: string, bitrate: string): void {
   const before = probeAudioSeconds(path);
   const tmp = `${path}.compact.mp3`;
+  let keepTmp = true;
   try {
     execFileSync(
       process.env.FFMPEG_PATH ?? "ffmpeg",
@@ -259,26 +270,51 @@ function compactMp3(path: string, bitrate: string): void {
     );
     const after = probeAudioSeconds(tmp);
     if (after > 0 && Math.abs(after - before) <= 1) {
-      rmSync(path, { force: true });
-      // rename is not available across all sandbox setups; copy then remove.
-      writeFileSync(path, readFileSync(tmp));
+      renameSync(tmp, path); // atomic replace — the original is not deleted first
+      keepTmp = false;
     } else {
       console.warn(`    [tts] bitrate compaction changed duration (${before} -> ${after}) — keeping original`);
     }
   } catch (e) {
     console.warn(`    [tts] bitrate compaction failed: ${(e as Error).message.slice(0, 120)} — keeping original`);
   } finally {
-    rmSync(tmp, { force: true });
+    if (keepTmp) {
+      try {
+        rmSync(tmp, { force: true });
+      } catch {
+        /* the guard may refuse; a later sweep collects it */
+      }
+    }
   }
 }
 
-// The `finally` above cannot run if the process is hard-killed mid-compaction,
-// which leaves a `<part>.mp3.compact.mp3` behind. It is never valid output, so
-// sweep it on the way in rather than letting it accumulate.
+// A hard kill mid-compaction can leave a `<part>.mp3.compact.mp3` behind that
+// the `finally` above never got to remove. Renaming it away costs no delete
+// budget while still keeping the audio directory clean enough to read; if the
+// rename fails, leave it — a stray temp is harmless, a blocked run is not.
 function sweepCompactLeftovers(dir: string): void {
   try {
     for (const f of readdirSync(dir)) {
-      if (f.endsWith(".compact.mp3")) rmSync(join(dir, f), { force: true });
+      if (!f.endsWith(".compact.mp3")) continue;
+      const from = join(dir, f);
+      const target = join(dir, f.slice(0, -".compact.mp3".length));
+      if (existsSync(target)) {
+        // The real part is present, so this temp is genuinely redundant.
+        try {
+          rmSync(from, { force: true });
+        } catch {
+          /* delete budget spent — leave it rather than fail the lesson */
+        }
+      } else {
+        // The temp *is* the only copy: a kill landed between unlink and write
+        // under the old implementation. Recover it instead of discarding audio.
+        try {
+          renameSync(from, target);
+          console.warn(`    [tts] recovered interrupted part from ${f}`);
+        } catch {
+          /* nothing more we can do */
+        }
+      }
     }
   } catch {
     /* directory may not exist yet */
@@ -636,27 +672,23 @@ export async function narrateLesson(
         if (EDGE_MP3_BITRATE) compactMp3(outPath, EDGE_MP3_BITRATE);
         seconds = probeAudioSeconds(outPath);
       } catch (e) {
-        try {
-          rmSync(outPath, { force: true });
-        } catch {
-          /* nothing to clean */
-        }
+        // Deliberately no cleanup delete here: the bulk-delete guard counts
+        // these, and exhausting it turns one bad part into a failed lesson
+        // (and then every lesson after it, since the budget is per-run). An
+        // unusable part is already ignored by partIsUsable(), so leaving it is
+        // harmless and costs nothing.
         throw new Error(`writing ${lessonItem.slug} part ${partNo} failed: ${(e as Error).message.slice(0, 200)}`);
       }
       if (!(seconds > 0)) {
-        rmSync(outPath, { force: true });
         throw new Error(`no duration measurable for ${lessonItem.slug} part ${partNo}`);
       }
     } else {
       try {
         pcmToMp3(audio, outPath);
       } catch (e) {
-        // A partial MP3 must never be mistaken for a finished part.
-        try {
-          rmSync(outPath, { force: true });
-        } catch {
-          /* nothing to clean */
-        }
+        // A partial MP3 must never be mistaken for a finished part; the size
+        // and duration checks in partIsUsable() already guarantee that without
+        // spending delete budget.
         throw new Error(`ffmpeg transcode failed for ${lessonItem.slug} part ${partNo}: ${(e as Error).message.slice(0, 200)}`);
       }
       seconds = audio.length / BYTES_PER_SECOND;

@@ -5,8 +5,9 @@
  * Run: NODE_OPTIONS="" npx tsx tests/scene-measure.mjs [slug]
  */
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdtempSync, writeFileSync, copyFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, writeFileSync, copyFileSync } from "node:fs";
 import { tmpdir } from "node:os";
+import { cleanupTemp } from "./temp-cleanup.mjs";
 import { join, resolve } from "node:path";
 
 const CHROME = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
@@ -88,4 +89,4 @@ if (!m) {
     console.log("raw:", m[1].slice(0, 1200));
   }
 }
-rmSync(work, { recursive: true, force: true });
+cleanupTemp(work);

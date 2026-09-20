@@ -5,8 +5,9 @@
  * Run: NODE_OPTIONS="" npx tsx tests/scene-screenshot.mjs [slug]
  */
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, writeFileSync, copyFileSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, writeFileSync, copyFileSync } from "node:fs";
 import { tmpdir } from "node:os";
+import { cleanupTemp } from "./temp-cleanup.mjs";
 import { join, resolve } from "node:path";
 
 const CHROME = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
@@ -66,10 +67,10 @@ try {
   // Chrome exits non-zero on some screenshot runs even when the file is written.
   if (!existsSync(out)) {
     console.error("screenshot failed:", String(e).slice(0, 200));
-    rmSync(work, { recursive: true, force: true });
+    cleanupTemp(work);
     process.exit(1);
   }
 }
 
-rmSync(work, { recursive: true, force: true });
+cleanupTemp(work);
 console.log(existsSync(out) ? `wrote ${out}` : "no screenshot produced");

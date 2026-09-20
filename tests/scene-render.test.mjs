@@ -20,8 +20,9 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdtempSync, writeFileSync, copyFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, writeFileSync, copyFileSync } from "node:fs";
 import { tmpdir } from "node:os";
+import { cleanupTemp } from "./temp-cleanup.mjs";
 import { join, resolve } from "node:path";
 
 const CHROME = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
@@ -125,7 +126,7 @@ try {
   if (out.includes("PROBE::")) raw = out;
   else {
     console.error("FAIL — chrome did not return dom:", String(e).slice(0, 300));
-    rmSync(work, { recursive: true, force: true });
+    cleanupTemp(work);
     process.exit(1);
   }
 }
@@ -133,7 +134,7 @@ try {
 const m = raw.match(/PROBE::(\{.*?\})/);
 if (!m) {
   console.log("skip — no probe node in chrome DOM dump.");
-  rmSync(work, { recursive: true, force: true });
+  cleanupTemp(work);
   process.exit(0);
 }
 
@@ -157,8 +158,20 @@ check("canvas has real dimensions", (r.canvasW ?? 0) > 100 && (r.canvasH ?? 0) >
   `${r.canvasW}x${r.canvasH}`);
 check("framebuffer is not blank", (r.nonZeroPixels ?? 0) > 500,
   `${r.nonZeroPixels}/${r.totalPixels} px, fill=${r.fillRatio}`);
+// "Not blank" is too weak a bar: a scene that draws one stray dot passes it.
+// The defect this catches is a scene whose geometry is mis-projected or whose
+// animated layer discards its computed positions, leaving a near-empty canvas
+// that still looked "rendered" — the number-line measured 0.63% before the fix.
+//
+// The floor is measured, not guessed: `scripts/probe-fill.ts` reports the live
+// fill of every archetype. After the projection and layout fixes, honest scenes
+// sit in the 3%-8% band (they draw discrete sprites, not filled areas).
+// 0.015 is comfortably below that but far above the broken state, so it fails
+// a genuinely empty scene without failing honest ones.
+check("scene has meaningful coverage", (r.fillRatio ?? 0) >= 0.015,
+  `fill=${r.fillRatio} (floor 0.015; see scripts/probe-fill.ts)`);
 if (r.error) console.log(`     probe error: ${r.error} (stage=${r.stage})`);
 
-rmSync(work, { recursive: true, force: true });
+cleanupTemp(work);
 console.log(`\n${pass}/${pass + fail} checks passed.`);
 process.exit(fail ? 1 : 0);
