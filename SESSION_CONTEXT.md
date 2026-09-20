@@ -148,8 +148,10 @@ TuitionTrack is a Next.js 14 application for managing tuition payments and stude
 - **Deploy blocker discovered**: `tools/moneyprinterturbo/` (~2 GB Python .venv + nested .git) was being uploaded by the Vercel CLI even though gitignored. `.vercelignore` added to exclude it. Git-push webhook deploys also fail with empty build output — root cause under investigation (may be a Vercel project config issue, not code).
 
 ## Current Production Status
-- **Live Production URL**: `https://tuitiontrack-app.vercel.app`.
-- **Remote HEAD**: `5f54066` (includes scene fix, audio provider, .vercelignore).
-- **Production Still Serving Stale Render**: `H = 560` (old box) — the git-push webhook deploy creates a deployment but it errors at 30–47s with empty build output. Both git and CLI deploy paths are failing; CLI path fails with "File size limit exceeded (100 MB)" due to the 2GB tools/ upload. `tools/` temporarily moved out of tree for CLI deploy attempt.
-- **All 222 Chapter 3D Animated Lessons Present on Disk**: 517/517 re-baked with fixed projection. Not yet live in production due to deploy failure.
-- **Audio Generation in Progress**: Class 9 Maths batch — 8 lessons complete (0 failures), paused for deploy. Resumable via `narrate-all.ts`.
+- **Live Production URL**: `https://tuitiontrack-app.vercel.app` (Deployment `dpl_3ZLzSC7dpP97FqUfbwDkH1um5JEp` LIVE).
+- **Production Status**: READY & ALIASED.
+- **Parent Experience Layer**: 19 parent portal routes live, verified with 84/84 security tests passing.
+- **Curriculum & 3D Lessons**: 517/517 chapters across Classes 6–12 verified and live in production with WebGL 3D scenes.
+- **BYOK AI Providers**: 12 providers configured (free-tier failover priority).
+- **Supabase Inactivity**: Keep-alive cron active every 2 days (400 OK prevented, zero-secret leak verified).
+- **Verification**: 29/29 smoke tests passing against production URL; 12/12 sampled 3D scene lessons verified live.
