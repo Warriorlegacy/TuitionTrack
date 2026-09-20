@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1280, height=720" />
+    <title>The Human Eye and the Colourful World, visualized. — 1-hour full lesson — TuitionTrack</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <style>
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #0b0f14; color: #f8fafc; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+      #stage { width: min(1280px, 100vw); }
+      #root { position: relative; width: 1280px; max-width: 100%; aspect-ratio: 16/9; overflow: hidden; transform-origin: top left; }
+      .clip { position: absolute; inset: 0; visibility: hidden; }
+      /* Layout is height-budgeted: 720px stage, and a part can hold a 2-line
+         title + 5 bullets + a WebGL scene + a caption. Padding and type sizes
+         are tuned so that combination fits without flexbox having to shrink
+         the scene to nothing. */
+      .qe-fill { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 34px 72px; box-sizing: border-box; overflow: hidden; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 55%, #0f172a 100%); }
+      .qe-fill-light { background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 60%, #f8fafc 100%); color: #0f172a; }
+      .qe-kicker { display: block; flex: none; width: fit-content; font-size: 15px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #a5b4fc; }
+      .qe-fill-light .qe-kicker { color: #4f46e5; }
+      .qe-topic { display: block; flex: none; width: 100%; max-width: 1050px; margin: 8px 0 0; font-size: 38px; line-height: 1.1; font-weight: 800; max-height: 84px; overflow: hidden; }
+      .qe-sub { display: block; flex: none; max-width: 980px; margin: 10px 0 0; font-size: 22px; line-height: 1.4; color: #cbd5e1; }
+      .qe-fill-light .qe-sub { color: #334155; }
+      .qe-steps { display: block; flex: none; width: 100%; margin-top: 12px; margin-bottom: 8px; }
+      .qe-bullet { display: block; width: 100%; box-sizing: border-box; margin-top: 6px; padding: 7px 18px; border-radius: 11px; background: rgba(255,255,255,0.92); color: #0f172a; font-size: 18px; font-weight: 600; line-height: 1.3; }
+      .qe-example { display: block; flex: none; max-width: 1080px; margin: 10px 0 0; font-size: 15px; font-style: italic; color: #6366f1; opacity: 0.85; }
+      .qe-fill-light .qe-example { color: #4f46e5; }
+
+      .qe-scene { position: relative; flex: none; width: 100%; height: min(30vh, 250px); margin-top: 14px; border-radius: 16px; overflow: hidden; background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.16), rgba(15,23,42,0.0) 70%); border: 1px solid rgba(148,163,184,0.18); }
+      .qe-fill-light .qe-scene { background: radial-gradient(circle at 30% 30%, rgba(99,102,241,0.14), rgba(248,250,252,0.0) 70%); border-color: rgba(100,116,139,0.22); }
+      .qe-scene-canvas { display: block; width: 100%; height: 100%; }
+      .qe-scene-solid.qe-scene { background: linear-gradient(135deg, rgba(79,70,229,0.28), rgba(15,23,42,0.05) 60%, rgba(79,70,229,0.22)); }
+      .qe-scene-fallback { position: absolute; inset: 0; display: grid; place-items: center; padding: 24px; font-size: 18px; font-style: italic; opacity: 0.75; text-align: center; }
+
+      .qe-cta { display: block; width: fit-content; margin-top: 30px; padding: 20px 40px; border-radius: 16px; background: #4f46e5; color: #fff; font-size: 30px; font-weight: 800; }
+      #bar { display: flex; align-items: center; gap: 12px; padding: 12px 4px; color: #cbd5e1; font-size: 15px; flex-wrap: wrap; }
+      #bar button { cursor: pointer; border: 1px solid #334155; background: #1e293b; color: #f8fafc; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 700; }
+      #bar button.on { background: #4f46e5; border-color: #4f46e5; }
+      #seek { flex: 1 1 200px; accent-color: #f59e0b; }
+      #menu { display: flex; flex-wrap: wrap; gap: 8px; padding: 4px 4px 20px; }
+      #menu button { cursor: pointer; border: 1px solid #334155; background: transparent; color: #cbd5e1; border-radius: 10px; padding: 6px 10px; font-size: 13px; }
+      #menu button small { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="root" data-composition-id="c10-science-10-full" data-start="0" data-width="1280" data-height="720" data-duration="3606">
+      <!-- Part 1 (0:00–5:00): Introduction: Why Vision Matters and the Physics of Light -->
+      <section id="qx-part1" class="clip" data-start="0" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx0-kicker" class="qe-kicker">Part 1 of 12 · ~5 min</span>
+          <h2 id="qx0-title" class="qe-topic">Introduction: Why Vision Matters and the Physics of Light</h2>
+          <div class="qe-steps">
+              <div id="qx0-p0" class="qe-bullet">• Vision: Our primary window to understanding the universe</div>
+              <div id="qx0-p1" class="qe-bullet">• Light travels in straight lines (Rectilinear Propagation)</div>
+              <div id="qx0-p2" class="qe-bullet">• Refraction: The bending of light between different media</div>
+              <div id="qx0-p3" class="qe-bullet">• The role of speed change in light refraction</div>
+              <div id="qx0-p4" class="qe-bullet">• Convergence: Bringing light rays to a single focal point</div>
+          </div>
+        <div class="qe-scene" data-scene-part="0">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":2398640788,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">A cinematic transition from a blurred landscape to a sharp, high-definition view, followed by a 3D light ray diagram showing refraction through a glass block.</div></noscript>
+        </div>
+          <p id="qx0-visual" class="qe-example">A cinematic transition from a blurred landscape to a sharp, high-definition view, followed by a 3D light ray diagram showing refraction through a glass block.</p>
+        </div>
+      </section>
+      <!-- Part 2 (5:00–10:00): Anatomy of the Human Eye: Structure, Functions, and Key Parts -->
+      <section id="qx-part2" class="clip" data-start="300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx1-kicker" class="qe-kicker">Part 2 of 12 · ~5 min</span>
+          <h2 id="qx1-title" class="qe-topic">Anatomy of the Human Eye: Structure, Functions, and Key Parts</h2>
+          <div class="qe-steps">
+              <div id="qx1-p0" class="qe-bullet">• Cornea: refracts light</div>
+              <div id="qx1-p1" class="qe-bullet">• Iris: controls pupil size</div>
+              <div id="qx1-p2" class="qe-bullet">• Lens: fine‑tunes focus</div>
+              <div id="qx1-p3" class="qe-bullet">• Retina: light‑to‑signal conversion</div>
+              <div id="qx1-p4" class="qe-bullet">• Optic nerve: signal transmission</div>
+          </div>
+        <div class="qe-scene" data-scene-part="1">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":4134323430,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A 3D model of the human eye rotating, highlighting each part as described.</div></noscript>
+        </div>
+          <p id="qx1-visual" class="qe-example">A 3D model of the human eye rotating, highlighting each part as described.</p>
+        </div>
+      </section>
+      <!-- Part 3 (10:00–15:00): Power of Accommodation: How the Eye Focuses and Near/Far Points -->
+      <section id="qx-part3" class="clip" data-start="600" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx2-kicker" class="qe-kicker">Part 3 of 12 · ~5 min</span>
+          <h2 id="qx2-title" class="qe-topic">Power of Accommodation: How the Eye Focuses and Near/Far Points</h2>
+          <div class="qe-steps">
+              <div id="qx2-p0" class="qe-bullet">• Eye's ability to adjust focal length.</div>
+              <div id="qx2-p1" class="qe-bullet">• Ciliary muscles control lens shape.</div>
+              <div id="qx2-p2" class="qe-bullet">• Distant objects: thin lens, long focal length.</div>
+              <div id="qx2-p3" class="qe-bullet">• Nearby objects: thick lens, short focal length.</div>
+              <div id="qx2-p4" class="qe-bullet">• Far point (infinity), Near point (~25 cm).</div>
+          </div>
+        <div class="qe-scene" data-scene-part="2">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":1955106606,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">3D animation showing the eye lens changing shape (thinning and thickening) as ciliary muscles contract and relax, with light rays from distant and near objects being focused on the retina.</div></noscript>
+        </div>
+          <p id="qx2-visual" class="qe-example">3D animation showing the eye lens changing shape (thinning and thickening) as ciliary muscles contract and relax, with light rays from distant and near objects being focused on the retina.</p>
+        </div>
+      </section>
+      <!-- Part 4 (15:00–20:00): Defects of Vision I: Myopia (Nearsightedness) - Causes and Correction -->
+      <section id="qx-part4" class="clip" data-start="900" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx3-kicker" class="qe-kicker">Part 4 of 12 · ~5 min</span>
+          <h2 id="qx3-title" class="qe-topic">Defects of Vision I: Myopia (Nearsightedness) - Causes and Correction</h2>
+          <div class="qe-steps">
+              <div id="qx3-p0" class="qe-bullet">• Myopia: Nearby objects clear, distant objects blurred.</div>
+              <div id="qx3-p1" class="qe-bullet">• Causes: Eyeball too long or lens too powerful.</div>
+              <div id="qx3-p2" class="qe-bullet">• Image forms in front of the retina.</div>
+              <div id="qx3-p3" class="qe-bullet">• Correction: Concave (diverging) lens used.</div>
+              <div id="qx3-p4" class="qe-bullet">• Concave lens shifts focal point onto retina.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="3">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":2763656940,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">3D animation showing a myopic eye with light rays from a distant object converging in front of the retina, then showing the correction with a concave lens, causing the rays to converge on the retina.</div></noscript>
+        </div>
+          <p id="qx3-visual" class="qe-example">3D animation showing a myopic eye with light rays from a distant object converging in front of the retina, then showing the correction with a concave lens, causing the rays to converge on the retina.</p>
+        </div>
+      </section>
+      <!-- Part 5 (20:00–25:00): Defects of Vision II: Hypermetropia (Farsightedness) and Presbyopia -->
+      <section id="qx-part5" class="clip" data-start="1200" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx4-kicker" class="qe-kicker">Part 5 of 12 · ~5 min</span>
+          <h2 id="qx4-title" class="qe-topic">Defects of Vision II: Hypermetropia (Farsightedness) and Presbyopia</h2>
+          <div class="qe-steps">
+              <div id="qx4-p0" class="qe-bullet">• Hypermetropia: Image forms behind retina.</div>
+              <div id="qx4-p1" class="qe-bullet">• Causes: Long focal length or short eyeball.</div>
+              <div id="qx4-p2" class="qe-bullet">• Correction: Convex lens increases converging power.</div>
+              <div id="qx4-p3" class="qe-bullet">• Presbyopia: Age-related loss of accommodation.</div>
+              <div id="qx4-p4" class="qe-bullet">• Correction: Convex lens, often bifocal.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="4">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":556039020,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">3D animation showing light rays from a nearby object entering an eye with hypermetropia, focusing behind the retina, and then showing the corrected eye with a convex lens focusing the rays on the retina.</div></noscript>
+        </div>
+          <p id="qx4-visual" class="qe-example">3D animation showing light rays from a nearby object entering an eye with hypermetropia, focusing behind the retina, and then showing the corrected eye with a convex lens focusing the rays on the retina.</p>
+        </div>
+      </section>
+      <!-- Part 6 (25:00–30:00): Defects of Vision III: Astigmatism and Cataract Management -->
+      <section id="qx-part6" class="clip" data-start="1500" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx5-kicker" class="qe-kicker">Part 6 of 12 · ~5 min</span>
+          <h2 id="qx5-title" class="qe-topic">Defects of Vision III: Astigmatism and Cataract Management</h2>
+          <div class="qe-steps">
+              <div id="qx5-p0" class="qe-bullet">• Astigmatism: uneven corneal curvature</div>
+              <div id="qx5-p1" class="qe-bullet">• Cylindrical lenses correct meridian differences</div>
+              <div id="qx5-p2" class="qe-bullet">• Keratometry maps corneal shape</div>
+              <div id="qx5-p3" class="qe-bullet">• Cataract: lens clouding, protein clumps</div>
+              <div id="qx5-p4" class="qe-bullet">• Phacoemulsification removes cataract</div>
+          </div>
+        <div class="qe-scene" data-scene-part="5">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":1187346041,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">3D animation of an eye showing a steep corneal meridian and a cloudy lens with light rays refracting and scattering</div></noscript>
+        </div>
+          <p id="qx5-visual" class="qe-example">3D animation of an eye showing a steep corneal meridian and a cloudy lens with light rays refracting and scattering</p>
+        </div>
+      </section>
+      <!-- Part 7 (30:00–35:00): Refraction through a Prism: Angle of Deviation and Dispersion -->
+      <section id="qx-part7" class="clip" data-start="1800" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx6-kicker" class="qe-kicker">Part 7 of 12 · ~5 min</span>
+          <h2 id="qx6-title" class="qe-topic">Refraction through a Prism: Angle of Deviation and Dispersion</h2>
+          <div class="qe-steps">
+              <div id="qx6-p0" class="qe-bullet">• Refraction: Light bends when entering/leaving prism.</div>
+              <div id="qx6-p1" class="qe-bullet">• Angle of Deviation (δ): Bending of light ray.</div>
+              <div id="qx6-p2" class="qe-bullet">• Angle of Minimum Deviation (δm): Special case for calculation.</div>
+              <div id="qx6-p3" class="qe-bullet">• Dispersion: White light splits into VIBGYOR colours.</div>
+              <div id="qx6-p4" class="qe-bullet">• Violet bent most, Red bent least due to refractive index.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="6">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":3933628018,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">3D animation of a triangular prism with a white light ray entering, refracting, splitting into VIBGYOR colours, and emerging as a spectrum.</div></noscript>
+        </div>
+          <p id="qx6-visual" class="qe-example">3D animation of a triangular prism with a white light ray entering, refracting, splitting into VIBGYOR colours, and emerging as a spectrum.</p>
+        </div>
+      </section>
+      <!-- Part 8 (35:00–40:00): Newton's Experiment: Recombination of Spectrum and the Rainbow -->
+      <section id="qx-part8" class="clip" data-start="2100" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx7-kicker" class="qe-kicker">Part 8 of 12 · ~5 min</span>
+          <h2 id="qx7-title" class="qe-topic">Newton's Experiment: Recombination of Spectrum and the Rainbow</h2>
+          <div class="qe-steps">
+              <div id="qx7-p0" class="qe-bullet">• Newton's experiment recombines the spectrum.</div>
+              <div id="qx7-p1" class="qe-bullet">• Second prism inverts the spectrum.</div>
+              <div id="qx7-p2" class="qe-bullet">• White light is a mixture of colors.</div>
+              <div id="qx7-p3" class="qe-bullet">• Rainbows are formed by water droplets.</div>
+              <div id="qx7-p4" class="qe-bullet">• Water droplets act as tiny prisms.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="7">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":3564863267,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">3D animation showing sunlight passing through a prism, dispersing into a spectrum, then passing through an inverted second prism and emerging as white light. Transition to sunlight hitting water droplets, showing refraction, internal reflection, and dispersion, forming a rainbow arc.</div></noscript>
+        </div>
+          <p id="qx7-visual" class="qe-example">3D animation showing sunlight passing through a prism, dispersing into a spectrum, then passing through an inverted second prism and emerging as white light. Transition to sunlight hitting water droplets, showing refraction, internal reflection, and dispersion, forming a rainbow arc.</p>
+        </div>
+      </section>
+      <!-- Part 9 (40:00–45:00): Atmospheric Refraction I: Twinkling of Stars and Advanced Sunrise/Delayed Sunset -->
+      <section id="qx-part9" class="clip" data-start="2400" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx8-kicker" class="qe-kicker">Part 9 of 12 · ~5 min</span>
+          <h2 id="qx8-title" class="qe-topic">Atmospheric Refraction I: Twinkling of Stars and Advanced Sunrise/Delayed Sunset</h2>
+          <div class="qe-steps">
+              <div id="qx8-p0" class="qe-bullet">• Stars twinkle due to irregular atmospheric refraction.</div>
+              <div id="qx8-p1" class="qe-bullet">• Planets appear steady as refraction effect is averaged.</div>
+              <div id="qx8-p2" class="qe-bullet">• Atmosphere refracts light, bending it towards Earth.</div>
+              <div id="qx8-p3" class="qe-bullet">• Advanced sunrise: Sun seen before geometric rising.</div>
+              <div id="qx8-p4" class="qe-bullet">• Delayed sunset: Sun seen after geometric setting.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="8">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":4155423117,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">3D animation showing starlight bending through turbulent atmospheric layers, then a separate animation showing sunlight rays from below the horizon bending towards an observer.</div></noscript>
+        </div>
+          <p id="qx8-visual" class="qe-example">3D animation showing starlight bending through turbulent atmospheric layers, then a separate animation showing sunlight rays from below the horizon bending towards an observer.</p>
+        </div>
+      </section>
+      <!-- Part 10 (45:00–50:00): Atmospheric Refraction II: Apparent Position of Stars and Tyndall Effect -->
+      <section id="qx-part10" class="clip" data-start="2700" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx9-kicker" class="qe-kicker">Part 10 of 12 · ~5 min</span>
+          <h2 id="qx9-title" class="qe-topic">Atmospheric Refraction II: Apparent Position of Stars and Tyndall Effect</h2>
+          <div class="qe-steps">
+              <div id="qx9-p0" class="qe-bullet">• Stars appear higher due to atmospheric refraction.</div>
+              <div id="qx9-p1" class="qe-bullet">• Light bends continuously through atmospheric layers.</div>
+              <div id="qx9-p2" class="qe-bullet">• Brain perceives light as traveling straight.</div>
+              <div id="qx9-p3" class="qe-bullet">• Tyndall effect: scattering of light by particles.</div>
+              <div id="qx9-p4" class="qe-bullet">• Visible light beams in fog, dust, and smoke.</div>
+          </div>
+        <div class="qe-scene" data-scene-part="9">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"wave","seed":2918228005,"hue":210}</script>
+          <noscript><div class="qe-scene-fallback">3D animation showing light rays from a star bending as they enter Earth's atmosphere, with the apparent position of the star shown higher than its actual position. Then, a scene transitions to a dark room with a beam of sunlight entering, illuminating dust particles, demonstrating the Tyndall effect.</div></noscript>
+        </div>
+          <p id="qx9-visual" class="qe-example">3D animation showing light rays from a star bending as they enter Earth's atmosphere, with the apparent position of the star shown higher than its actual position. Then, a scene transitions to a dark room with a beam of sunlight entering, illuminating dust particles, demonstrating the Tyndall effect.</p>
+        </div>
+      </section>
+      <!-- Part 11 (50:00–55:00): Scattering of Light: Why the Sky is Blue and Sunsets are Red -->
+      <section id="qx-part11" class="clip" data-start="3000" data-duration="300" data-track-index="1">
+        <div class="qe-fill qe-fill-light">
+          <span id="qx10-kicker" class="qe-kicker">Part 11 of 12 · ~5 min</span>
+          <h2 id="qx10-title" class="qe-topic">Scattering of Light: Why the Sky is Blue and Sunsets are Red</h2>
+          <div class="qe-steps">
+              <div id="qx10-p0" class="qe-bullet">• Rayleigh scattering ∝ 1/λ⁴, blue scatters more</div>
+              <div id="qx10-p1" class="qe-bullet">• Sunset: long path removes blue, leaves red</div>
+              <div id="qx10-p2" class="qe-bullet">• Mie scattering: larger particles, color‑independent</div>
+              <div id="qx10-p3" class="qe-bullet">• Tyndall effect: blue line in milk or fog</div>
+              <div id="qx10-p4" class="qe-bullet">• Pollution increases Mie, dulling sky color</div>
+          </div>
+        <div class="qe-scene" data-scene-part="10">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"molecule","seed":3596669829,"hue":160}</script>
+          <noscript><div class="qe-scene-fallback">A 3D animation of sunlight entering the atmosphere, scattering off air molecules, showing blue sky and red sunset</div></noscript>
+        </div>
+          <p id="qx10-visual" class="qe-example">A 3D animation of sunlight entering the atmosphere, scattering off air molecules, showing blue sky and red sunset</p>
+        </div>
+      </section>
+      <!-- Part 12 (55:00–60:00): Exam Masterclass: Diagram Practice, Numerical Solving, and Full Chapter Recap -->
+      <section id="qx-part12" class="clip" data-start="3300" data-duration="300" data-track-index="1">
+        <div class="qe-fill">
+          <span id="qx11-kicker" class="qe-kicker">Part 12 of 12 · ~5 min</span>
+          <h2 id="qx11-title" class="qe-topic">Exam Masterclass: Diagram Practice, Numerical Solving, and Full Chapter Recap</h2>
+          <div class="qe-steps">
+              <div id="qx11-p0" class="qe-bullet">• Practice Human Eye and Defect Correction Diagrams</div>
+              <div id="qx11-p1" class="qe-bullet">• Master Lens Formula: 1/f = 1/v - 1/u</div>
+              <div id="qx11-p2" class="qe-bullet">• Understand Magnification: m = h_i/h_o = v/u</div>
+              <div id="qx11-p3" class="qe-bullet">• Apply Sign Conventions for Numerical Problems</div>
+              <div id="qx11-p4" class="qe-bullet">• Recap All Chapter Concepts: Vision, Eye, Defects, Prism, Atmosphere</div>
+          </div>
+        <div class="qe-scene" data-scene-part="11">
+          <canvas class="qe-scene-canvas" width="1280" height="560" aria-hidden="true"></canvas>
+          <script type="application/json" class="qe-scene-cfg">{"kind":"particles","seed":1001190241,"hue":265}</script>
+          <noscript><div class="qe-scene-fallback">A split screen showing a detailed, labeled diagram of the human eye on one side and a step-by-step solution of a myopia correction numerical problem on the other.</div></noscript>
+        </div>
+          <p id="qx11-visual" class="qe-example">A split screen showing a detailed, labeled diagram of the human eye on one side and a step-by-step solution of a myopia correction numerical problem on the other.</p>
+        </div>
+      </section>
+        <!-- CTA (60:00–60:06) -->
+        <section id="qx-cta" class="clip" data-start="3600" data-duration="6" data-track-index="1">
+          <div class="qe-fill">
+            <span id="qx-cta-kicker" class="qe-kicker">Full chapter complete</span>
+            <h2 id="qx-cta-title" class="qe-topic">Fix The Human Eye and the Colourful World today.</h2>
+            <p id="qx-cta-sub" class="qe-sub">Start your highest-impact session — Tutor guides, Planner schedules.</p>
+            <span id="qx-cta-btn" class="qe-cta">Revise with Tutor →</span>
+          </div>
+        </section>
+      </div>
+      <div id="bar">
+        <button id="btn-play" type="button">▶ Play 1-hour lesson</button>
+        <button id="btn-voice" type="button" class="on" aria-pressed="true">🔊 Narration on</button>
+        <input id="seek" type="range" min="0" max="3606" step="1" value="0" aria-label="Seek" />
+        <span id="clock">0:00 / 60:06</span>
+      </div>
+      <div id="menu">
+          <button type="button" data-seek="0">1. Introduction: Why Vision Matters and the Physics of Light <small>0:00</small></button>
+          <button type="button" data-seek="300">2. Anatomy of the Human Eye: Structure, Functions, and Key Parts <small>5:00</small></button>
+          <button type="button" data-seek="600">3. Power of Accommodation: How the Eye Focuses and Near/Far Points <small>10:00</small></button>
+          <button type="button" data-seek="900">4. Defects of Vision I: Myopia (Nearsightedness) - Causes and Correction <small>15:00</small></button>
+          <button type="button" data-seek="1200">5. Defects of Vision II: Hypermetropia (Farsightedness) and Presbyopia <small>20:00</small></button>
+          <button type="button" data-seek="1500">6. Defects of Vision III: Astigmatism and Cataract Management <small>25:00</small></button>
+          <button type="button" data-seek="1800">7. Refraction through a Prism: Angle of Deviation and Dispersion <small>30:00</small></button>
+          <button type="button" data-seek="2100">8. Newton's Experiment: Recombination of Spectrum and the Rainbow <small>35:00</small></button>
+          <button type="button" data-seek="2400">9. Atmospheric Refraction I: Twinkling of Stars and Advanced Sunrise/Delayed Sunset <small>40:00</small></button>
+          <button type="button" data-seek="2700">10. Atmospheric Refraction II: Apparent Position of Stars and Tyndall Effect <small>45:00</small></button>
+          <button type="button" data-seek="3000">11. Scattering of Light: Why the Sky is Blue and Sunsets are Red <small>50:00</small></button>
+          <button type="button" data-seek="3300">12. Exam Masterclass: Diagram Practice, Numerical Solving, and Full Chapter Recap <small>55:00</small></button>
+      </div>
+    </div>
+    <script>
+      var NARRATION = ["Hello students! Welcome to our journey through one of the most fascinating chapters in Class 10 Science: The Human Eye and the Colourful World. Before we dive into the complex anatomy of the eye, let's take a moment to appreciate the miracle of sight. Imagine waking up in a world where everything is just a blur of colors and shapes, with no edges, no depth, and no clarity. Vision is not just a sense; it is our primary window to understanding the universe. It allows us to read, to navigate, to recognize faces, and to appreciate the breathtaking beauty of a sunset. But have you ever wondered how this actually happens? How does a beam of light traveling through space transform into a meaningful image inside your brain? To answer this, we must first understand the fundamental physics that makes vision possible: the physics of light. Light is a form of energy that travels in straight lines, a property we call rectilinear propagation. When light hits an object, it either gets absorbed or reflected. The light that reflects off an object and enters our eyes is what we perceive as sight. Now, the most crucial concept we need to master for this chapter is refraction. As you learned in the previous chapter on Light, refraction is the bending of light when it passes from one transparent medium to another of different optical densities. This happens because the speed of light changes depending on the medium. For example, light travels much faster in air than it does in water or glass. When light enters the eye, it isn't just hitting a flat surface; it is passing through several layers of different media, including the cornea and the aqueous humor. Each time the light changes medium, it bends. This bending is not a mistake; it is a precise biological mechanism designed to focus light rays onto a specific point. If these rays do not converge perfectly, our vision becomes blurred. This brings us to the concept of focal length and convergence. For an image to be sharp, the light rays must be 'converged' or brought together at a single point. In our eye, this point is the retina, which acts much like the screen of a cinema projector. Throughout this chapter, we will explore how the eye uses its internal lens to adjust this focus, how certain physical defects can disrupt this process, and how the atmosphere itself acts like a giant prism to create the colors we see in the sky. We will bridge the gap between biological structures and optical physics. So, keep your notebooks ready. We are about to move from the general physics of light to the incredible, specialized machinery of the human eye. Let's get started.","Good morning, class! Today we’re diving into the fascinating world inside our own heads – the human eye. I’ll walk you through every key part, what it does, and how it works together to give us vision.\n\nLet’s start at the very front. The first thing light encounters is the cornea. It’s a clear, dome‑shaped surface that covers the eye and refracts, or bends, incoming light. Think of it as the eye’s primary lens. The cornea has a refractive index of about 1.376, higher than the surrounding air (1.000), so it bends light by the law of refraction: n1 sin θ1 equals n2 sin θ2. This bending is crucial for focusing light onto the retina.\n\nJust behind the cornea is the pupil, the adjustable opening that lets light in. The size of the pupil is controlled by the iris, the coloured part of the eye. The iris contains smooth muscle fibers that contract or relax to widen or narrow the pupil depending on light intensity. In bright light the pupil constricts to reduce glare; in dim light it dilates to allow more light.\n\nThe next structure is the lens, located behind the pupil. The lens is a flexible, transparent organ that fine‑tunes the focus of light. It works in concert with the cornea to bring light to a sharp image on the retina. The lens can change shape – a process called accommodation – to focus on objects at different distances. The ciliary body, a ring of muscle around the lens, adjusts its curvature. The lens has a focal length of about 22 millimetres, matching the distance from the lens to the retina.\n\nSpeaking of the retina, this is the light‑sensitive layer at the back of the eye. It contains two types of photoreceptor cells: rods and cones. Rods are highly sensitive to light and allow us to see in low‑light conditions, but they don’t detect colour. Cones, on the other hand, are responsible for colour vision and visual acuity. There are three types of cones, each sensitive to different wavelengths: short (blue), medium (green), and long (red). The arrangement of these cones in the macula, especially the fovea centralis, gives us the sharpest vision.\n\nThe retina is backed by the choroid, a vascular layer that supplies oxygen and nutrients. The outermost layer of the eye is the sclera, a tough, white, protective shell that gives the eye its shape. Inside the eye, the aqueous humour fills the space between the cornea and lens, maintaining pressure and providing nutrients. The vitreous humour, a gel‑like substance, fills the space behind the lens and keeps the retina in place.\n\nWhen light reaches the retina, the photoreceptors convert it into electrical signals. These signals travel through the optic nerve, a bundle of about 1.2 million nerve fibres, to the brain’s visual cortex. The optic nerve also carries information about the eye’s health, such as the presence of cataracts or retinal detachment.\n\nEye movement is controlled by six extraocular muscles attached to the eye’s outer surface. These muscles allow the eye to rotate in all directions, enabling us to track moving objects and maintain binocular vision. The muscles are innervated by the oculomotor, trochlear, and abducens nerves.\n\nProtective mechanisms also play a vital role. The eyelids close to shield the eye from debris and excess light. The tear film, a thin layer of fluid produced by the lacrimal glands, lubricates the surface, removes dust particles, and contains antimicrobial proteins.\n\nLet’s recap the key parts and their functions:\n1. Cornea – refracts light.\n2. Iris – controls pupil size.\n3. Lens – fine‑tunes focus.\n4. Retina – converts light to signals.\n5. Optic nerve – transmits signals to the brain.\n\nUnderstanding these components helps us appreciate how delicate and sophisticated our visual system is. Any questions before we move on to how the eye focuses and the concept of accommodation?","Hello students, and welcome back to our lesson on the Human Eye and the Colourful World. In our previous session, we explored the intricate structure of the human eye. Today, we delve into a fascinating ability of our eyes: the power of accommodation. Have you ever wondered how your eye can effortlessly shift its focus from a distant mountain to a close-up book? This remarkable feat is made possible by the eye's ability to adjust its focal length. Let's understand this process in detail. The lens in our eye is flexible, made of a jelly-like material. It is held in place by the ciliary muscles. When we look at distant objects, the ciliary muscles relax. This causes the suspensory ligaments attached to the lens to tighten, pulling the lens and making it thinner. A thinner lens has a longer focal length. This longer focal length allows the eye to focus light from distant objects onto the retina. Now, consider looking at a nearby object. To focus on something close, the ciliary muscles contract. This contraction releases the tension on the suspensory ligaments, allowing the lens to become thicker and more convex. A thicker lens has a shorter focal length. This shorter focal length is crucial for converging the light rays from nearby objects precisely onto the retina. This ability of the eye to change its focal length by adjusting the curvature of the lens is called the 'power of accommodation'. It's like the eye has a built-in zoom mechanism! Now, let's talk about the limits of this accommodation. Every eye has a minimum and a maximum distance at which it can focus clearly. The farthest point at which an eye can see objects clearly is called the 'far point'. For a normal, healthy eye, the far point is at infinity. This means we can see very distant objects, like stars, clearly. The closest point at which an eye can see objects distinctly without strain is called the 'near point'. For a normal eye, the near point is approximately 25 centimeters. This is the minimum distance at which we can read a book comfortably. If you try to focus on an object closer than the near point, your eye's lens cannot become sufficiently convex, and the image will appear blurred. So, the range of vision for a normal eye is from infinity down to about 25 centimeters. The power of accommodation is essentially the difference between the maximum and minimum focal lengths the eye lens can achieve. It's this dynamic adjustment that allows us to perceive the world around us with such clarity, whether we're gazing at the horizon or examining the intricate details of a flower. Understanding accommodation helps us appreciate the marvel of our own vision and also lays the groundwork for understanding vision defects.","Hello students, and welcome back to our series on the Human Eye and the Colourful World. In our previous session, we understood how our eye focuses light using the power of accommodation. Today, we're going to delve into the fascinating world of vision defects, starting with Myopia, also commonly known as nearsightedness.  So, what exactly is myopia?  It's a common vision defect where a person can see nearby objects clearly, but distant objects appear blurred.  Think about it: if you have myopia, you can read a book perfectly fine, but looking at a signpost far away becomes a challenge.  This is because the eye is unable to form a sharp image of distant objects on the retina. Instead, the image is focused in front of the retina.  Now, let's explore why this happens. There are two primary reasons for myopia.  Firstly, the eyeball might become too elongated. Imagine stretching a rubber band; it gets longer and thinner. Similarly, if the eyeball's length increases beyond the normal range, the distance between the lens and the retina increases.  Since the lens's converging power remains the same, the light rays from distant objects, which are nearly parallel, will converge before reaching the retina.  The second major cause is when the eye lens has too much converging power. This can happen if the lens becomes too thick or too curved.  A lens with excessive converging power will bend the light rays more strongly, causing them to meet at a point in front of the retina, even for distant objects.  So, to summarize, myopia occurs when either the eyeball is too long, or the eye lens has too much power, leading to the image of distant objects being formed in front of the retina.  Now, the good news is that this defect can be corrected.  And how do we correct it?  By using lenses that can reduce the converging power of the eye lens system.  We use a diverging lens, also known as a concave lens, for this purpose.  A concave lens is thinner at the center and thicker at the edges.  When parallel rays of light from a distant object pass through a concave lens, they diverge slightly before entering the eye.  This divergence, when combined with the converging power of the eye's lens, effectively shifts the focal point backward, so that the image is now formed precisely on the retina.  The power of the concave lens needed for correction depends on the degree of myopia.  A person with a more severe myopia will require a concave lens with a stronger diverging power, meaning a lens with a shorter focal length.  The focal length of the corrective lens should be such that it can form an image of the object at the far point of the myopic eye.  The far point of a myopic eye is the farthest point from which an object can be seen clearly without strain.  In a normal eye, the far point is at infinity.  In a myopic eye, the far point is at some finite distance.  The corrective lens essentially brings the image of a distant object to this far point, allowing the eye to then focus it onto the retina.  So, to recap, myopia, or nearsightedness, is caused by the eyeball being too long or the eye lens having too much converging power.  It results in distant objects appearing blurred because their images are formed in front of the retina.  The correction involves using a concave lens, which diverges the light rays before they enter the eye, ensuring the image is formed sharply on the retina.  In our next session, we will explore another common vision defect: hypermetropia, or farsightedness.","Hello students, and welcome back to our series on the Human Eye and the Colourful World. In our previous session, we explored myopia, or nearsightedness. Today, we're diving into two more common vision defects: hypermetropia, also known as farsightedness, and presbyopia. Let's start with hypermetropia.\n\nHypermetropia is a condition where a person can see distant objects clearly, but struggles to see nearby objects distinctly. This might sound counterintuitive, given the name 'farsightedness', but it means the eye is 'far-sighted' in its ability to focus, meaning it can focus on things far away. The key issue here is that the eye's power of accommodation is insufficient to focus the image of nearby objects on the retina. Instead, the image is focused behind the retina.\n\nWhat causes this? There are two main reasons. Firstly, the focal length of the eye lens may be too long. Imagine the lens being a bit too flat. Secondly, the eyeball might be too short, meaning the distance from the lens to the retina is less than normal. Think of it like the screen being too close to the projector. In both scenarios, the light rays from a nearby object don't converge on the retina, but rather behind it.\n\nNow, how do we correct hypermetropia? The solution is to increase the converging power of the lens system. We achieve this by using a convex lens. A convex lens has converging power, meaning it bends light rays inwards. When placed in front of the eye, this convex lens helps to converge the light rays from a nearby object more strongly, ensuring that the final image is formed precisely on the retina. The convex lens effectively adds the necessary converging power that the eye's lens lacks. The power of the lens needed is calculated based on the near point of the person's eye and the standard near point of a healthy eye, which is 25 centimeters. The formula for the required focal length 'f' of the corrective lens is one divided by 'u' minus one divided by 'v', where 'u' is the object distance (which is -25 cm for a normal near point) and 'v' is the image distance (which is the person's actual near point, and it's negative because it's on the same side as the object).\n\nLet's move on to presbyopia. This is another common vision defect that typically affects older people. As we age, the eye's ability to accommodate decreases. This is primarily due to the gradual weakening of the ciliary muscles and the increasing rigidity of the eye lens. The flexibility of the lens reduces, making it harder for it to change its shape and adjust its focal length for focusing on nearby objects. Consequently, like hypermetropia, people with presbyopia find it difficult to see nearby objects clearly. It's often described as 'old-age farsightedness'.\n\nPresbyopia can coexist with myopia and hypermetropia. If an older person is nearsighted, they might need bifocal lenses. These lenses have a combination of a concave lens at the top (to correct myopia for distant vision) and a convex lens at the bottom (to correct presbyopia for near vision). If they have hypermetropia and presbyopia, they would need two different convex lenses, perhaps with different powers for distance and near vision, or bifocals with stronger convex lenses. The correction for presbyopia involves using a convex lens, similar to hypermetropia, to provide the necessary converging power for near vision. The power of the lens is determined by the person's near point and the desired clear vision distance.\n\nSo, to summarize, hypermetropia is caused by the image focusing behind the retina, often due to a long focal length or short eyeball, and is corrected with a convex lens. Presbyopia is an age-related condition where the eye's ability to accommodate decreases, leading to difficulty focusing on near objects, and is also corrected with a convex lens, often in combination with other corrections using bifocal lenses. Understanding these defects helps us appreciate the intricate mechanics of our eyes and the ingenious ways we can restore clear vision. In our next session, we'll explore astigmatism and cataract management.","Good morning, class! Today we dive into the third part of our chapter on the human eye – the defects of vision that go beyond myopia and hypermetropia. We’ll cover two major conditions: astigmatism and cataract, how they affect our sight, how we diagnose them, and the modern ways we manage them. Let’s get started.\n\nFirst, let’s talk about astigmatism. Astigmatism is a refractive error that occurs when the cornea or lens is not perfectly spherical. Instead of having a uniform curvature, the surface is shaped more like a rugby ball or an egg. This uneven curvature causes light rays entering the eye to focus at different points on the retina. Imagine a light ray entering along the horizontal meridian and another entering along the vertical meridian; each will have a different focal length. In a perfectly spherical eye, the focal length f is the same for all meridians, but in astigmatism, f varies. The formula for a simple lens still holds: one over f equals one over d_o plus one over d_i, but because f changes with direction, the image is blurred or distorted.\n\nClinically, people with astigmatism may see fine details as streaks or halos, especially in low light. They may also experience eye strain or headaches after reading or using a computer. The most common cause is an irregular corneal shape, but sometimes the lens can be the culprit. In some cases, astigmatism can be present from birth or develop later due to eye injuries, surgery, or diseases like keratoconus.\n\nDiagnosis is straightforward. We use a slit lamp to examine the corneal surface, and a keratometer or corneal topographer to map the curvature. The topographer gives us a map of the cornea’s curvature in degrees, showing the steep and flat meridians. We also perform a refraction test, where we ask the patient to read letters while we adjust lenses of different powers. The goal is to find the lens power that brings the image into sharp focus across all meridians. In astigmatism, we often need a cylindrical lens – a lens that has power in one meridian but not the other. The prescription will look like: sphere power, cylinder power, and axis. For example, –1.00 sphere, –2.00 cylinder at 180 degrees.\n\nManagement of astigmatism depends on severity. For mild cases, corrective eyeglasses with a cylindrical lens are sufficient. The cylinder corrects the difference in curvature between meridians. Contact lenses can also be used; rigid gas permeable lenses are particularly effective because they create a new, regular optical surface over the irregular cornea. For more severe or progressive astigmatism, we may consider refractive surgery. Laser procedures such as LASIK or PRK reshape the cornea to make it more spherical. In some cases, especially when the cornea is too thin, we might use a corneal transplant or a procedure called a corneal ring segment implantation.\n\nNow let’s shift to cataracts. A cataract is a clouding of the eye’s natural lens. The lens is normally clear, allowing light to pass through and focus on the retina. In a cataract, proteins in the lens clump together, forming opacities that scatter light. The word cataract comes from the Greek word for “hole,” because the clouding can create a hole-like appearance in the lens.\n\nCataracts most commonly develop with age, but they can also be caused by diabetes, prolonged steroid use, smoking, or trauma. Symptoms include blurred vision, glare, difficulty seeing at night, and a yellowing or fading of colors. As the cataract grows, the patient may notice that their vision is progressively worse.\n\nDiagnosis involves a comprehensive eye exam. We use a slit lamp to look at the lens and see the opacities. We also perform a visual acuity test, and sometimes a dilated fundus exam to rule out other retinal problems. The cataract’s density can be graded using the Lens Opacities Classification System (LOCS III), which assigns a numeric value to the severity.\n\nManagement of cataracts is surgical. The goal is to remove the cloudy lens and replace it with an artificial intraocular lens (IOL). The most common technique is phacoemulsification, where we use ultrasound waves to break up the lens into small fragments, which are then aspirated out. After removal, we implant a clear IOL that is either monofocal, toric, or multifocal, depending on the patient’s needs.\n\nToric IOLs are particularly useful for patients with residual astigmatism. They have different powers in different meridians, similar to a cylindrical lens, and can correct both the cataract and the astigmatism in a single procedure. Multifocal IOLs provide a range of focal distances, helping patients reduce dependence on glasses for near and intermediate tasks.\n\nPostoperative care is essential. Patients are prescribed antibiotic and steroid eye drops to prevent infection and inflammation. We also advise them to wear protective eyewear and avoid strenuous activities for a few weeks. Regular follow-up visits are scheduled to monitor the IOL position, intraocular pressure, and visual acuity.\n\nIn summary, astigmatism is an irregular curvature of the cornea or lens that causes light to focus at multiple points, leading to blurred or distorted vision. It is diagnosed with corneal topography and corrected with cylindrical lenses, contact lenses, or refractive surgery. Cataract, on the other hand, is a clouding of the natural lens that scatters light and impairs vision. It is diagnosed with a slit lamp exam and managed surgically by removing the cloudy lens and inserting an artificial one. Both conditions highlight how delicate the eye’s optical system is and how modern medicine can restore clear vision.\n\nThank you for listening. In our next lesson, we’ll explore refraction through a prism and the physics behind the rainbow. Until then, keep your eyes healthy and remember to get regular eye check-ups!","Hello students, and welcome back to our series on the Human Eye and the Colourful World. In our previous sessions, we've explored the fascinating structure of the human eye and the common defects of vision. Today, we're going to delve into a crucial optical phenomenon: refraction through a prism. This will help us understand how white light splits into its constituent colours, a concept known as dispersion.\n\nSo, what exactly is a prism? A prism, in optics, is typically a transparent refracting medium bounded by five plane surfaces. The most common type we study is a triangular prism made of glass. When a ray of light enters a prism, it undergoes refraction. Let's consider a ray of light, say PQ, incident on one face of a triangular prism ABC. As the light enters from air to glass, it bends towards the normal. This is because the speed of light is slower in glass than in air. Let's say this ray emerges from the prism at point R, on the opposite face. As the light ray travels from glass back to air, it bends away from the normal. This is because light travels faster in air than in glass.\n\nNow, let's introduce a couple of important terms. The incident ray PQ, if it were to travel in a straight line without encountering the prism, would follow a path, let's call it the extended incident ray. The ray that actually emerges from the prism is RS. The angle between the extended incident ray and the emergent ray RS is called the angle of deviation, denoted by the Greek letter delta, 'δ'. This angle tells us how much the light ray has been bent by the prism. The angle of deviation depends on the angle of incidence, the angle of the prism (which is the angle between the two refracting surfaces, angle A in our case), and the refractive index of the prism material.\n\nThere's a specific angle of incidence for which the angle of deviation is minimum. This is called the angle of minimum deviation, denoted as δm. When the angle of incidence equals the angle of emergence, and the prism is placed symmetrically with respect to the incident and emergent rays, we achieve this minimum deviation. In this condition, the refractive index 'n' of the prism material can be related to the angle of the prism 'A' and the angle of minimum deviation 'δm' by the formula: n equals sine of (A plus δm divided by two) divided by sine of (A divided by two). This formula is very useful for determining the refractive index of a transparent material using a prism.\n\nNow, let's talk about dispersion. When a beam of white light is incident on a prism, it splits up into its constituent colours. This phenomenon is called the dispersion of light. Why does this happen? White light is actually a mixture of seven colours: violet, indigo, blue, green, yellow, orange, and red, often remembered by the acronym VIBGYOR. Each of these colours has a slightly different wavelength and hence a different speed in the prism material. The refractive index of the prism material is slightly different for each colour. Violet light has the shortest wavelength and travels the slowest, so it is deviated the most. Red light has the longest wavelength and travels the fastest, so it is deviated the least. The other colours are deviated by intermediate amounts.\n\nSo, as white light enters the prism, each colour bends at a slightly different angle due to the different refractive indices. This causes the white light to split into its spectrum of colours. The emergent rays are no longer parallel but spread out, forming a band of colours. The angle between the emergent ray of violet light and the emergent ray of red light is called the angle of dispersion. It represents the angular separation between the two extreme colours of the spectrum. This dispersion is what allows us to see the beautiful spectrum of colours, like in a rainbow.\n\nIn summary, a prism refracts light, causing an angle of deviation. The angle of minimum deviation is a special case useful for calculating refractive index. Furthermore, when white light passes through a prism, it disperses into its constituent colours because each colour has a different refractive index and hence a different angle of deviation. This fundamental understanding sets the stage for our next topic, where we'll see how Newton used this principle to understand light and colour.","Hello students! In our previous session, we explored how a prism disperses white light into its constituent colors. Today, we're going to build upon that understanding with a fascinating experiment by Sir Isaac Newton. Newton wanted to prove that white light is indeed composed of these different colors. He asked himself: if white light splits into colors, can these colors be recombined to form white light again? \n\nTo test this, Newton set up a brilliant experiment. He took a prism and allowed a beam of sunlight to fall on it. As we saw before, the prism dispersed the sunlight into a spectrum of seven colors: violet, indigo, blue, green, yellow, orange, and red. This band of colors is called the spectrum. Now, Newton placed a second prism, identical to the first, in an inverted position, just behind the first prism. The spectrum of colors emerging from the first prism was allowed to fall on this second, inverted prism. \n\nWhat do you think happened? The second prism, being inverted, acted in the opposite way to the first. Instead of dispersing the light further, it recombined the colors. The light rays that had spread out in the spectrum were bent back together by the second prism. And guess what? The light that emerged from the second prism was a beam of pure white light! This experiment beautifully demonstrated that white light is a mixture of all the colors of the spectrum. The colors are not new entities created by the prism; they were already present within the white light, just separated by the prism's action. \n\nThis recombination of the spectrum is the very reason why we see a rainbow. A rainbow is a beautiful natural phenomenon that occurs when sunlight interacts with water droplets in the atmosphere. After a rain shower, there are many tiny water droplets suspended in the air. When sunlight strikes these droplets, each droplet acts like a tiny prism. \n\nSunlight, which is white light, enters a water droplet. As it enters, it refracts and disperses into its constituent colors, just like it did with Newton's first prism. So, the red light bends the least, and the violet light bends the most. This separation of colors happens inside the droplet. Then, the light reflects off the inner back surface of the water droplet. This is an internal reflection. Finally, as the light emerges from the droplet, it refracts again. This second refraction further separates the colors. \n\nThe result is that we see a spectrum of colors in the sky, forming an arc. The order of colors in a rainbow is always the same: red on the top, followed by orange, yellow, green, blue, indigo, and violet at the bottom. This is often remembered by the acronym VIBGYOR, but when we see a rainbow, the order is reversed from top to bottom, so it's ROYGBIV from top to bottom. The red light is deviated by about 42 degrees with respect to the incoming sunlight, and the violet light is deviated by about 40 degrees. This difference in deviation angles causes the colors to spread out, making the rainbow visible. \n\nSo, a rainbow is essentially the spectrum of sunlight formed by the dispersion and internal reflection of light by water droplets. It's a spectacular demonstration of the principles of refraction, dispersion, and reflection working together in nature. Newton's experiment provided the fundamental understanding that allowed us to explain this natural wonder. We've now seen how white light splits and how it can be put back together, and how this very principle explains the vibrant colors of a rainbow. Next, we'll explore how the Earth's atmosphere also plays with light, causing phenomena like the twinkling of stars.","Hello students, and welcome back to our chapter on the Human Eye and the Colourful World. In our previous session, we explored the beautiful phenomenon of rainbows. Today, we're going to delve into another fascinating aspect of light and our atmosphere: atmospheric refraction. We'll specifically look at why stars twinkle and how the atmosphere makes the sun appear to rise earlier and set later than it actually does. \n\nLet's start with the twinkling of stars. Have you ever looked up at the night sky and noticed how stars seem to shimmer and twinkle, while the planets appear steady? This twinkling is a direct result of atmospheric refraction. \n\nOur atmosphere is not uniform. It's made up of layers of air at different temperatures and densities. As light from a distant star travels towards us, it passes through these various layers. When light moves from a rarer medium to a denser medium, it bends, or refracts. Similarly, when it moves from a denser to a rarer medium, it also bends. \n\nNow, imagine the light from a star. It's a point source of light, meaning it appears very small to us. As this light enters our atmosphere, it encounters these constantly changing layers of air. These layers are in motion due to convection currents and temperature variations. So, the path of light from the star is continuously being bent slightly in different directions. \n\nThink of it like looking at an object through the shimmering heat waves rising from a hot road. The object appears to waver. Similarly, the light from the star, as it's refracted in a slightly random and changing manner by the atmosphere, reaches our eyes from slightly different directions at different times. This causes the apparent brightness and position of the star to fluctuate rapidly, which we perceive as twinkling. \n\nNow, why don't planets twinkle? Planets are much closer to us than stars, and they appear as tiny discs rather than point sources. While light from different parts of the planet's disc also undergoes atmospheric refraction, the effect is averaged out. Imagine the planet as a collection of many point sources. The twinkling from one point might be momentarily dimming, while another point might be momentarily brightening. The overall effect is that the light from the planet remains relatively steady, and we don't observe twinkling. \n\nNext, let's consider the phenomenon of advanced sunrise and delayed sunset. Have you ever noticed that the sun seems to appear above the horizon a little before it actually does, and it seems to stay visible for a while after it has technically set? This is also due to atmospheric refraction. \n\nWhen the sun is just below the horizon, its light rays have to travel through a larger portion of the Earth's atmosphere to reach our eyes. As these rays enter the atmosphere, they are refracted downwards, towards the Earth's surface. This bending of light causes us to see the sun slightly earlier than its actual geometric position. So, we see an 'advanced sunrise'. \n\nSimilarly, when the sun is just below the horizon after sunset, its light rays are again refracted downwards by the atmosphere. This makes the sun appear visible to us even when it has geometrically set. This phenomenon is called 'delayed sunset'. \n\nOn average, due to atmospheric refraction, we experience about a four-minute advanced sunrise and a four-minute delayed sunset. This means we get to see sunlight for about eight minutes longer each day than we would if there were no atmosphere. \n\nSo, to summarize, the twinkling of stars is caused by the irregular refraction of starlight by the turbulent layers of the Earth's atmosphere. Planets, being closer and appearing as discs, do not twinkle because the effect is averaged out. Advanced sunrise and delayed sunset occur because the atmosphere refracts sunlight downwards, making the sun appear above the horizon even when it is geometrically below it. \n\nIn our next session, we will explore the apparent position of stars and the Tyndall effect. Until then, keep observing the world around you!","Hello students, and welcome back to our series on the Human Eye and the Colourful World. In our previous session, we explored how atmospheric refraction leads to the twinkling of stars and the advanced sunrise and delayed sunset phenomena. Today, we'll delve deeper into atmospheric refraction by understanding the apparent position of stars and then move on to another fascinating optical phenomenon: the Tyndall effect. \n\nLet's begin with the apparent position of stars. We know that stars are incredibly distant celestial objects. Light from these stars travels vast distances through space before reaching our atmosphere. As this light enters our atmosphere, it encounters layers of air with varying densities and temperatures. These variations cause the light rays to bend, or refract, continuously. \n\nNow, imagine a star. The light that reaches our eyes from this star has been bent multiple times as it passed through different layers of the atmosphere. Because of this continuous bending, the light ray doesn't travel in a straight line from the star to our eyes. Instead, it follows a curved path. Our brain, however, interprets light as traveling in straight lines. So, when we see the light from the star, our brain projects it back along the straight line from where it appears to be coming. This perceived direction is not the actual position of the star. \n\nTherefore, the star appears slightly higher in the sky than its actual position. This difference between the actual position and the apparent position is due to atmospheric refraction. The amount of bending depends on the temperature and density of the atmospheric layers. At the zenith, which is the point directly overhead, the apparent position of a star is slightly lower than its actual position. However, for stars that are not at the zenith, they appear slightly higher than their actual position. This effect is more pronounced for stars closer to the horizon because the light has to travel through a longer path of the atmosphere. \n\nNow, let's shift our focus to the Tyndall effect. Have you ever noticed a beam of light passing through a dark room, perhaps from a window? You can often see tiny particles or dust illuminated in that beam. This is a visual demonstration of the Tyndall effect. \n\nThe Tyndall effect is the scattering of light as a light beam passes through a medium containing small particles. This phenomenon is named after the Irish physicist John Tyndall, who studied it extensively. When a beam of light, like sunlight, enters a medium containing suspended particles, these particles scatter the light in all directions. \n\nFor the Tyndall effect to be observed, the wavelength of the light must be comparable to or smaller than the size of the scattering particles. In the case of sunlight passing through the Earth's atmosphere, the air molecules themselves are too small to scatter visible light effectively. However, if there are larger particles present, such as dust, smoke, or water droplets, these particles can scatter light. \n\nLet's consider an example. When sunlight passes through a dense forest, the light beams filtering through the canopy often appear as visible shafts of light. This is because the water droplets and dust particles suspended in the air within the forest scatter the sunlight, making the beams visible. Similarly, when you see headlights of a car in fog or mist, the light beams are visible because the water droplets in the fog scatter the light. \n\nAnother common example is the scattering of light by milk. If you shine a beam of light through a glass of milk, you will see the beam clearly. This is because milk contains tiny fat globules that are large enough to scatter light effectively. In contrast, if you shine a light beam through a solution of salt dissolved in water, you won't see the beam because the salt particles are too small to scatter visible light. \n\nSo, to summarize, the Tyndall effect is the scattering of light by particles in a colloid or a fine suspension. It is responsible for the visibility of light beams in dusty air, fog, and smoke, and also explains why certain mixtures appear cloudy or opaque when light passes through them. \n\nIn our next session, we will explore the scattering of light in more detail, specifically focusing on why the sky appears blue and why sunsets are red. Until then, keep observing the world around you!","Good morning, class! Today we’re diving into the science behind why the sky is blue during the day and turns a fiery red at sunset. We’ll explore the physics of light scattering, the role of wavelength, and the difference between Rayleigh and Mie scattering.\n\nFirst, let’s recall that sunlight is a mix of all visible wavelengths, from violet (shortest) to red (longest). When this light enters Earth’s atmosphere, it encounters molecules and tiny particles. The interaction between light and these particles is called scattering.\n\nThe most important scattering mechanism for the clear blue sky is Rayleigh scattering. This occurs when the particles are much smaller than the wavelength of light—think of air molecules like nitrogen and oxygen. The intensity of Rayleigh scattering is inversely proportional to the fourth power of the wavelength. In other words, the scattering coefficient, sigma, is proportional to 1 over lambda to the fourth power. Because blue light has a wavelength of about 450 nanometers and red light about 650 nanometers, blue light is scattered roughly (650/450)^4 ≈ 5 times more strongly than red light. That’s why the sky looks blue when the sun is high.\n\nNow, what happens when the sun is low on the horizon? The sunlight has to travel a longer path through the atmosphere. During this longer journey, the short‑wavelength blue and violet light is scattered out of the direct beam many times, leaving mostly the longer wavelengths—orange, red, and pink—to reach our eyes. This is why sunsets and sunrises are rich in warm colors.\n\nBut not all scattering is Rayleigh. When particles are comparable to or larger than the wavelength of light—like dust, water droplets, or smoke—we get Mie scattering. Mie scattering is less wavelength‑dependent, so it scatters all colors more equally. That’s why clouds appear white or gray: the droplets scatter visible light almost uniformly.\n\nLet’s walk through a quick mental experiment. Imagine a beam of white light entering the atmosphere. At the top, the beam is unaltered. As it descends, the blue component is scattered in all directions by air molecules, filling the sky with blue. The remaining direct beam becomes slightly yellowish because the blue has been removed. At sunset, the beam’s path is so long that almost all blue is scattered away, leaving a reddish beam that reaches the horizon.\n\nWe can quantify this with the Beer–Lambert law: I equals I0 times e to the negative tau, where tau is the optical depth. For Rayleigh scattering, tau is proportional to the integral of the scattering coefficient along the path. Because the coefficient is higher for blue light, tau is larger for blue, so the transmitted intensity I for blue drops faster than for red.\n\nAnother fascinating phenomenon is the Tyndall effect, which is essentially Rayleigh scattering observed in colloidal solutions. When you shine a laser through milk, you see a bright blue line because the small fat globules scatter the shorter wavelengths more. This everyday demonstration mirrors what happens in the sky.\n\nLet’s not forget that the sky’s color can change with pollution. Increased aerosols—larger particles—enhance Mie scattering, which can make the sky appear hazier or even give it a yellowish tint on a polluted day. That’s why cities sometimes see a duller blue compared to rural areas.\n\nIn summary, the blue sky and red sunsets are a beautiful illustration of how light interacts with matter. Rayleigh scattering preferentially scatters short wavelengths, giving us a blue sky. The longer path at sunrise and sunset removes most of that blue, leaving the warm reds and oranges. Mie scattering from larger particles gives clouds their white appearance and can modify the sky’s hue under different atmospheric conditions.\n\nI hope this gives you a clear picture of the physics behind the colors we see every day. Next time you look up, remember the dance of photons with air molecules that paints our sky!","Hello students, and welcome to the final part of our chapter, 'The Human Eye and the Colourful World'. This is our Exam Masterclass, where we’ll consolidate our learning by practicing diagrams, tackling numerical problems, and doing a quick recap of the entire chapter. Let's start with diagrams. The most crucial diagram for this chapter is the structure of the human eye. Remember to label all the parts accurately: the cornea, iris, pupil, lens, retina, optic nerve, and the ciliary muscles. Pay close attention to the path of light as it enters the eye, passes through the pupil and lens, and finally forms an image on the retina. Another important diagram is the correction of myopia. You need to show a diverging lens placed in front of the eye, correcting the focal length so that the image is formed on the retina. Similarly, for hypermetropia, you’ll illustrate a converging lens correcting the focal length. Practice drawing these with clear ray diagrams, showing how the lenses alter the path of light. Now, let's move on to numerical problems. The key formula we've used is the lens formula: one upon focal length is equal to one upon image distance minus one upon object distance. This is written as '1/f = 1/v - 1/u'. We also use the magnification formula: magnification is equal to image height upon object height, which is also equal to image distance upon object distance. This is written as 'm = h_i / h_o = v / u'. When solving problems, always remember to use the sign conventions correctly. Distances measured in the direction of incident light are positive, and those measured against the direction of incident light are negative. Distances measured above the principal axis are positive, and below are negative. For example, if you have a diverging lens, its focal length will be negative. If the object is placed in front of the lens, the object distance 'u' is usually negative. Let's take an example. Suppose a person has myopia and their far point is 0.5 meters. To correct this, we need a lens that can form an image of an object at infinity at 0.5 meters. So, the object distance 'u' is infinity, and the image distance 'v' is -0.5 meters (since the image is formed on the same side as the object for a diverging lens). Using the lens formula, 1/f = 1/v - 1/u, we get 1/f = 1/(-0.5) - 1/infinity. Since 1/infinity is zero, 1/f = -1/0.5, which means f = -0.5 meters. The power of the lens is 1 upon focal length in meters. So, the power P = 1/f = 1/(-0.5) = -2.0 diopters. A negative power indicates a diverging lens, which is used to correct myopia. Now, for a quick recap of the entire chapter. We began by understanding the importance of vision and the basic physics of light. Then, we delved into the anatomy of the human eye, identifying key parts like the cornea, iris, pupil, lens, and retina and their functions. We learned about the power of accommodation, how the eye adjusts its focal length to see objects at different distances. We then discussed common defects of vision: myopia, hypermetropia, presbyopia, and astigmatism, along with their causes and corrections using lenses. We also touched upon cataracts. Moving on, we explored the phenomenon of refraction through a prism, understanding the angle of deviation and dispersion of light. Newton's experiment and the recombination of the spectrum were discussed, leading to our understanding of the rainbow. Finally, we examined atmospheric refraction, explaining the twinkling of stars, advanced sunrise, delayed sunset, the apparent position of stars, and the Tyndall effect. We concluded by understanding why the sky appears blue and sunsets are red due to the scattering of light. This comprehensive recap should help you connect all the concepts. Practicing these diagrams and numerical problems will surely boost your confidence for the exams. Keep revising and stay curious!"];
+      var STARTS = [0,300,600,900,1200,1500,1800,2100,2400,2700,3000,3300];
+      var TOTAL = 3606;
+      window.__timelines = window.__timelines || {};
+      var tl = gsap.timeline({ paused: true });
+      document.querySelectorAll("#root .clip").forEach(function (el) {
+        var s = parseFloat(el.dataset.start || "0"), d = parseFloat(el.dataset.duration || "6");
+        tl.set(el, { visibility: "visible" }, s);
+        tl.set(el, { visibility: "hidden" }, s + d);
+      });
+      tl.from("#qx0-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 0.3);
+      tl.from("#qx0-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 0.8);
+      tl.from("#qx0-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2.6);
+      tl.from("#qx0-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3.5);
+      tl.from("#qx0-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 4.4);
+      tl.from("#qx0-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 5.3);
+      tl.from("#qx0-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 6.2);
+      tl.from("#qx0-visual", { opacity: 0, duration: 0.8 }, 8.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='0']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1.5);
+      tl.from("#qx1-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 300.3);
+      tl.from("#qx1-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 300.8);
+      tl.from("#qx1-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 302.6);
+      tl.from("#qx1-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 303.5);
+      tl.from("#qx1-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 304.4);
+      tl.from("#qx1-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 305.3);
+      tl.from("#qx1-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 306.2);
+      tl.from("#qx1-visual", { opacity: 0, duration: 0.8 }, 308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='1']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 301.5);
+      tl.from("#qx2-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 600.3);
+      tl.from("#qx2-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 600.8);
+      tl.from("#qx2-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 602.6);
+      tl.from("#qx2-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 603.5);
+      tl.from("#qx2-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 604.4);
+      tl.from("#qx2-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 605.3);
+      tl.from("#qx2-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 606.2);
+      tl.from("#qx2-visual", { opacity: 0, duration: 0.8 }, 608.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='2']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 601.5);
+      tl.from("#qx3-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 900.3);
+      tl.from("#qx3-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 900.8);
+      tl.from("#qx3-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 902.6);
+      tl.from("#qx3-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 903.5);
+      tl.from("#qx3-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 904.4);
+      tl.from("#qx3-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 905.3);
+      tl.from("#qx3-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 906.2);
+      tl.from("#qx3-visual", { opacity: 0, duration: 0.8 }, 908.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='3']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 901.5);
+      tl.from("#qx4-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1200.3);
+      tl.from("#qx4-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1200.8);
+      tl.from("#qx4-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1202.6);
+      tl.from("#qx4-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1203.5);
+      tl.from("#qx4-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1204.4);
+      tl.from("#qx4-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1205.3);
+      tl.from("#qx4-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1206.2);
+      tl.from("#qx4-visual", { opacity: 0, duration: 0.8 }, 1208.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='4']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1201.5);
+      tl.from("#qx5-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1500.3);
+      tl.from("#qx5-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1500.8);
+      tl.from("#qx5-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1502.6);
+      tl.from("#qx5-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1503.5);
+      tl.from("#qx5-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1504.4);
+      tl.from("#qx5-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1505.3);
+      tl.from("#qx5-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1506.2);
+      tl.from("#qx5-visual", { opacity: 0, duration: 0.8 }, 1508.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='5']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1501.5);
+      tl.from("#qx6-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 1800.3);
+      tl.from("#qx6-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 1800.8);
+      tl.from("#qx6-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1802.6);
+      tl.from("#qx6-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1803.5);
+      tl.from("#qx6-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1804.4);
+      tl.from("#qx6-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1805.3);
+      tl.from("#qx6-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 1806.2);
+      tl.from("#qx6-visual", { opacity: 0, duration: 0.8 }, 1808.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='6']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 1801.5);
+      tl.from("#qx7-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2100.3);
+      tl.from("#qx7-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2100.8);
+      tl.from("#qx7-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2102.6);
+      tl.from("#qx7-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2103.5);
+      tl.from("#qx7-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2104.4);
+      tl.from("#qx7-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2105.3);
+      tl.from("#qx7-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2106.2);
+      tl.from("#qx7-visual", { opacity: 0, duration: 0.8 }, 2108.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='7']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2101.5);
+      tl.from("#qx8-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2400.3);
+      tl.from("#qx8-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2400.8);
+      tl.from("#qx8-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2402.6);
+      tl.from("#qx8-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2403.5);
+      tl.from("#qx8-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2404.4);
+      tl.from("#qx8-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2405.3);
+      tl.from("#qx8-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2406.2);
+      tl.from("#qx8-visual", { opacity: 0, duration: 0.8 }, 2408.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='8']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2401.5);
+      tl.from("#qx9-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 2700.3);
+      tl.from("#qx9-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 2700.8);
+      tl.from("#qx9-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2702.6);
+      tl.from("#qx9-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2703.5);
+      tl.from("#qx9-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2704.4);
+      tl.from("#qx9-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2705.3);
+      tl.from("#qx9-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 2706.2);
+      tl.from("#qx9-visual", { opacity: 0, duration: 0.8 }, 2708.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='9']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 2701.5);
+      tl.from("#qx10-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3000.3);
+      tl.from("#qx10-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3000.8);
+      tl.from("#qx10-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3002.6);
+      tl.from("#qx10-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3003.5);
+      tl.from("#qx10-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3004.4);
+      tl.from("#qx10-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3005.3);
+      tl.from("#qx10-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3006.2);
+      tl.from("#qx10-visual", { opacity: 0, duration: 0.8 }, 3008.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='10']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3001.5);
+      tl.from("#qx11-kicker", { y: 24, opacity: 0, duration: 0.6, ease: "power3.out" }, 3300.3);
+      tl.from("#qx11-title", { y: 36, opacity: 0, duration: 0.8, ease: "power3.out" }, 3300.8);
+      tl.from("#qx11-p0", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3302.6);
+      tl.from("#qx11-p1", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3303.5);
+      tl.from("#qx11-p2", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3304.4);
+      tl.from("#qx11-p3", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3305.3);
+      tl.from("#qx11-p4", { y: 20, opacity: 0, duration: 0.6, ease: "power3.out" }, 3306.2);
+      tl.from("#qx11-visual", { opacity: 0, duration: 0.8 }, 3308.5);
+      // Animate the scene wrapper's *transform*, never its opacity. A
+      // tl.from({opacity:0}) sets opacity to 0 at the part's start and only
+      // reaches 1 a second later — so the scene is invisible during the exact
+      // moment it should be establishing the visual. Scaling in avoids that
+      // and leaves opacity untouched at 1.
+      tl.from(".qe-scene[data-scene-part='11']", { scale: 0.94, duration: 0.9, ease: "power2.out", transformOrigin: "50% 50%" }, 3301.5);
+      tl.from("#qx-cta-kicker", { y: 24, opacity: 0, duration: 0.6 }, 3600.3);
+      tl.from("#qx-cta-title", { y: 36, opacity: 0, duration: 0.8 }, 3600.8);
+      tl.from("#qx-cta-sub", { y: 24, opacity: 0, duration: 0.6 }, 3601.4);
+      tl.from("#qx-cta-btn", { y: 20, opacity: 0, duration: 0.6 }, 3602);
+      window.__timelines["c10-science-10-full"] = tl;
+
+      // ── One-shot player + voice ──
+      var voiceOn = true, spokenPart = -1, playing = false;
+      var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
+      var seek = document.getElementById("seek"), clock = document.getElementById("clock");
+      function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function pickVoice() {
+        var vs = speechSynthesis.getVoices();
+        return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
+      }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function speakPart(i) {
+        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        spokenPart = i;
+        try {
+          speechSynthesis.cancel();
+          var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
+          var v = pickVoice();
+          chunks.slice(0, 80).forEach(function (c) {
+            var u = new SpeechSynthesisUtterance(c.trim().slice(0, 400));
+            if (v) u.voice = v;
+            speechSynthesis.speak(u);
+          });
+        } catch (e) {}
+      }
+      function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      tl.eventCallback("onUpdate", function () {
+        var t = tl.time();
+        seek.value = Math.floor(t);
+        clock.textContent = fmt(t) + " / " + fmt(TOTAL);
+        var p = partAt(t);
+        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        // Drive the WebGL scenes from the same clock as the DOM timeline, so
+        // scrubbing the seek bar moves the scenes too instead of desyncing.
+        try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
+      });
+      tl.eventCallback("onComplete", function () { playing = false; btnPlay.textContent = "▶ Play 1-hour lesson"; stopVoice(); });
+      btnPlay.onclick = function () {
+        if (playing) { playing = false; tl.pause(); btnPlay.textContent = "▶ Resume lesson"; stopVoice(); }
+        else {
+          playing = true; btnPlay.textContent = "⏸ Pause lesson";
+          if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
+          if (voiceOn) speakPart(partAt(tl.time()));
+        }
+      };
+      btnVoice.onclick = function () {
+        voiceOn = !voiceOn;
+        btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
+        btnVoice.classList.toggle("on", voiceOn);
+        btnVoice.setAttribute("aria-pressed", String(voiceOn));
+        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+      };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      document.querySelectorAll("#menu button").forEach(function (b) {
+        b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
+      });
+      setInterval(function () { try { if (speechSynthesis.speaking) speechSynthesis.resume(); } catch (e) {} }, 10000);
+      if (speechSynthesis.getVoices().length === 0) speechSynthesis.onvoiceschanged = function () {};
+
+      // ── initial paint ──
+      // The timeline is built paused at t=0, and GSAP's .from() tweens apply
+      // their START values the moment they are created. At t=0 that leaves
+      // every element at opacity:0 / the clip at visibility:hidden — so a
+      // lesson opened but not played showed a completely empty frame.
+      //
+      // BOOT_T must be past the LAST intro tween of part 1, not just the
+      // first. Part 1 now animates: title (t+0.8), bullets (t+2.6 .. t+6.2),
+      // caption (t+8.5), scene scale (t+1.5). Parking at t=10 leaves
+      // everything settled; parking earlier shows a title over empty space.
+      var BOOT_T = 10.0;
+      tl.time(BOOT_T);
+      if (window.__scenes) { try { window.__scenes.seek(BOOT_T); } catch (e) {} }
+      seek.value = Math.floor(BOOT_T);
+      clock.textContent = fmt(BOOT_T) + " / " + fmt(TOTAL);
+    </script>
+    <script>
+
+(function () {
+  "use strict";
+
+  var FALLBACK_CLASS = "qe-scene-solid";
+
+  function solidFallback(host) {
+    host.classList.add(FALLBACK_CLASS);
+  }
+
+  // ── context ──────────────────────────────────────────────────────────────
+  // One WebGL context PER scene canvas. Browsers cap live contexts at ~16 and
+  // a lesson has up to 16 parts, so this is exactly at the limit — but it is
+  // the only correct option: a context is permanently bound to the canvas it
+  // was created from, and you cannot blit one canvas's framebuffer into
+  // another canvas that has no context. An earlier version created a single
+  // context on a detached probe canvas and drew into that; every visible
+  // canvas stayed blank. If a lesson ever grows past 16 parts, cap it here.
+  var ctxOpts = { antialias: true, alpha: true, preserveDrawingBuffer: true };
+
+  function contextFor(cv) {
+    try {
+      return cv.getContext("webgl2", ctxOpts)
+          || cv.getContext("webgl", ctxOpts)
+          || cv.getContext("experimental-webgl", ctxOpts);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  // ── shaders ──────────────────────────────────────────────────────────────
+  var VS = [
+    "attribute vec2 aPos;",
+    "attribute float aSize;",
+    "attribute vec3 aColor;",
+    "uniform vec2 uRes;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 clip = (aPos / uRes) * 2.0 - 1.0;",
+    "  gl_Position = vec4(clip.x, -clip.y, 0.0, 1.0);",
+    "  gl_PointSize = aSize;",
+    "  vColor = aColor;",
+    "}"
+  ].join("\n");
+
+  var FS_POINT = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() {",
+    "  vec2 d = gl_PointCoord - vec2(0.5);",
+    "  float r = length(d);",
+    "  if (r > 0.5) discard;",
+    "  float a = smoothstep(0.5, 0.05, r);",
+    "  gl_FragColor = vec4(vColor, a);",
+    "}"
+  ].join("\n");
+
+  var FS_LINE = [
+    "precision mediump float;",
+    "varying vec3 vColor;",
+    "void main() { gl_FragColor = vec4(vColor, 1.0); }"
+  ].join("\n");
+
+  function compile(g, type, src) {
+    var s = g.createShader(type);
+    g.shaderSource(s, src);
+    g.compileShader(s);
+    if (!g.getShaderParameter(s, g.COMPILE_STATUS)) {
+      return null;
+    }
+    return s;
+  }
+
+  // Programs and buffers are context-bound, so each scene gets its own set.
+  function programsFor(g) {
+    function program(fsSrc) {
+      var vs = compile(g, g.VERTEX_SHADER, VS);
+      var fs = compile(g, g.FRAGMENT_SHADER, fsSrc);
+      if (!vs || !fs) return null;
+      var p = g.createProgram();
+      g.attachShader(p, vs);
+      g.attachShader(p, fs);
+      g.linkProgram(p);
+      if (!g.getProgramParameter(p, g.LINK_STATUS)) return null;
+      return p;
+    }
+    var progPoint = program(FS_POINT);
+    var progLine = program(FS_LINE);
+    if (!progPoint || !progLine) return null;
+    var locs = function (p) {
+      return {
+        pos: g.getAttribLocation(p, "aPos"),
+        size: g.getAttribLocation(p, "aSize"),
+        color: g.getAttribLocation(p, "aColor"),
+        res: g.getUniformLocation(p, "uRes")
+      };
+    };
+    return {
+      g: g,
+      progPoint: progPoint,
+      progLine: progLine,
+      L_POINT: locs(progPoint),
+      L_LINE: locs(progLine),
+      bufPos: g.createBuffer(),
+      bufSize: g.createBuffer(),
+      bufColor: g.createBuffer(),
+      bufEdge: g.createBuffer()
+    };
+  }
+
+  // ── deterministic rng ────────────────────────────────────────────────────
+  function rng(seed) {
+    var s = seed >>> 0;
+    return function () {
+      s ^= s << 13; s >>>= 0;
+      s ^= s >> 17;
+      s ^= s << 5; s >>>= 0;
+      return s / 4294967296;
+    };
+  }
+
+  function hsl(h, s, l) {
+    // HSL -> RGB, returns 0..1 triple. Keeps scene palettes consistent.
+    h = ((h % 360) + 360) % 360 / 360;
+    var a = s * Math.min(l, 1 - l);
+    function f(n) {
+      var k = (n + h * 12) % 12;
+      return l - a * Math.max(-1, Math.min(Math.min(k - 3, 9 - k), 1));
+    }
+    return [f(0), f(8), f(4)];
+  }
+
+  // ── scene builders ───────────────────────────────────────────────────────
+  // Each returns { points, edges, tick } where tick(t) mutates positions.
+  var W = 1280, H = 560;
+
+  function buildNumberLine(cfg) {
+    var r = rng(cfg.seed);
+    var pts = [], cols = [], edges = [];
+    var base = H * 0.58;
+    // A long axis with integer ticks — the visual anchor for number systems.
+    var n = 22;
+    for (var i = 0; i <= n; i++) {
+      var x = 80 + (i / n) * (W - 160);
+      edges.push(x, base, x, base + (i % 5 === 0 ? 30 : 14));
+      var c = hsl(cfg.hue, 0.7, i % 5 === 0 ? 0.72 : 0.55);
+      pts.push(x, base + (i % 5 === 0 ? 30 : 14));
+      cols.push(c[0], c[1], c[2]);
+    }
+    edges.push(80, base, W - 80, base);
+    // Floating markers drifting along the axis — the "numbers as spheres".
+    var floats = [];
+    for (var k = 0; k < 26; k++) {
+      floats.push({
+        x: 80 + r() * (W - 160),
+        y: base - 60 - r() * 240,
+        r: 6 + r() * 14,
+        sp: 0.2 + r() * 0.5,
+        ph: r() * 6.28
+      });
+    }
+    return {
+      points: pts, colors: cols, edges: edges,
+      sizes: pts.length / 2,
+      tick: function (t) {
+        // Rebuild only the floating layer each frame via the shared buffers.
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < floats.length; i++) {
+          var f = floats[i];
+          var yy = f.y + Math.sin(t * f.sp + f.ph) * 26;
+          var xx = f.x + Math.cos(t * f.sp * 0.6 + f.ph) * 12;
+          fp.push(xx, base - 30 - ((t * 26 + i * 24) % (H * 0.72)));
+          var c = hsl(cfg.hue + f.ph * 12, 0.8, 0.66);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(f.r);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGraph(cfg) {
+    var r = rng(cfg.seed);
+    var ox = 140, oy = H - 90, w = W - 300, h = H - 180;
+    var edges = [
+      ox, oy - h, ox, oy + 40,      // y axis
+      ox - 60, oy, ox + w, oy       // x axis
+    ];
+    // Marching grid lines.
+    for (var g = 1; g <= 5; g++) {
+      edges.push(ox, oy - (h * g) / 5, ox + w, oy - (h * g) / 5);
+    }
+    var a = 0.4 + r() * 0.5;
+    var curvePts = [];
+    var N = 120;
+    for (var i = 0; i <= N; i++) {
+      var xn = i / N;
+      var yn = Math.sin(xn * 6.28318 * a) * 0.5 + 0.5;
+      curvePts.push(ox + xn * w, oy - yn * h);
+    }
+    for (var j = 0; j + 3 < curvePts.length; j += 2) {
+      edges.push(curvePts[j], curvePts[j + 1], curvePts[j + 2], curvePts[j + 3]);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < 40; k++) {
+      var xn2 = r();
+      var yn2 = Math.sin(xn2 * 6.28318 * a) * 0.5 + 0.5;
+      pts.push(ox + xn2 * w, oy - yn2 * h);
+      var c = hsl(cfg.hue, 0.85, 0.68);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(7);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        // A tracer dot sweeping the curve — the "animation" in the description.
+        var prog = (t * 0.12) % 1;
+        var x = ox + prog * w;
+        var y = oy - (Math.sin(prog * 6.28318 * a) * 0.5 + 0.5) * h;
+        var c = hsl(cfg.hue + 30, 0.95, 0.72);
+        this.dynPoints = [x, y];
+        this.dynColors = [c[0], c[1], c[2]];
+        this.dynSizes = [18];
+      }
+    };
+  }
+
+  function buildMolecule(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var atoms = [{ x: cx, y: cy, r: 26, main: true }];
+    var ring = 3 + Math.floor(r() * 3);
+    for (var i = 0; i < ring; i++) {
+      var ang = (i / ring) * 6.28318 + r();
+      var dist = 120 + r() * 90;
+      atoms.push({
+        x: cx + Math.cos(ang) * dist,
+        y: cy + Math.sin(ang) * dist,
+        r: 12 + r() * 10,
+        main: false
+      });
+    }
+    var edges = [];
+    for (var a = 1; a < atoms.length; a++) {
+      edges.push(cx, cy, atoms[a].x, atoms[a].y);
+    }
+    // Secondary bonds between outer atoms — makes it read as a real structure.
+    for (var b = 1; b < atoms.length; b++) {
+      var nx = 1 + (b % (atoms.length - 1));
+      if (nx !== b) edges.push(atoms[b].x, atoms[b].y, atoms[nx].x, atoms[nx].y);
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var k = 0; k < atoms.length; k++) {
+      pts.push(atoms[k].x, atoms[k].y);
+      var c = atoms[k].main ? hsl(cfg.hue, 0.9, 0.7) : hsl(cfg.hue + 40, 0.7, 0.6);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(atoms[k].r);
+    }
+    // Free electrons orbiting — the "reaction" motion.
+    var orbiters = [];
+    for (var o = 0; o < 18; o++) {
+      orbiters.push({ rad: 150 + r() * 160, sp: 0.3 + r() * 0.8, ph: r() * 6.28, sz: 5 + r() * 6 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < orbiters.length; i++) {
+          var ob = orbiters[i];
+          var ang = ob.ph + t * ob.sp;
+          fp.push(cx + Math.cos(ang) * ob.rad, cy + Math.sin(ang) * ob.rad * 0.62);
+          var c = hsl(cfg.hue + 60 + i * 4, 0.85, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(ob.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildCell(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    // Membrane: a closed ring drawn as segments.
+    var R = 200;
+    var SEG = 72;
+    for (var i = 0; i < SEG; i++) {
+      var a1 = (i / SEG) * 6.28318, a2 = ((i + 1) / SEG) * 6.28318;
+      var rr1 = R + Math.sin(a1 * 5) * 8, rr2 = R + Math.sin(a2 * 5) * 8;
+      edges.push(cx + Math.cos(a1) * rr1, cy + Math.sin(a1) * rr1 * 0.72,
+                 cx + Math.cos(a2) * rr2, cy + Math.sin(a2) * rr2 * 0.72);
+    }
+    var organs = [{ x: cx, y: cy, r: 44 }];
+    for (var k = 0; k < 7; k++) {
+      var ang = (k / 7) * 6.28318 + r();
+      var d = 70 + r() * 110;
+      organs.push({ x: cx + Math.cos(ang) * d, y: cy + Math.sin(ang) * d * 0.72, r: 14 + r() * 20 });
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var m = 0; m < organs.length; m++) {
+      pts.push(organs[m].x, organs[m].y);
+      var c = hsl(cfg.hue + m * 6, 0.75, 0.66);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(organs[m].r);
+    }
+    var drift = [];
+    for (var q = 0; q < 22; q++) {
+      drift.push({ x: cx + (r() - 0.5) * R * 1.6, y: cy + (r() - 0.5) * R * 1.1, sz: 4 + r() * 8, sp: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < drift.length; i++) {
+          var d = drift[i];
+          fp.push(d.x + Math.sin(t * 0.6 + d.sp) * 14, d.y + Math.cos(t * 0.5 + d.sp) * 12);
+          var c = hsl(cfg.hue + 20, 0.8, 0.72);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(d.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildOrbit(cfg) {
+    var r = rng(cfg.seed);
+    var cx = W / 2, cy = H / 2;
+    var edges = [];
+    var rings = 3 + Math.floor(r() * 2);
+    var radii = [];
+    for (var i = 0; i < rings; i++) {
+      var R = 90 + i * 68;
+      radii.push(R);
+      var SEG = 64;
+      for (var s = 0; s < SEG; s++) {
+        var a1 = (s / SEG) * 6.28318, a2 = ((s + 1) / SEG) * 6.28318;
+        edges.push(cx + Math.cos(a1) * R, cy + Math.sin(a1) * R * 0.6,
+                   cx + Math.cos(a2) * R, cy + Math.sin(a2) * R * 0.6);
+      }
+    }
+    var pts = [cx, cy], cols = [], sizes = [54];
+    var c0 = hsl(cfg.hue, 0.9, 0.75);
+    cols.push(c0[0], c0[1], c0[2]);
+    var planets = [];
+    for (var p = 0; p < rings; p++) {
+      planets.push({ R: radii[p], sp: 0.5 - p * 0.09, ph: r() * 6.28, sz: 16 + r() * 12 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < planets.length; i++) {
+          var pl = planets[i];
+          var ang = pl.ph + t * pl.sp;
+          fp.push(cx + Math.cos(ang) * pl.R, cy + Math.sin(ang) * pl.R * 0.6);
+          var c = hsl(cfg.hue + i * 34, 0.8, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(pl.sz);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildWave(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var mid = H / 2;
+    edges.push(60, mid, W - 60, mid);
+    var freq = 1.5 + r() * 2;
+    var amp = 90 + r() * 60;
+    for (var k = 0; k < 3; k++) {
+      var off = k * 40 - 40;
+      var prevX = 60, prevY = mid;
+      for (var x = 60; x <= W - 60; x += 10) {
+        var y = mid + Math.sin((x / W) * 6.28318 * freq + k * 0.8) * amp + off * 0.3;
+        edges.push(prevX, prevY, x, y);
+        prevX = x; prevY = y;
+      }
+    }
+    var pts = [], cols = [], sizes = [];
+    for (var i = 0; i < 30; i++) {
+      var xn = r();
+      var yn = mid + Math.sin(xn * 6.28318 * freq) * amp;
+      pts.push(60 + xn * (W - 120), yn);
+      var c = hsl(cfg.hue + i * 3, 0.85, 0.7);
+      cols.push(c[0], c[1], c[2]);
+      sizes.push(6);
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 14; i++) {
+          var prog = ((t * 0.18 + i / 14) % 1);
+          var x = 60 + prog * (W - 120);
+          var y = mid + Math.sin(prog * 6.28318 * freq + t * 1.6) * amp;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + i * 10, 0.95, 0.74);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(14);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildGrid(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var cols = 12, rows = 6, pad = 90;
+    var cw = (W - pad * 2) / cols, ch = (H - pad * 2) / rows;
+    for (var i = 0; i <= cols; i++) edges.push(pad + i * cw, pad, pad + i * cw, H - pad);
+    for (var j = 0; j <= rows; j++) edges.push(pad, pad + j * ch, W - pad, pad + j * ch);
+    var pts = [], pcols = [], sizes = [];
+    for (var c = 0; c < cols; c++) {
+      for (var rw = 0; rw < rows; rw++) {
+        if (r() < 0.45) continue;
+        pts.push(pad + c * cw + cw / 2, pad + rw * ch + ch / 2);
+        var col = hsl(cfg.hue - c * 6 + rw * 3, 0.8, 0.62);
+        pcols.push(col[0], col[1], col[2]);
+        sizes.push(8 + r() * 16);
+      }
+    }
+    return {
+      points: pts, colors: pcols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < 12; i++) {
+          var prog = (t * 0.1 + i / 12) % 1;
+          var xx = pad + prog * (W - pad * 2);
+          fp.push(xx, pad + (Math.sin(prog * 6.28 + i) * 0.5 + 0.5) * (H - pad * 2));
+          var c = hsl(cfg.hue + i * 8, 0.9, 0.7);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(12);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  function buildParticles(cfg) {
+    var r = rng(cfg.seed);
+    var edges = [];
+    var pts = [], cols = [], sizes = [];
+    var N = 150;
+    var seeds = [];
+    for (var i = 0; i < N; i++) {
+      seeds.push({ x: r() * W, y: r() * H, z: 0.3 + r() * 0.7, sz: 4 + r() * 12, ph: r() * 6.28 });
+    }
+    return {
+      points: pts, colors: cols, edges: edges, sizes: sizes,
+      tick: function (t) {
+        var fp = [], fc = [], fs = [];
+        for (var i = 0; i < seeds.length; i++) {
+          var s = seeds[i];
+          var x = s.x + Math.sin(t * 0.25 * s.z + s.ph) * 60;
+          var y = s.y + Math.cos(t * 0.2 * s.z + s.ph) * 44;
+          y = ((y % H) + H) % H;
+          x = ((x % W) + W) % W;
+          fp.push(x, y);
+          var c = hsl(cfg.hue + s.ph * 20, 0.8, 0.42 + s.z * 0.34);
+          fc.push(c[0], c[1], c[2]);
+          fs.push(s.sz * s.z);
+        }
+        this.dynPoints = fp;
+        this.dynColors = fc;
+        this.dynSizes = fs;
+      }
+    };
+  }
+
+  var BUILDERS = {
+    numberline: buildNumberLine,
+    graph: buildGraph,
+    molecule: buildMolecule,
+    cell: buildCell,
+    orbit: buildOrbit,
+    wave: buildWave,
+    grid: buildGrid,
+    particles: buildParticles
+  };
+
+  // ── wire up every scene host ─────────────────────────────────────────────
+  var scenes = [];
+
+  document.querySelectorAll(".qe-scene").forEach(function (host) {
+    var cv = host.querySelector("canvas");
+    var cfgEl = host.querySelector(".qe-scene-cfg");
+    if (!cv || !cfgEl) return;
+    var cfg;
+    try { cfg = JSON.parse(cfgEl.textContent || "{}"); } catch (e) { cfg = {}; }
+    cfg.hue = typeof cfg.hue === "number" ? cfg.hue : 265;
+    cfg.seed = cfg.seed >>> 0;
+
+    var g = contextFor(cv);
+    if (!g) { solidFallback(host); return; }
+    var rt = programsFor(g);
+    if (!rt) { solidFallback(host); return; }
+
+    var builder = BUILDERS[cfg.kind] || buildParticles;
+    var scene;
+    try { scene = builder(cfg); } catch (e) { solidFallback(host); return; }
+    scene.__hue = cfg.hue;
+    // Precompute a static frame so a paused scene is never blank.
+    scene.tick(0);
+    scenes.push({ host: host, canvas: cv, scene: scene, rt: rt });
+  });
+
+  function upload(sc, p, L, bufs, data) {
+    var g = sc.rt.g;
+    g.useProgram(p);
+    g.uniform2f(L.res, W, H);
+    if (data.pos.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.pos);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.pos), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.pos);
+      g.vertexAttribPointer(L.pos, 2, g.FLOAT, false, 0, 0);
+    }
+    if (L.size >= 0 && data.sizes.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.size);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.sizes), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.size);
+      g.vertexAttribPointer(L.size, 1, g.FLOAT, false, 0, 0);
+    }
+    if (L.color >= 0 && data.colors.length) {
+      g.bindBuffer(g.ARRAY_BUFFER, bufs.color);
+      g.bufferData(g.ARRAY_BUFFER, new Float32Array(data.colors), g.DYNAMIC_DRAW);
+      g.enableVertexAttribArray(L.color);
+      g.vertexAttribPointer(L.color, 3, g.FLOAT, false, 0, 0);
+    }
+  }
+
+  function drawScene(sc, t, force) {
+    var host = sc.host;
+    var rect = host.getBoundingClientRect();
+    if (rect.width < 2 || rect.height < 2) return;
+    // Skip scenes that are not on screen — a lesson has up to 16 of them and
+    // only one clip is visible at a time. NOTE: visibility:hidden (how .clip
+    // works) does NOT null out offsetParent, so that check alone would draw
+    // all 16 every frame. checkVisibility() sees through it.
+    //
+    // The force flag bypasses the gate for the initial paint. At load time the
+    // GSAP timeline has not yet applied its visibility sets, so every clip is
+    // still hidden and a gated first frame would leave all 16 canvases blank
+    // until the user pressed play.
+    if (!force) {
+      if (typeof host.checkVisibility === "function") {
+        if (!host.checkVisibility({ checkOpacity: false, checkVisibilityCSS: true })) return;
+      } else if (host.offsetParent === null) {
+        return;
+      }
+    }
+
+    var rt = sc.rt;
+    var gl = rt.g;
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cw = Math.max(2, Math.round(rect.width * dpr));
+    var chh = Math.max(2, Math.round(rect.height * dpr));
+    if (sc.canvas.width !== cw || sc.canvas.height !== chh) {
+      sc.canvas.width = cw;
+      sc.canvas.height = chh;
+    }
+
+    sc.scene.tick(t);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+    gl.viewport(0, 0, cw, chh);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND);
+    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+    // Static edges (axis, membrane, grid, curve).
+    var edges = sc.scene.edges || [];
+    if (edges.length) {
+      gl.useProgram(rt.progLine);
+      gl.uniform2f(rt.L_LINE.res, W, H);
+      gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufEdge);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(edges), gl.DYNAMIC_DRAW);
+      gl.enableVertexAttribArray(rt.L_LINE.pos);
+      gl.vertexAttribPointer(rt.L_LINE.pos, 2, gl.FLOAT, false, 0, 0);
+      var lc = hsl(sc.scene.__hue || 265, 0.45, 0.42);
+      if (rt.L_LINE.color >= 0) {
+        var cc = new Float32Array(edges.length / 2 * 3);
+        for (var q = 0; q < edges.length / 2; q++) {
+          cc[q * 3] = lc[0]; cc[q * 3 + 1] = lc[1]; cc[q * 3 + 2] = lc[2];
+        }
+        gl.bindBuffer(gl.ARRAY_BUFFER, rt.bufColor);
+        gl.bufferData(gl.ARRAY_BUFFER, cc, gl.DYNAMIC_DRAW);
+        gl.enableVertexAttribArray(rt.L_LINE.color);
+        gl.vertexAttribPointer(rt.L_LINE.color, 3, gl.FLOAT, false, 0, 0);
+      }
+      gl.drawArrays(gl.LINES, 0, edges.length / 2);
+    }
+
+    // Base points.
+    if (sc.scene.points && sc.scene.points.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.points,
+        sizes: sc.scene.sizes || [],
+        colors: sc.scene.colors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.points.length / 2);
+    }
+
+    // Animated points.
+    if (sc.scene.dynPoints && sc.scene.dynPoints.length) {
+      upload(sc, rt.progPoint, rt.L_POINT, { pos: rt.bufPos, size: rt.bufSize, color: rt.bufColor }, {
+        pos: sc.scene.dynPoints,
+        sizes: sc.scene.dynSizes || [],
+        colors: sc.scene.dynColors || []
+      });
+      gl.drawArrays(gl.POINTS, 0, sc.scene.dynPoints.length / 2);
+    }
+  }
+
+  function frame(t, force) {
+    for (var i = 0; i < scenes.length; i++) {
+      try { drawScene(scenes[i], t, !!force); } catch (e) { solidFallback(scenes[i].host); }
+    }
+  }
+
+  // ── public api ───────────────────────────────────────────────────────────
+  var rafId = null;
+  var currentT = 0;
+  window.__scenes = {
+    ready: scenes.length > 0,
+    count: scenes.length,
+    seek: function (t) {
+      currentT = t;
+      // Coalesce: GSAP's onUpdate can fire many times per frame while
+      // scrubbing. One rAF per burst is enough.
+      if (rafId === null) {
+        rafId = requestAnimationFrame(function () {
+          rafId = null;
+          frame(currentT);
+        });
+      }
+    },
+    // WebGL contexts can be lost when a tab is backgrounded for a long time.
+    revive: function () { frame(currentT, true); }
+  };
+
+  // Paint every scene once, ungated, so a lesson opened but not yet played
+  // still shows its visuals. Then paint again on the next frame, this time
+  // honouring visibility, so the compositor has settled sizes to work with.
+  frame(0, true);
+  requestAnimationFrame(function () {
+    frame(currentT, true);
+    requestAnimationFrame(function () { frame(currentT, false); });
+  });
+
+  document.addEventListener("visibilitychange", function () {
+    if (!document.hidden) frame(currentT, false);
+  });
+})();
+
+    </script>
+  </body>
+</html>
