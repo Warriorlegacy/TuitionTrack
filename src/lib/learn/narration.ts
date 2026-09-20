@@ -133,9 +133,13 @@ type TtsResult = { pcm: Buffer; mimeType: string };
 
 class TtsError extends Error {
   transient: boolean;
-  constructor(message: string, transient: boolean) {
+  // When the server tells us how long to wait (429 with "retry in Ns"), carry
+  // it so a batch run can sleep the real quota window instead of guessing.
+  retryAfterMs: number;
+  constructor(message: string, transient: boolean, retryAfterMs = 0) {
     super(message);
     this.transient = transient;
+    this.retryAfterMs = retryAfterMs;
   }
 }
 
@@ -167,9 +171,16 @@ async function synthesizeChunk(text: string, apiKey: string, model: string): Pro
 
   const raw = await res.text();
   if (!res.ok) {
-    // 429 means this model has no headroom left for a long while — retrying it
-    // inline just burns wall-clock. Flag as non-transient so the caller moves
-    // to the next model instead of looping on a dead one.
+    // 429 is a rate/quota limit. The free-tier TTS bucket refills on a rolling
+    // ~1 minute window and the server states the exact wait in the body
+    // ("Please retry in 36.07s"). Parse it so a long batch run can pace itself
+    // across the window rather than treating the model as permanently dead.
+    if (res.status === 429) {
+      const m = /retry in ([0-9.]+)s/i.exec(raw);
+      const waitMs = m ? Math.ceil(Number(m[1]) * 1000) + 1500 : 0;
+      throw new TtsError(`${model} HTTP 429: ${raw.slice(0, 160)}`, true, waitMs);
+    }
+    // 5xx is a genuine transient fault worth an immediate short retry.
     const transient = res.status >= 500;
     throw new TtsError(`${model} HTTP ${res.status}: ${raw.slice(0, 160)}`, transient);
   }
@@ -196,15 +207,27 @@ const sleep = (ms: number): Promise<void> => new Promise((r) => setTimeout(r, ms
 
 // Walk the model list: retry transient errors on the current model, then fall
 // through to the next model on a quota/availability failure.
+//
+// 429 is special. The batch driver sets TTS_RATE_WAITS>0 to opt into waiting
+// out the quota window (the server states the exact delay); without that, a
+// single interactive call should fail fast rather than hang for a minute.
 async function synthesizeChunkWithRetry(text: string, apiKey: string): Promise<TtsResult> {
+  const rateWaits = Number(process.env.TTS_RATE_WAITS ?? 0);
   const failures: string[] = [];
   for (const model of TTS_MODELS) {
     let err: TtsError | null = null;
-    for (let attempt = 0; attempt < TTS_RETRIES; attempt++) {
+    for (let attempt = 0; attempt <= (rateWaits > 0 ? rateWaits : 0); attempt++) {
       try {
         return await synthesizeChunk(text, apiKey, model);
       } catch (e) {
         err = e instanceof TtsError ? e : new TtsError(String(e), true);
+        // Quota wait: honour the server's stated window, up to the cap.
+        if (err.retryAfterMs > 0 && attempt < rateWaits) {
+          const wait = Math.min(err.retryAfterMs, Number(process.env.TTS_MAX_WAIT_MS ?? 90000));
+          console.warn(`    [tts] ${model} rate-limited — waiting ${(wait / 1000).toFixed(0)}s (attempt ${attempt + 2})`);
+          await sleep(wait);
+          continue;
+        }
         if (!err.transient) break;
         await sleep(1500 * 2 ** attempt);
       }

@@ -18,6 +18,7 @@ import {
   hashSeed,
   sceneMarkup,
 } from "../src/lib/learn/scene-engine";
+import { readNarrationManifest } from "../src/lib/learn/narration";
 
 const args = process.argv.slice(2);
 const onlyArg = args.find((a) => a.startsWith("--only="))?.slice("--only=".length) ?? "";
@@ -28,13 +29,55 @@ const esc = (s: string): string =>
   s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const js = (s: string): string => JSON.stringify(s);
 
+// ── Timing: drive the visuals from the narration, not a fixed 5 minutes ─────
+// The original model gave every part `minutes * 60` = 300 s of screen time
+// regardless of how long its narration actually takes. At ~500 words a part
+// that is ~3.5 min of speech, so ~1.5 min per part played over silent visuals
+// (~19 min of silence in a whole lesson); longer parts overran into the next
+// part's visuals. Both are synchronisation failures, and both come from using
+// a DECLARED duration instead of a MEASURED one.
+//
+// Priority for each part:
+//   1. real TTS duration from narration.json (ground truth, when generated)
+//   2. words / WPM estimate, scaled up if the audio would be slower
+//   3. the declared minutes field (last resort)
+// A floor keeps a short part from flickering past, and the estimate is padded
+// slightly so speech never gets clipped by the visual moving on.
+const SPEECH_WPM = Number(process.env.SPEECH_WPM ?? 140);
+const MIN_PART_SEC = Number(process.env.MIN_PART_SEC ?? 45);
+const SPEECH_PAD = Number(process.env.SPEECH_PAD ?? 1.06); // 6% breathing room
+
+function spokenSecondsPerPart(slug: string, segs: { narration?: string; minutes?: number }[]): number[] {
+  const manifest = readNarrationManifest(slug);
+  return segs.map((s, i) => {
+    const rec = manifest?.parts?.find((p) => p.part === i + 1);
+    if (rec && rec.seconds > 1) return rec.seconds * SPEECH_PAD; // measured
+    const words = (s.narration ?? "").trim().split(/\s+/).filter(Boolean).length;
+    if (words > 0) return Math.max(MIN_PART_SEC, (words / SPEECH_WPM) * 60 * SPEECH_PAD);
+    return (Number(s.minutes) || 5) * 60; // declared fallback
+  });
+}
+
 function renderExtended(lessonItem: VideoLesson, script: LessonScript, file: ExtendedFile): string {
   const segs = file.segments.slice(0, 16);
+  const durations = spokenSecondsPerPart(lessonItem.slug, segs).map((d) => Math.round(d));
+  // Per-part audio files that actually exist on disk. Keyed by part index so
+  // the runtime can attach the right MP3 to the right section; parts with no
+  // audio fall back to speechSynthesis.
+  const narrationManifest = readNarrationManifest(lessonItem.slug);
+  const audioParts: { src: string; seconds: number }[] = [];
+  for (let i = 0; i < segs.length; i++) {
+    const rec = narrationManifest?.parts?.find((p) => p.part === i + 1);
+    const rel = `videos/${lessonItem.slug}/audio/part-${String(i + 1).padStart(2, "0")}.mp3`;
+    const abs = join(process.cwd(), "public", rel);
+    if (rec && rec.seconds > 1 && existsSync(abs)) audioParts.push({ src: "/" + rel, seconds: rec.seconds });
+    else audioParts.push({ src: "", seconds: 0 });
+  }
   const starts: number[] = [];
   let acc = 0;
-  for (const s of segs) {
+  for (const d of durations) {
     starts.push(acc);
-    acc += (Number(s.minutes) || 5) * 60;
+    acc += d;
   }
   const ctaStart = acc;
   const total = acc + 6;
@@ -56,10 +99,10 @@ function renderExtended(lessonItem: VideoLesson, script: LessonScript, file: Ext
         visual: s.visual,
         seed: hashSeed(`${lessonItem.slug}:${i}:${s.heading}`),
       });
-      return `      <!-- Part ${i + 1} (${mm(starts[i])}–${mm(starts[i] + (Number(s.minutes) || 5) * 60)}): ${esc(s.heading)} -->
-      <section id="qx-part${i + 1}" class="clip" data-start="${starts[i]}" data-duration="${(Number(s.minutes) || 5) * 60}" data-track-index="1">
+      return `      <!-- Part ${i + 1} (${mm(starts[i])}–${mm(starts[i] + durations[i])}): ${esc(s.heading)} -->
+      <section id="qx-part${i + 1}" class="clip" data-start="${starts[i]}" data-duration="${durations[i]}" data-track-index="1">
         <div class="qe-fill${theme}">
-          <span id="qx${i}-kicker" class="qe-kicker">Part ${i + 1} of ${segs.length} · ~${Number(s.minutes) || 5} min</span>
+          <span id="qx${i}-kicker" class="qe-kicker">Part ${i + 1} of ${segs.length} · ~${Math.max(1, Math.round(durations[i] / 60))} min</span>
           <h2 id="qx${i}-title" class="qe-topic">${esc(s.heading)}</h2>
           <div class="qe-steps">
               ${points}
@@ -162,6 +205,13 @@ ${sections}
       var NARRATION = ${JSON.stringify(narration)};
       var STARTS = ${JSON.stringify(starts)};
       var TOTAL = ${total};
+      // Real narration audio, when it has been generated. Each entry is the
+      // measured MP3 for that part; the player prefers these over the browser's
+      // speechSynthesis, which is only a fallback (it uses whatever voice the
+      // visitor's OS ships, cannot be cached, and is absent from the file
+      // render). Durations here are MEASURED, so the timeline above was built
+      // from these exact lengths and the audio cannot drift from the visuals.
+      var AUDIO = ${JSON.stringify(audioParts)};
       window.__timelines = window.__timelines || {};
       var tl = gsap.timeline({ paused: true });
       document.querySelectorAll("#root .clip").forEach(function (el) {
@@ -177,18 +227,31 @@ ${timelines}
       window.__timelines[${js(lessonItem.slug + "-full")}] = tl;
 
       // ── One-shot player + voice ──
-      var voiceOn = true, spokenPart = -1, playing = false;
+      // Audio-first. Each part has a real MP3 (AUDIO[i].src) when narration has
+      // been generated. The MP3 *is* the ground truth for that part's length:
+      // the section duration above was computed from the same measured value,
+      // so playing it from the section's start cannot drift. speechSynthesis
+      // remains only as a fallback for parts that have no audio yet — it is
+      // OS-dependent, uncacheable, and absent from a headless file render.
+      var DRIFT_TOL = 0.35; // seconds of audio/timeline skew before we re-seek
+      var voiceOn = true, spokenPart = -1, playing = false, audioEl = null;
+      var hasAudio = AUDIO.some(function (a) { return !!(a && a.src); });
       var btnPlay = document.getElementById("btn-play"), btnVoice = document.getElementById("btn-voice");
       var seek = document.getElementById("seek"), clock = document.getElementById("clock");
       function fmt(s) { return Math.floor(s / 60) + ":" + String(Math.floor(s % 60)).padStart(2, "0"); }
+      function audioFor(i) { return (i >= 0 && i < AUDIO.length && AUDIO[i] && AUDIO[i].src) ? AUDIO[i] : null; }
       function pickVoice() {
         var vs = speechSynthesis.getVoices();
         return vs.find(function (v) { return v.lang.indexOf("en-IN") === 0; }) || vs.find(function (v) { return v.lang.indexOf("en") === 0; });
       }
-      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; }
+      function stopVoice() { try { speechSynthesis.cancel(); } catch (e) {} spokenPart = -1; if (audioEl) { try { audioEl.pause(); } catch (e) {} } }
+      function stopAudio() { if (audioEl) { try { audioEl.pause(); } catch (e) {} } }
       function speakPart(i) {
-        if (!voiceOn || i < 0 || i >= NARRATION.length) return;
+        // Mark the part as handled even when muted, so the per-frame onUpdate
+        // handler does not re-enter playAt() forever.
+        if (i < 0 || i >= NARRATION.length) return;
         spokenPart = i;
+        if (!voiceOn) return;
         try {
           speechSynthesis.cancel();
           var chunks = NARRATION[i].match(/[^.!?]+[.!?]+/g) || [NARRATION[i]];
@@ -200,13 +263,52 @@ ${timelines}
           });
         } catch (e) {}
       }
+      // Play the part's real audio from an offset in seconds into that part.
+      // Falls back to speechSynthesis only when the part has no MP3.
+      function playPartAudio(i, offset) {
+        var rec = audioFor(i);
+        if (!rec) { stopAudio(); speakPart(i); return; }
+        stopVoice();
+        spokenPart = i;
+        try {
+          if (!audioEl) {
+            audioEl = new Audio();
+            audioEl.preload = "auto";
+            // If the timeline outlives the audio for a part, just go quiet.
+            audioEl.addEventListener("ended", function () {});
+          }
+          if (audioEl.dataset.part !== String(i)) {
+            audioEl.dataset.part = String(i);
+            audioEl.src = rec.src;
+            audioEl.currentTime = Math.max(0, offset || 0);
+          } else {
+            var want = Math.max(0, offset || 0);
+            if (Math.abs(audioEl.currentTime - want) > DRIFT_TOL) audioEl.currentTime = want;
+          }
+          var pr = audioEl.play();
+          if (pr && pr.catch) pr.catch(function () { /* autoplay blocked — user gesture will resume */ });
+        } catch (e) { speakPart(i); }
+      }
       function partAt(t) { var p = 0; for (var i = 0; i < STARTS.length; i++) if (t >= STARTS[i]) p = i; return p; }
+      // Seconds elapsed *inside* the current part — what the audio must seek to,
+      // so a mid-part resume stays word-accurate rather than restarting.
+      function offsetAt(t) { var p = partAt(t); return Math.max(0, t - STARTS[p]); }
+      function playAt(t) { if (hasAudio) playPartAudio(partAt(t), offsetAt(t)); else speakPart(partAt(t)); }
       tl.eventCallback("onUpdate", function () {
         var t = tl.time();
         seek.value = Math.floor(t);
         clock.textContent = fmt(t) + " / " + fmt(TOTAL);
         var p = partAt(t);
-        if (playing && voiceOn && p !== spokenPart) speakPart(p);
+        if (playing && voiceOn) {
+          if (p !== spokenPart) {
+            playAt(t);
+          } else if (hasAudio && audioEl && audioEl.dataset.part === String(p) && audioEl.readyState >= 2) {
+            // Correct slow drift (e.g. a throttled background tab) without
+            // restarting the sentence: only hard-seek past ~1.5 s of skew.
+            var want = offsetAt(t);
+            if (Math.abs(audioEl.currentTime - want) > 1.5) audioEl.currentTime = want;
+          }
+        }
         // Drive the WebGL scenes from the same clock as the DOM timeline, so
         // scrubbing the seek bar moves the scenes too instead of desyncing.
         try { if (window.__scenes) window.__scenes.seek(t); } catch (e) {}
@@ -217,7 +319,7 @@ ${timelines}
         else {
           playing = true; btnPlay.textContent = "⏸ Pause lesson";
           if (tl.time() >= TOTAL - 0.5) { tl.restart(); } else { tl.play(); }
-          if (voiceOn) speakPart(partAt(tl.time()));
+          if (voiceOn) playAt(tl.time());
         }
       };
       btnVoice.onclick = function () {
@@ -225,9 +327,9 @@ ${timelines}
         btnVoice.textContent = voiceOn ? "🔊 Narration on" : "🔇 Narration off";
         btnVoice.classList.toggle("on", voiceOn);
         btnVoice.setAttribute("aria-pressed", String(voiceOn));
-        if (voiceOn && playing) speakPart(partAt(tl.time())); else stopVoice();
+        if (voiceOn && playing) playAt(tl.time()); else stopVoice();
       };
-      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) speakPart(partAt(tl.time())); };
+      seek.oninput = function () { tl.pause(); tl.time(parseFloat(seek.value)); stopVoice(); if (playing && voiceOn) playAt(tl.time()); };
       document.querySelectorAll("#menu button").forEach(function (b) {
         b.onclick = function () { tl.pause(); tl.time(parseFloat(b.dataset.seek)); stopVoice(); if (!playing) btnPlay.click(); };
       });
