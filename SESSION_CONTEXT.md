@@ -147,11 +147,62 @@ TuitionTrack is a Next.js 14 application for managing tuition payments and stude
 
 - **Deploy blocker discovered**: `tools/moneyprinterturbo/` (~2 GB Python .venv + nested .git) was being uploaded by the Vercel CLI even though gitignored. `.vercelignore` added to exclude it. Git-push webhook deploys also fail with empty build output — root cause under investigation (may be a Vercel project config issue, not code).
 
+### Teacher-Controlled Parent & Student Portal Access Architecture (2026-09-21)
+- **Problem Solved**: Eliminated missing portal controls by establishing an explicit Teacher Access Control Center with dedicated, cryptographically secure parent and student portal link distribution.
+- **Single Authentication + Portal-Scoped Grants Model**:
+  - Replaced naive `role` enums with `portal_access_grants` (`portal_type: 'parent' | 'student'`).
+  - Supports unified identity: single user account (Google OAuth or email/password) simultaneously manages multiple portal grants (e.g. parent of Child A + Child B, or shared account with student grant).
+  - Opaque 256-bit random tokens (`crypto.randomBytes(32)`): raw tokens are **never stored in the database**; only SHA-256 hashes (`token_hash`) are persisted.
+  - Regeneration immediately revokes previous tokens and issues a fresh link; revocation terminates access immediately server-side and in Supabase RLS.
+  - Safe public preview (`preview_portal_grant`): reveals student first name and class grade only; zero private IDs, emails, or phone numbers leaked to unauthenticated visitors.
+- **Teacher Control Center (`/app/portal-access`)**:
+  - Added `🔗 Portal Access` navigation in the teacher sidebar (`AppSidebar`).
+  - Overview cards with one-click quick link generators.
+  - Filter tabs (`All`, `Parent`, `Student`, `Active`, `Pending`, `Revoked`) and live search by student name or parent/student email.
+  - Copy link with toast feedback, native WhatsApp share (`wa.me` formatted intent), QR code modal generator (`qrcode`), regenerate link, and revoke access actions.
+- **Per-Student Portal Access (`/app/students/[studentId]`) & Quick Actions**:
+  - Dedicated `StudentPortalAccessCard` on student profile pages.
+  - Quick action portal shortcut from the main Students directory table (`/app/students`).
+  - Teacher dashboard card and quick action badge for portal management.
+- **Gateway Routes & Login Redirection**:
+  - `/portal/parent/[token]` and `/portal/student/[token]` gateway routes with safe preview and single-click authentication.
+  - `/portal/login` with validated `next`/`returnTo` path preservation preventing open redirects.
+- **Student Learning Portal (`/student/*`)**:
+  - `/student/dashboard` - Daily homework, test scores, announcements, 3D lesson shortcuts, AI tutor launcher.
+  - `/student/homework` - Assigned tasks, deadlines, and completion statuses.
+  - `/student/assignments` - Worksheets and teacher feedback viewer.
+  - `/student/tests` - Subject marks, totals, and percentage breakdown.
+  - `/student/lessons` - 3D curriculum video lessons by subject.
+  - `/student/progress` - Concept mastery breakdown matrix.
+  - `/student/announcements` - Class bulletins from tuition teacher.
+  - `/student/profile` - Account settings and unified authentication details.
+- **Database Schema Migration (`20260922000000_portal_access_grants_architecture.sql`)**:
+  - Added `portal_access_grants` and `portal_access_events` audit logging.
+  - Augmented `public.can_access_student(uuid)` to enforce active portal grants in RLS.
+  - Backfilled existing students with `parent_email` and `student_email` into pending grants.
+  - Database state: **69 public tables, 127 RLS policies** (verified with zero anonymous leaks).
+- **Automated Test Verification**:
+  - `tests/portal-access-e2e.mjs`: **34/34 passing** (token entropy, SHA-256 hash storage, safe preview, multi-grant accounts, cross-student isolation, link regeneration, revocation, audit trail).
+  - `tests/parent-portal-security.mjs`: **49/49 passing** (RLS protection, cross-family denial, staff access).
+  - `tests/fee-engine-security.mjs`: **35/35 passing** (Proof verification, UTR deduplication, receipts).
+  - `npm run typecheck` & `npm run lint`: **0 errors, 0 warnings**.
+  - `npm run build`: Production build cleanly compiles all 68 routes.
+- **Production Deployment**:
+  - Deployed to Vercel production: deployment `dpl_Go5z7jMDy7RaMaY5y1dxw5ie9Wrs`.
+  - Aliased live at `https://tuitiontrack-app.vercel.app`.
+  - Git commit `9975deb` pushed to `Warriorlegacy/TuitionTrack` `main`.
+- **Go-To-Market (GTM) Strategy & SEO Master Guide (2026-09-21)**:
+  - Comprehensive GTM playbook, 517-chapter Programmatic SEO (pSEO) engine, JSON-LD Schema markup, Generative Engine Optimization (GEO/AEO), B2B pricing model, and 90-day tactical roadmap generated as a publication-ready document: `TuitionTrack_GTM_and_SEO_Master_Strategy_Guide.pdf`.
+  - Generator script maintained at `scripts/generate_gtm_seo_pdf.py`.
+
 ## Current Production Status
-- **Live Production URL**: `https://tuitiontrack-app.vercel.app` (Deployment `dpl_3ZLzSC7dpP97FqUfbwDkH1um5JEp` LIVE).
+- **Live Production URL**: `https://tuitiontrack-app.vercel.app` (Deployment `dpl_Go5z7jMDy7RaMaY5y1dxw5ie9Wrs` LIVE).
 - **Production Status**: READY & ALIASED.
+- **Portal Access System**: Teacher-controlled Parent & Student portal links with QR codes, WhatsApp sharing, and single-auth redemption.
 - **Parent Experience Layer**: 19 parent portal routes live, verified with 84/84 security tests passing.
+- **Student Learning Portal**: 8 dedicated student routes live with homework, tests, 3D lessons, and AI tutor.
 - **Curriculum & 3D Lessons**: 517/517 chapters across Classes 6–12 verified and live in production with WebGL 3D scenes.
 - **BYOK AI Providers**: 12 providers configured (free-tier failover priority).
 - **Supabase Inactivity**: Keep-alive cron active every 2 days (400 OK prevented, zero-secret leak verified).
-- **Verification**: 29/29 smoke tests passing against production URL; 12/12 sampled 3D scene lessons verified live.
+- **Database**: 69 public tables, 127 RLS policies, 0 anonymous leaks.
+- **Verification**: 34/34 portal E2E, 49/49 parent security, 35/35 fee security, and 29/29 smoke tests passing.
