@@ -81,7 +81,9 @@ export function AiAssignmentsList({
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    // ponytail: 3 cols only at xl — at lg the 320px sidebar leaves cards too
+    // narrow and long content forces the grid wider than the viewport.
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
       {assignments.map((item) => {
         const isPastDue = new Date(item.due_date) < new Date();
         const studentSub = item.student_submission;
@@ -89,20 +91,20 @@ export function AiAssignmentsList({
         return (
           <Card
             key={item.id}
-            className="flex flex-col justify-between border transition hover:border-primary/40 hover:shadow-md"
+            className="flex min-w-0 flex-col justify-between border transition hover:border-primary/40 hover:shadow-md"
           >
             <CardContent className="p-5 space-y-4">
               <div className="flex items-start justify-between gap-2">
-                <div className="space-y-1">
+                <div className="min-w-0 space-y-1">
                   <div className="flex flex-wrap items-center gap-1.5">
-                    <Badge variant="secondary" className="text-[11px]">
+                    <Badge variant="secondary" className="max-w-full truncate text-[11px]">
                       Class {item.class_level} {item.subject}
                     </Badge>
-                    <Badge variant="outline" className="text-[10px] capitalize">
+                    <Badge variant="outline" className="max-w-full truncate text-[10px] capitalize">
                       {item.preset}
                     </Badge>
                   </div>
-                  <h4 className="font-bold text-base text-foreground line-clamp-1 pt-1">
+                  <h4 className="font-bold text-base text-foreground line-clamp-2 break-words pt-1">
                     {item.title}
                   </h4>
                 </div>
@@ -117,15 +119,15 @@ export function AiAssignmentsList({
 
               {/* Assignment Meta */}
               <div className="grid grid-cols-2 gap-2 text-xs text-muted-foreground border-y py-2.5">
-                <div className="flex items-center gap-1.5">
-                  <AwardIcon className="h-3.5 w-3.5 text-primary" />
-                  <span>
+                <div className="flex min-w-0 items-center gap-1.5">
+                  <AwardIcon className="h-3.5 w-3.5 shrink-0 text-primary" />
+                  <span className="truncate">
                     Total: <strong className="text-foreground">{item.total_marks} Marks</strong>
                   </span>
                 </div>
-                <div className="flex items-center gap-1.5">
-                  <ClockIcon className="h-3.5 w-3.5 text-primary" />
-                  <span className={isPastDue ? "text-rose-600 font-medium" : ""}>
+                <div className="flex min-w-0 items-center gap-1.5">
+                  <ClockIcon className="h-3.5 w-3.5 shrink-0 text-primary" />
+                  <span className={`truncate ${isPastDue ? "text-rose-600 font-medium" : ""}`}>
                     Due: {format(new Date(item.due_date), "MMM d, h:mm a")}
                   </span>
                 </div>
@@ -134,12 +136,12 @@ export function AiAssignmentsList({
               {/* Status / Submissions info */}
               <div className="text-xs">
                 {canManage ? (
-                  <div className="flex items-center justify-between text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <UsersIcon className="h-3.5 w-3.5 text-primary" />
-                      Mode: <span className="capitalize font-medium text-foreground">{item.mode}</span>
+                  <div className="flex flex-wrap items-center justify-between gap-1 text-muted-foreground">
+                    <span className="flex min-w-0 items-center gap-1">
+                      <UsersIcon className="h-3.5 w-3.5 shrink-0 text-primary" />
+                      <span className="truncate">Mode: <span className="capitalize font-medium text-foreground">{item.mode}</span></span>
                     </span>
-                    <span className="font-semibold text-primary">
+                    <span className="shrink-0 font-semibold text-primary">
                       {item.submissions_count ?? 0} Submissions
                     </span>
                   </div>
@@ -174,14 +176,16 @@ export function AiAssignmentsList({
               <div className="border-t pt-3 flex items-center gap-2">
                 <Link
                   href={canManage ? `/app/homework/${item.id}` : `/student/homework/${item.id}`}
-                  className={buttonVariants({ size: "sm", className: "flex-1 gap-1" })}
+                  className={buttonVariants({ size: "sm", className: "min-w-0 flex-1 gap-1" })}
                 >
-                  {canManage
-                    ? "View & Question Bank"
-                    : studentSub
-                    ? "Review Feedback & Solutions"
-                    : "Start Assignment"}
-                  <ChevronRightIcon className="h-3.5 w-3.5 ml-auto" />
+                  <span className="truncate">
+                    {canManage
+                      ? "View & Question Bank"
+                      : studentSub
+                      ? "Review Feedback & Solutions"
+                      : "Start Assignment"}
+                  </span>
+                  <ChevronRightIcon className="h-3.5 w-3.5 ml-auto shrink-0" />
                 </Link>
 
                 {canManage && (

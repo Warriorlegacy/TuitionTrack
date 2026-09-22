@@ -4,6 +4,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { signOutAction } from "@/actions/portal";
 import { ShieldCheckIcon, LogOutIcon } from "lucide-react";
+import { StudentProfileForm } from "@/components/student/student-profile-form";
+import { DeleteAccountCard } from "@/components/settings/delete-account-card";
 
 export const dynamic = "force-dynamic";
 
@@ -73,6 +75,14 @@ export default async function StudentProfilePage() {
           </div>
         </CardContent>
       </Card>
+
+      <StudentProfileForm
+        initialName={student.name}
+        initialParentName={student.parent_name || ""}
+        initialParentPhone={student.parent_phone || ""}
+      />
+
+      <DeleteAccountCard />
     </div>
   );
 }

@@ -9,13 +9,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
 export function ProfileForm({
   initialName,
@@ -28,7 +21,9 @@ export function ProfileForm({
 }) {
   const [isPending, startTransition] = useTransition();
   const [name, setName] = useState(initialName);
-  const [role, setRole] = useState<AppRole>(initialRole);
+  // ponytail: role is display-only — the server ignores client-supplied roles
+  // so a signed-in user cannot escalate themselves to teacher.
+  const role = initialRole;
 
   const handleSave = () => {
     startTransition(async () => {
@@ -62,18 +57,7 @@ export function ProfileForm({
         </div>
         <div className="flex flex-col gap-2">
           <Label htmlFor="role">Designation</Label>
-          <Select value={role} onValueChange={(v) => setRole(v as AppRole)}>
-            <SelectTrigger id="role">
-              <SelectValue placeholder="Select designation" />
-            </SelectTrigger>
-            <SelectContent>
-              {Object.entries(roleLabels).map(([key, label]) => (
-                <SelectItem key={key} value={key}>
-                  {label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <Input id="role" value={roleLabels[role] ?? role} disabled />
         </div>
         <div className="flex items-end justify-end">
           <Button onClick={handleSave} disabled={isPending}>

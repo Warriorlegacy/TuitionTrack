@@ -190,35 +190,48 @@ export async function submitAssignmentAction(input: SubmitAssignmentInput) {
       totalMarks += qMarks;
       const qId = String(q.id);
       const studentAns = (input.answers[qId] || "").trim();
+      // ponytail: breakdown carries qtype so the review UI can label
+      // rubric-style expected answers correctly (not "Correct Answer").
+      const mistakeBase = { questionPosition: q.position, stem: q.stem, qtype: q.qtype };
 
       if (q.qtype === "mcq") {
-        // Compare option label or option text
-        const correctNorm = q.correct_answer.toLowerCase().trim();
-        const studentNorm = studentAns.toLowerCase().trim();
-        const isCorrect = studentNorm === correctNorm || studentNorm.startsWith(correctNorm);
+        // The player submits the option LABEL ("A") but stored keys hold
+        // either the label or the option text ("2") — resolve both sides
+        // through the options list before comparing.
+        const opts: { label?: string; text?: string }[] = Array.isArray(q.options) ? q.options : [];
+        const norm = (v: unknown) => String(v ?? "").toLowerCase().trim();
+        const studentNorm = norm(studentAns);
+        const correctNorm = norm(q.correct_answer);
+        const studentOpt = opts.find((o) => norm(o.label) === studentNorm);
+        const correctOpt = opts.find((o) => norm(o.label) === correctNorm);
+        const resolvedStudent = studentOpt ? norm(studentOpt.text) : studentNorm;
+        const resolvedCorrect = correctOpt ? norm(correctOpt.text) : correctNorm;
+        const isCorrect =
+          studentNorm === correctNorm ||
+          resolvedStudent === resolvedCorrect ||
+          (resolvedCorrect.length > 0 && resolvedStudent.startsWith(resolvedCorrect));
 
         if (isCorrect) {
           score += qMarks;
         } else {
           mistakes.push({
-            questionPosition: q.position,
-            stem: q.stem,
+            ...mistakeBase,
             studentAnswer: studentAns || "No answer",
             correctAnswer: q.correct_answer,
             category: "concept",
           });
         }
       } else if (q.qtype === "numeric") {
-        const studentNum = parseFloat(studentAns);
-        const correctNum = parseFloat(q.correct_answer);
+        const num = (v: string) => parseFloat(v.replace(/,/g, "").trim());
+        const studentNum = num(studentAns);
+        const correctNum = num(String(q.correct_answer ?? ""));
         const isCorrect = !isNaN(studentNum) && !isNaN(correctNum) && Math.abs(studentNum - correctNum) < 0.01;
 
         if (isCorrect) {
           score += qMarks;
         } else {
           mistakes.push({
-            questionPosition: q.position,
-            stem: q.stem,
+            ...mistakeBase,
             studentAnswer: studentAns || "No answer",
             correctAnswer: q.correct_answer,
             category: "calculation",
@@ -231,8 +244,7 @@ export async function submitAssignmentAction(input: SubmitAssignmentInput) {
           score += awarded;
         } else {
           mistakes.push({
-            questionPosition: q.position,
-            stem: q.stem,
+            ...mistakeBase,
             studentAnswer: studentAns || "Incomplete",
             correctAnswer: q.correct_answer,
             category: "incomplete",

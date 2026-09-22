@@ -41,6 +41,10 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: "#0b1437",
+  // ponytail: without width=device-width mobile browsers render at ~980px
+  // scaled down — the squeezed mobile layout in the bug report.
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

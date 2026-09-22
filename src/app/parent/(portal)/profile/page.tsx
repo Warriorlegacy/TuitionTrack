@@ -3,6 +3,8 @@ import { UserCircleIcon, ShieldCheckIcon, LinkIcon } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { requireParentContext } from "@/lib/parent/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { ParentProfileForm } from "@/components/parent/parent-profile-form";
+import { DeleteAccountCard } from "@/components/settings/delete-account-card";
 
 export const dynamic = "force-dynamic";
 
@@ -175,6 +177,10 @@ export default async function ParentProfilePage({
           access to additional data, contact the teacher directly.
         </p>
       </Card>
+
+      <ParentProfileForm initialName={context.profile?.name ?? ""} />
+
+      <DeleteAccountCard />
     </div>
   );
 }

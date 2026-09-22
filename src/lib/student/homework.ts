@@ -249,6 +249,7 @@ export type StudentAssignmentPlayerDetails = {
       studentAnswer: string;
       correctAnswer: string;
       category: string;
+      qtype?: string;
     }[];
     aiEvaluationNotes?: string;
     teacherFeedback?: string;

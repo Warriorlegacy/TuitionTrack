@@ -485,39 +485,132 @@ export async function deleteAnnouncementAction(id: string): Promise<ActionResult
   return { success: true, message: "Announcement deleted successfully." };
 }
 
-export async function updateProfileAction(name: string, role: AppRole): Promise<ActionResult> {
+export async function updateProfileAction(name: string, _role: AppRole): Promise<ActionResult> {
+  void _role; // kept for call-site compatibility; roles are never client-settable.
   const context = await getAuthContext();
   if (!context.configured || !context.user || !context.user.email) {
     return { success: false, message: "Supabase is not configured." };
   }
 
+  const trimmed = name.trim();
+  if (!trimmed) {
+    return { success: false, message: "Display name is required." };
+  }
+
+  // ponytail: role is deliberately NOT taken from the client — the old version
+  // let any signed-in user escalate themselves to teacher via the role select.
+  // Role changes go through assignUserRoleAction / updateMemberRoleAction only.
+  const currentRole =
+    context.profile?.role ?? (context.user.user_metadata?.role as AppRole | undefined) ?? "teacher";
+
 const supabase = createSupabaseServerClient();
-  
+
   // Update public profile
   const { error: profileError } = await supabase
     .from("users")
     .upsert({
       id: context.user.id,
       email: context.user.email.toLowerCase(),
-      name: name.trim(),
-      role: role,
+      name: trimmed,
+      role: currentRole,
     });
 
   if (profileError) {
     return { success: false, message: profileError.message };
   }
 
-  // Sync role to Auth metadata as well
-  const { error: authError } = await supabase.auth.updateUser({
-    data: { role },
-  });
-
-  if (authError) {
-    console.warn("Profile updated but Auth metadata sync failed:", authError.message);
-  }
-
   revalidatePortal();
   return { success: true, message: "Profile updated successfully." };
+}
+
+const studentProfileSchema = z.object({
+  name: z.string().trim().min(1, "Student name is required").max(120),
+  parent_name: z.string().trim().max(120).optional().or(z.literal("")),
+  parent_phone: z.string().trim().max(30).optional().or(z.literal("")),
+});
+
+/**
+ * Update the caller's OWN student profile (student role only).
+ * The row is resolved server-side from the session — no client-supplied id —
+ * so a student can never edit another student's record. Academic data
+ * (class, emails) is teacher-managed and intentionally not editable here.
+ */
+export async function updateStudentProfileAction(
+  input: z.infer<typeof studentProfileSchema>,
+): Promise<ActionResult> {
+  const parsed = studentProfileSchema.safeParse(input);
+  if (!parsed.success) {
+    return { success: false, message: parsed.error.issues[0]?.message ?? "Invalid profile data." };
+  }
+
+  const { getStudentContext } = await import("@/lib/student/auth");
+  const context = await getStudentContext();
+  if (!context.user || !context.student) {
+    return { success: false, message: "No student profile linked to this account." };
+  }
+
+  const admin = createSupabaseAdminClient();
+  const { error } = await admin
+    .from("students")
+    .update({
+      name: parsed.data.name.trim(),
+      parent_name: parsed.data.parent_name?.trim() || "",
+      parent_phone: parsed.data.parent_phone?.trim() || "",
+    })
+    .eq("id", context.student.id);
+
+  if (error) {
+    return { success: false, message: error.message };
+  }
+
+  // Best-effort display-name sync; never fails the update.
+  await admin.from("users").update({ name: parsed.data.name.trim() }).eq("id", context.user.id);
+
+  revalidatePath("/student/profile");
+  revalidatePath("/student/dashboard");
+  return { success: true, message: "Profile updated successfully." };
+}
+
+/**
+ * Permanently delete the caller's own account (any role).
+ * Removes memberships, guardian links and portal grants, then the public
+ * profile row and the Auth user. Academic records teachers rely on
+ * (students rows, submissions) are left intact — only the login is removed.
+ */
+export async function deleteAccountAction(): Promise<ActionResult> {
+  const context = await getAuthContext();
+  if (!context.user) {
+    return { success: false, message: "Not signed in." };
+  }
+  const userId = context.user.id;
+
+  try {
+    const admin = createSupabaseAdminClient();
+    await admin.from("workspace_members").delete().eq("user_id", userId);
+    await admin.from("guardian_student_relationships").delete().eq("guardian_user_id", userId);
+    await admin.from("portal_access_grants").delete().eq("user_id", userId);
+
+    const { error: profileError } = await admin.from("users").delete().eq("id", userId);
+    if (profileError) {
+      return { success: false, message: profileError.message };
+    }
+
+    const { error: authError } = await admin.auth.admin.deleteUser(userId);
+    if (authError) {
+      return { success: false, message: authError.message };
+    }
+  } catch (err) {
+    console.error("deleteAccountAction error:", err);
+    return { success: false, message: (err as Error).message || "Failed to delete account." };
+  }
+
+  const supabase = createSupabaseServerClient();
+  try {
+    await supabase.auth.signOut({ scope: "local" });
+  } catch {
+    // Session is already dead server-side; still redirect.
+  }
+  redirect("/login");
 }
 
 export async function assignUserRoleAction(email: string, role: AppRole): Promise<ActionResult> {

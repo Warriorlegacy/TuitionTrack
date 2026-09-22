@@ -8,6 +8,7 @@ import { Smartphone, MessageCircle } from "lucide-react";
 
 import { WorkspaceSettingsCard } from "@/components/workspace/workspace-settings-card";
 import { getWorkspaceContextForUser, listWorkspaceMembers } from "@/lib/workspace/auth";
+import { DeleteAccountCard } from "@/components/settings/delete-account-card";
 
 export default async function SettingsPage() {
   const context = await requireAuthContext();
@@ -168,6 +169,8 @@ export default async function SettingsPage() {
           <p>Students are mapped through the `student_email` saved on each student record.</p>
         </CardContent>
       </Card>
+
+      <DeleteAccountCard />
     </div>
   );
 }

@@ -39,7 +39,7 @@ export type SubmissionData = {
   percentage: number;
   submittedAt: string;
   answers: Record<string, string>;
-  mistakeBreakdown?: { questionPosition: number; stem: string; studentAnswer: string; correctAnswer: string; category: string }[];
+  mistakeBreakdown?: { questionPosition: number; stem: string; studentAnswer: string; correctAnswer: string; category: string; qtype?: string }[];
   aiEvaluationNotes?: string;
   teacherFeedback?: string;
   handwrittenFiles?: string[];
@@ -188,7 +188,8 @@ export function StudentHomeworkPlayer({
                     <div key={mIdx} className="p-3 rounded-xl bg-rose-50/80 border border-rose-200 text-xs space-y-1">
                       <p className="font-semibold text-slate-900">Q{m.questionPosition}. {m.stem}</p>
                       <p className="text-slate-600">Your Answer: <span className="text-rose-700 font-semibold">{m.studentAnswer}</span></p>
-                      <p className="text-slate-600">Correct Answer: <span className="text-emerald-700 font-semibold">{m.correctAnswer}</span></p>
+                      {/* ponytail: subjective keys hold rubric-style expected points, not a single correct answer — label them honestly. */}
+                      <p className="text-slate-600">{m.qtype === "mcq" || m.qtype === "numeric" || !m.qtype ? "Correct Answer:" : "Expected points:"} <span className="text-emerald-700 font-semibold">{m.correctAnswer}</span></p>
                     </div>
                   ))}
                 </div>
