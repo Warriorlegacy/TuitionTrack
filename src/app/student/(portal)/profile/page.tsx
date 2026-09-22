@@ -78,6 +78,7 @@ export default async function StudentProfilePage() {
 
       <StudentProfileForm
         initialName={student.name}
+        initialClass={student.class}
         initialParentName={student.parent_name || ""}
         initialParentPhone={student.parent_phone || ""}
       />

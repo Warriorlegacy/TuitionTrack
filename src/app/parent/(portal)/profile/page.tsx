@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { requireParentContext } from "@/lib/parent/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { ParentProfileForm } from "@/components/parent/parent-profile-form";
+import { ChildClassForm } from "@/components/parent/child-class-form";
 import { DeleteAccountCard } from "@/components/settings/delete-account-card";
 
 export const dynamic = "force-dynamic";
@@ -161,6 +162,12 @@ export default async function ParentProfilePage({
                       year: "numeric",
                     })}
                   </p>
+
+                  <ChildClassForm
+                    studentId={rel.student.id}
+                    studentName={rel.student.name}
+                    initialClass={rel.student.class}
+                  />
                 </Card>
               );
             })}

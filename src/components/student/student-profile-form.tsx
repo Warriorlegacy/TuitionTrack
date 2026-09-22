@@ -9,19 +9,22 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-/** Self-service edit for a student's own contact details. Class and emails are teacher-managed. */
+/** Self-service edit for a student's own details, including class & grade. */
 export function StudentProfileForm({
   initialName,
+  initialClass,
   initialParentName,
   initialParentPhone,
 }: {
   initialName: string;
+  initialClass: string;
   initialParentName: string;
   initialParentPhone: string;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [name, setName] = useState(initialName);
+  const [studentClass, setStudentClass] = useState(initialClass);
   const [parentName, setParentName] = useState(initialParentName);
   const [parentPhone, setParentPhone] = useState(initialParentPhone);
 
@@ -29,6 +32,7 @@ export function StudentProfileForm({
     startTransition(async () => {
       const result = await updateStudentProfileAction({
         name,
+        class: studentClass,
         parent_name: parentName,
         parent_phone: parentPhone,
       });
@@ -58,6 +62,16 @@ export function StudentProfileForm({
           />
         </div>
         <div className="flex flex-col gap-2">
+          <Label htmlFor="student-class">Class & Grade</Label>
+          <Input
+            id="student-class"
+            value={studentClass}
+            onChange={(e) => setStudentClass(e.target.value)}
+            placeholder="e.g. 9 or Class 9"
+            autoComplete="off"
+          />
+        </div>
+        <div className="flex flex-col gap-2">
           <Label htmlFor="parent-name">Parent / Guardian name</Label>
           <Input
             id="parent-name"
@@ -77,7 +91,7 @@ export function StudentProfileForm({
           />
         </div>
         <div className="flex items-end justify-end">
-          <Button onClick={handleSave} disabled={isPending || !name.trim()}>
+          <Button onClick={handleSave} disabled={isPending || !name.trim() || !studentClass.trim()}>
             Save changes
           </Button>
         </div>

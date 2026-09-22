@@ -525,6 +525,7 @@ const supabase = createSupabaseServerClient();
 
 const studentProfileSchema = z.object({
   name: z.string().trim().min(1, "Student name is required").max(120),
+  class: z.string().trim().min(1, "Class is required").max(20),
   parent_name: z.string().trim().max(120).optional().or(z.literal("")),
   parent_phone: z.string().trim().max(30).optional().or(z.literal("")),
 });
@@ -554,6 +555,7 @@ export async function updateStudentProfileAction(
     .from("students")
     .update({
       name: parsed.data.name.trim(),
+      class: parsed.data.class.trim(),
       parent_name: parsed.data.parent_name?.trim() || "",
       parent_phone: parsed.data.parent_phone?.trim() || "",
     })
@@ -569,6 +571,58 @@ export async function updateStudentProfileAction(
   revalidatePath("/student/profile");
   revalidatePath("/student/dashboard");
   return { success: true, message: "Profile updated successfully." };
+}
+
+const linkedChildClassSchema = z.object({
+  studentId: z.string().uuid("A valid student is required."),
+  class: z.string().trim().min(1, "Class is required.").max(20),
+});
+
+/**
+ * Let a parent update a LINKED child's class. The caller must hold an active,
+ * verified guardian relationship for that exact student — anything else is
+ * rejected before touching the database.
+ */
+export async function updateLinkedChildClassAction(
+  input: z.infer<typeof linkedChildClassSchema>,
+): Promise<ActionResult> {
+  const parsed = linkedChildClassSchema.safeParse(input);
+  if (!parsed.success) {
+    return { success: false, message: parsed.error.issues[0]?.message ?? "Invalid class data." };
+  }
+
+  const context = await getAuthContext();
+  if (!context.user) {
+    return { success: false, message: "Please sign in." };
+  }
+
+  const admin = createSupabaseAdminClient();
+  const { data: rel } = await admin
+    .from("guardian_student_relationships")
+    .select("id")
+    .eq("guardian_user_id", context.user.id)
+    .eq("student_id", parsed.data.studentId)
+    .eq("status", "active")
+    .not("verified_at", "is", null)
+    .limit(1)
+    .maybeSingle();
+
+  if (!rel) {
+    return { success: false, message: "Unauthorized. This child is not linked to your account." };
+  }
+
+  const { error } = await admin
+    .from("students")
+    .update({ class: parsed.data.class.trim() })
+    .eq("id", parsed.data.studentId);
+
+  if (error) {
+    return { success: false, message: error.message };
+  }
+
+  revalidatePath("/parent/profile");
+  revalidatePath("/parent/dashboard");
+  return { success: true, message: "Class updated successfully." };
 }
 
 /**
