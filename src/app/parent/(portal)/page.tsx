@@ -1,10 +1,12 @@
 import Link from "next/link";
-import { ArrowRightIcon, ShieldCheckIcon, CheckCircle2Icon, AlertCircleIcon, ClockIcon, BookOpenIcon, BrainIcon, CalendarCheckIcon, FileCheckIcon, SparklesIcon, AwardIcon, TargetIcon, ChevronRightIcon } from "lucide-react";
+import { ArrowRightIcon, ShieldCheckIcon, CheckCircle2Icon, AlertCircleIcon, ClockIcon, BookOpenIcon, BrainIcon, CalendarCheckIcon, FileCheckIcon, SparklesIcon, AwardIcon, TargetIcon } from "lucide-react";
 
 import { PageHeader } from "@/components/shared/page-header";
-import { Empty, EmptyDescription, EmptyTitle } from "@/components/ui/empty";
 import { Card } from "@/components/ui/card";
 import { requireParentContext } from "@/lib/parent/auth";
+import { getUserUniqueCodeAction } from "@/actions/workspace-actions";
+import { ChildLinkingHub } from "@/components/parent/child-linking-hub";
+import { ParentFeaturesLaunchpad } from "@/components/parent/parent-features-launchpad";
 import { getProgressOverview } from "@/lib/parent/progress";
 import { getTodayHomework, getHomeworkCompletionRate } from "@/lib/parent/homework";
 import { getAttendanceSummary } from "@/lib/parent/attendance";
@@ -74,37 +76,22 @@ export default async function ParentHomePage({
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const requested = typeof searchParams?.child === "string" ? searchParams.child : undefined;
-  const context = await requireParentContext(requested);
+  const [context, parentCodeResult] = await Promise.all([
+    requireParentContext(requested),
+    getUserUniqueCodeAction(),
+  ]);
 
   if (context.children.length === 0) {
     return (
       <div className="space-y-6">
         <PageHeader
-          title="Welcome"
-          description="Your parent portal is ready. Link your child to see their progress."
+          title="Parent Portal"
+          description="Welcome! Connect with your child's classroom and track their tuition journey."
         />
-        <Empty className="border border-slate-200 bg-white">
-          <EmptyTitle>No child linked to your account yet</EmptyTitle>
-          <EmptyDescription>
-            Your tuition teacher sends a private invitation link for your child. Open that link
-            and you will be linked automatically — no child should ever be added by guessing an
-            ID or by entering an email address on a form.
-          </EmptyDescription>
-          <div className="mt-4 flex flex-wrap justify-center gap-3">
-            <Link
-              href="/parent/support"
-              className="rounded-2xl bg-slate-950 px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
-            >
-              I have an invitation link
-            </Link>
-            <Link
-              href="/parent/profile"
-              className="rounded-2xl border border-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-700 transition-colors hover:border-slate-300"
-            >
-              Check my profile
-            </Link>
-          </div>
-        </Empty>
+        <ChildLinkingHub
+          parentCode={parentCodeResult.code || ""}
+          parentName={context.profile?.name}
+        />
         <PrivacyNote />
       </div>
     );
@@ -197,6 +184,13 @@ export default async function ParentHomePage({
         </Link>
       </div>
 
+      {/* ── Direct Child Linking Hub ────────────────────────────────── */}
+      <ChildLinkingHub
+        parentCode={parentCodeResult.code || ""}
+        parentName={parentName}
+        compact={true}
+      />
+
       {/* ── Today's Quick Status Strip ────────────────────────────────────── */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {/* Attendance today */}
@@ -259,6 +253,12 @@ export default async function ParentHomePage({
           )}
         </Card>
       </div>
+
+      {/* ── All Portal Features Launchpad (1-Click Access for Parents) ─────── */}
+      <ParentFeaturesLaunchpad
+        overdueHwCount={overdueHw.length}
+        pendingFeesCount={pendingFees.length}
+      />
 
       {/* ── SECTION 7: AI DAILY PARENT DIGEST ──────────────────────────────── */}
       {digest && (
@@ -622,36 +622,6 @@ export default async function ParentHomePage({
           )}
         </Card>
       </div>
-
-      {/* ── Quick Links ──────────────────────────────────────────────────── */}
-      <Card className="rounded-2xl border-slate-200 bg-white p-5 shadow-soft">
-        <h2 className="text-sm font-semibold text-slate-900">Explore Portal</h2>
-        <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          {[
-            { href: "/parent/progress", label: "Progress Breakdown" },
-            { href: "/parent/homework", label: "Homework Hub" },
-            { href: "/parent/assignments", label: "Assignments" },
-            { href: "/parent/tests", label: "Assessments & Tests" },
-            { href: "/parent/attendance", label: "Attendance Calendar" },
-            { href: "/parent/syllabus", label: "Curriculum & Syllabus" },
-            { href: "/parent/reports", label: "Academic Reports" },
-            { href: "/parent/meetings", label: "Parent-Teacher Meetings" },
-            { href: "/parent/portfolio", label: "Student Portfolio" },
-            { href: "/parent/fees", label: "Tuition Fees & Payments" },
-            { href: "/parent/documents", label: "Document Center" },
-            { href: "/parent/more", label: "More Options" },
-          ].map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="flex items-center justify-between rounded-xl border border-slate-200 px-4 py-2.5 text-xs font-medium text-slate-800 transition-colors hover:border-slate-300 hover:bg-slate-50"
-            >
-              {item.label}
-              <ChevronRightIcon className="size-3.5 text-slate-400" aria-hidden />
-            </Link>
-          ))}
-        </div>
-      </Card>
 
       <PrivacyNote />
     </div>

@@ -101,6 +101,7 @@ export async function listAssignmentsForStudent(
        assignment_submissions!left(id, status, score, total_marks, percentage, submitted_at, graded_at, teacher_feedback)`,
     )
     .in("lifecycle", PUBLISHED_LIFECYCLES)
+    .is("deleted_at", null)
     .order("created_at", { ascending: false })
     .limit(100);
 

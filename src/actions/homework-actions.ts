@@ -29,12 +29,16 @@ export async function publishAssignmentAction(input: PublishAssignmentInput) {
 
   try {
     const supabase = createSupabaseAdminClient();
+    const { getWorkspaceContextForUser, logWorkspaceAudit } = await import("@/lib/workspace/auth");
+    const wsContext = await getWorkspaceContextForUser(context.user.id);
+    const workspaceId = wsContext.workspace?.id || null;
 
     // 1. Insert Assignment
     const { data: assignment, error: assignError } = await supabase
       .from("assignments")
       .insert({
         teacher_id: context.user.id,
+        workspace_id: workspaceId,
         title: input.title,
         description: input.description ?? "",
         class_level: input.classLevel,
@@ -56,6 +60,16 @@ export async function publishAssignmentAction(input: PublishAssignmentInput) {
     if (assignError || !assignment) {
       console.error("Assignment insert error:", assignError);
       return { success: false, message: assignError?.message || "Failed to create assignment record." };
+    }
+
+    if (workspaceId) {
+      await logWorkspaceAudit({
+        workspaceId,
+        actorId: context.user.id,
+        action: "HOMEWORK_CREATED",
+        targetId: (assignment as { id: string }).id,
+        metadata: { title: input.title, classLevel: input.classLevel, subject: input.subject },
+      });
     }
 
     const rowsToInsert: Record<string, unknown>[] = [];

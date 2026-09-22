@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { Brand } from "@/components/brand";
 import { AuthCard } from "@/components/auth/auth-card";
@@ -25,11 +26,13 @@ export default function LoginPage() {
           </div>
         </section>
         <section className="flex flex-col justify-center gap-5">
-          <AuthCard mode="login" />
+          <Suspense fallback={<div className="h-[400px] w-full animate-pulse rounded-3xl bg-slate-100" />}>
+            <AuthCard mode="login" />
+          </Suspense>
           <p className="text-center text-sm text-slate-500">
-            New here?{" "}
-            <Link href="/signup" className="font-medium text-primary">
-              Create a teacher account
+            Need an account?{" "}
+            <Link href="/signup" className="font-medium text-primary hover:underline">
+              Create account
             </Link>
           </p>
         </section>

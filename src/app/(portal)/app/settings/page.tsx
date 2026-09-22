@@ -6,21 +6,35 @@ import { AiSettings } from "@/components/settings/ai-settings";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Smartphone, MessageCircle } from "lucide-react";
 
+import { WorkspaceSettingsCard } from "@/components/workspace/workspace-settings-card";
+import { getWorkspaceContextForUser, listWorkspaceMembers } from "@/lib/workspace/auth";
+
 export default async function SettingsPage() {
   const context = await requireAuthContext();
   const data = await getSettingsPageData(context);
+
+  const wsContext = context.user ? await getWorkspaceContextForUser(context.user.id) : null;
+  const workspace = wsContext?.workspace;
+  const membersRes = workspace && context.user ? await listWorkspaceMembers(workspace.id, context.user.id) : null;
 
   return (
     <div className="space-y-6">
       <PageHeader
         title="Settings"
-        description="Manage profile details and confirm how portal access is mapped to student records."
+        description="Manage profile details, classroom workspace code, and confirm portal access."
       />
       <ProfileForm
         initialName={data.profile?.name ?? ""}
         email={data.profile?.email ?? context.user?.email ?? ""}
         role={context.role!}
       />
+
+      {workspace && (
+        <WorkspaceSettingsCard
+          workspace={workspace}
+          memberCount={membersRes?.members?.length || 0}
+        />
+      )}
 
       <Card className="border-violet-200 bg-gradient-to-br from-violet-50 to-purple-50 shadow-soft">
         <CardHeader>

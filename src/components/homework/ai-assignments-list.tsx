@@ -1,11 +1,22 @@
 "use client";
 
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { format } from "date-fns";
+import { toast } from "sonner";
 import type { AiAssignmentSummary } from "@/lib/queries";
 import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import {
   SparklesIcon,
   CalendarIcon,
@@ -14,7 +25,11 @@ import {
   ClockIcon,
   ChevronRightIcon,
   UsersIcon,
+  Trash2Icon,
+  AlertTriangleIcon,
+  Loader2Icon,
 } from "lucide-react";
+import { deleteAssignmentAction } from "@/actions/workspace-actions";
 
 export function AiAssignmentsList({
   assignments,
@@ -23,6 +38,23 @@ export function AiAssignmentsList({
   assignments: AiAssignmentSummary[];
   canManage: boolean;
 }) {
+  const router = useRouter();
+  const [deletingAssignment, setDeletingAssignment] = useState<AiAssignmentSummary | null>(null);
+  const [isPending, startTransition] = useTransition();
+
+  const handleDeleteAssignment = () => {
+    if (!deletingAssignment) return;
+    startTransition(async () => {
+      const result = await deleteAssignmentAction(deletingAssignment.id);
+      if (result.success) {
+        toast.success(result.message);
+        setDeletingAssignment(null);
+        router.refresh();
+      } else {
+        toast.error(result.message || "Failed to delete assignment.");
+      }
+    });
+  };
   if (assignments.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed p-8 text-center bg-card">
@@ -138,24 +170,75 @@ export function AiAssignmentsList({
                 )}
               </div>
 
-              {/* Action Link */}
-              <div className="border-t pt-3 flex items-center justify-between">
+              {/* Action Links */}
+              <div className="border-t pt-3 flex items-center gap-2">
                 <Link
-                  href={`/app/homework/${item.id}`}
-                  className={buttonVariants({ size: "sm", className: "w-full gap-1" })}
+                  href={canManage ? `/app/homework/${item.id}` : `/student/homework/${item.id}`}
+                  className={buttonVariants({ size: "sm", className: "flex-1 gap-1" })}
                 >
                   {canManage
-                    ? "Preview & Question Bank"
+                    ? "View & Question Bank"
                     : studentSub
                     ? "Review Feedback & Solutions"
                     : "Start Assignment"}
                   <ChevronRightIcon className="h-3.5 w-3.5 ml-auto" />
                 </Link>
+
+                {canManage && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setDeletingAssignment(item)}
+                    className="text-destructive hover:bg-destructive/10 hover:text-destructive border-slate-200 px-2.5"
+                    title="Delete Homework"
+                  >
+                    <Trash2Icon className="h-4 w-4" />
+                  </Button>
+                )}
               </div>
             </CardContent>
           </Card>
         );
       })}
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={Boolean(deletingAssignment)} onOpenChange={(open) => !open && setDeletingAssignment(null)}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <div className="mx-auto mb-2 flex size-12 items-center justify-center rounded-full bg-rose-100 text-rose-600">
+              <AlertTriangleIcon className="size-6" />
+            </div>
+            <DialogTitle className="text-center text-lg font-bold">
+              Delete Homework Assignment?
+            </DialogTitle>
+            <DialogDescription className="text-center text-xs text-slate-600">
+              Are you sure you want to delete{" "}
+              <strong className="text-slate-900">&ldquo;{deletingAssignment?.title}&rdquo;</strong>?
+              <br />
+              <br />
+              This will remove the homework assignment from student access. Only authorized teachers can perform this action.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex gap-2 sm:justify-center">
+            <Button
+              variant="outline"
+              onClick={() => setDeletingAssignment(null)}
+              disabled={isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteAssignment}
+              disabled={isPending}
+              className="gap-1.5"
+            >
+              {isPending ? <Loader2Icon className="size-4 animate-spin" /> : <Trash2Icon className="size-4" />}
+              {isPending ? "Deleting…" : "Delete Homework"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

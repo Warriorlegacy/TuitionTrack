@@ -189,6 +189,27 @@ export async function GET(request: NextRequest) {
         role: role as Database["public"]["Enums"]["user_role"],
         updated_at: new Date().toISOString(),
       });
+
+      // Auto-join workspace if workspace code is present
+      const wsCode =
+        request.nextUrl.searchParams.get("wsCode") ||
+        (user.user_metadata?.workspace_code as string | undefined);
+
+      if (wsCode && (role === "student" || role === "parent")) {
+        const { joinWorkspaceByCode } = await import("@/lib/workspace/auth");
+        await joinWorkspaceByCode({ code: wsCode, userId: user.id, role });
+      } else if (role === "teacher") {
+        const { getWorkspaceContextForUser } = await import("@/lib/workspace/auth");
+        await getWorkspaceContextForUser(user.id);
+      }
+
+      // If redirect was default /app/dashboard, route according to role
+      if (rawNext === "/app/dashboard" || !rawNext) {
+        let roleTarget = "/app/dashboard";
+        if (role === "student") roleTarget = "/student/dashboard";
+        else if (role === "parent") roleTarget = "/parent/dashboard";
+        completeUrl.searchParams.set("next", roleTarget);
+      }
     } catch (dbErr) {
       console.error("[auth/callback] Error syncing profile in DB:", dbErr);
     }

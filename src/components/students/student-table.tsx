@@ -7,8 +7,8 @@ import {
   PlusIcon,
   SearchIcon,
   Trash2Icon,
-  Share2Icon,
-  Link2Icon,
+  CopyIcon,
+  EyeIcon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -30,7 +30,7 @@ import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { StudentFormDialog } from "@/components/students/student-form-dialog";
-import { ParentInviteDialog } from "@/components/students/parent-invite-dialog";
+import { TeacherAddMemberByCodeDialog } from "@/components/workspace/teacher-add-by-code-dialog";
 
 export function StudentTable({
   students,
@@ -47,7 +47,6 @@ export function StudentTable({
   const [isPending, startTransition] = useTransition();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState<StudentRow | null>(null);
-  const [invitingStudent, setInvitingStudent] = useState<StudentRow | null>(null);
   const studentSearch = usePortalFiltersStore((store) => store.studentSearch);
   const setStudentSearch = usePortalFiltersStore((store) => store.setStudentSearch);
 
@@ -57,7 +56,7 @@ export function StudentTable({
     const query = studentSearch.trim().toLowerCase();
     if (!query) return students;
     return students.filter((student) =>
-      [student.name, student.class, student.parent_name || "", student.parent_phone || ""]
+      [student.name, student.class, student.parent_name || "", student.parent_phone || "", student.link_code || ""]
         .join(" ")
         .toLowerCase()
         .includes(query),
@@ -81,8 +80,8 @@ export function StudentTable({
     <Card className="border-white/90 bg-white/85 shadow-soft">
       <CardHeader className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
         <CardTitle>Student records</CardTitle>
-        <div className="flex flex-col gap-3 sm:flex-row">
-          <div className="relative min-w-[260px]">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <div className="relative min-w-[240px]">
             <SearchIcon className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-400" />
             <Input
               value={studentSearch}
@@ -92,15 +91,18 @@ export function StudentTable({
             />
           </div>
           {canManage ? (
-            <Button
-              onClick={() => {
-                setEditingStudent(null);
-                setDialogOpen(true);
-              }}
-            >
-              <PlusIcon />
-              Add student
-            </Button>
+            <div className="flex items-center gap-2">
+              <TeacherAddMemberByCodeDialog buttonText="Add by Code" variant="outline" />
+              <Button
+                onClick={() => {
+                  setEditingStudent(null);
+                  setDialogOpen(true);
+                }}
+              >
+                <PlusIcon />
+                Add student
+              </Button>
+            </div>
           ) : null}
         </div>
       </CardHeader>
@@ -111,7 +113,7 @@ export function StudentTable({
               <EmptyTitle>No students found</EmptyTitle>
               <EmptyDescription>
                 {canManage
-                  ? "Create your first student record to start assigning homework and tracking progress."
+                  ? "Create your first student record or add one by their Student Code to start tracking."
                   : "No student records are mapped to this portal yet."}
               </EmptyDescription>
             </EmptyHeader>
@@ -123,6 +125,7 @@ export function StudentTable({
                 <TableRow>
                   <TableHead>Name</TableHead>
                   <TableHead>Class</TableHead>
+                  <TableHead>Student Code</TableHead>
                   <TableHead>Parent</TableHead>
                   <TableHead>Portal access</TableHead>
                   {canManage ? <TableHead className="text-right">Actions</TableHead> : null}
@@ -154,6 +157,26 @@ export function StudentTable({
                     </TableCell>
                     <TableCell>{student.class}</TableCell>
                     <TableCell>
+                      {student.link_code ? (
+                        <div className="flex items-center gap-1.5 font-mono text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2 py-0.5 rounded-md w-fit">
+                          <span>{student.link_code}</span>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              navigator.clipboard.writeText(student.link_code!);
+                              toast.success(`Copied student code: ${student.link_code}`);
+                            }}
+                            className="text-slate-400 hover:text-emerald-800 transition-colors"
+                            title="Copy code"
+                          >
+                            <CopyIcon className="size-3" />
+                          </button>
+                        </div>
+                      ) : (
+                        <span className="text-xs text-slate-400">—</span>
+                      )}
+                    </TableCell>
+                    <TableCell>
                       <div>
                         <p>{student.parent_name || "—"}</p>
                         {student.parent_phone ? (
@@ -165,19 +188,8 @@ export function StudentTable({
                       {!(student.parent_email || student.student_email) ? (
                         <div className="flex items-center gap-2">
                           <span className="inline-flex items-center rounded-md bg-slate-100 px-2 py-1 text-[11px] font-medium text-slate-500">
-                            No portal linked
+                            Direct Code Linked
                           </span>
-                          {canManage ? (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              className="h-7 px-2.5 text-xs gap-1.5 border-primary/30 text-primary hover:bg-primary/5 hover:border-primary font-medium"
-                              onClick={() => setInvitingStudent(student)}
-                            >
-                              <Share2Icon className="size-3.5" />
-                              Invite / Access
-                            </Button>
-                          ) : null}
                         </div>
                       ) : (
                         <div className="flex flex-col gap-2">
@@ -233,16 +245,18 @@ export function StudentTable({
                               </div>
                             );
                           })}
-                          {canManage ? (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              className="h-6 w-fit px-2 text-[11px] text-primary hover:bg-primary/5 gap-1"
-                              onClick={() => setInvitingStudent(student)}
+                          {canManage && student.link_code ? (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                navigator.clipboard.writeText(student.link_code!);
+                                toast.success(`Copied code: ${student.link_code}`);
+                              }}
+                              className="text-[11px] text-emerald-700 hover:underline flex items-center gap-1 font-mono font-medium"
                             >
-                              <Share2Icon className="size-3" />
-                              Share link / WhatsApp
-                            </Button>
+                              <CopyIcon className="size-3" />
+                              Copy student code ({student.link_code})
+                            </button>
                           ) : null}
                         </div>
                       )}
@@ -252,23 +266,30 @@ export function StudentTable({
                         <div className="flex justify-end gap-2">
                           <Link
                             href={`/app/students/${student.id}`}
-                            title="Portal Access & Student Profile"
+                            title="View Student Profile & Performance"
                             className={buttonVariants({
                               variant: "outline",
                               size: "icon-sm",
                               className: "text-primary hover:text-primary hover:bg-primary/5",
                             })}
                           >
-                            <Link2Icon />
+                            <EyeIcon className="size-3.5" />
                           </Link>
                           <Button
                             variant="outline"
                             size="icon-sm"
-                            title="Share Portal Access"
-                            onClick={() => setInvitingStudent(student)}
-                            className="text-primary hover:text-primary hover:bg-primary/5"
+                            title="Copy Student Code"
+                            onClick={() => {
+                              if (student.link_code) {
+                                navigator.clipboard.writeText(student.link_code);
+                                toast.success(`Copied code: ${student.link_code}`);
+                              } else {
+                                toast.info("No student code available.");
+                              }
+                            }}
+                            className="text-emerald-700 hover:text-emerald-800 hover:bg-emerald-50"
                           >
-                            <Share2Icon />
+                            <CopyIcon className="size-3.5" />
                           </Button>
                           <Button
                             variant="outline"
@@ -299,19 +320,12 @@ export function StudentTable({
         )}
       </CardContent>
       {canManage ? (
-        <>
-          <StudentFormDialog
-            open={dialogOpen}
-            onOpenChange={setDialogOpen}
-            initialData={editingStudent}
-            onSaved={() => router.refresh()}
-          />
-          <ParentInviteDialog
-            open={!!invitingStudent}
-            onOpenChange={(open) => !open && setInvitingStudent(null)}
-            student={invitingStudent}
-          />
-        </>
+        <StudentFormDialog
+          open={dialogOpen}
+          onOpenChange={setDialogOpen}
+          initialData={editingStudent}
+          onSaved={() => router.refresh()}
+        />
       ) : null}
     </Card>
   );

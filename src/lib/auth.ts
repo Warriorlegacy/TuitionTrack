@@ -267,6 +267,7 @@ export async function getAuthContext(): Promise<AuthContext> {
         name: metaName,
         role: metadataRole,
         plan: "free",
+        link_code: null,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
       },
@@ -316,7 +317,13 @@ export async function requireTeacherContext() {
   }
 
   if (context.role !== "teacher") {
-    redirect("/app/dashboard");
+    if (context.role === "student") {
+      redirect("/student/dashboard");
+    } else if (context.role === "parent") {
+      redirect("/parent/dashboard");
+    } else {
+      redirect("/login");
+    }
   }
 
   return context;

@@ -33,13 +33,7 @@ export type StudentNavItem = {
 
 export const studentNav: StudentNavItem[] = [
   { href: "/student/dashboard", label: "Dashboard", icon: "layout-dashboard" },
-  { href: "/student/homework", label: "Homework", icon: "book-open-check" },
-  { href: "/student/assignments", label: "Assignments", icon: "book-open" },
-  { href: "/student/tests", label: "Tests & Marks", icon: "file-pen-line" },
-  { href: "/student/lessons", label: "3D Lessons", icon: "play" },
-  { href: "/student/progress", label: "Progress", icon: "line-chart" },
-  { href: "/student/announcements", label: "Announcements", icon: "megaphone" },
-  { href: "/student/profile", label: "Profile", icon: "user" },
+  { href: "/student/profile", label: "Profile & Settings", icon: "user" },
 ];
 
 const iconMap = {

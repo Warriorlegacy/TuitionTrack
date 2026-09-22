@@ -7,6 +7,8 @@ import {
   PlusIcon,
   SearchIcon,
   Trash2Icon,
+  AlertTriangleIcon,
+  Loader2Icon,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -22,6 +24,14 @@ import { formatDate } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Empty, EmptyHeader, EmptyTitle, EmptyDescription } from "@/components/ui/empty";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -40,6 +50,7 @@ export function HomeworkTable({
   const [isPending, startTransition] = useTransition();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingHomework, setEditingHomework] = useState<HomeworkItem | null>(null);
+  const [deletingHomework, setDeletingHomework] = useState<HomeworkItem | null>(null);
   const homeworkSearch = usePortalFiltersStore((store) => store.homeworkSearch);
   const homeworkStatus = usePortalFiltersStore((store) => store.homeworkStatus);
   const setHomeworkSearch = usePortalFiltersStore((store) => store.setHomeworkSearch);
@@ -48,27 +59,26 @@ export function HomeworkTable({
   useRealtimeRefresh(["homework"]);
 
   const filteredHomework = useMemo(() => {
-    const query = homeworkSearch.trim().toLowerCase();
     return homework.filter((item) => {
-      const matchesQuery = query
-        ? [item.title, item.student_name, item.student_class, item.description ?? ""]
-            .join(" ")
-            .toLowerCase()
-            .includes(query)
-        : true;
-      const matchesStatus = homeworkStatus === "all" ? true : item.status === homeworkStatus;
+      const matchesQuery =
+        item.title.toLowerCase().includes(homeworkSearch.toLowerCase()) ||
+        (item.student_name || "").toLowerCase().includes(homeworkSearch.toLowerCase());
+      const matchesStatus =
+        homeworkStatus === "all" ? true : item.status === homeworkStatus;
       return matchesQuery && matchesStatus;
     });
   }, [homework, homeworkSearch, homeworkStatus]);
 
-  const handleDelete = (id: string) => {
+  const confirmDelete = () => {
+    if (!deletingHomework) return;
     startTransition(async () => {
-      const result = await deleteHomeworkAction(id);
+      const result = await deleteHomeworkAction(deletingHomework.id);
       if (!result.success) {
         toast.error(result.message);
         return;
       }
       toast.success(result.message);
+      setDeletingHomework(null);
       router.refresh();
     });
   };
@@ -188,7 +198,8 @@ export function HomeworkTable({
                             variant="outline"
                             size="icon-sm"
                             disabled={isPending}
-                            onClick={() => handleDelete(item.id)}
+                            onClick={() => setDeletingHomework(item)}
+                            title="Delete homework"
                           >
                             <Trash2Icon />
                           </Button>
@@ -212,6 +223,47 @@ export function HomeworkTable({
           onSaved={() => router.refresh()}
         />
       ) : null}
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={Boolean(deletingHomework)}
+        onOpenChange={(open) => !open && setDeletingHomework(null)}
+      >
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <div className="mx-auto mb-2 flex size-12 items-center justify-center rounded-full bg-rose-100 text-rose-600">
+              <AlertTriangleIcon className="size-6" />
+            </div>
+            <DialogTitle className="text-center text-lg font-bold">
+              Delete Homework?
+            </DialogTitle>
+            <DialogDescription className="text-center text-xs text-slate-600">
+              Are you sure you want to delete &ldquo;{deletingHomework?.title}&rdquo;?
+              <br />
+              <br />
+              This will remove the homework record from student and parent views. Only authorized teachers can perform this action.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex gap-2 sm:justify-center">
+            <Button
+              variant="outline"
+              onClick={() => setDeletingHomework(null)}
+              disabled={isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={confirmDelete}
+              disabled={isPending}
+              className="gap-1.5"
+            >
+              {isPending ? <Loader2Icon className="size-4 animate-spin" /> : <Trash2Icon className="size-4" />}
+              {isPending ? "Deleting…" : "Delete Homework"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </Card>
   );
 }

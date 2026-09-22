@@ -50,6 +50,8 @@ export function StudentHomeworkPlayer({
   questions,
   submission,
   studentId,
+  backUrl = "/app/homework",
+  backLabel = "Back to Homework",
 }: {
   assignment: {
     id: string;
@@ -66,6 +68,8 @@ export function StudentHomeworkPlayer({
   submission: SubmissionData | null;
   studentId: string;
   isTeacher?: boolean;
+  backUrl?: string;
+  backLabel?: string;
 }) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -130,11 +134,11 @@ export function StudentHomeworkPlayer({
       {/* Top Header Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 p-4 rounded-2xl bg-white border border-slate-200 shadow-sm">
         <Link
-          href="/app/homework"
+          href={backUrl}
           className="flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors"
         >
           <ArrowLeftIcon className="size-3.5" />
-          <span>Back to Homework</span>
+          <span>{backLabel}</span>
         </Link>
 
         <div className="flex items-center gap-2">

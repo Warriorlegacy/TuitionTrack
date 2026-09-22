@@ -78,6 +78,7 @@ export async function listHomeworkForStudent(
   let q = supabase
     .from("homework")
     .select("id, title, description, due_date, status, created_at, updated_at")
+    .is("deleted_at", null)
     .eq("student_id", studentId)
     .order("due_date", { ascending: false });
 

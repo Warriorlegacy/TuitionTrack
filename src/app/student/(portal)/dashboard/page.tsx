@@ -9,25 +9,28 @@ import {
 } from "lucide-react";
 import { requireStudentContext } from "@/lib/student/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { listStudentHomework } from "@/lib/student/homework";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { StudentCodeLinkingCard } from "@/components/student/student-code-linking-card";
+import { StudentFeaturesLaunchpad } from "@/components/student/student-features-launchpad";
+import { getUserUniqueCodeAction, getStudentLinkedParentsAction } from "@/actions/workspace-actions";
 
 export const dynamic = "force-dynamic";
 
 export default async function StudentDashboardPage() {
-  const context = await requireStudentContext();
+  const [context, studentCodeResult, linkedParentsResult] = await Promise.all([
+    requireStudentContext(),
+    getUserUniqueCodeAction(),
+    getStudentLinkedParentsAction(),
+  ]);
   const student = context.student!;
 
   const supabase = createSupabaseServerClient();
 
-  // 1. Fetch pending homework
-  const { data: homeworkList } = await supabase
-    .from("homework")
-    .select("id, title, due_date, status")
-    .eq("student_id", student.id)
-    .order("due_date", { ascending: true })
-    .limit(5);
+  // 1. Fetch assigned homework (AI assignments + quick logs)
+  const homeworkList = await listStudentHomework(student.id, student.class);
 
   // 2. Fetch recent tests
   const { data: testList } = await supabase
@@ -44,8 +47,12 @@ export default async function StudentDashboardPage() {
     .order("created_at", { ascending: false })
     .limit(3);
 
-  const pendingHomework = (homeworkList ?? []).filter((h) => h.status !== "completed");
-  const completedHomework = (homeworkList ?? []).filter((h) => h.status === "completed");
+  const pendingHomework = homeworkList.filter(
+    (h) => h.status === "pending" || h.status === "overdue",
+  );
+  const completedHomework = homeworkList.filter(
+    (h) => h.status === "completed" || h.status === "graded" || h.status === "submitted",
+  );
 
   return (
     <div className="space-y-6">
@@ -61,7 +68,7 @@ export default async function StudentDashboardPage() {
               Welcome back, {student.name}!
             </h1>
             <p className="max-w-xl text-xs text-emerald-100/90 leading-relaxed">
-              Track your daily tuition homework, revise chapters with 3D animated lessons, and get instant answers from your AI Tutor.
+              Track your daily tuition homework, revise chapters with 3D animated lessons, and share your unique code with parents or teachers.
             </p>
           </div>
 
@@ -76,18 +83,25 @@ export default async function StudentDashboardPage() {
               3D Lessons
             </Link>
             <Link
-              href="/app/tutor"
+              href="/student/homework"
               className={buttonVariants({
                 variant: "outline",
                 className: "border-white/30 bg-white/10 text-white hover:bg-white/20 text-xs backdrop-blur-sm",
               })}
             >
-              <SparklesIcon className="mr-1.5 size-3.5 text-amber-300" />
-              Ask AI Tutor
+              <BookOpenCheckIcon className="mr-1.5 size-3.5 text-amber-300" />
+              My Homework ({pendingHomework.length})
             </Link>
           </div>
         </div>
       </div>
+
+      {/* Student Unique Code & Parent Linking Card */}
+      <StudentCodeLinkingCard
+        studentCode={studentCodeResult.code || student.link_code || ""}
+        studentName={student.name}
+        linkedParents={linkedParentsResult.parents}
+      />
 
       {/* Metric Cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -134,6 +148,12 @@ export default async function StudentDashboardPage() {
         </Card>
       </div>
 
+      {/* Complete Student Learning Hub (1-Click Access to All Features) */}
+      <StudentFeaturesLaunchpad
+        pendingHomeworkCount={pendingHomework.length}
+        testCount={(testList ?? []).length}
+      />
+
       {/* Two Column Layout: Homework + Tests */}
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Homework Section */}
@@ -163,29 +183,73 @@ export default async function StudentDashboardPage() {
                 No homework assigned right now. Enjoy your free time!
               </p>
             ) : (
-              homeworkList.map((hw) => (
-                <div
-                  key={hw.id}
-                  className="flex items-center justify-between rounded-xl border border-slate-100 bg-slate-50/50 p-3 text-xs"
-                >
-                  <div className="space-y-0.5">
-                    <p className="font-semibold text-slate-900">{hw.title}</p>
-                    <p className="text-[11px] text-slate-500">
-                      {hw.due_date ? `Due ${new Date(hw.due_date).toLocaleDateString()}` : "No deadline"}
-                    </p>
-                  </div>
-                  <Badge
-                    variant="outline"
-                    className={
-                      hw.status === "completed"
-                        ? "border-emerald-200 bg-emerald-50 text-emerald-700 text-[10px]"
-                        : "border-amber-200 bg-amber-50 text-amber-700 text-[10px]"
-                    }
+              homeworkList.slice(0, 5).map((hw) => {
+                const isCompleted = hw.status === "completed" || hw.status === "graded";
+                const isSubmitted = hw.status === "submitted";
+                const isOverdue = hw.status === "overdue";
+
+                return (
+                  <div
+                    key={hw.id}
+                    className="flex items-center justify-between gap-3 rounded-xl border border-slate-100 bg-slate-50/50 p-3 text-xs"
                   >
-                    {hw.status === "completed" ? "Done" : "Pending"}
-                  </Badge>
-                </div>
-              ))
+                    <div className="space-y-0.5 min-w-0 flex-1">
+                      <div className="flex items-center gap-1.5 truncate">
+                        {hw.source === "assignment" && (
+                          <SparklesIcon className="size-3 text-purple-600 shrink-0" />
+                        )}
+                        <p className="font-semibold text-slate-900 truncate">{hw.title}</p>
+                      </div>
+                      <p className="text-[11px] text-slate-500">
+                        {hw.dueDate
+                          ? `Due ${new Date(hw.dueDate).toLocaleDateString()}`
+                          : "No deadline"}
+                        {hw.totalMarks ? ` · ${hw.totalMarks} marks` : ""}
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2 shrink-0">
+                      <Badge
+                        variant="outline"
+                        className={
+                          isCompleted
+                            ? "border-emerald-200 bg-emerald-50 text-emerald-700 text-[10px]"
+                            : isSubmitted
+                              ? "border-blue-200 bg-blue-50 text-blue-700 text-[10px]"
+                              : isOverdue
+                                ? "border-rose-200 bg-rose-50 text-rose-700 text-[10px]"
+                                : "border-amber-200 bg-amber-50 text-amber-700 text-[10px]"
+                        }
+                      >
+                        {isCompleted
+                          ? hw.percentage !== null && hw.percentage !== undefined
+                            ? `${hw.percentage}%`
+                            : "Done"
+                          : isSubmitted
+                            ? "Submitted"
+                            : isOverdue
+                              ? "Overdue"
+                              : "Pending"}
+                      </Badge>
+
+                      {hw.playerUrl && (
+                        <Link
+                          href={hw.playerUrl}
+                          className={buttonVariants({
+                            variant: isCompleted || isSubmitted ? "ghost" : "default",
+                            size: "sm",
+                            className: isCompleted || isSubmitted
+                              ? "h-6 px-2 text-[10px] text-slate-600"
+                              : "h-6 px-2 text-[10px] bg-emerald-600 hover:bg-emerald-700 text-white font-medium",
+                          })}
+                        >
+                          {isCompleted || isSubmitted ? "View" : "Start"}
+                        </Link>
+                      )}
+                    </div>
+                  </div>
+                );
+              })
             )}
           </CardContent>
         </Card>

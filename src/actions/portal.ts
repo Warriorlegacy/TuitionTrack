@@ -235,13 +235,13 @@ export async function saveHomeworkAction(
 export async function deleteHomeworkAction(id: string): Promise<ActionResult> {
   const context = await requireTeacherContext();
   if (!context.configured || !context.profile) {
-    return { success: false, message: "Supabase is not configured." };
+    return { success: false, message: "Unauthorized. Only teachers can delete homework." };
   }
 
   const supabase = createSupabaseServerClient();
   const { error } = await supabase
     .from("homework")
-    .delete()
+    .update({ deleted_at: new Date().toISOString(), updated_at: new Date().toISOString() })
     .eq("id", id)
     .eq("teacher_id", context.profile.id);
 

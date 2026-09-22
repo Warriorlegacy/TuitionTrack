@@ -94,10 +94,11 @@ export async function updateSession(request: NextRequest) {
   // session yet, because that page is how they discover they need one.
   const isParentInvitePath = path.startsWith("/parent/invite/");
   const isParentPath = path.startsWith("/parent") && !isParentInvitePath;
+  const isStudentPath = path.startsWith("/student");
   const isPublicAuthPath =
     PUBLIC_AUTH_PATHS.has(path) || PUBLIC_AUTH_PREFIXES.some((p) => path.startsWith(p));
 
-  if ((isPortalPath || isParentPath) && !session) {
+  if ((isPortalPath || isParentPath || isStudentPath) && !session) {
     // Preserve the destination so an expired session returns the user to where
     // they were, instead of dumping them on the dashboard after re-auth.
     const loginUrl = new URL("/login", request.url);
@@ -113,7 +114,7 @@ export async function updateSession(request: NextRequest) {
   }
 
   if (session && isPublicAuthPath) {
-    return withCookies(NextResponse.redirect(new URL("/app/dashboard", request.url)));
+    return withCookies(NextResponse.redirect(new URL("/portal", request.url)));
   }
 
   return withCookies(response);

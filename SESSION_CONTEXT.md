@@ -11,7 +11,38 @@ TuitionTrack is a Next.js 14 application for managing tuition payments and stude
 
 ## Recent Changes
 
-### 1-Hour 3D Animated Lessons with Voice Narration for Classes 6–8 (2026-09-19)
+### Multi-Tenant Teacher Workspace & Role-Based Access Control Overhaul + Fresh Database Reset (2026-09-21)
+- **Multi-Tenant Workspace Core**:
+  - Transformed TuitionTrack into a true multi-tenant education platform centered on **Teacher Workspaces**.
+  - Database migration `20260922020000_multi_tenant_workspace_core.sql` created `public.workspaces`, `public.workspace_members`, and `public.workspace_audit_logs`, with `workspace_id` foreign keys and soft-delete `deleted_at` timestamps on `homework` and `assignments`.
+  - Stored procedure `public.generate_workspace_code()` automatically assigns every teacher workspace a human-readable join code (`TT-[A-Z0-9]{6}`, globally unique, case-insensitive, indexed).
+- **Redesigned Role-Selection Authentication Flow**:
+  - First screen on `/login` and `/signup` presents: **"How are you using TuitionTrack?"** with 3 options: 👨‍🏫 **Teacher**, 🎓 **Student**, 👨‍👩‍👧 **Parent / Guardian**.
+  - Teacher signup automatically provisions the workspace and generates a unique join code.
+  - Student and Parent signups prompt for and validate the teacher workspace code in real-time before authentication, auto-joining upon registration.
+  - Centralized role-based dispatcher at `/portal` routes users to their authoritative portal (`/app/dashboard`, `/student/dashboard`, or `/parent/dashboard`).
+- **Teacher Member & Role Management**:
+  - Teacher member directory at `/app/workspace/members` allowing teachers to view members and reassign roles (`student` ↔ `parent` ↔ `teacher`).
+  - Comprehensive privilege escalation guards: students and parents cannot elevate themselves; workspace owners cannot be altered or stripped; database `CHECK` constraint prevents arbitrary roles.
+  - Workspace code management card at `/app/workspace` and `/app/settings` with copy-to-clipboard, share message, and rotation confirmation modal.
+- **Teacher-Only Homework Deletion & Unified Visibility**:
+  - Unified student homework query in `src/lib/student/homework.ts` and homework player at `/student/homework/[id]` supporting both AI assignments and quick homework tasks.
+  - Teacher-only deletion with confirmation dialogs in `AiAssignmentsList` and `HomeworkTable`. Soft-deleted items (`deleted_at is not null`) are strictly filtered from student, parent, and teacher views.
+  - Non-teachers attempting deletion are blocked at UI, Server Action, and Supabase Row Level Security (`Assignments teacher delete policy`) levels.
+- **Simplified Student & Parent Portals**:
+  - Student Portal: Minimal, learning-focused navigation (**Dashboard, Homework, Assignments, Tests, 3D Lessons, Progress, Profile**). Completely stripped of teacher/admin controls.
+  - Parent Portal: Focused on child monitoring (**Overview, Child Progress, Homework, Assignments, Tests, Attendance, Reports, Profile**). Child-switcher with strict `guardian_student_relationships` scoping.
+- **Automated Verification Suites (28/28 Passing)**:
+  - `tests/workspace-rbac-e2e.mjs`: 13/13 passing (workspace codes, joining, duplicate join prevention, teacher role changes, RLS delete block, audit logging).
+  - `tests/student-homework-e2e.mjs`: 15/15 passing (portal access authorization, homework question visibility under RLS, cross-student submission isolation).
+- **Fresh Database Reset**:
+  - Executed complete database purge (`scratch/clean-database.mjs`): 0 rows in `auth.users`, `public.users`, `public.workspaces`, `public.workspace_members`, `public.students`, `public.homework`, `public.assignments`, `public.fees`, `public.payment_settings`. Ready for fresh production launch!
+- **Deliverable Architecture Documentation**:
+  - Generated `IMPLEMENTATION_GAP.md`, `ARCHITECTURE.md`, `AUTHORIZATION.md`, `WORKSPACE_MODEL.md`, `MIGRATION_NOTES.md`, `SECURITY_AUDIT.md`, and `TEST_PLAN.md`.
+- **Quality Gates**:
+  - `npm run typecheck`: 0 errors.
+  - `npm run lint`: 0 warnings, 0 errors.
+  - `npm run build`: 71/71 static and dynamic pages generated with 0 errors.
 - **222 Chapters Completed (Zero Missing)**: Every single chapter across all subjects of Classes 6, 7, and 8 now has an interactive 1-hour one-shot 3D animated lesson with full voice narration:
   - **Class 6 (69/69 chapters)**: Mathematics (14), Science (12), English (16), History (11), Geography (8), Civics (8).
   - **Class 7 (78/78 chapters)**: Mathematics (13), Science (12), English (27), History (10), Geography (8), Civics (8).

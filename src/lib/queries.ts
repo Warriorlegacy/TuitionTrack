@@ -132,6 +132,7 @@ async function fetchHomework(context: AuthContext) {
     .select(
       "id,title,description,due_date,student_id,teacher_id,status,created_at,updated_at,student:students(name,class)",
     )
+    .is("deleted_at", null)
     .order("due_date", { ascending: true });
 
   if (context.role === "teacher" && context.profile) {
@@ -763,6 +764,7 @@ export async function fetchAiAssignments(context: AuthContext): Promise<AiAssign
           created_at,
           submissions:assignment_submissions(count)
         `)
+        .is("deleted_at", null)
         .order("created_at", { ascending: false });
 
       if (error || !data) return [];
@@ -809,6 +811,7 @@ export async function fetchAiAssignments(context: AuthContext): Promise<AiAssign
             student_id
           )
         `)
+        .is("deleted_at", null)
         .order("created_at", { ascending: false });
 
       if (error || !data) return [];

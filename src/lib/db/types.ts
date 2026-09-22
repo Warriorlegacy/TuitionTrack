@@ -106,6 +106,8 @@ export interface Database {
           student_id: string;
           teacher_id: string;
           status: HomeworkStatus;
+          workspace_id: string | null;
+          deleted_at: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -117,6 +119,8 @@ export interface Database {
           student_id: string;
           teacher_id: string;
           status?: HomeworkStatus;
+          workspace_id?: string | null;
+          deleted_at?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -134,6 +138,9 @@ export interface Database {
           student_email: string | null;
           teacher_id: string;
           org_id: string | null;
+          workspace_id: string | null;
+          link_code: string | null;
+          deleted_at: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -147,6 +154,9 @@ export interface Database {
           student_email?: string | null;
           teacher_id: string;
           org_id?: string | null;
+          workspace_id?: string | null;
+          link_code?: string | null;
+          deleted_at?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -184,6 +194,7 @@ export interface Database {
           email: string;
           role: AppRole;
           plan: SubscriptionPlan;
+          link_code: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -193,6 +204,7 @@ export interface Database {
           email: string;
           role?: AppRole;
           plan?: SubscriptionPlan;
+          link_code?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -528,6 +540,78 @@ export interface Database {
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["payment_receipts"]["Insert"]>;
+        Relationships: [];
+      };
+      workspaces: {
+        Row: {
+          id: string;
+          name: string;
+          code: string;
+          owner_id: string;
+          status: "active" | "inactive" | "archived";
+          metadata: Record<string, unknown>;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          name: string;
+          code: string;
+          owner_id: string;
+          status?: "active" | "inactive" | "archived";
+          metadata?: Record<string, unknown>;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["workspaces"]["Insert"]>;
+        Relationships: [];
+      };
+      workspace_members: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          user_id: string;
+          role: "owner" | "admin" | "teacher" | "student" | "parent";
+          status: "active" | "invited" | "suspended";
+          link_code: string | null;
+          joined_at: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          user_id: string;
+          role: "owner" | "admin" | "teacher" | "student" | "parent";
+          status?: "active" | "invited" | "suspended";
+          link_code?: string | null;
+          joined_at?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["workspace_members"]["Insert"]>;
+        Relationships: [];
+      };
+      workspace_audit_logs: {
+        Row: {
+          id: string;
+          workspace_id: string;
+          actor_id: string | null;
+          action: string;
+          target_id: string | null;
+          metadata: Record<string, unknown>;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          workspace_id: string;
+          actor_id?: string | null;
+          action: string;
+          target_id?: string | null;
+          metadata?: Record<string, unknown>;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["workspace_audit_logs"]["Insert"]>;
         Relationships: [];
       };
     };

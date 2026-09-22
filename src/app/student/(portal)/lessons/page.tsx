@@ -5,7 +5,7 @@ import { requireStudentContext } from "@/lib/student/auth";
 import { PageHeader } from "@/components/shared/page-header";
 import { VIDEO_CATALOG, getClassEntry, getSubjects } from "@/lib/learn/video-catalog";
 import { resolveLessonScript } from "@/lib/learn/lesson-research";
-import { ClassLessonCard } from "@/components/learn/class-lesson-card";
+import { StudentLessonCard } from "@/components/student/student-lesson-card";
 import { cn } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
@@ -84,7 +84,7 @@ export default async function StudentLessonsPage({
         {lessons.map((lesson) => {
           const script = resolveLessonScript(lesson);
           return (
-            <ClassLessonCard
+            <StudentLessonCard
               key={lesson.slug}
               lesson={lesson}
               script={script}

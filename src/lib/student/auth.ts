@@ -47,6 +47,58 @@ export async function getStudentContext(): Promise<StudentAuthContext> {
     studentId = std?.id;
   }
 
+  // 3. Fallback: Check workspace membership
+  if (!studentId && base.user) {
+    try {
+      const { createSupabaseAdminClient } = await import("@/lib/supabase/admin");
+      const admin = createSupabaseAdminClient();
+      const { data: wsMem } = await admin
+        .from("workspace_members")
+        .select("workspace_id, role, workspace:workspaces(id, owner_id)")
+        .eq("user_id", base.user.id)
+        .eq("status", "active")
+        .maybeSingle();
+
+      if (wsMem && (wsMem.role === "student" || base.role === "student")) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const wsOwnerId = (wsMem.workspace as any)?.owner_id;
+        // Check if student profile exists in this workspace
+        const { data: existingStd } = await admin
+          .from("students")
+          .select("id")
+          .eq("workspace_id", wsMem.workspace_id)
+          .ilike("student_email", base.email || "")
+          .maybeSingle();
+
+        if (existingStd) {
+          studentId = existingStd.id;
+        } else if (wsOwnerId) {
+          // Provision student profile in teacher's workspace
+          const studentName = base.profile?.name || base.user.user_metadata?.name || "Student";
+          const { data: newStd } = await admin
+            .from("students")
+            .insert({
+              name: studentName,
+              class: "9",
+              student_email: base.email,
+              teacher_id: wsOwnerId,
+              workspace_id: wsMem.workspace_id,
+              parent_name: "Parent",
+              parent_phone: "",
+            })
+            .select("id")
+            .single();
+
+          if (newStd) {
+            studentId = newStd.id;
+          }
+        }
+      }
+    } catch {
+      // ignore fallback error
+    }
+  }
+
   if (!studentId) {
     return {
       ...base,

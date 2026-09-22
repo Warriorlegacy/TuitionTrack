@@ -1,9 +1,18 @@
 "use client";
 
 import { useEffect, useMemo, useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Loader2Icon } from "lucide-react";
+import {
+  Loader2Icon,
+  GraduationCapIcon,
+  UsersIcon,
+  BriefcaseIcon,
+  ArrowRightIcon,
+  ArrowLeftIcon,
+  CheckCircle2Icon,
+  ShieldCheckIcon,
+} from "lucide-react";
 import { toast } from "sonner";
 import { createSupabaseBrowserClient } from "@/lib/supabase/browser";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
@@ -17,7 +26,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { validateWorkspaceCodeAction, joinWorkspaceAction } from "@/actions/workspace-actions";
 
 function GoogleIcon() {
   return (
@@ -47,8 +56,8 @@ type AuthCardProps = {
   mode: "login" | "signup";
 };
 
-// Raw Supabase messages confuse users ("Invalid login credentials") — map
-// the common ones to plain language. Unknown errors pass through untouched.
+type SelectedRole = "teacher" | "student" | "parent";
+
 function friendlyAuthError(message: string): string {
   const m = message.toLowerCase();
   if (m.includes("invalid login credentials")) {
@@ -75,43 +84,97 @@ function friendlyAuthError(message: string): string {
   return message;
 }
 
-export function AuthCard({ mode }: AuthCardProps) {
+export function AuthCard({ mode: initialMode }: AuthCardProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
-  // Separate from isPending: the OAuth redirect leaves the page, so the pending
-  // state must survive until the browser actually navigates away. Otherwise the
-  // button snaps back to "Google" and the round-trip looks hung.
   const [googlePending, setGooglePending] = useState(false);
+
+  const initialRoleParam = searchParams.get("role") as SelectedRole | null;
+  const initialCodeParam = searchParams.get("code") || "";
+
+  // Step 1: 'select_role' | 'enter_code' | 'auth_form'
+  const [step, setStep] = useState<"select_role" | "enter_code" | "auth_form">(
+    initialRoleParam
+      ? initialRoleParam === "teacher"
+        ? "auth_form"
+        : initialCodeParam
+          ? "auth_form"
+          : "enter_code"
+      : "select_role"
+  );
+
+  const [mode, setMode] = useState<"login" | "signup">(initialMode);
+  const [role, setRole] = useState<SelectedRole>(initialRoleParam || "teacher");
+  const [workspaceCode, setWorkspaceCode] = useState(initialCodeParam);
+  const [verifiedWorkspaceName, setVerifiedWorkspaceName] = useState("");
+  const [codeValidating, setCodeValidating] = useState(false);
+  const [codeError, setCodeError] = useState("");
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const [role, setRole] = useState<"teacher" | "parent" | "student">("teacher");
+
   const configured = useMemo(() => isSupabaseConfigured(), []);
 
   // Display toast error if redirected back with error query parameter
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const params = new URLSearchParams(window.location.search);
-      const err = params.get("error");
-      if (err) {
-        toast.error(friendlyAuthError(decodeURIComponent(err)));
-        const cleanUrl = window.location.pathname;
-        window.history.replaceState({}, "", cleanUrl);
-      }
+    const err = searchParams.get("error");
+    if (err) {
+      toast.error(friendlyAuthError(decodeURIComponent(err)));
+      const cleanUrl = window.location.pathname;
+      window.history.replaceState({}, "", cleanUrl);
     }
-  }, []);
+  }, [searchParams]);
 
-  const searchObj = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
-  const nextParam = searchObj ? (searchObj.get("next") || searchObj.get("returnTo")) : null;
-  const safeNext =
-    nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//")
-      ? nextParam
-      : "/app/dashboard";
+  // Handle Role Selection
+  const handleSelectRole = (selected: SelectedRole) => {
+    setRole(selected);
+    if (selected === "teacher") {
+      setStep("auth_form");
+    } else {
+      setStep("enter_code");
+    }
+  };
 
-  const redirectTo =
-    typeof window !== "undefined"
-      ? `${window.location.origin}/auth/callback?next=${encodeURIComponent(safeNext)}${mode === "signup" ? `&signupRole=${role}` : ""}`
-      : undefined;
+  // Validate Workspace Code
+  const handleValidateCode = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    if (!workspaceCode.trim()) {
+      setCodeError("Please enter a workspace code.");
+      return;
+    }
+
+    setCodeValidating(true);
+    setCodeError("");
+
+    const result = await validateWorkspaceCodeAction(workspaceCode);
+    setCodeValidating(false);
+
+    if (!result.valid) {
+      setCodeError(result.error || "Workspace not found.");
+      return;
+    }
+
+    setVerifiedWorkspaceName(result.workspaceName || "");
+    if (result.workspaceCode) {
+      setWorkspaceCode(result.workspaceCode);
+    }
+    toast.success(`Verified: ${result.workspaceName}`);
+    setStep("auth_form");
+  };
+
+  const getDestinationUrl = () => {
+    const nextParam = searchParams.get("next") || searchParams.get("returnTo");
+    if (nextParam && nextParam.startsWith("/") && !nextParam.startsWith("//")) {
+      return nextParam;
+    }
+    if (role === "student") return "/student/dashboard";
+    if (role === "parent") return "/parent/dashboard";
+    return "/app/dashboard";
+  };
+
+  const safeNext = getDestinationUrl();
 
   const handleEmailAuth = () => {
     startTransition(async () => {
@@ -121,6 +184,19 @@ export function AuthCard({ mode }: AuthCardProps) {
       }
 
       const supabase = createSupabaseBrowserClient();
+
+      const callbackQuery = new URLSearchParams({
+        next: safeNext,
+        signupRole: role,
+      });
+      if (workspaceCode) {
+        callbackQuery.set("wsCode", workspaceCode);
+      }
+
+      const redirectTo =
+        typeof window !== "undefined"
+          ? `${window.location.origin}/auth/callback?${callbackQuery.toString()}`
+          : undefined;
 
       const result =
         mode === "login"
@@ -133,6 +209,7 @@ export function AuthCard({ mode }: AuthCardProps) {
                 data: {
                   name,
                   role,
+                  workspace_code: workspaceCode,
                 },
               },
             });
@@ -143,23 +220,30 @@ export function AuthCard({ mode }: AuthCardProps) {
       }
 
       if (mode === "signup" && !result.data.session) {
-        toast.success("Account created. Check your email to confirm your signup.");
-        router.push("/login");
+        toast.success("Account created! Check your email to confirm your signup.");
+        setMode("login");
         return;
+      }
+
+      // If student or parent authenticated and has workspace code, join the workspace
+      if (workspaceCode && (role === "student" || role === "parent")) {
+        try {
+          await joinWorkspaceAction({
+            code: workspaceCode,
+            role,
+          });
+        } catch (err) {
+          console.error("Auto-join error:", err);
+        }
       }
 
       toast.success(
         mode === "login"
           ? "Welcome back."
-          : `${role.charAt(0).toUpperCase() + role.slice(1)} account created.`,
+          : `${role.charAt(0).toUpperCase() + role.slice(1)} account created.`
       );
-      router.push(
-        mode === "login"
-          ? safeNext
-          : role === "teacher"
-            ? "/auth/onboarding"
-            : safeNext,
-      );
+
+      router.push(safeNext);
       router.refresh();
     });
   };
@@ -168,6 +252,7 @@ export function AuthCard({ mode }: AuthCardProps) {
     if (googlePending) return;
     setGooglePending(true);
     toast.loading("Opening Google sign-in…", { id: "google-auth" });
+
     startTransition(async () => {
       if (!configured) {
         setGooglePending(false);
@@ -175,6 +260,19 @@ export function AuthCard({ mode }: AuthCardProps) {
         toast.error("Add your Supabase environment variables to enable Google login.");
         return;
       }
+
+      const callbackQuery = new URLSearchParams({
+        next: safeNext,
+        signupRole: role,
+      });
+      if (workspaceCode) {
+        callbackQuery.set("wsCode", workspaceCode);
+      }
+
+      const redirectTo =
+        typeof window !== "undefined"
+          ? `${window.location.origin}/auth/callback?${callbackQuery.toString()}`
+          : undefined;
 
       const supabase = createSupabaseBrowserClient();
       const { error } = await supabase.auth.signInWithOAuth({
@@ -189,17 +287,12 @@ export function AuthCard({ mode }: AuthCardProps) {
       });
 
       if (error) {
-        // Only reset on failure — on success the browser is already leaving,
-        // and clearing the state would flash the idle button during teardown.
         setGooglePending(false);
         toast.dismiss("google-auth");
         toast.error(friendlyAuthError(error.message));
         return;
       }
 
-      // The SDK resolves once it has navigated the window. If we are still here
-      // seconds later the navigation was blocked (popup blocker, WebView quirk),
-      // so surface it rather than leaving a permanently disabled button.
       setTimeout(() => {
         setGooglePending(false);
         toast.dismiss("google-auth");
@@ -207,56 +300,247 @@ export function AuthCard({ mode }: AuthCardProps) {
     });
   };
 
+  // -------------------------------------------------------------------------
+  // RENDER STEP 1: "How are you using TuitionTrack?"
+  // -------------------------------------------------------------------------
+  if (step === "select_role") {
+    return (
+      <Card className="border-white/90 bg-white/95 shadow-soft">
+        <CardHeader className="space-y-2 text-center">
+          <div className="mx-auto mb-2 flex size-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+            <ShieldCheckIcon className="size-6" />
+          </div>
+          <CardTitle className="text-2xl font-bold tracking-tight text-slate-900">
+            How are you using TuitionTrack?
+          </CardTitle>
+          <CardDescription className="text-sm text-slate-600">
+            Choose your role to enter the tailored classroom experience.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-3.5 pt-2">
+          {/* TEACHER CARD */}
+          <button
+            type="button"
+            onClick={() => handleSelectRole("teacher")}
+            className="group relative flex items-start gap-4 rounded-2xl border-2 border-slate-200/80 bg-white p-4.5 text-left transition-all hover:border-primary hover:bg-primary/[0.02] hover:shadow-md active:scale-[0.99]"
+          >
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 group-hover:bg-primary group-hover:text-white transition-colors">
+              <BriefcaseIcon className="size-6" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-semibold text-slate-900 group-hover:text-primary transition-colors">
+                  👨‍🏫 Teacher
+                </h3>
+                <ArrowRightIcon className="size-4 text-slate-400 group-hover:text-primary group-hover:translate-x-0.5 transition-all" />
+              </div>
+              <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                Manage your classroom, students, homework, attendance, fees and progress reports.
+              </p>
+            </div>
+          </button>
+
+          {/* STUDENT CARD */}
+          <button
+            type="button"
+            onClick={() => handleSelectRole("student")}
+            className="group relative flex items-start gap-4 rounded-2xl border-2 border-slate-200/80 bg-white p-4.5 text-left transition-all hover:border-emerald-500 hover:bg-emerald-500/[0.02] hover:shadow-md active:scale-[0.99]"
+          >
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
+              <GraduationCapIcon className="size-6" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">
+                  🎓 Student
+                </h3>
+                <ArrowRightIcon className="size-4 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all" />
+              </div>
+              <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                Access your classes, interactive homework, tests, results, and learning progress.
+              </p>
+            </div>
+          </button>
+
+          {/* PARENT / GUARDIAN CARD */}
+          <button
+            type="button"
+            onClick={() => handleSelectRole("parent")}
+            className="group relative flex items-start gap-4 rounded-2xl border-2 border-slate-200/80 bg-white p-4.5 text-left transition-all hover:border-indigo-500 hover:bg-indigo-500/[0.02] hover:shadow-md active:scale-[0.99]"
+          >
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+              <UsersIcon className="size-6" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between">
+                <h3 className="text-base font-semibold text-slate-900 group-hover:text-indigo-700 transition-colors">
+                  👨‍👩‍👧 Parent / Guardian
+                </h3>
+                <ArrowRightIcon className="size-4 text-slate-400 group-hover:text-indigo-600 group-hover:translate-x-0.5 transition-all" />
+              </div>
+              <p className="mt-1 text-xs leading-relaxed text-slate-500">
+                Monitor your child&apos;s academic progress, homework completion, tests, and attendance.
+              </p>
+            </div>
+          </button>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // -------------------------------------------------------------------------
+  // RENDER STEP 2: "Enter Teacher Workspace Code" (Student & Parent)
+  // -------------------------------------------------------------------------
+  if (step === "enter_code") {
+    return (
+      <Card className="border-white/90 bg-white/95 shadow-soft">
+        <CardHeader className="space-y-2">
+          <button
+            type="button"
+            onClick={() => setStep("select_role")}
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-slate-900"
+          >
+            <ArrowLeftIcon className="size-3.5" />
+            <span>Change role</span>
+          </button>
+          <CardTitle className="text-2xl font-bold tracking-tight text-slate-900">
+            Enter Teacher Workspace Code
+          </CardTitle>
+          <CardDescription className="text-sm text-slate-600">
+            Enter the 6-character code provided by your teacher to join their classroom (e.g.,{" "}
+            <span className="font-mono font-medium text-primary">TT-6YEAEF</span>).
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleValidateCode} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="workspace-code" className="text-xs font-semibold uppercase tracking-wider text-slate-600">
+                Teacher Workspace Code
+              </Label>
+              <Input
+                id="workspace-code"
+                placeholder="TT-XXXXXX"
+                value={workspaceCode}
+                onChange={(e) => {
+                  setWorkspaceCode(e.target.value.toUpperCase());
+                  setCodeError("");
+                }}
+                className="h-12 text-center font-mono text-lg tracking-widest uppercase font-bold"
+                autoFocus
+              />
+              {codeError ? (
+                <p className="text-xs font-medium text-destructive">{codeError}</p>
+              ) : null}
+            </div>
+
+            <Button
+              type="submit"
+              className="h-11 font-semibold"
+              disabled={codeValidating || !workspaceCode.trim()}
+            >
+              {codeValidating ? (
+                <Loader2Icon className="size-4 animate-spin mr-2" />
+              ) : (
+                <ArrowRightIcon className="size-4 mr-2" />
+              )}
+              {codeValidating ? "Verifying workspace…" : "Continue"}
+            </Button>
+
+            <div className="pt-2 text-center">
+              <button
+                type="button"
+                onClick={() => setStep("auth_form")}
+                className="text-xs text-slate-500 hover:text-primary hover:underline"
+              >
+                Already joined this workspace? Sign in directly
+              </button>
+            </div>
+          </form>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // -------------------------------------------------------------------------
+  // RENDER STEP 3: Login or Signup Form
+  // -------------------------------------------------------------------------
+  const roleLabel =
+    role === "teacher"
+      ? "Teacher"
+      : role === "student"
+        ? "Student"
+        : "Parent / Guardian";
+
   return (
-    <Card className="border-white/90 bg-white/92 shadow-soft">
+    <Card className="border-white/90 bg-white/95 shadow-soft">
       <CardHeader className="space-y-3">
+        <div className="flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => setStep(role === "teacher" ? "select_role" : "enter_code")}
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-slate-500 hover:text-slate-900"
+          >
+            <ArrowLeftIcon className="size-3.5" />
+            <span>{role === "teacher" ? "Change role" : "Change workspace code"}</span>
+          </button>
+
+          <span className="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-semibold text-slate-700">
+            {roleLabel}
+          </span>
+        </div>
+
+        {verifiedWorkspaceName ? (
+          <div className="flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50/80 px-3 py-2 text-xs font-medium text-emerald-800">
+            <CheckCircle2Icon className="size-4 shrink-0 text-emerald-600" />
+            <span className="truncate">
+              Workspace: <strong>{verifiedWorkspaceName}</strong> ({workspaceCode})
+            </span>
+          </div>
+        ) : null}
+
         <CardTitle className="text-2xl">
-          {mode === "login" ? "Login to TuitionTrack" : "Create your account"}
+          {mode === "login" ? `Login as ${roleLabel}` : `Create ${roleLabel} Account`}
         </CardTitle>
         <CardDescription className="leading-6">
           {mode === "login"
-            ? "Access your dashboard, parent portal views, and live class operations."
-            : "Join as a teacher to manage classes, or as a parent/student to track progress."}
+            ? `Sign in to access your ${role === "teacher" ? "teaching operations" : "learning portal"}.`
+            : role === "teacher"
+              ? "Get your unique classroom workspace code and start managing students."
+              : "Set up your credentials to join your teacher's workspace."}
         </CardDescription>
       </CardHeader>
+
       <CardContent className="flex flex-col gap-4">
         {mode === "signup" && (
-          <div className="flex flex-col gap-4 pb-2">
-            <div className="flex flex-col gap-2">
-              <Label>I am a...</Label>
-              <Tabs
-                value={role}
-                onValueChange={(v) => setRole(v as typeof role)}
-                className="w-full"
-              >
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="teacher">Teacher</TabsTrigger>
-                  <TabsTrigger value="parent">Parent</TabsTrigger>
-                  <TabsTrigger value="student">Student</TabsTrigger>
-                </TabsList>
-              </Tabs>
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label htmlFor="name">Full name</Label>
-              <Input
-                id="name"
-                placeholder={role === "teacher" ? "Aarav Mehta" : "Parent Name"}
-                value={name}
-                onChange={(event) => setName(event.target.value)}
-              />
-            </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="name">Full name</Label>
+            <Input
+              id="name"
+              placeholder={role === "teacher" ? "Piyush Mehta" : role === "student" ? "Aarav Sharma" : "Rahul Sharma"}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              autoFocus
+            />
           </div>
         )}
+
         <div className="flex flex-col gap-2">
           <Label htmlFor="email">Email address</Label>
           <Input
             id="email"
             type="email"
-            placeholder={role === "teacher" ? "teacher@example.com" : "parent@example.com"}
+            placeholder={
+              role === "teacher"
+                ? "teacher@example.com"
+                : role === "student"
+                  ? "student@example.com"
+                  : "parent@example.com"
+            }
             value={email}
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
+
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <Label htmlFor="password">Password</Label>
@@ -274,11 +558,12 @@ export function AuthCard({ mode }: AuthCardProps) {
             type="password"
             placeholder="Minimum 6 characters"
             value={password}
-            onChange={(event) => setPassword(event.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
+
         <Button
-          className="h-11 shadow-sm"
+          className="h-11 shadow-sm font-semibold"
           disabled={isPending || !email || !password || (mode === "signup" && !name)}
           onClick={handleEmailAuth}
         >
@@ -291,28 +576,45 @@ export function AuthCard({ mode }: AuthCardProps) {
             <span className="w-full border-t border-slate-200" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white/92 px-2 text-slate-500">Or continue with</span>
+            <span className="bg-white/95 px-2 text-slate-500 font-medium">Or continue with</span>
           </div>
         </div>
 
         <Button
           variant="outline"
-          className="h-11 border-slate-200 bg-white shadow-sm transition-all hover:bg-slate-50"
+          className="h-11 border-slate-200 bg-white shadow-sm transition-all hover:bg-slate-50 font-medium"
           disabled={isPending || googlePending}
           onClick={handleGoogleAuth}
         >
           {googlePending ? <Loader2Icon className="size-4 animate-spin mr-2" /> : <GoogleIcon />}
-          {googlePending ? "Redirecting to Google…" : "Google"}
+          {googlePending ? "Redirecting to Google…" : "Continue with Google"}
         </Button>
 
-        {!configured && (
-          <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-700">
-            Supabase keys not detected in production. Check Vercel settings.
-          </div>
-        )}
-        <p className="text-center text-xs text-slate-400">
-          You stay signed in on this device — no need to log in every time.
-        </p>
+        <div className="pt-2 text-center text-xs text-slate-500">
+          {mode === "login" ? (
+            <p>
+              Don&apos;t have an account yet?{" "}
+              <button
+                type="button"
+                onClick={() => setMode("signup")}
+                className="font-semibold text-primary hover:underline"
+              >
+                Sign up
+              </button>
+            </p>
+          ) : (
+            <p>
+              Already have an account?{" "}
+              <button
+                type="button"
+                onClick={() => setMode("login")}
+                className="font-semibold text-primary hover:underline"
+              >
+                Log in
+              </button>
+            </p>
+          )}
+        </div>
       </CardContent>
     </Card>
   );

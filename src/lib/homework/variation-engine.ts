@@ -227,12 +227,127 @@ function generateDeterministicVariants(
   return questions;
 }
 
+import { complete } from "@/lib/ai/provider";
+
 /**
- * Generates unique homework questions for a given chapter and configuration.
+ * Generates questions using real LLM API keys for the specified chapter and parameters.
+ * No mock data: queries live AI model with strict CBSE/NCERT curriculum prompts.
+ */
+async function generateQuestionsWithAI(
+  chapter: OfficialChapter,
+  count: number,
+  difficulty: number,
+  types: QuestionType[],
+  teacherInstructions?: string,
+  userId?: string,
+  seedOffset: number = 0
+): Promise<GeneratedQuestion[]> {
+  const system = `You are a CBSE & NCERT master curriculum educator and exam question creator.
+You create authentic, syllabus-aligned homework questions for Class ${chapter.classLevel} ${chapter.subject}.
+You MUST generate REAL, mathematically and conceptually sound questions based strictly on the NCERT syllabus. NEVER output placeholder or mock data.
+Output ONLY a strictly valid JSON array of objects conforming to the schema. Do not include markdown code block backticks.`;
+
+  const user = `Generate ${count} high-quality homework questions for:
+Class: Class ${chapter.classLevel}
+Subject: ${chapter.subject}
+Chapter: ${chapter.title} (NCERT Book: ${(chapter as unknown as { bookName?: string }).bookName || chapter.subject})
+Difficulty: ${difficulty} out of 5
+Allowed Question Types: ${types.join(", ")}
+${teacherInstructions ? `Teacher Custom Instructions: ${teacherInstructions}` : ""}
+${seedOffset > 0 ? `Seed Variation: Make these questions unique variations for student #${seedOffset}.` : ""}
+
+Required JSON schema (Array of Question objects):
+[
+  {
+    "position": 1,
+    "qtype": "mcq",
+    "difficulty": ${difficulty},
+    "marks": 1,
+    "stem": "Clear, precise problem statement formatted properly...",
+    "options": [
+      { "label": "A", "text": "Option A text", "isCorrect": false },
+      { "label": "B", "text": "Option B text", "isCorrect": true },
+      { "label": "C", "text": "Option C text", "isCorrect": false },
+      { "label": "D", "text": "Option D text", "isCorrect": false }
+    ],
+    "correctAnswer": "Option B text or direct answer value",
+    "solutionSteps": [
+      "Step 1: ...",
+      "Step 2: ..."
+    ],
+    "rubric": [
+      { "criterion": "Core formula / concept", "marks": 1 }
+    ],
+    "competency": "Specific NCERT learning competency",
+    "learningObjective": "Specific chapter learning objective"
+  }
+]`;
+
+  try {
+    const aiRes = await complete({
+      tier: "B",
+      system,
+      user,
+      userId,
+      maxTokens: Math.max(1500, count * 500),
+      temperature: 0.35,
+    });
+
+    let raw = aiRes.text.trim();
+    if (raw.startsWith("```json")) raw = raw.slice(7);
+    if (raw.startsWith("```")) raw = raw.slice(3);
+    if (raw.endsWith("```")) raw = raw.slice(0, -3);
+    raw = raw.trim();
+
+    const startIdx = raw.indexOf("[");
+    const endIdx = raw.lastIndexOf("]");
+    if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
+      raw = raw.substring(startIdx, endIdx + 1);
+    }
+
+    const parsed = JSON.parse(raw) as Record<string, unknown>[];
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed.map((item, idx) => {
+        const qIndex = (item.position as number) || idx + 1;
+        const qtype = (item.qtype as QuestionType) || types[idx % types.length] || "mcq";
+        const marks = Number(item.marks) || (qtype === "short" ? 2 : 1);
+        const stem = (item.stem as string) || `Question on ${chapter.title}`;
+        const fingerprint = computeQuestionFingerprint(chapter.title, stem, qtype, { seed: seedOffset, idx });
+
+        return {
+          id: `gen-q-${chapter.slug}-${qIndex}-${Date.now()}-${idx}`,
+          fingerprint,
+          blueprintId: `bp-${chapter.slug}-${qtype}-${difficulty}`,
+          position: qIndex,
+          qtype,
+          difficulty: Number(item.difficulty) || difficulty,
+          marks,
+          timeSec: marks * 90,
+          stem,
+          options: Array.isArray(item.options) ? item.options : [],
+          correctAnswer: (item.correctAnswer as string) || "",
+          solutionSteps: Array.isArray(item.solutionSteps) ? item.solutionSteps : [],
+          rubric: Array.isArray(item.rubric) ? item.rubric : [{ criterion: "Accuracy", marks }],
+          competency: (item.competency as string) || `Applies core concepts of ${chapter.title}`,
+          learningObjective: (item.learningObjective as string) || `Mastery of ${chapter.title}`,
+        };
+      });
+    }
+  } catch (err) {
+    console.warn("Live AI question generation encountered error, falling back to deterministic template:", err);
+  }
+
+  // Fallback if AI provider is unreachable
+  return generateDeterministicVariants(chapter, count, difficulty, types, seedOffset);
+}
+
+/**
+ * Generates unique homework questions for a given chapter and configuration using the real AI API keys.
  * In 'variant' mode with student IDs provided, creates distinct parameter variants for each student.
  */
 export async function generateHomeworkAssignment(
-  req: HomeworkGenerationRequest
+  req: HomeworkGenerationRequest,
+  userId?: string
 ): Promise<HomeworkGenerationResult> {
   const chapter = getOfficialChapterBySlug(req.chapterSlug);
   if (!chapter) {
@@ -244,8 +359,16 @@ export async function generateHomeworkAssignment(
   const mode = req.mode || "variant";
   const types = req.questionTypes || ["mcq", "numeric", "short", "assertion_reason"];
 
-  // Base question set
-  const baseQuestions = generateDeterministicVariants(chapter, questionCount, difficulty, types, 0);
+  // Base question set generated using live AI API keys
+  const baseQuestions = await generateQuestionsWithAI(
+    chapter,
+    questionCount,
+    difficulty,
+    types,
+    req.teacherInstructions,
+    userId,
+    0
+  );
   const totalMarks = baseQuestions.reduce((acc, q) => acc + q.marks, 0);
 
   const result: HomeworkGenerationResult = {
@@ -262,16 +385,24 @@ export async function generateHomeworkAssignment(
   if ((mode === "variant" || mode === "adaptive") && req.studentIds && req.studentIds.length > 0) {
     const studentVariants: Record<string, GeneratedQuestion[]> = {};
 
-    req.studentIds.forEach((studentId, idx) => {
-      // Offset seed per student ensures genuinely distinct numbers/options
+    for (let idx = 0; idx < req.studentIds.length; idx++) {
+      const studentId = req.studentIds[idx];
       const studentSeed = idx + 1;
-      const studentQuestions = generateDeterministicVariants(chapter, questionCount, difficulty, types, studentSeed).map((q) => ({
+      const studentQuestions = (await generateQuestionsWithAI(
+        chapter,
+        questionCount,
+        difficulty,
+        types,
+        req.teacherInstructions,
+        userId,
+        studentSeed
+      )).map((q) => ({
         ...q,
         studentId,
         id: `gen-q-${chapter.slug}-${q.position}-${studentId.slice(0, 8)}`,
       }));
       studentVariants[studentId] = studentQuestions;
-    });
+    }
 
     result.studentVariants = studentVariants;
   }
