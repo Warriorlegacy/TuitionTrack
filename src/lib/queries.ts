@@ -9,6 +9,7 @@ import type {
 } from "@/lib/db/types";
 import type { AuthContext } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 export type DashboardStat = {
   label: string;
@@ -400,16 +401,22 @@ export async function getStudentsPageData(context: AuthContext) {
     if (s.student_email) emails.add(s.student_email.toLowerCase());
   });
 
-  const supabase = createSupabaseServerClient();
-  const { data: userData } = await supabase
-    .from("users")
-    .select("email, role")
-    .in("email", Array.from(emails));
-
+  // ponytail: the users SELECT policy is self-only, so the request client
+  // can never see other accounts — the teacher-only role map must use the
+  // admin client (this page is teacher-gated; emails are already on the
+  // student rows, so nothing new is exposed).
   const roleMap: Record<string, string> = {};
-  userData?.forEach((u) => {
-    roleMap[u.email.toLowerCase()] = u.role;
-  });
+  if (context.canManage && emails.size > 0) {
+    const admin = createSupabaseAdminClient();
+    const { data: userData } = await admin
+      .from("users")
+      .select("email, role")
+      .in("email", Array.from(emails));
+
+    userData?.forEach((u) => {
+      roleMap[u.email.toLowerCase()] = u.role;
+    });
+  }
 
   const atRiskStudents = await getAtRiskStudents(context);
   const riskMap: Record<string, 'low' | 'medium' | 'high' | null> = {};
