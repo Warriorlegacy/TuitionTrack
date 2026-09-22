@@ -163,7 +163,12 @@ export function StudentPortalAccessCard({
           {portals.map((p) => {
             const Icon = p.icon;
             const isCopied = copiedKey === p.type;
-            const statusLabel = p.grant?.status ?? "not_generated";
+            // ponytail: effective status covers logins via workspace codes and
+            // verified relationships, not just grant rows.
+            const statusLabel =
+              (p.type === "parent" ? status.parentDisplayStatus : status.studentDisplayStatus) ??
+              p.grant?.status ??
+              "not_generated";
 
             return (
               <div

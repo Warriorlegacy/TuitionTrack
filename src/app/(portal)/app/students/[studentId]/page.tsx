@@ -142,14 +142,40 @@ export default async function StudentDetailPage({
           <CardContent className="space-y-2 text-xs">
             <div className="flex items-center justify-between">
               <span className="text-slate-600">Parent:</span>
-              <Badge variant="outline" className="text-[10px] uppercase font-semibold">
-                {portalStatus.parentGrant?.status ?? "not generated"}
+              <Badge
+                variant="outline"
+                className={`text-[10px] uppercase font-semibold ${
+                  portalStatus.parentDisplayStatus === "active"
+                    ? "border-emerald-300 bg-emerald-50 text-emerald-700"
+                    : portalStatus.parentDisplayStatus === "pending"
+                      ? "border-amber-300 bg-amber-50 text-amber-700"
+                      : portalStatus.parentDisplayStatus === "revoked"
+                        ? "border-rose-300 bg-rose-50 text-rose-700"
+                        : "text-slate-400"
+                }`}
+              >
+                {portalStatus.parentDisplayStatus === "not_generated"
+                  ? "not generated"
+                  : portalStatus.parentDisplayStatus}
               </Badge>
             </div>
             <div className="flex items-center justify-between">
               <span className="text-slate-600">Student:</span>
-              <Badge variant="outline" className="text-[10px] uppercase font-semibold">
-                {portalStatus.studentGrant?.status ?? "not generated"}
+              <Badge
+                variant="outline"
+                className={`text-[10px] uppercase font-semibold ${
+                  portalStatus.studentDisplayStatus === "active"
+                    ? "border-emerald-300 bg-emerald-50 text-emerald-700"
+                    : portalStatus.studentDisplayStatus === "pending"
+                      ? "border-amber-300 bg-amber-50 text-amber-700"
+                      : portalStatus.studentDisplayStatus === "revoked"
+                        ? "border-rose-300 bg-rose-50 text-rose-700"
+                        : "text-slate-400"
+                }`}
+              >
+                {portalStatus.studentDisplayStatus === "not_generated"
+                  ? "not generated"
+                  : portalStatus.studentDisplayStatus}
               </Badge>
             </div>
           </CardContent>

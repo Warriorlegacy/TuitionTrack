@@ -40,6 +40,16 @@ export type StudentPortalStatus = {
     lastUsedAt: string | null;
     targetEmail: string | null;
   } | null;
+  /**
+   * Effective portal state across EVERY login path, not just grant rows:
+   * students join via workspace codes (account match) and parents link via
+   * verified relationships — both bypass portal_access_grants entirely.
+   * UI badges, filters and stats must read these, never the raw grants.
+   */
+  parentDisplayStatus: PortalGrantStatus | "not_generated";
+  studentDisplayStatus: PortalGrantStatus | "not_generated";
+  parentAccessVia: "grant" | "relationship" | null;
+  studentAccessVia: "grant" | "account" | null;
 };
 
 export type PortalPreview = {

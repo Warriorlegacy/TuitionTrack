@@ -1,7 +1,84 @@
 import "server-only";
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import type { PortalAccessGrant, PortalPreview, PortalType, StudentPortalStatus } from "./types";
+import type { PortalGrantStatus } from "./types";
+
+/**
+ * Effective portal access across EVERY login path — not just grant rows.
+ * Students reach the portal via workspace-code joins (an account whose email
+ * matches `student_email` resolves access) and parents via verified guardian
+ * relationships; both bypass `portal_access_grants` entirely, which is why
+ * teacher surfaces showed "NOT GENERATED" for working logins.
+ *
+ * Both callers are teacher-gated pages, so the supplementary lookups use the
+ * admin client; grant reads stay on the request client as before.
+ */
+async function getEffectiveAccess(
+  students: { id: string; student_email?: string | null }[],
+  grantsByStudent: Map<string, PortalAccessGrant[]>,
+): Promise<{
+  studentVia: Map<string, "grant" | "account">;
+  parentLinked: Set<string>;
+}> {
+  const studentVia = new Map<string, "grant" | "account">();
+  const parentLinked = new Set<string>();
+  if (students.length === 0) return { studentVia, parentLinked };
+
+  students.forEach((s) => {
+    const gs = grantsByStudent.get(s.id) ?? [];
+    if (gs.some((g) => g.portal_type === "student" && g.status === "active")) {
+      studentVia.set(s.id, "grant");
+    }
+    if (gs.some((g) => g.portal_type === "parent" && g.status === "active")) {
+      parentLinked.add(`grant:${s.id}`);
+    }
+  });
+
+  const admin = createSupabaseAdminClient();
+  const ids = students.map((s) => s.id);
+
+  const { data: rels } = await admin
+    .from("guardian_student_relationships")
+    .select("student_id")
+    .in("student_id", ids)
+    .eq("status", "active")
+    .not("verified_at", "is", null);
+  ((rels ?? []) as { student_id: string }[]).forEach((r) => {
+    parentLinked.add(r.student_id);
+  });
+
+  const emails = Array.from(
+    new Set(
+      students.map((s) => (s.student_email ?? "").trim().toLowerCase()).filter(Boolean),
+    ),
+  );
+  if (emails.length > 0) {
+    const { data: users } = await admin.from("users").select("email").in("email", emails);
+    const existing = new Set(
+      ((users ?? []) as { email: string }[]).map((u) => u.email.toLowerCase()),
+    );
+    students.forEach((s) => {
+      if (
+        !studentVia.has(s.id) &&
+        existing.has((s.student_email ?? "").trim().toLowerCase())
+      ) {
+        studentVia.set(s.id, "account");
+      }
+    });
+  }
+
+  return { studentVia, parentLinked };
+}
+
+function toDisplayStatus(
+  grant: { status: PortalGrantStatus } | undefined,
+  effectiveActive: boolean,
+): PortalGrantStatus | "not_generated" {
+  if (effectiveActive) return "active";
+  return grant?.status ?? "not_generated";
+}
 
 export function buildPortalUrl(origin: string, portalType: PortalType, token: string): string {
   const clean = origin.replace(/\/+$/, "");
@@ -153,11 +230,33 @@ export async function getTeacherPortalAccessOverview(): Promise<{
     .select("id, student_id, portal_type, status, expires_at, last_used_at, target_email");
 
   const grantList = (grants ?? []) as PortalAccessGrant[];
+  const grantsByStudent = new Map<string, PortalAccessGrant[]>();
+  for (const g of grantList) {
+    const arr = grantsByStudent.get(g.student_id) ?? [];
+    arr.push(g);
+    grantsByStudent.set(g.student_id, arr);
+  }
+  const { studentVia, parentLinked } = await getEffectiveAccess(students, grantsByStudent);
+
+  const toGrant = (g: PortalAccessGrant | undefined) =>
+    g
+      ? {
+          id: g.id,
+          status: g.status,
+          expiresAt: g.expires_at,
+          lastUsedAt: g.last_used_at,
+          targetEmail: g.target_email,
+        }
+      : null;
 
   const studentStatuses: StudentPortalStatus[] = students.map((s) => {
-    const sGrants = grantList.filter((g) => g.student_id === s.id);
+    const sGrants = grantsByStudent.get(s.id) ?? [];
     const parentG = sGrants.find((g) => g.portal_type === "parent");
     const studentG = sGrants.find((g) => g.portal_type === "student");
+    const studentEffective = studentVia.has(s.id);
+    const parentEffective = parentLinked.has(s.id) || parentLinked.has(`grant:${s.id}`);
+    const parentDisplay = toDisplayStatus(parentG, parentEffective);
+    const studentDisplay = toDisplayStatus(studentG, studentEffective);
 
     return {
       studentId: s.id,
@@ -165,24 +264,13 @@ export async function getTeacherPortalAccessOverview(): Promise<{
       studentClass: s.class,
       parentEmail: s.parent_email,
       studentEmail: s.student_email,
-      parentGrant: parentG
-        ? {
-            id: parentG.id,
-            status: parentG.status,
-            expiresAt: parentG.expires_at,
-            lastUsedAt: parentG.last_used_at,
-            targetEmail: parentG.target_email,
-          }
-        : null,
-      studentGrant: studentG
-        ? {
-            id: studentG.id,
-            status: studentG.status,
-            expiresAt: studentG.expires_at,
-            lastUsedAt: studentG.last_used_at,
-            targetEmail: studentG.target_email,
-          }
-        : null,
+      parentGrant: toGrant(parentG),
+      studentGrant: toGrant(studentG),
+      parentDisplayStatus: parentDisplay,
+      studentDisplayStatus: studentDisplay,
+      parentAccessVia:
+        parentDisplay === "active" ? (parentG?.status === "active" ? "grant" : "relationship") : null,
+      studentAccessVia: studentDisplay === "active" ? (studentVia.get(s.id) ?? null) : null,
     };
   });
 
@@ -192,10 +280,10 @@ export async function getTeacherPortalAccessOverview(): Promise<{
   let studentsPending = 0;
 
   studentStatuses.forEach((st) => {
-    if (st.parentGrant?.status === "active") parentsActive++;
+    if (st.parentDisplayStatus === "active") parentsActive++;
     else if (st.parentGrant?.status === "pending") parentsPending++;
 
-    if (st.studentGrant?.status === "active") studentsActive++;
+    if (st.studentDisplayStatus === "active") studentsActive++;
     else if (st.studentGrant?.status === "pending") studentsPending++;
   });
 
@@ -230,6 +318,25 @@ export async function getStudentPortalAccess(studentId: string): Promise<Student
   const grantList = (grants ?? []) as PortalAccessGrant[];
   const parentG = grantList.find((g) => g.portal_type === "parent");
   const studentG = grantList.find((g) => g.portal_type === "student");
+  const { studentVia, parentLinked } = await getEffectiveAccess(
+    [{ id: student.id, student_email: student.student_email }],
+    new Map([[student.id, grantList]]),
+  );
+  const studentEffective = studentVia.has(student.id);
+  const parentEffective = parentLinked.has(student.id) || parentLinked.has(`grant:${student.id}`);
+  const parentDisplay = toDisplayStatus(parentG, parentEffective);
+  const studentDisplay = toDisplayStatus(studentG, studentEffective);
+
+  const toGrant = (g: PortalAccessGrant | undefined) =>
+    g
+      ? {
+          id: g.id,
+          status: g.status,
+          expiresAt: g.expires_at,
+          lastUsedAt: g.last_used_at,
+          targetEmail: g.target_email,
+        }
+      : null;
 
   return {
     studentId: student.id,
@@ -237,23 +344,12 @@ export async function getStudentPortalAccess(studentId: string): Promise<Student
     studentClass: student.class,
     parentEmail: student.parent_email,
     studentEmail: student.student_email,
-    parentGrant: parentG
-      ? {
-          id: parentG.id,
-          status: parentG.status,
-          expiresAt: parentG.expires_at,
-          lastUsedAt: parentG.last_used_at,
-          targetEmail: parentG.target_email,
-        }
-      : null,
-    studentGrant: studentG
-      ? {
-          id: studentG.id,
-          status: studentG.status,
-          expiresAt: studentG.expires_at,
-          lastUsedAt: studentG.last_used_at,
-          targetEmail: studentG.target_email,
-        }
-      : null,
+    parentGrant: toGrant(parentG),
+    studentGrant: toGrant(studentG),
+    parentDisplayStatus: parentDisplay,
+    studentDisplayStatus: studentDisplay,
+    parentAccessVia:
+      parentDisplay === "active" ? (parentG?.status === "active" ? "grant" : "relationship") : null,
+    studentAccessVia: studentDisplay === "active" ? (studentVia.get(student.id) ?? null) : null,
   };
 }
