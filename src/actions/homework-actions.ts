@@ -5,6 +5,59 @@ import { getAuthContext } from "@/lib/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import type { GeneratedQuestion, HomeworkMode } from "@/lib/homework/variation-engine";
 
+/**
+ * Normalize an Indian family contact number to WhatsApp's digit-only
+ * international format (e.g. "6202442690" -> "916202442690").
+ * Returns null when there is nothing sendable.
+ */
+function normalizeIndianPhone(raw?: string | null): string | null {
+  const digits = (raw ?? "").replace(/\D/g, "").replace(/^0+/, "");
+  if (/^[6-9]\d{9}$/.test(digits)) return `91${digits}`;
+  if (/^91[6-9]\d{9}$/.test(digits)) return digits;
+  return null;
+}
+
+/**
+ * Send one Meta Cloud API template message. Returns true on accept.
+ * Business-initiated chats must use an approved utility template, so the
+ * template name/lang come from env (WHATSAPP_TEMPLATE_NAME, default
+ * "homework_alert"). Never throws — callers treat false as skip.
+ */
+async function sendWhatsAppTemplate(
+  token: string,
+  phoneNumberId: string,
+  to: string,
+  bodyParams: string[],
+): Promise<boolean> {
+  try {
+    const res = await fetch(`https://graph.facebook.com/v22.0/${phoneNumberId}/messages`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        messaging_product: "whatsapp",
+        to,
+        type: "template",
+        template: {
+          name: process.env.WHATSAPP_TEMPLATE_NAME ?? "homework_alert",
+          language: { code: process.env.WHATSAPP_TEMPLATE_LANG ?? "en" },
+          components: [
+            { type: "body", parameters: bodyParams.map((text) => ({ type: "text", text })) },
+          ],
+        },
+      }),
+      signal: AbortSignal.timeout(10000),
+    });
+    if (!res.ok) {
+      console.error("WhatsApp template send rejected:", await res.text().catch(() => res.status));
+      return false;
+    }
+    return true;
+  } catch (err) {
+    console.error("WhatsApp template send failed (non-blocking):", err);
+    return false;
+  }
+}
+
 export type PublishAssignmentInput = {
   title: string;
   description?: string;
@@ -139,14 +192,15 @@ export async function publishAssignmentAction(input: PublishAssignmentInput) {
           ((namedStudents ?? []) as { id: string; name: string }[]).map((s) => [s.id, s.name]),
         );
         const seen = new Set<string>();
-        const rows = (((rels ?? []) as { guardian_user_id: string; student_id: string }[]).filter(
+        const relList = (((rels ?? []) as { guardian_user_id: string; student_id: string }[]).filter(
           (r) => {
             const key = `${r.guardian_user_id}:${r.student_id}`;
             if (seen.has(key)) return false;
             seen.add(key);
             return true;
           },
-        )).map((r) => ({
+        ));
+        const rows = relList.map((r) => ({
           actor_id: r.guardian_user_id,
           action: "homework_assigned",
           entity: "assignment",
@@ -169,13 +223,64 @@ export async function publishAssignmentAction(input: PublishAssignmentInput) {
       console.error("Parent homework notification failed (non-blocking):", notifyErr);
     }
 
+    // ponytail: auto-WhatsApp to guardians' family numbers via Meta Cloud API.
+    // Needs WHATSAPP_TOKEN + WHATSAPP_PHONE_NUMBER_ID; without them this is a
+    // silent no-op (in-app notification above still covers parents).
+    // Business-initiated messages require an approved utility template, so we
+    // send WHATSAPP_TEMPLATE_NAME (default "homework_alert") — never free text.
+    let waSent = 0;
+    let waSkipped = 0;
+    let waEnabled = false;
+    try {
+      const waToken = process.env.WHATSAPP_TOKEN;
+      const waPhoneId = process.env.WHATSAPP_PHONE_NUMBER_ID;
+      waEnabled = Boolean(waToken && waPhoneId);
+      const targetIds = Array.from(new Set(input.targetStudentIds)).filter(Boolean);
+      if (waToken && waPhoneId && targetIds.length > 0) {
+        const { data: contactStudents } = await supabase
+          .from("students")
+          .select("id, name, parent_phone")
+          .in("id", targetIds);
+        const origin = (process.env.NEXT_PUBLIC_APP_URL ?? "").replace(/\/+$/, "");
+        const link = origin ? `${origin}/student/homework/${assignment.id}` : "";
+        const due = new Date(input.dueDate).toLocaleDateString("en-IN", { day: "numeric", month: "short" });
+        const seenPhones = new Set<string>();
+        const jobs: { to: string; params: string[] }[] = [];
+        ((contactStudents ?? []) as { id: string; name: string; parent_phone?: string | null }[]).forEach((s) => {
+          const to = normalizeIndianPhone(s.parent_phone);
+          if (!to || seenPhones.has(to)) {
+            waSkipped++;
+          } else {
+            seenPhones.add(to);
+            jobs.push({
+              to,
+              params: [s.name || "Student", input.title, `${input.subject} · Class ${input.classLevel}`, `Due ${due}`, link || "Open the TuitionTrack student portal"],
+            });
+          }
+        });
+        for (const job of jobs) {
+          if (await sendWhatsAppTemplate(waToken, waPhoneId, job.to, job.params)) waSent++;
+          else waSkipped++;
+        }
+      }
+    } catch (waErr) {
+      console.error("Auto-WhatsApp on publish failed (non-blocking):", waErr);
+    }
+
     revalidatePath("/app/homework");
     revalidatePath("/app/dashboard");
+
+    const waNote =
+      waSent > 0
+        ? ` WhatsApp sent to ${waSent} parent${waSent === 1 ? "" : "s"}.`
+        : waEnabled && waSkipped > 0
+          ? ` WhatsApp skipped for ${waSkipped} (no valid parent number).`
+          : "";
 
     return {
       success: true,
       assignmentId: assignment.id,
-      message: `Successfully published homework assignment to Class ${input.classLevel}!`,
+      message: `Successfully published homework assignment to Class ${input.classLevel}!${waNote}`,
     };
   } catch (err) {
     console.error("publishAssignmentAction error:", err);
