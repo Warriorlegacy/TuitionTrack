@@ -29,6 +29,7 @@ function getEventLabel(action: string): string {
     payment_proof_verified: "Payment verified by teacher",
     payment_proof_rejected: "Payment proof rejected",
     homework_completed: "Homework marked complete",
+    homework_assigned: "New homework assigned",
     assignment_submitted: "Assignment submitted",
     attendance_marked: "Attendance recorded",
     invite_accepted: "Parent invitation accepted",
@@ -46,6 +47,16 @@ function getEventDescription(action: string, meta: Record<string, unknown>): str
   }
   if (action === "payment_proof_rejected") {
     return meta?.rejection_reason ? `Reason: ${meta.rejection_reason}` : null;
+  }
+  if (action === "homework_assigned") {
+    const bits: string[] = [];
+    if (typeof meta?.studentName === "string" && meta.studentName) bits.push(String(meta.studentName));
+    if (typeof meta?.title === "string" && meta.title) bits.push(String(meta.title));
+    if (typeof meta?.subject === "string" && meta.subject) bits.push(String(meta.subject));
+    if (typeof meta?.dueDate === "string" && meta.dueDate) {
+      bits.push(`Due ${new Date(String(meta.dueDate)).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}`);
+    }
+    return bits.length > 0 ? bits.join(" · ") : null;
   }
   return null;
 }

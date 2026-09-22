@@ -30,6 +30,7 @@ import {
   Loader2Icon,
 } from "lucide-react";
 import { deleteAssignmentAction } from "@/actions/workspace-actions";
+import { AssignmentShareButtons } from "@/components/homework/assignment-share-buttons";
 
 export function AiAssignmentsList({
   assignments,
@@ -189,15 +190,18 @@ export function AiAssignmentsList({
                 </Link>
 
                 {canManage && (
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setDeletingAssignment(item)}
-                    className="text-destructive hover:bg-destructive/10 hover:text-destructive border-slate-200 px-2.5"
-                    title="Delete Homework"
-                  >
-                    <Trash2Icon className="h-4 w-4" />
-                  </Button>
+                  <>
+                    <AssignmentShareButtons assignmentId={item.id} title={item.title} />
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => setDeletingAssignment(item)}
+                      className="text-destructive hover:bg-destructive/10 hover:text-destructive border-slate-200 px-2.5"
+                      title="Delete Homework"
+                    >
+                      <Trash2Icon className="h-4 w-4" />
+                    </Button>
+                  </>
                 )}
               </div>
             </CardContent>
