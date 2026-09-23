@@ -240,8 +240,8 @@ export async function POST(request: Request) {
     let result;
     try {
       result = await complete({
-        tier: "B", system: prep.system, user: prep.userMessage, maxTokens: 600,
-        ...(best ? { apiKeyOverride: best.key, providerKind: best.provider.kind, baseUrlOverride: best.provider.baseUrl, modelOverride: best.model } : {}),
+        tier: "B", system: prep.system, user: prep.userMessage, maxTokens: 600, task: "tutor_copilot",
+          ...(best ? { apiKeyOverride: best.key, providerKind: best.provider.kind, baseUrlOverride: best.provider.baseUrl, modelOverride: best.model, allowFallbacks: best.allowFallbacks, freeOnly: best.freeOnly } : {}),
       });
     } catch (e) {
       return NextResponse.json({ error: "Tutor unavailable", details: (e as Error).message }, { status: 502 });
@@ -273,9 +273,9 @@ export async function POST(request: Request) {
     try {
       result = await streamComplete(
         {
-          tier: "B", system: prep.system, user: prep.userMessage, maxTokens: 600,
+          tier: "B", system: prep.system, user: prep.userMessage, maxTokens: 600, task: "tutor_copilot",
           signal: abort.signal,
-          ...(best ? { apiKeyOverride: best.key, providerKind: best.provider.kind, baseUrlOverride: best.provider.baseUrl, modelOverride: best.model } : {}),
+        ...(best ? { apiKeyOverride: best.key, providerKind: best.provider.kind, baseUrlOverride: best.provider.baseUrl, modelOverride: best.model, allowFallbacks: best.allowFallbacks, freeOnly: best.freeOnly } : {}),
         },
         (delta) => { acc += delta; send("delta", { text: delta }); },
       );

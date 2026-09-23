@@ -32,10 +32,11 @@ export async function POST(request: Request) {
     const best = await getBestKeyForTier(supabase, context.user.id, "B");
     const r = await complete({
       tier: "B",
+      task: "quiz_generation",
       system: `Generate ${input.count} ${input.qtype} questions at difficulty ${input.difficulty}/5. Return JSON array [{stem, options[4], answer, explanation}]. Syllabus-accurate, unambiguous.`,
       user: `Concept: ${concept?.title ?? "general practice"}. Count ${input.count}.`,
       maxTokens: 1200,
-      ...(best ? { apiKeyOverride: best.key, providerKind: best.provider.kind, baseUrlOverride: best.provider.baseUrl, modelOverride: best.model } : {}),
+      ...(best ? { apiKeyOverride: best.key, providerKind: best.provider.kind, baseUrlOverride: best.provider.baseUrl, modelOverride: best.model, allowFallbacks: best.allowFallbacks, freeOnly: best.freeOnly } : {}),
     });
     stubbed = r.stubbed;
     const m = r.text.match(/\[[\s\S]*\]/);

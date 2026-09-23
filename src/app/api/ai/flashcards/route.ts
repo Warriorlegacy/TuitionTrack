@@ -31,7 +31,7 @@ export async function POST(request: Request) {
         system: `Create ${input.count} flashcards as JSON [{front, back}]. Atomic facts, one idea per card, exam-accurate.`,
         user: `Concept id: ${input.concept_id ?? "general"}. Count ${input.count}.`,
         maxTokens: 900,
-        ...(best ? { apiKeyOverride: best.key, providerKind: best.provider.kind, baseUrlOverride: best.provider.baseUrl, modelOverride: best.model } : {}),
+        ...(best ? { apiKeyOverride: best.key, providerKind: best.provider.kind, baseUrlOverride: best.provider.baseUrl, modelOverride: best.model, allowFallbacks: best.allowFallbacks, freeOnly: best.freeOnly } : {}),
       });
       stubbed = r.stubbed;
       const m = r.text.match(/\[[\s\S]*\]/);

@@ -78,6 +78,10 @@ export type PublishAssignmentInput = {
   targetStudentIds: string[];
   questions: GeneratedQuestion[];
   studentVariants?: Record<string, GeneratedQuestion[]>;
+  /** Actual serving model metadata (transparency: what REALLY generated it). */
+  aiProvider?: string;
+  aiModel?: string;
+  aiFallbackUsed?: boolean;
 };
 
 export async function publishAssignmentAction(input: PublishAssignmentInput) {
@@ -113,7 +117,13 @@ export async function publishAssignmentAction(input: PublishAssignmentInput) {
         target_student_ids: input.targetStudentIds,
         ai_grading_enabled: false,
         question_format: (input.questionFormat ?? "mixed") as never,
-        config: { question_format: input.questionFormat ?? "mixed" } as never,
+        config: {
+          question_format: input.questionFormat ?? "mixed",
+          ai_provider: input.aiProvider ?? null,
+          ai_model: input.aiModel ?? null,
+          ai_fallback_used: input.aiFallbackUsed ?? false,
+          ai_generated_at: new Date().toISOString(),
+        } as never,
       })
       .select("id")
       .single();

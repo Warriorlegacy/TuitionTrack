@@ -74,6 +74,8 @@ export async function GET(request: Request) {
             providerKind: best.provider.kind,
             baseUrlOverride: best.provider.baseUrl,
             modelOverride: best.model,
+            allowFallbacks: best.allowFallbacks,
+            freeOnly: best.freeOnly,
           }
         : {}),
     });

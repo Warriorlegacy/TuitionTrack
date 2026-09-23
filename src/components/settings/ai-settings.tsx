@@ -25,7 +25,7 @@ function timeAgo(iso: string): string {
   return `${Math.floor(s / 86400)}d ago`;
 }
 
-type Provider = "openai" | "anthropic" | "google" | "groq" | "together" | "openrouter" | "huggingface" | "nvidia" | "deepseek" | "ollama" | "github" | "custom";
+type Provider = "openai" | "anthropic" | "google" | "groq" | "together" | "openrouter" | "huggingface" | "nvidia" | "deepseek" | "ollama" | "github" | "opencode" | "custom";
 type ProviderInfo = {
   value: Provider;
   label: string;
@@ -38,7 +38,7 @@ type ProviderInfo = {
 
 const PROVIDERS: ProviderInfo[] = [
   { value: "openrouter", label: "OpenRouter", freeModel: "google/gemma-4-26b-a4b-it:free", keyHint: "sk-or-v1-…", url: "https://openrouter.ai/keys", description: "Free models available. Mixes OpenAI / Anthropic / Google / NVIDIA behind one key.", tier: "free-tier" },
-  { value: "google", label: "Google Gemini", freeModel: "gemini-2.5-flash", keyHint: "AIza… / AQ.…", url: "https://aistudio.google.com/apikey", description: "Free tier: 15 RPM, 1M tokens/min.", tier: "free-tier" },
+  { value: "google", label: "Google Gemini", freeModel: "gemini-3.5-flash-lite", keyHint: "AIza… / AQ.…", url: "https://aistudio.google.com/apikey", description: "Free tier: 15 RPM, 1M tokens/min.", tier: "free-tier" },
   { value: "groq", label: "Groq", freeModel: "openai/gpt-oss-20b", keyHint: "gsk_…", url: "https://console.groq.com/keys", description: "Free tier with ultra-fast inference.", tier: "free-tier" },
   { value: "openai", label: "OpenAI", freeModel: "gpt-4o-mini", keyHint: "sk-…", url: "https://platform.openai.com/api-keys", description: "Paid. gpt-4o-mini is cheapest.", tier: "paid" },
   { value: "anthropic", label: "Anthropic", freeModel: "claude-3-haiku-20240307", keyHint: "sk-ant-…", url: "https://console.anthropic.com/", description: "Paid. Haiku is cheapest.", tier: "paid" },
@@ -48,8 +48,94 @@ const PROVIDERS: ProviderInfo[] = [
   { value: "deepseek", label: "DeepSeek", freeModel: "deepseek-chat", keyHint: "sk-…", url: "https://platform.deepseek.com/api_keys", description: "Cheapest reasoning-grade API. Select DeepSeek explicitly (keys share the sk- prefix with OpenAI).", tier: "paid" },
   { value: "github", label: "GitHub Models", freeModel: "openai/gpt-4o-mini", keyHint: "github_pat_…", url: "https://github.com/settings/tokens", description: "Free inference quota with a Personal Access Token.", tier: "free-tier" },
   { value: "ollama", label: "Ollama (local, free)", freeModel: "llama3.1:8b", keyHint: "no key needed", url: "", description: "100% free, private, offline via http://localhost:11434/v1.", tier: "free-local" },
+  { value: "opencode", label: "OpenCode", freeModel: "", keyHint: "oc_sk_…", url: "https://opencode.ai/console", description: "Server-side credential for paid models only. Verified: OpenCode free models work inside OpenCode only — this app never bills them; free traffic uses the providers above.", tier: "paid" },
   { value: "custom", label: "Custom endpoint", freeModel: "", keyHint: "any", url: "", description: "Any OpenAI-compatible /chat/completions endpoint.", tier: "paid" },
 ];
+
+// Model picker: choose from the latest free models for a provider (live list
+// for OpenRouter, curated list otherwise) or type a custom slug. Empty =
+// automatic (tier's free pool + automatic fallback).
+function ModelSelect({
+  label,
+  value,
+  provider,
+  fallbackHint,
+  onChange,
+}: {
+  label: string;
+  value: string;
+  provider: string;
+  fallbackHint: string;
+  onChange: (v: string) => void;
+}) {
+  const [models, setModels] = useState<string[]>([]);
+  const [live, setLive] = useState(false);
+  const [custom, setCustom] = useState(false);
+
+  useEffect(() => {
+    let dead = false;
+    setModels([]);
+    setCustom(false);
+    fetch(`/api/ai/models?provider=${encodeURIComponent(provider)}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(r)))
+      .then((d) => {
+        if (dead) return;
+        setModels(d.models ?? []);
+        setLive(Boolean(d.live));
+      })
+      .catch(() => {});
+    return () => {
+      dead = true;
+    };
+  }, [provider]);
+
+  const inList = value !== "" && models.includes(value);
+  const selectValue = custom ? "__custom" : value === "" ? "__auto" : inList ? value : "__custom";
+  const showCustom = custom || (!inList && value !== "");
+
+  return (
+    <div className="flex flex-col gap-2">
+      <Label>{label}</Label>
+      {!showCustom ? (
+        <Select
+          value={selectValue}
+          onValueChange={(v) => {
+            if (v === "__custom") setCustom(true);
+            else if (typeof v === "string") onChange(v === "__auto" ? "" : v);
+          }}
+        >
+          <SelectTrigger className="font-mono text-xs">
+            <SelectValue placeholder={`Auto (free pool)`} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="__auto">Auto — tier free pool + fallback</SelectItem>
+            {models.map((m) => (
+              <SelectItem key={m} value={m}>
+                <span className="font-mono text-xs">{m}</span>
+              </SelectItem>
+            ))}
+            <SelectItem value="__custom">Custom slug…</SelectItem>
+          </SelectContent>
+        </Select>
+      ) : (
+        <div className="flex gap-2">
+          <Input
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder={fallbackHint || "model slug"}
+            className="font-mono text-xs"
+          />
+          <Button variant="outline" size="sm" onClick={() => { setCustom(false); onChange(""); }}>
+            List
+          </Button>
+        </div>
+      )}
+      <p className="text-[11px] text-slate-400">
+        {live ? "Live free-model list" : "Curated free-model list"} · empty = automatic
+      </p>
+    </div>
+  );
+}
 
 export function AiSettings() {
   const [loading, setLoading] = useState(true);
@@ -333,34 +419,46 @@ export function AiSettings() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="flex flex-col gap-2">
-              <Label>Default model</Label>
-              <Input value={prefs.default_model} onChange={(e) => setPrefs((p) => ({ ...p, default_model: e.target.value }))} />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label>Tier A (cheap / classify)</Label>
-              <Input value={prefs.tier_a_model} onChange={(e) => setPrefs((p) => ({ ...p, tier_a_model: e.target.value }))} placeholder={providerInfo.freeModel || "model slug"} />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label>Tier B (standard tutor)</Label>
-              <Input value={prefs.tier_b_model} onChange={(e) => setPrefs((p) => ({ ...p, tier_b_model: e.target.value }))} placeholder={providerInfo.freeModel || "model slug"} />
-            </div>
-            <div className="flex flex-col gap-2">
-              <Label>Tier C (reasoning / copilot)</Label>
-              <Input value={prefs.tier_c_model} onChange={(e) => setPrefs((p) => ({ ...p, tier_c_model: e.target.value }))} placeholder={providerInfo.freeModel || "model slug"} />
-            </div>
+            <ModelSelect
+              label="Default model"
+              value={prefs.default_model}
+              provider={prefs.default_provider}
+              fallbackHint={providerInfo.freeModel || "model slug"}
+              onChange={(v) => setPrefs((p) => ({ ...p, default_model: v }))}
+            />
+            <ModelSelect
+              label="Tier A (cheap / classify)"
+              value={prefs.tier_a_model}
+              provider={prefs.default_provider}
+              fallbackHint={providerInfo.freeModel || "model slug"}
+              onChange={(v) => setPrefs((p) => ({ ...p, tier_a_model: v }))}
+            />
+            <ModelSelect
+              label="Tier B (standard tutor)"
+              value={prefs.tier_b_model}
+              provider={prefs.default_provider}
+              fallbackHint={providerInfo.freeModel || "model slug"}
+              onChange={(v) => setPrefs((p) => ({ ...p, tier_b_model: v }))}
+            />
+            <ModelSelect
+              label="Tier C (reasoning / copilot)"
+              value={prefs.tier_c_model}
+              provider={prefs.default_provider}
+              fallbackHint={providerInfo.freeModel || "model slug"}
+              onChange={(v) => setPrefs((p) => ({ ...p, tier_c_model: v }))}
+            />
           </div>
 
           <Separator />
 
           <div className="flex flex-wrap gap-4">
-            <label className="flex items-center gap-2 text-sm">
+            <label className="flex items-center gap-2 text-sm font-medium">
               <input
                 type="checkbox"
                 checked={prefs.prefer_free_tiers}
                 onChange={(e) => setPrefs((p) => ({ ...p, prefer_free_tiers: e.target.checked }))}
               />
-              Prefer free-tier models when available
+              Free-only mode — never call paid models
             </label>
             <label className="flex items-center gap-2 text-sm">
               <input
@@ -368,13 +466,18 @@ export function AiSettings() {
                 checked={prefs.allow_free_fallbacks}
                 onChange={(e) => setPrefs((p) => ({ ...p, allow_free_fallbacks: e.target.checked }))}
               />
-              Allow free fallbacks when key fails
+              Automatic free-model fallback when a key/model fails
             </label>
           </div>
 
           <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-800">
             <strong>Recommended free stack:</strong> OpenRouter gemma free → Gemini free → Groq gpt-oss → Ollama local (offline, ₹0).
           </div>
+          <p className="text-[11px] text-slate-400">
+            Server default: FREE ONLY (AI_COST_MODE). Paid models run only with explicit server configuration
+            (AI_COST_MODE=paid_allowed + ALLOW_PAID_FALLBACK=true) and the free-only toggle off. Max free-model
+            rotations per request: AI_MAX_FALLBACKS (default 5).
+          </p>
 
           <Button onClick={savePrefs} disabled={saving}>
             {saving ? "Saving…" : "Save preferences"}

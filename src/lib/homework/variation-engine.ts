@@ -73,6 +73,9 @@ export type HomeworkGenerationResult = {
   model: string;
   generatedAt: string;
   validation: { checked: number; rejected: number; attempts: number };
+  /** Fallback trail ("provider/model → …") when the router had to switch models. */
+  fallbackTrail?: string[];
+  fallbackUsed?: boolean;
 };
 
 // Computes a deterministic canonical fingerprint for duplicate detection.
@@ -258,8 +261,10 @@ async function generateQuestionsWithAI(
     avoidStems?: string[];
     excludeFingerprints?: string[];
     key?: AiKeyOverride;
+    allowFallbacks?: boolean;
+    freeOnly?: boolean;
   } = {}
-): Promise<{ questions: GeneratedQuestion[]; provider: ProviderKind; model: string; stats: { checked: number; rejected: number; attempts: number } }> {
+): Promise<{ questions: GeneratedQuestion[]; provider: ProviderKind; model: string; stats: { checked: number; rejected: number; attempts: number }; fallbackTrail: string[] }> {
   const seed = opts.studentSeed ?? 0;
   // ponytail: per-run randomness so every Generate click yields a fresh set
   // while the chapter/curriculum constraints stay fixed.
@@ -302,6 +307,13 @@ Rules: exactly one option isCorrect for mcq/assertion_reason; non-option types u
   let provider: ProviderKind = "custom";
   let model = "unknown";
   const allowedTypes: QuestionType[] = types;
+  const fallbackSteps: string[] = [];
+  const noteTrail = (trail: { provider: string; model: string; ok: boolean }[] | undefined) => {
+    for (const t of trail ?? []) {
+      const step = `${t.provider}/${t.model}`;
+      if (!fallbackSteps.includes(step)) fallbackSteps.push(step);
+    }
+  };
 
   while (collected.length < count && attempts < MAX_ATTEMPTS) {
     attempts += 1;
@@ -310,12 +322,16 @@ Rules: exactly one option isCorrect for mcq/assertion_reason; non-option types u
       system,
       user,
       userId: opts.userId,
+      task: "homework_generation",
       // ponytail: questions carry full solutions + rubrics (~500-800 tokens
       // each); a small cap truncates the JSON mid-array and fails validation.
       maxTokens: Math.max(3000, count * 800),
       temperature: 0.75,
+      allowFallbacks: opts.allowFallbacks,
+      freeOnly: opts.freeOnly,
       ...(opts.key ?? {}),
     });
+    noteTrail(aiRes.attempts);
     if (aiRes.stubbed) {
       throw new Error("AI is not configured. Add a provider key (Settings → AI, or GROQ/GEMINI/OPENROUTER_API_KEY) to generate homework.");
     }
@@ -350,7 +366,7 @@ Rules: exactly one option isCorrect for mcq/assertion_reason; non-option types u
     );
   }
 
-  return { questions: collected, provider, model, stats: { checked, rejected, attempts } };
+  return { questions: collected, provider, model, stats: { checked, rejected, attempts }, fallbackTrail: fallbackSteps };
 }
 
 /**
@@ -362,7 +378,8 @@ Rules: exactly one option isCorrect for mcq/assertion_reason; non-option types u
 export async function generateHomeworkAssignment(
   req: HomeworkGenerationRequest,
   userId?: string,
-  key?: AiKeyOverride
+  key?: AiKeyOverride,
+  opts: { allowFallbacks?: boolean; freeOnly?: boolean } = {}
 ): Promise<HomeworkGenerationResult> {
   const chapter = getOfficialChapterBySlug(req.chapterSlug);
   if (!chapter) {
@@ -392,8 +409,11 @@ export async function generateHomeworkAssignment(
     avoidStems: req.recentStems,
     excludeFingerprints: req.excludeFingerprints,
     key,
+    allowFallbacks: opts.allowFallbacks,
+    freeOnly: opts.freeOnly,
   });
   const totalMarks = base.questions.reduce((acc, q) => acc + q.marks, 0);
+  const fallbackTrail = [...base.fallbackTrail];
 
   const result: HomeworkGenerationResult = {
     assignmentTitle: `${chapter.title} — Homework Practice`,
@@ -407,6 +427,8 @@ export async function generateHomeworkAssignment(
     model: base.model,
     generatedAt: new Date().toISOString(),
     validation: base.stats,
+    fallbackTrail,
+    fallbackUsed: fallbackTrail.length > 1,
   };
 
   // If in Variant or Adaptive mode and students are specified, each learner
@@ -424,7 +446,12 @@ export async function generateHomeworkAssignment(
         avoidStems: [...variantAvoid, ...Object.values(studentVariants).flat().map((q) => q.stem)],
         excludeFingerprints: req.excludeFingerprints,
         key,
+        allowFallbacks: opts.allowFallbacks,
+        freeOnly: opts.freeOnly,
       });
+      for (const step of studentQuestions.fallbackTrail) {
+        if (!fallbackTrail.includes(step)) fallbackTrail.push(step);
+      }
       studentVariants[studentId] = studentQuestions.questions.map((q) => ({
         ...q,
         studentId,
@@ -433,6 +460,8 @@ export async function generateHomeworkAssignment(
     }
 
     result.studentVariants = studentVariants;
+    result.fallbackTrail = fallbackTrail;
+    result.fallbackUsed = fallbackTrail.length > 1;
   }
 
   return result;

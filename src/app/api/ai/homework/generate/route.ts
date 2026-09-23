@@ -14,6 +14,7 @@ const ENDPOINT = "/api/ai/homework/generate";
 
 export async function POST(req: Request) {
   const started = Date.now();
+  const generationId = crypto.randomUUID();
   try {
     // ponytail: getAuthContext (not requireAuthContext) — require* throws a
     // NEXT_REDIRECT digest that route handlers surface as a 500. API routes
@@ -44,6 +45,8 @@ export async function POST(req: Request) {
     // BYOK first (teacher's own key + model prefs), platform chain otherwise.
     // Resolution is server-side only — keys never reach the browser.
     let key: AiKeyOverride | undefined;
+    let allowFallbacks = true;
+    let freeOnly = true;
     try {
       const best = await getBestKeyForTier(supabase, context.user.id, "B");
       if (best) {
@@ -53,6 +56,8 @@ export async function POST(req: Request) {
           baseUrlOverride: best.provider.baseUrl,
           modelOverride: best.model,
         };
+        allowFallbacks = best.allowFallbacks;
+        freeOnly = best.freeOnly;
       }
     } catch {
       // Fall through to the platform chain.
@@ -97,14 +102,19 @@ export async function POST(req: Request) {
         excludeFingerprints: [...(body.excludeFingerprints ?? []), ...excludeFingerprints],
       },
       context.user.id,
-      key
+      key,
+      { allowFallbacks, freeOnly },
     );
 
     // Observability: structured log (provider/model/duration/validation — no keys, no PII).
     console.log(JSON.stringify({
       event: "homework_generate",
+      generationId,
+      task: "homework_generation",
       provider: assignment.provider,
       model: assignment.model,
+      fallbackUsed: assignment.fallbackUsed ?? false,
+      fallbackTrail: assignment.fallbackTrail ?? [],
       classLevel: assignment.classLevel,
       subject: assignment.subject,
       chapter: body.chapterSlug,
@@ -133,6 +143,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({
       success: true,
+      generationId,
       assignment,
       provider: assignment.provider,
       providerLabel: providerDisplayName(assignment.provider),
@@ -141,6 +152,7 @@ export async function POST(req: Request) {
   } catch (error) {
     console.error(JSON.stringify({
       event: "homework_generate_failed",
+      generationId,
       error: (error as Error).message,
       latencyMs: Date.now() - started,
     }));

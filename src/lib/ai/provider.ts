@@ -9,10 +9,38 @@
 // complete() returns an actionable stub result instead of throwing, so routes
 // fall back to deterministic templates instead of 5xx-ing the whole feature.
 
+import { isOpenCodeFreeModel } from "./opencode-catalog";
+
 export const PROMPT_VERSION = "mvp1-2026-09-16b";
+
+// ── Cost mode (server-side billing guard) ──────────────────────────────
+// AI_COST_MODE=free_only (default) → paid models NEVER called, period.
+// free_preferred → free first; paid only via explicit user opt-out + paid opt-in.
+// paid_allowed + ALLOW_PAID_FALLBACK=true → user preference honored.
+// Anything else fails safe to free-only.
+export type CostMode = "free_only" | "free_preferred" | "paid_allowed";
+
+export function costMode(): CostMode {
+  const raw = (process.env.AI_COST_MODE ?? "free_only").trim().toLowerCase();
+  return raw === "paid_allowed" || raw === "free_preferred" ? raw : "free_only";
+}
+
+export function isPaidUsageAllowed(): boolean {
+  const mode = costMode();
+  return (
+    (mode === "paid_allowed" || mode === "free_preferred") && process.env.ALLOW_PAID_FALLBACK === "true"
+  );
+}
+
+/** Effective free-only flag: env mode gates the user preference. */
+export function resolveFreeOnly(userPref?: boolean | null): boolean {
+  if (costMode() === "free_only") return true;
+  if (!isPaidUsageAllowed()) return true;
+  return userPref ?? true;
+}
 export type AiTier = "A" | "B" | "C" | "deterministic";
 
-// ── Provider endpoints ──────────────────────────────────────────────
+  // ── Provider endpoints ──────────────────────────────────────────────
 const ENDPOINTS: Record<string, { base: string; kind: "openai" | "anthropic" | "google" | "custom" }> = {
   openai:      { base: "https://api.openai.com/v1", kind: "openai" },
   anthropic:   { base: "https://api.anthropic.com/v1", kind: "anthropic" },
@@ -25,37 +53,40 @@ const ENDPOINTS: Record<string, { base: string; kind: "openai" | "anthropic" | "
   deepseek:    { base: "https://api.deepseek.com/v1", kind: "openai" },
   github:      { base: "https://models.github.ai/inference", kind: "openai" },
   ollama:      { base: "http://localhost:11434/v1", kind: "openai" },
+  opencode:    { base: "https://opencode.ai/inference/openai/v1", kind: "openai" },
   custom:      { base: "", kind: "custom" },
 };
 
 // ── Free-tier-friendly defaults (overridden by AI_MODEL_TIER_* env or user prefs) ──
-// OpenRouter free slugs verified against /api/v1/models on 2026-09-16 — the old
-// google/gemini-2.0-flash-exp:free was retired (404: no endpoints found), and
-// nvidia/nemotron-3.5-lightning:free is a slow REASONING model (burns tokens on
-// a thinking trace — bad for short completions), so A/B default to the fast
-// non-reasoning google/gemma-4-26b-a4b-it:free (1.6s round-trip), tier C to
-// inclusionai/ling-3.0-flash-vl:free (1.25s).
+// OpenRouter free slugs verified live against /api/v1/models on 2026-09-23.
+// Retired since the last check: inclusionai/ling-3.0-flash-vl:free is DELISTED
+// (404 "unavailable for free") — replaced below by ling-3.0-flash-sante:free
+// and qwen/qwen3.8-27b:free. A/B default to the fast non-reasoning
+// google/gemma-4-26b-a4b-it:free, tier C to google/gemma-4-31b-it:free.
 // Google: gemini-2.0-* retired (404 as of 2026-09); 2.5/3.x are current.
 // NVIDIA NIM: meta/llama-3.1-8b-instruct reached EOL (410); nemotron is current.
+// NOTE: free slugs churn — complete()/streamComplete() auto-rotate past dead
+// free models (429 quota AND 404 unavailable-for-free), so one retirement
+// never takes a feature down.
 const FREE_MODELS: Record<"A" | "B" | "C", Record<string, string>> = {
   A: {
-    openai: "gpt-4o-mini", anthropic: "claude-3-haiku-20240307", google: "gemini-2.5-flash-lite",
+    openai: "gpt-4o-mini", anthropic: "claude-3-haiku-20240307", google: "gemini-3.5-flash-lite",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     openrouter: "google/gemma-4-26b-a4b-it:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
     nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", deepseek: "deepseek-chat",
     ollama: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
   },
   B: {
-    openai: "gpt-4o-mini", anthropic: "claude-3-haiku-20240307", google: "gemini-2.5-flash",
+    openai: "gpt-4o-mini", anthropic: "claude-3-haiku-20240307", google: "gemini-3.5-flash-lite",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     openrouter: "google/gemma-4-26b-a4b-it:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
     nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", deepseek: "deepseek-chat",
     ollama: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
   },
   C: {
-    openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-2.5-pro",
+    openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-3.5-flash",
     groq: "openai/gpt-oss-120b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
-    openrouter: "inclusionai/ling-3.0-flash-vl:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
+    openrouter: "google/gemma-4-31b-it:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
     nvidia: "nvidia/nemotron-3-super-120b-a12b", deepseek: "deepseek-chat",
     ollama: "qwen2.5:14b", github: "openai/gpt-4o", custom: "",
   },
@@ -63,21 +94,21 @@ const FREE_MODELS: Record<"A" | "B" | "C", Record<string, string>> = {
 
 const PAID_MODELS: Record<"A" | "B" | "C", Record<string, string>> = {
   A: {
-    openai: "gpt-4o-mini", anthropic: "claude-3-5-haiku-20241022", google: "gemini-2.5-flash-lite",
+    openai: "gpt-4o-mini", anthropic: "claude-3-5-haiku-20241022", google: "gemini-3.5-flash-lite",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     openrouter: "openai/gpt-4o-mini", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
     nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", deepseek: "deepseek-chat",
     ollama: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
   },
   B: {
-    openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-2.5-flash",
+    openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-3.5-flash",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     openrouter: "openai/gpt-4o", huggingface: "meta-llama/Llama-3.1-70B-Instruct",
     nvidia: "nvidia/nemotron-3-super-120b-a12b", deepseek: "deepseek-chat",
     ollama: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
   },
   C: {
-    openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-2.5-pro",
+    openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-3.5-flash",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     openrouter: "openai/gpt-4o", huggingface: "meta-llama/Llama-3.1-70B-Instruct",
     nvidia: "nvidia/nemotron-3-super-120b-a12b", deepseek: "deepseek-chat",
@@ -92,7 +123,7 @@ const ENV_MODELS: Record<"A" | "B" | "C", string | undefined> = {
 };
 
 // ── Provider detection from key prefix ─────────────────────────────
-export type ProviderKind = "openai" | "anthropic" | "google" | "groq" | "together" | "openrouter" | "huggingface" | "nvidia" | "deepseek" | "ollama" | "github" | "custom";
+export type ProviderKind = "openai" | "anthropic" | "google" | "groq" | "together" | "openrouter" | "huggingface" | "nvidia" | "deepseek" | "ollama" | "github" | "opencode" | "custom";
 
 /** Human label for the REAL serving provider — used by generation UIs. */
 export function providerDisplayName(kind: ProviderKind | string): string {
@@ -107,6 +138,7 @@ export function providerDisplayName(kind: ProviderKind | string): string {
     case "nvidia": return "NVIDIA NIM";
     case "deepseek": return "DeepSeek";
     case "github": return "GitHub Models";
+    case "opencode": return "OpenCode";
     case "ollama": return "Ollama (local)";
     default: return "Custom endpoint";
   }
@@ -121,6 +153,7 @@ export interface ResolvedProvider {
 }
 
 export function detectProviderFromKey(apiKey: string): ProviderKind {
+  if (apiKey.startsWith("oc_sk_")) return "opencode";
   if (apiKey.startsWith("sk-or-")) return "openrouter";
   if (apiKey.startsWith("gsk_")) return "groq";
   if (apiKey.startsWith("sg-")) return "together";
@@ -146,6 +179,10 @@ const PLATFORM_KEYS: { kind: ProviderKind; key: string | undefined }[] = [
   { kind: "openrouter", key: process.env.OPENROUTER_API_KEY },
   { kind: "nvidia", key: process.env.NVIDIA_NIM_API_KEY },
   { kind: "huggingface", key: process.env.HUGGINGFACE_API_KEY },
+  // OpenCode credential (server-only): credentialed paid models ONLY, and only
+  // when paid usage is explicitly allowed. Keyless OpenCode is NOT in the auto
+  // chain — its free tier 403s outside the OpenCode client (verified live).
+  { kind: "opencode", key: process.env.OPENCODE_KEY },
   { kind: "openai", key: process.env.OPENAI_API_KEY },
   // Paid/local last: cheap DeepSeek, then GitHub Models free tier, then local
   // Ollama. NOTE: GITHUB_MODELS_TOKEN, not GITHUB_TOKEN (Actions reserves that).
@@ -186,7 +223,7 @@ export function resolveProviderFromKind(kind: ProviderKind, apiKey: string, base
     headers["anthropic-version"] = "2023-06-01";
   } else if (kind === "google") {
     headers["x-goog-api-key"] = apiKey;
-  } else {
+  } else if (apiKey) {
     headers.Authorization = `Bearer ${apiKey}`;
   }
 
@@ -209,11 +246,24 @@ export function pickModel(
   envOverride?: string | null,
   userPref?: string | null,
 ): string {
+  // ponytail: free-only mode (preferFree) NEVER calls a paid model — a paid
+  // user/env preference is ignored and the free pool is used instead. Paid
+  // models run only when the user explicitly opts out of free-only.
+  if (envOverride && (!preferFree || isFreeModel(providerKind, envOverride))) return envOverride;
+  // ponytail: free-only mode (preferFree) NEVER calls a paid model — a paid
+  // user/env preference is ignored and the free pool is used instead. Paid
+  // models run only when the user explicitly opts out of free-only.
+  if (userPref && preferFree && !isFreeModel(providerKind, userPref)) {
+    const t: "A" | "B" | "C" = tier === "deterministic" ? "B" : tier;
+    return FREE_MODELS[t][providerKind] ?? FREE_MODELS[t].openai;
+  }
   if (userPref) return userPref;
   if (envOverride) return envOverride;
   const t: "A" | "B" | "C" = tier === "deterministic" ? "B" : tier;
+  // ponytail: unknown provider/model combos resolve to "" and are SKIPPED by
+  // the loops — never guess a slug (a wrong guess bills or 404s).
   const pool = preferFree ? FREE_MODELS[t][providerKind] : PAID_MODELS[t][providerKind];
-  return pool ?? FREE_MODELS[t].openai;
+  return pool ?? "";
 }
 
 // ── Cost estimation ────────────────────────────────────────────────
@@ -223,12 +273,15 @@ const PRICE_PER_1K: Record<string, { in: number; out: number }> = {
   "openai/gpt-4o-mini": { in: 0.00015, out: 0.0006 },
   "openai/gpt-4o": { in: 0.0025, out: 0.01 },
   "google/gemini-2.0-flash-exp:free": { in: 0, out: 0 },
+  "gemini-3.5-flash-lite": { in: 0.000075, out: 0.0003 },
+  "gemini-3.5-flash": { in: 0.00015, out: 0.0006 },
   "gemini-2.5-flash-lite": { in: 0.000075, out: 0.0003 },
   "gemini-2.5-flash": { in: 0.00015, out: 0.0006 },
   "gemini-2.5-pro": { in: 0.00125, out: 0.005 },
   "google/gemma-4-26b-a4b-it:free": { in: 0, out: 0 },
   "google/gemma-4-31b-it:free": { in: 0, out: 0 },
-  "inclusionai/ling-3.0-flash-vl:free": { in: 0, out: 0 },
+  "qwen/qwen3.8-27b:free": { in: 0, out: 0 },
+  "inclusionai/ling-3.0-flash-sante:free": { in: 0, out: 0 },
   "nex-agi/nex-n2.5-mini:free": { in: 0, out: 0 },
   "nex-agi/nex-n2.5-pro:free": { in: 0, out: 0 },
   "liquid/lfm-2.5-2.6b:free": { in: 0, out: 0 },
@@ -274,6 +327,17 @@ export type CompleteArgs = {
   apiKeyOverride?: string;     // explicit key (BYOK flow)
   baseUrlOverride?: string;    // explicit endpoint
   signal?: AbortSignal;        // streams: abort when the client disconnects
+  allowFallbacks?: boolean;    // false = exactly one attempt, fail fast (default true)
+  freeOnly?: boolean;          // false = paid models allowed (default: env-gated, see resolveFreeOnly)
+  task?: string;               // task classifier label for logs (e.g. "homework_generation")
+  requirements?: { vision?: boolean }; // capability filter for fallback selection
+};
+
+export type AttemptTrail = {
+  provider: string;
+  model: string;
+  ok: boolean;
+  error?: string;
 };
 
 export type CompleteResult = {
@@ -288,6 +352,9 @@ export type CompleteResult = {
   cached: boolean;
   stubbed: boolean;
   latencyMs: number;
+  // ponytail: per-attempt routing trail (requested → each fallback tried).
+  // Callers persist/display this so the UI shows the ACTUAL serving model.
+  attempts?: AttemptTrail[];
 };
 
 // Shown to students when no key is configured anywhere. Actionable, not an error dump.
@@ -318,21 +385,24 @@ function stubResult(started: number): CompleteResult {
 
 // Free-model rate limits (429) are the most common failure on free tiers —
 // when one model's quota is exhausted, another free model on the same provider
-// usually still has headroom. These fallbacks rotate through the tier's free
-// pool, skipping the model that just 429'd. BYOK + platform both benefit.
+// usually still has headroom. Retired free slugs (404 "unavailable for free" /
+// "No endpoints found") are equally common — OpenRouter delists :free variants
+// without warning. These fallbacks rotate through the tier's free pool,
+// skipping the model that just failed. BYOK + platform both benefit.
+// Pool verified live against /api/v1/models on 2026-09-23.
 const FREE_MODEL_FALLBACKS: Record<"A" | "B" | "C", string[]> = {
   A: [
-    "google/gemma-4-26b-a4b-it:free", "inclusionai/ling-3.0-flash-vl:free",
-    "nex-agi/nex-n2.5-mini:free", "liquid/lfm-2.5-2.6b:free",
-    "google/gemma-4-31b-it:free", "z-ai/glm-5.2:free",
+    "google/gemma-4-26b-a4b-it:free", "google/gemma-4-31b-it:free",
+    "qwen/qwen3.8-27b:free", "nex-agi/nex-n2.5-mini:free",
+    "liquid/lfm-2.5-2.6b:free", "z-ai/glm-5.2:free",
   ],
   B: [
-    "google/gemma-4-26b-a4b-it:free", "inclusionai/ling-3.0-flash-vl:free",
-    "nex-agi/nex-n2.5-mini:free", "liquid/lfm-2.5-2.6b:free",
-    "google/gemma-4-31b-it:free", "z-ai/glm-5.2:free",
+    "google/gemma-4-26b-a4b-it:free", "google/gemma-4-31b-it:free",
+    "qwen/qwen3.8-27b:free", "nex-agi/nex-n2.5-mini:free",
+    "liquid/lfm-2.5-2.6b:free", "z-ai/glm-5.2:free",
   ],
   C: [
-    "inclusionai/ling-3.0-flash-vl:free", "google/gemma-4-31b-it:free",
+    "google/gemma-4-31b-it:free", "qwen/qwen3.8-27b:free",
     "nvidia/nemotron-3-super-120b-a12b:free", "nex-agi/nex-n2.5-pro:free",
   ],
 };
@@ -342,15 +412,182 @@ function is429(err: unknown): boolean {
   return /^provider 429 /.test((err as Error)?.message ?? "");
 }
 
+/**
+ * Is this error an OpenRouter 404 for a dead :free slug ("unavailable for
+ * free" / "No endpoints found")? These must rotate, not fail the feature.
+ */
+function isFreeUnavailable(err: unknown): boolean {
+  const msg = (err as Error)?.message ?? "";
+  return (
+    /^provider 404 \(openrouter\):/.test(msg) &&
+    /unavailable for free|no endpoints found/i.test(msg)
+  );
+}
+
 /** Next free fallback model for this tier after `failedModel`, or null. */
 function nextFreeFallback(tier: "A" | "B" | "C", failedModel: string): string | null {
   const pool = FREE_MODEL_FALLBACKS[tier];
   const idx = pool.indexOf(failedModel);
   // Start after the failed model; if it wasn't from the pool, start at 0.
+  // Skip cooled-down models and the failed one.
   const start = idx >= 0 ? idx + 1 : 0;
-  for (let i = start; i < pool.length; i++) if (pool[i] !== failedModel) return pool[i];
+  for (let i = start; i < pool.length; i++) {
+    if (pool[i] !== failedModel && !isCooledDown("openrouter", pool[i])) return pool[i];
+  }
+  // Wrap: earlier pool entries the failure didn't come from are still eligible.
+  for (let i = 0; i < start; i++) {
+    if (pool[i] !== failedModel && !isCooledDown("openrouter", pool[i])) return pool[i];
+  }
   return null;
 }
+
+// Google retires Gemini generations on a schedule (2.x → 3.x in 2026) and the
+// API 404s with "no longer available … update your code to use models/<next>".
+// Map retired slugs to their official successors so one retirement never
+// takes a feature down — single hop, then the normal chain takes over.
+const GOOGLE_MODEL_SUCCESSORS: Record<string, string> = {
+  "gemini-2.5-flash-lite": "gemini-3.5-flash-lite",
+  "gemini-2.5-flash": "gemini-3.5-flash-lite",
+  "gemini-2.5-pro": "gemini-3.5-flash",
+  "gemini-2.0-flash": "gemini-3.1-flash-lite",
+  "gemini-2.0-flash-lite": "gemini-3.1-flash-lite",
+};
+
+/** Successor for a retired Google model, or null (single hop only). */
+function nextGoogleSuccessor(kind: ProviderKind, model: string): string | null {
+  if (kind !== "google") return null;
+  const next = GOOGLE_MODEL_SUCCESSORS[model];
+  return next && next !== model ? next : null;
+}
+
+// ── Automatic free-model fallback system ───────────────────────────────
+// Central router policy (all AI features flow through complete()/streamComplete):
+// FREE ONLY by default + automatic free fallback + no mock data + real
+// provider/model transparency. Paid models are NEVER called while free-only
+// is active (preferFree) — a paid user/model preference is ignored, not billed.
+
+/** Retry classification for a failed attempt. Exported for tests. */
+export type AttemptAction = "retry-same" | "rotate" | "successor" | "failover";
+
+export function classifyAttemptError(err: unknown, kind: ProviderKind, model: string): AttemptAction {
+  const msg = (err as Error)?.message ?? "";
+  if (!/^provider \d+/.test(msg)) {
+    // No provider status = transport-level failure → one same-model retry.
+    return /fetch failed|network|timeout|timed out|aborted|ECONNRESET|ETIMEDOUT|ENOTFOUND|EAI_AGAIN|socket hang up/i.test(msg)
+      ? "retry-same"
+      : "failover";
+  }
+  if (kind === "openrouter" && (is429(err) || isFreeUnavailable(err))) return "rotate";
+  if (kind === "google" && /^provider 404/.test(msg) && GOOGLE_MODEL_SUCCESSORS[model]) return "successor";
+  // 401/403 (bad key), 400/422 (bad request), 5xx, empty content: retrying the
+  // same model cannot help → move to the next provider/model.
+  return "failover";
+}
+
+/** Max free-model rotations per provider (attempt budget). Configurable. */
+function maxFallbacks(): number {
+  const raw = Number(process.env.AI_MAX_FALLBACKS);
+  return Number.isFinite(raw) && raw >= 0 ? Math.min(10, Math.floor(raw)) : 5;
+}
+
+const backoff = (retry: number) =>
+  new Promise((r) => setTimeout(r, Math.min(2000, 400 * 2 ** Math.max(0, retry - 1))));
+
+// ── Provider/model health + cooldown ────────────────────────────────────
+// Lightweight in-memory health (per server instance, best-effort): repeated
+// failures park a model in cooldown; the router skips it until the cooldown
+// lapses, then it becomes eligible again automatically. One transient blip
+// never permanently disables anything.
+type HealthEntry = { failures: number; cooldownUntil: number };
+const MODEL_HEALTH = new Map<string, HealthEntry>();
+
+function cooldownMsFor(err: unknown): number {
+  const msg = (err as Error)?.message ?? "";
+  if (/^provider 429/.test(msg)) return 60_000;
+  if (/^provider 404/.test(msg) && /unavailable for free|no endpoints found/i.test(msg)) return 10 * 60_000;
+  if (/^provider 401|^provider 403/.test(msg)) return 5 * 60_000;
+  return 30_000;
+}
+
+export function recordFailure(kind: ProviderKind, model: string, err: unknown): void {
+  const key = `${kind}::${model}`;
+  const prev = MODEL_HEALTH.get(key);
+  MODEL_HEALTH.set(key, {
+    failures: (prev?.failures ?? 0) + 1,
+    cooldownUntil: Date.now() + cooldownMsFor(err),
+  });
+}
+
+export function recordSuccess(kind: ProviderKind, model: string): void {
+  MODEL_HEALTH.delete(`${kind}::${model}`);
+}
+
+export function isCooledDown(kind: ProviderKind, model: string): boolean {
+  const e = MODEL_HEALTH.get(`${kind}::${model}`);
+  if (!e) return false;
+  if (Date.now() >= e.cooldownUntil) {
+    MODEL_HEALTH.delete(`${kind}::${model}`);
+    return false;
+  }
+  return true;
+}
+
+// ── Free-only guard ────────────────────────────────────────────────────
+// Kinds with no free tier are ALWAYS paid (never called in free-only mode).
+const PAID_KINDS = new Set<ProviderKind>(["openai", "anthropic", "deepseek", "together", "custom"]);
+
+/** Is this model free on this provider? Exported for tests + settings API. */
+export function isFreeModel(kind: ProviderKind, model: string): boolean {
+  // Custom endpoints are unverifiable — never assume free.
+  if (kind === "custom") return false;
+  // OpenCode: only catalog-verified -free ids (unknown pricing is NOT free).
+  if (kind === "opencode") return isOpenCodeFreeModel(model);
+  if (!model) return true; // auto → tier free pool
+  if (PAID_KINDS.has(kind)) return false;
+  if (kind === "openrouter") return model.endsWith(":free");
+  return (PROVIDER_FREE_MODELS[kind] ?? []).includes(model);
+}
+
+// ── Capability filter ──────────────────────────────────────────────────
+// All registry models do text + prompted structured output. Vision is the only
+// discriminating capability today (no caller requires it yet — plumbing first).
+const VISION_MODELS = new Set(["gemini-3.5-flash-lite", "gemini-3.5-flash", "gemini-3.1-flash-lite"]);
+
+export function supportsCapabilities(kind: ProviderKind, model: string, requirements?: { vision?: boolean }): boolean {
+  if (requirements?.vision && !(kind === "google" && VISION_MODELS.has(model))) return false;
+  return true;
+}
+
+/**
+ * Paid-model skip for free-only mode. Paid-only providers (OpenAI/Anthropic/
+ * DeepSeek/Together/custom) have NO free model — in free-only mode the router
+ * skips them entirely instead of spending money. Exported for tests.
+ */
+export function shouldSkipPaidModel(kind: ProviderKind, model: string, freeOnly: boolean): boolean {
+  return freeOnly && !isFreeModel(kind, model);
+}
+
+// ── Free-model catalogue (model picker + non-OpenRouter providers) ─────────
+// Curated free/cheap slugs per provider for the AI Settings model picker.
+// OpenRouter is served LIVE from /api/v1/models (see /api/ai/models) since
+// its :free roster churns; this table is the fallback for every provider.
+export const PROVIDER_FREE_MODELS: Record<ProviderKind, string[]> = {
+  openrouter: [...FREE_MODEL_FALLBACKS.B, ...FREE_MODEL_FALLBACKS.C.filter((m) => !FREE_MODEL_FALLBACKS.B.includes(m))],
+  google: ["gemini-3.5-flash-lite", "gemini-3.5-flash", "gemini-3.1-flash-lite"],
+  groq: ["openai/gpt-oss-20b", "openai/gpt-oss-120b"],
+  openai: ["gpt-4o-mini", "gpt-4o"],
+  anthropic: ["claude-3-5-haiku-20241022", "claude-3-haiku-20240307", "claude-3-5-sonnet-20241022"],
+  huggingface: ["meta-llama/Llama-3.1-8B-Instruct"],
+  together: ["meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo", "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo"],
+  nvidia: ["nvidia/nemotron-3.5-lightning-30b-a3b", "nvidia/nemotron-3-super-120b-a12b"],
+  deepseek: ["deepseek-chat"],
+  github: ["openai/gpt-4o-mini", "openai/gpt-4o"],
+  ollama: ["llama3.1:8b", "qwen2.5:14b"],
+  // OpenCode: served LIVE from the inference catalog (see /api/ai/models) —
+  // keyless external free calls 403, so no static free list is trusted here.
+  opencode: [],
+  custom: [],
+};
 
 function resolveAttemptProvider(
   args: CompleteArgs,
@@ -423,14 +660,45 @@ async function requestCompletion(
 export async function complete(args: CompleteArgs): Promise<CompleteResult> {
   const started = Date.now();
   const tier: "A" | "B" | "C" = args.tier === "deterministic" ? "B" : args.tier;
-  const chain = resolveChain(args);
+  const allowFallbacks = args.allowFallbacks !== false;
+  const freeOnly = args.freeOnly ?? resolveFreeOnly(true);
+  const chain = allowFallbacks ? resolveChain(args) : resolveChain(args).slice(0, 1);
   if (!chain.length) return stubResult(started);
 
   let lastErr: unknown;
+  const trail: AttemptTrail[] = [];
+  const fail = (provider: ResolvedProvider, e: unknown) => {
+    lastErr = e;
+    recordFailure(provider.kind, provider.model, e);
+    trail.push({
+      provider: provider.kind, model: provider.model, ok: false,
+      error: ((e as Error)?.message ?? "unknown").slice(0, 120),
+    });
+  };
   for (const entry of chain) {
     let provider = resolveAttemptProvider(args, entry, tier);
-    // Inner loop: rotate free fallback models on 429 before giving this
-    // provider up and moving to the next one in the chain.
+    if (!provider.model) {
+      fail(provider, new Error(`no model resolved for provider ${provider.kind} — skipped, never guessed`));
+      continue;
+    }
+    // Free-only mode: NEVER call a paid model — skip the provider entirely.
+    if (shouldSkipPaidModel(provider.kind, provider.model, freeOnly)) {
+      fail(provider, new Error(`paid model ${provider.model} blocked by free-only mode`));
+      continue; // next provider in the chain
+    }
+    // Capability filter: never select a model that cannot do the task.
+    if (!supportsCapabilities(provider.kind, provider.model, args.requirements)) {
+      fail(provider, new Error(`model ${provider.model} lacks required capabilities`));
+      continue; // next provider in the chain
+    }
+    // Cooldown: skip recently-failed models while alternatives exist.
+    if (isCooledDown(provider.kind, provider.model) && (chain.length > 1 || allowFallbacks)) {
+      fail(provider, new Error(`model ${provider.model} in cooldown after recent failures`));
+      continue;
+    }
+    // Inner loop: same-model retry for transient blips, free-model rotation
+    // on quota/retired slugs, retired-Google successor hop — then next provider.
+    let netRetries = 0;
     for (let attempt = 0; ; attempt++) {
       try {
         const res = await requestCompletion(provider, tier, args, false);
@@ -478,25 +746,41 @@ export async function complete(args: CompleteArgs): Promise<CompleteResult> {
         if (!text.trim()) {
           throw new Error(`provider ${provider.kind} ${provider.model} returned empty content`);
         }
+        recordSuccess(provider.kind, provider.model);
+        trail.push({ provider: provider.kind, model: provider.model, ok: true });
         return {
           text, model: provider.model, provider: provider.kind,
           inputTokens: inTok, outputTokens: outTok,
           costUsd: estimateCostUsd(provider.model, inTok, outTok),
           cached: false, stubbed: false, latencyMs: Date.now() - started,
+          attempts: trail,
         };
       } catch (e) {
-        lastErr = e;
-        // 429 (quota/rate limit) on OpenRouter: the next free model usually
-        // still has headroom — rotate instead of failing the feature.
-        const nextModel = is429(e) && attempt < 3 && provider.kind === "openrouter"
-          ? nextFreeFallback(tier, provider.model)
-          : null;
-        if (!nextModel) break; // next provider in the chain
-        provider = { ...provider, model: nextModel };
+        fail(provider, e);
+        if (!allowFallbacks) break; // fail fast — caller disabled fallbacks
+        const action = classifyAttemptError(e, provider.kind, provider.model);
+        if (action === "retry-same" && netRetries < 1) {
+          netRetries++;
+          await backoff(netRetries);
+          continue; // one transient retry on the same model
+        }
+        if (action === "rotate") {
+          const nextModel = attempt < maxFallbacks() ? nextFreeFallback(tier, provider.model) : null;
+          if (!nextModel) break; // next provider in the chain
+          provider = { ...provider, model: nextModel };
+          continue;
+        }
+        if (action === "successor") {
+          const next = nextGoogleSuccessor(provider.kind, provider.model);
+          if (!next) break;
+          provider = { ...provider, model: next };
+          continue;
+        }
+        break; // failover → next provider in the chain
       }
     }
   }
-  throw new Error(`All AI providers failed — last error: ${(lastErr as Error)?.message ?? "unknown"}`);
+  throw new Error(`All AI providers failed (task=${args.task ?? "generic"}) — last error: ${(lastErr as Error)?.message ?? "unknown"}`);
 }
 
 // ── Streaming (SSE) ────────────────────────────────────────────────
@@ -557,8 +841,10 @@ export async function streamComplete(
 ): Promise<CompleteResult> {
   const started = Date.now();
   const tier: "A" | "B" | "C" = args.tier === "deterministic" ? "B" : args.tier;
+  const allowFallbacks = args.allowFallbacks !== false;
+  const freeOnly = args.freeOnly ?? resolveFreeOnly(true);
 
-  const chain = resolveChain(args);
+  const chain = allowFallbacks ? resolveChain(args) : resolveChain(args).slice(0, 1);
   if (!chain.length) {
     onDelta(STUB_TEXT);
     return stubResult(started);
@@ -568,31 +854,72 @@ export async function streamComplete(
   // stream starts delivering deltas, a mid-stream break propagates — the
   // caller has already rendered partial text, so retrying would duplicate it.
   let lastErr: unknown;
+  const trail: AttemptTrail[] = [];
+  const fail = (provider: ResolvedProvider, e: unknown) => {
+    lastErr = e;
+    recordFailure(provider.kind, provider.model, e);
+    trail.push({
+      provider: provider.kind, model: provider.model, ok: false,
+      error: ((e as Error)?.message ?? "unknown").slice(0, 120),
+    });
+  };
   for (const entry of chain) {
     let provider = resolveAttemptProvider(args, entry, tier);
-    // 429 rotation (before any deltas flow): same rationale as complete().
+    if (!provider.model) {
+      fail(provider, new Error(`no model resolved for provider ${provider.kind} — skipped, never guessed`));
+      continue;
+    }
+    if (shouldSkipPaidModel(provider.kind, provider.model, freeOnly)) {
+      fail(provider, new Error(`paid model ${provider.model} blocked by free-only mode`));
+      continue;
+    }
+    if (!supportsCapabilities(provider.kind, provider.model, args.requirements)) {
+      fail(provider, new Error(`model ${provider.model} lacks required capabilities`));
+      continue;
+    }
+    if (isCooledDown(provider.kind, provider.model) && (chain.length > 1 || allowFallbacks)) {
+      fail(provider, new Error(`model ${provider.model} in cooldown after recent failures`));
+      continue;
+    }
+    // 429/retired-slug rotation (before any deltas flow): same policy as complete().
+    let netRetries = 0;
     for (let attempt = 0; ; attempt++) {
       let res: Response;
       try {
         res = await requestCompletion(provider, tier, args, true);
       } catch (e) {
-        lastErr = e;
+        fail(provider, e);
+        if (!allowFallbacks) break;
+        if (classifyAttemptError(e, provider.kind, provider.model) === "retry-same" && netRetries < 1) {
+          netRetries++;
+          await backoff(netRetries);
+          continue;
+        }
         break; // connection error → next provider
       }
       if (!res.ok) {
         const bodyText = await res.text().catch(() => "");
         const err = new Error(`provider ${res.status} (${provider.kind}): ${bodyText.slice(0, 300)}`);
-        lastErr = err;
-        const nextModel = is429(err) && attempt < 3 && provider.kind === "openrouter"
-          ? nextFreeFallback(tier, provider.model)
-          : null;
-        if (!nextModel) break; // next provider in the chain
-        provider = { ...provider, model: nextModel };
-        continue; // retry same provider with the next free model
+        fail(provider, err);
+        if (!allowFallbacks) break;
+        const action = classifyAttemptError(err, provider.kind, provider.model);
+        if (action === "rotate") {
+          const nextModel = attempt < maxFallbacks() ? nextFreeFallback(tier, provider.model) : null;
+          if (!nextModel) break; // next provider in the chain
+          provider = { ...provider, model: nextModel };
+          continue; // retry same provider with the next free model
+        }
+        if (action === "successor") {
+          const next = nextGoogleSuccessor(provider.kind, provider.model);
+          if (!next) break;
+          provider = { ...provider, model: next };
+          continue;
+        }
+        break; // next provider in the chain
       }
       const body = res.body;
       if (!body) {
-        lastErr = new Error("Provider returned an empty stream body");
+        fail(provider, new Error("Provider returned an empty stream body"));
         break; // give up on this provider, try the next in the chain
       }
 
@@ -614,11 +941,14 @@ export async function streamComplete(
     };
     const finish = (): CompleteResult => {
       const finalOut = outTok || Math.max(1, approxTokens(full));
+      recordSuccess(provider.kind, provider.model);
+      trail.push({ provider: provider.kind, model: provider.model, ok: true });
       return {
         text: full, model: provider.model, provider: provider.kind,
         inputTokens: inTok, outputTokens: finalOut,
         costUsd: estimateCostUsd(provider.model, inTok, finalOut),
         cached: false, stubbed: false, latencyMs: Date.now() - started,
+        attempts: trail,
       };
     };
 
@@ -645,7 +975,7 @@ export async function streamComplete(
     }
     } // — inner 429-rotation loop (every success path returns)
   }
-  throw new Error(`All AI providers failed — last error: ${(lastErr as Error)?.message ?? "unknown"}`);
+  throw new Error(`All AI providers failed (task=${args.task ?? "generic"}) — last error: ${(lastErr as Error)?.message ?? "unknown"}`);
 }
 
 // ── Embeddings (RAG #50) ─────────────────────────────────────────

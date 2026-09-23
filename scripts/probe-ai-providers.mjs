@@ -4,7 +4,7 @@
 // Run: node --env-file-if-exists=.env.local scripts/probe-ai-providers.mjs
 const PROBE_MODEL = {
   groq: "openai/gpt-oss-20b",
-  google: "gemini-2.5-flash",
+  google: "gemini-3.5-flash-lite",
   openrouter: "google/gemma-4-26b-a4b-it:free",
   openai: "gpt-4o-mini",
   anthropic: "claude-3-haiku-20240307",

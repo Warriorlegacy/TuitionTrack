@@ -1,7 +1,7 @@
 // BYOK helpers: load user AI keys/prefs, select best key for a tier.
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { AiTier, ProviderKind, ResolvedProvider } from "./provider";
-import { DEFAULT_EMBEDDING_MODEL, detectProviderFromKey, resolveProviderFromKind, pickModel, getPlatformKeyChain } from "./provider";
+import { DEFAULT_EMBEDDING_MODEL, detectProviderFromKey, resolveFreeOnly, resolveProviderFromKind, pickModel, getPlatformKeyChain } from "./provider";
 import { decryptKey } from "./crypto";
 
 export type UserAiKeyRow = {
@@ -56,7 +56,7 @@ export async function getBestKeyForTier(
   supabase: SupabaseClient,
   userId: string,
   tier: AiTier,
-): Promise<{ key: string; provider: ResolvedProvider; model: string } | null> {
+): Promise<{ key: string; provider: ResolvedProvider; model: string; allowFallbacks: boolean; freeOnly: boolean } | null> {
   const [keys, prefs] = await Promise.all([getUserKeys(supabase, userId), getUserPrefs(supabase, userId)]);
   if (!keys.length) return null;
 
@@ -92,7 +92,16 @@ export async function getBestKeyForTier(
     })
     .catch(() => {});
 
-  return { key: plainKey, provider, model };
+  return {
+    key: plainKey,
+    provider,
+    model,
+    allowFallbacks: prefs?.allow_free_fallbacks ?? true,
+    // ponytail: env cost mode gates the settings toggle — free_only (default)
+    // forces freeOnly even if the user unchecked it. Paid runs need
+    // AI_COST_MODE=paid_allowed + ALLOW_PAID_FALLBACK=true.
+    freeOnly: resolveFreeOnly(prefs?.prefer_free_tiers ?? true),
+  };
 }
 
 /**
