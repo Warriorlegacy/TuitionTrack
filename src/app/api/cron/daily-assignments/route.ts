@@ -188,7 +188,7 @@ Rules: exactly one isCorrect; solutionSteps explains WHY the answer is right.`,
             total_marks: totalMarks,
             passing_marks: Math.round(totalMarks * 0.4),
             target_student_ids: g.ids,
-            ai_grading_enabled: true,
+            ai_grading_enabled: false,
             config: { daily: true, daily_date: today, category, provider: aiRes.provider, model: aiRes.model },
           })
           .select("id")

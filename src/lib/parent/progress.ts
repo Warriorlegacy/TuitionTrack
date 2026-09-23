@@ -151,6 +151,7 @@ export async function getProgressOverview(
         .from("assignment_submissions")
         .select("id, assignment_id, percentage, score, total_marks, graded_at, status")
         .eq("student_id", studentId)
+        .in("status", ["teacher_reviewed", "graded", "returned"])
         .order("graded_at", { ascending: false })
         .limit(10),
       supabase

@@ -6,8 +6,9 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
  * Parent-facing test/assessment queries.
  *
  * Source: `assignment_submissions` joined to `assignments` for titles/subjects.
- * Only graded submissions (status = 'ai_evaluated' | 'teacher_reviewed' | 'graded'
- * or a non-null percentage) are surfaced as "results".
+ * Only teacher-finalized submissions (status = 'teacher_reviewed' | 'graded'
+ * | 'returned') are surfaced as "results". Pending-review work never appears
+ * as an academic score.
  *
  * We deliberately do NOT show class-wide comparative ranks (§20).
  * Performance is personal — score, percentage, subject, trend.
@@ -42,7 +43,6 @@ export type TestTrendPoint = {
 };
 
 const GRADED_STATUSES = [
-  "ai_evaluated",
   "teacher_reviewed",
   "graded",
   "returned",

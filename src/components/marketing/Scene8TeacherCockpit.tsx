@@ -62,7 +62,7 @@ export function Scene8TeacherCockpit({ status = "ready" }: { status?: LoadState 
         <Button onClick={() => setAssigned(true)} disabled={assigned} className="tt-focus rounded-tt-sm">
           {assigned ? <><CheckCircle2Icon className="mr-1.5 size-4" aria-hidden /> 12Q drill assigned</> : "Assign 12Q remedial drill"}
         </Button>
-        {assigned && <p className="text-sm text-emerald-700">Drill sent to 11 students · auto-graded, repairs queued.</p>}
+        {assigned && <p className="text-sm text-emerald-700">Drill sent to 11 students · teacher review queued.</p>}
       </div>
     </div>
   );

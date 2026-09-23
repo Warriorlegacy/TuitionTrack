@@ -94,7 +94,7 @@ export async function runDiagnostic(
   const attRows: { student_id: string; present: boolean; date: string }[] = [];
   for (const c of chunk(ids)) {
     const [a, m, cm, at] = await Promise.all([
-      supabase.from("attempts").select("id, student_id, score, total, submitted_at").in("student_id", c).limit(2000),
+      supabase.from("attempts").select("id, student_id, score, total, submitted_at").in("student_id", c).eq("status", "graded").limit(2000),
       supabase.from("mistakes").select("student_id, concept_id, status").in("student_id", c).limit(2000),
       supabase.from("concept_mastery").select("student_id, concept_id, mastery, attempt_count, correct_count, streak").in("student_id", c).limit(2000),
       supabase.from("attendance").select("student_id, present, date").in("student_id", c).order("date", { ascending: false }).limit(3000),

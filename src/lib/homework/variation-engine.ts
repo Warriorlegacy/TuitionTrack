@@ -40,6 +40,8 @@ export type GeneratedQuestion = {
   learningObjective: string;
 };
 
+export type QuestionFormat = "mixed" | "mcq";
+
 export type HomeworkGenerationRequest = {
   chapterSlug: string;
   classLevel: number;
@@ -47,6 +49,7 @@ export type HomeworkGenerationRequest = {
   questionCount?: number;
   difficulty?: number;
   questionTypes?: QuestionType[];
+  questionFormat?: QuestionFormat;
   mode?: HomeworkMode;
   studentIds?: string[];
   excludeFingerprints?: string[];
@@ -138,12 +141,14 @@ type ValidateCtx = {
   runToken: string;
   seen: Set<string>;
   fingerprintBlocklist: Set<string>;
+  allowedTypes?: QuestionType[];
 };
 
 function validateOne(raw: unknown, ctx: ValidateCtx): GeneratedQuestion | null {
   const item = asRecord(raw);
   const qtype = asString(item.qtype) as QuestionType;
   if (!ALLOWED_QTYPES.includes(qtype)) return null;
+  if (ctx.allowedTypes && !ctx.allowedTypes.includes(qtype)) return null;
 
   const stem = asString(item.stem).trim();
   // Reject stubs/placeholders and one-liners that carry no assessable content.
@@ -296,6 +301,7 @@ Rules: exactly one option isCorrect for mcq/assertion_reason; non-option types u
   let attempts = 0;
   let provider: ProviderKind = "custom";
   let model = "unknown";
+  const allowedTypes: QuestionType[] = types;
 
   while (collected.length < count && attempts < MAX_ATTEMPTS) {
     attempts += 1;
@@ -328,6 +334,7 @@ Rules: exactly one option isCorrect for mcq/assertion_reason; non-option types u
         runToken: `${runToken}-${seed}-${collected.length}`,
         seen,
         fingerprintBlocklist,
+        allowedTypes,
       });
       if (!q) {
         rejected += 1;
@@ -373,7 +380,10 @@ export async function generateHomeworkAssignment(
   const questionCount = Math.min(25, Math.max(1, req.questionCount || 5));
   const difficulty = Math.min(5, Math.max(1, req.difficulty || 3));
   const mode = req.mode || "variant";
-  const types = req.questionTypes || ["mcq", "numeric", "short", "assertion_reason"];
+  // ponytail: MCQ-only studio option — frontend + backend enforce the same
+  // rule. "mcq" forces every question to MCQ; nothing else is generated.
+  const types: QuestionType[] =
+    req.questionFormat === "mcq" ? ["mcq"] : req.questionTypes || ["mcq", "numeric", "short", "assertion_reason"];
 
   const base = await generateQuestionsWithAI(chapter, questionCount, difficulty, types, {
     teacherInstructions: req.teacherInstructions,

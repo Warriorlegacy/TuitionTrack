@@ -70,7 +70,8 @@ function deriveDisplayStatus(
   const s = submission.status;
   if (s === "returned") return "returned";
   if (s === "graded" || s === "teacher_reviewed") return "graded";
-  if (s === "ai_evaluated") return "graded";
+  // ponytail: legacy "ai_evaluated" is NOT a published result — pending review.
+  if (s === "ai_evaluated") return "submitted";
   if (s === "submitted" || s === "in_progress" || s === "started") return "submitted";
   return "set";
 }

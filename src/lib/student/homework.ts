@@ -143,13 +143,15 @@ export async function listStudentHomework(
 
       let status: StudentHomeworkStatus = "pending";
       if (sub) {
+        // ponytail: only teacher-finalized grades count as graded.
+        // Legacy "ai_evaluated" rows are pending teacher review, not results.
         if (
           sub.status === "graded" ||
           sub.status === "teacher_reviewed" ||
-          sub.status === "ai_evaluated"
+          sub.status === "returned"
         ) {
           status = "graded";
-        } else if (sub.status === "submitted" || sub.status === "in_progress") {
+        } else if (sub.status === "submitted" || sub.status === "in_progress" || sub.status === "ai_evaluated") {
           status = "submitted";
         }
       } else if (isPastDue(a.due_date)) {
@@ -238,6 +240,9 @@ export type StudentAssignmentPlayerDetails = {
   }[];
   submission: {
     id: string;
+    status: string;
+    gradingStatus: string;
+    isGraded: boolean;
     score: number;
     totalMarks: number;
     percentage: number;
@@ -311,8 +316,11 @@ export async function getStudentAssignmentPlayerDetails(
     typedSubmission &&
       (typedSubmission.status === "graded" ||
         typedSubmission.status === "teacher_reviewed" ||
-        typedSubmission.status === "ai_evaluated"),
+        typedSubmission.status === "returned"),
   );
+  // Answer key is available after ANY successful submission (it is study
+  // material, not a grade). Scores stay hidden until teacher finalize.
+  const hasSubmitted = Boolean(typedSubmission);
 
   const formattedQuestions = resolvedQuestions.map((q) => ({
     id: String(q.id),
@@ -321,13 +329,16 @@ export async function getStudentAssignmentPlayerDetails(
     qtype: String(q.qtype),
     marks: Number(q.marks) || 1,
     options: (q.options as { label: string; text: string; isCorrect?: boolean }[]) || [],
-    correctAnswer: isGraded ? String(q.correct_answer || "") : undefined,
-    solutionSteps: isGraded ? (q.solution_steps as string[]) : undefined,
+    correctAnswer: hasSubmitted ? String(q.correct_answer || "") : undefined,
+    solutionSteps: hasSubmitted ? (q.solution_steps as string[]) : undefined,
   }));
 
   const formattedSubmission = typedSubmission
     ? {
         id: String(typedSubmission.id),
+        status: String(typedSubmission.status ?? "submitted"),
+        gradingStatus: String(typedSubmission.grading_status ?? "pending"),
+        isGraded,
         score: Number(typedSubmission.score) || 0,
         totalMarks: Number(typedSubmission.total_marks) || 0,
         percentage: Number(typedSubmission.percentage) || 0,

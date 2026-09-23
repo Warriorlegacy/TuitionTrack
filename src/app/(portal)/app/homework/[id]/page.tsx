@@ -76,16 +76,21 @@ export default async function HomeworkDetailPage({
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       studentClass: String((s.student as any)?.class ?? ""),
       status: String(s.status ?? "submitted"),
+      gradingStatus: String(s.grading_status ?? "pending"),
       score: Number(s.score) || 0,
       totalMarks: Number(s.total_marks) || 0,
       percentage: Number(s.percentage) || 0,
       submittedAt: String(s.submitted_at || ""),
+      gradedAt: s.graded_at ? String(s.graded_at) : null,
       isLate: Boolean(s.is_late),
       answers: (s.answers as Record<string, string>) || {},
       mistakeBreakdown: (s.mistake_breakdown as TeacherSubmission["mistakeBreakdown"]) || [],
-      aiEvaluationNotes: s.ai_evaluation_notes ?? undefined,
+      aiEvaluationNotes: undefined,
       teacherFeedback: s.teacher_feedback ?? undefined,
       handwrittenFiles: (s.handwritten_files as string[]) || [],
+      teacherMarks: (s.teacher_marks as Record<string, number>) || {},
+      questionFeedback: (s.question_feedback as Record<string, string>) || {},
+      reviewedQuestions: (s.reviewed_questions as string[]) || [],
     }));
 
     const questions: TeacherQuestion[] = typedQuestions.map((q) => ({
@@ -95,6 +100,7 @@ export default async function HomeworkDetailPage({
       qtype: String(q.qtype),
       marks: Number(q.marks) || 1,
       correctAnswer: String(q.correct_answer || ""),
+      solutionSteps: (q.solution_steps as string[]) || [],
       studentId: q.student_id ? String(q.student_id) : null,
     }));
 
@@ -164,20 +170,30 @@ export default async function HomeworkDetailPage({
     qtype: String(q.qtype),
     marks: Number(q.marks) || 1,
     options: (q.options as { label: string; text: string; isCorrect?: boolean }[]) || [],
+    // Answer key is revealed after submission (study material, not a grade).
     correctAnswer: typedSubmission ? String(q.correct_answer || "") : undefined,
     solutionSteps: typedSubmission ? (q.solution_steps as string[]) : undefined,
   }));
 
+  const isGraded = Boolean(
+    typedSubmission &&
+      (typedSubmission.status === "graded" ||
+        typedSubmission.status === "teacher_reviewed" ||
+        typedSubmission.status === "returned"),
+  );
   const formattedSubmission = typedSubmission
     ? {
         id: String(typedSubmission.id),
+        status: String(typedSubmission.status ?? "submitted"),
+        gradingStatus: String(typedSubmission.grading_status ?? "pending"),
+        isGraded,
         score: Number(typedSubmission.score) || 0,
         totalMarks: Number(typedSubmission.total_marks) || 0,
         percentage: Number(typedSubmission.percentage) || 0,
         submittedAt: String(typedSubmission.submitted_at || ""),
         answers: (typedSubmission.answers as Record<string, string>) || {},
-        mistakeBreakdown: (typedSubmission.mistake_breakdown as { questionPosition: number; stem: string; studentAnswer: string; correctAnswer: string; category: string }[]) || [],
-        aiEvaluationNotes: typedSubmission.ai_evaluation_notes ?? undefined,
+        mistakeBreakdown: [],
+        aiEvaluationNotes: undefined,
         teacherFeedback: typedSubmission.teacher_feedback ?? undefined,
         handwrittenFiles: (typedSubmission.handwritten_files as string[]) || [],
       }

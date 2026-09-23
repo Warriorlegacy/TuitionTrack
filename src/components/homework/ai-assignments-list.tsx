@@ -113,7 +113,7 @@ export function AiAssignmentsList({
                 {item.ai_grading_enabled && (
                   <Badge variant="outline" className="border-primary/30 text-primary text-[10px] shrink-0 gap-1">
                     <SparklesIcon className="h-3 w-3" />
-                    AI Graded
+                    AI Questions
                   </Badge>
                 )}
               </div>

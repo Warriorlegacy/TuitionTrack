@@ -23,7 +23,7 @@ export function TeacherFeaturesLaunchpad() {
       items: [
         {
           title: "AI Homework Studio & Logs",
-          description: "Create AI-powered homework with answer keys, view student submissions, and auto-grade.",
+          description: "Create AI-powered homework with answer keys, review student submissions question by question, and publish teacher-graded results.",
           href: "/app/homework",
           icon: BookOpenCheckIcon,
           color: "text-purple-600 bg-purple-50 dark:bg-purple-950/30",

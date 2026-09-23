@@ -125,18 +125,27 @@ export type HomeworkSubmittedNotice = {
   title: string;
   subject?: string;
   studentId: string;
+  isLate: boolean;
+};
+
+export type HomeworkGradedNotice = {
+  assignmentId: string;
+  teacherId: string;
+  title: string;
+  subject?: string;
+  studentId: string;
   score: number;
   totalMarks: number;
   percentage: number;
-  isLate: boolean;
 };
 
 /**
  * Targeted submission fan-out (real event only — call after a saved submit):
- * - the submitting student gets a confirmation,
- * - the assignment's teacher gets a new-submission row,
- * - verified guardians of THAT student get a parent update.
- * Nobody else is notified. Best-effort — never throws.
+ * - the submitting student gets a confirmation ("submitted successfully"),
+ * - the assignment's teacher gets "awaiting review",
+ * - verified guardians of THAT student get "<Student> submitted <Homework>".
+ * No scores are sent here — the grade does not exist until teacher finalize.
+ * Best-effort — never throws.
  */
 export async function notifyHomeworkSubmitted(supabase: Db, n: HomeworkSubmittedNotice): Promise<void> {
   try {
@@ -152,10 +161,8 @@ export async function notifyHomeworkSubmitted(supabase: Db, n: HomeworkSubmitted
       subject: n.subject ?? null,
       studentId: n.studentId,
       studentName,
-      score: n.score,
-      totalMarks: n.totalMarks,
-      percentage: n.percentage,
       isLate: n.isLate,
+      state: "submitted_awaiting_review",
     };
     const rows: Record<string, unknown>[] = [];
     const studentUid = accountByEmail.get((student?.student_email ?? "").toLowerCase());
@@ -174,6 +181,47 @@ export async function notifyHomeworkSubmitted(supabase: Db, n: HomeworkSubmitted
     }
   } catch (err) {
     console.error("notifyHomeworkSubmitted failed (non-blocking):", err);
+  }
+}
+
+/**
+ * Result-published fan-out — call ONLY from finalizeSubmissionGradeAction,
+ * after the teacher has reviewed every question and finalized teacher marks.
+ * This is the single place scores are notified.
+ */
+export async function notifyHomeworkGraded(supabase: Db, n: HomeworkGradedNotice): Promise<void> {
+  try {
+    const students = await studentsByIds(supabase, [n.studentId]);
+    const student = students[0];
+    const studentName = student?.name ?? "your child";
+    const accountByEmail = await userIdsForEmails(supabase, [student?.student_email ?? ""]);
+    const guardianIds = await guardianIdsFor(supabase, [n.studentId]);
+
+    const meta = {
+      assignmentId: n.assignmentId,
+      title: n.title,
+      subject: n.subject ?? null,
+      studentId: n.studentId,
+      studentName,
+      score: n.score,
+      totalMarks: n.totalMarks,
+      percentage: n.percentage,
+      state: "graded_published",
+    };
+    const rows: Record<string, unknown>[] = [];
+    const studentUid = accountByEmail.get((student?.student_email ?? "").toLowerCase());
+    if (studentUid) {
+      rows.push({ actor_id: studentUid, action: "homework_graded", entity: "submission", entity_id: n.assignmentId, metadata: meta });
+    }
+    for (const gid of guardianIds) {
+      rows.push({ actor_id: gid, action: "homework_graded", entity: "submission", entity_id: n.assignmentId, metadata: meta });
+    }
+    if (rows.length > 0) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await supabase.from("audit_logs").insert(rows as any);
+    }
+  } catch (err) {
+    console.error("notifyHomeworkGraded failed (non-blocking):", err);
   }
 }
 

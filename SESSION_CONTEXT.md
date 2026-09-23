@@ -11,6 +11,21 @@ TuitionTrack is a Next.js 14 application for managing tuition payments and stude
 
 ## Recent Changes
 
+### Teacher Submission Access Fix + Fully AI-Powered Homework Studio (2026-09-23)
+- **Root cause — teachers saw ≤1 submission**: `/app/homework/[id]` only loaded `accessibleStudents[0]`'s submission (RLS was fine; the page query was the bug). The teacher branch now ownership-checks (`assignment.teacher_id === user.id`, mirroring RLS — no checks weakened) and loads ALL submissions with a student join. New `TeacherSubmissionsView` (`src/components/homework/teacher-submissions-view.tsx`): student/status filters, late/missing roster, per-question answers vs keys, marks, AI notes, feedback, question bank.
+- **Class 5 + English Grammar**: Class 5 band added to `video-chapters.ts` (Maths/Math-Magic, English/Marigold, EVS/Looking Around — real NCERT chapters) plus an `English Grammar` subject for classes 5–12 with class-graded topics (nouns/articles → clauses/integrated grammar). Studio selector is now 5–12; stale subject/chapter selection bug fixed (derived effective values).
+- **No mocks, ever**: deleted the ~160-line deterministic template bank in `variation-engine.ts`. AI failure or invalid output now THROWS an actionable error — never fake success. Live-proofed with real keys: Class 5 "Nouns and Their Kinds" via Google/`gemini-2.5-flash`, 3/3 valid first attempt; a second run produced a fully different set (freshness proven).
+- **Provider/model visibility**: `CompleteResult.provider` threaded through `provider.ts` (+ `providerDisplayName`); generate API returns the REAL serving provider/model/validation stats; studio shows a pipeline checklist and a `provider · model` badge — nothing hardcoded.
+- **Validation + anti-repetition**: schema, chapter-relevance backstop (prefix matching absorbs inflections like noun/nouns), fingerprint + normalized-stem dedupe within batch and against the teacher's last-5 same-chapter assignments, 3-attempt retry with shortfall error. Debug fixes along the way: token budget raised to `max(3000, count×800)` (was truncating JSON mid-array), BYOK threaded server-side via `AiKeyOverride`.
+- **Notifications**: new `notifyHomeworkSubmitted` (`src/lib/notifications.ts`) fires on every real submit — student confirmation + teacher row + verified guardians of that student only. Student/parent feeds render score/late details. Prior-session WIP in the same family (shared helper, portal.ts hooks, student notifications page + nav) committed together.
+- **Daily universal assignments**: new cron `GET /api/cron/daily-assignments` (vercel.json `30 0 * * *`), per-(teacher, class 5–12) groups, rotating GK / Moral Science / GS / Current Affairs (date-grounded prompt, no hardcoded news), idempotent per (teacher, class, category, date), capped 15 groups/run, reuses the assign fan-out.
+- **Reports**: new `GET /api/reports/homework` — deterministic real-data analytics (submission rates, missing, late, averages, per-chapter performance), teacher-scoped, no fabricated metrics.
+- **API auth fix (`c07836d`)**: `require*` helpers throw NEXT_REDIRECT, which route handlers surface as 500 (caught live on prod: signed-out calls 500'd). Generate + report routes now use `getAuthContext` with explicit 401/403 JSON.
+- **Deploys**: `2e72401` (feature, 18 files) + `c07836d` (auth fix); git-push auto-deploy to `tuitiontrack-app.vercel.app`. Prod verified: login 200, homework 307, new routes 401 signed-out.
+- **Gates**: typecheck 0, lint 0, `next build` clean, smoke 29/29 on the prod build. Direct-DB `verify-rls` unrunnable from sandbox (no DB route); no migrations were changed. Port 3000 in sandbox is taken by an unrelated MCP server — smoke runs on 3100+ via `BASE_URL`.
+- **codebase-memory-mcp**: project `D-TuitionTrack` re-indexed post-changes — 3,971 nodes / 8,910 edges, `TeacherSubmissionsView` + `notifyHomeworkSubmitted` confirmed in graph.
+- **ECC plugin**: `ecc-universal` added to global `~/.config/opencode` plugins (needs an OpenCode restart to load). Note: `opencode-ecc` on npm is a security placeholder — wrong package, avoid it.
+
 ### Multi-Tenant Teacher Workspace & Role-Based Access Control Overhaul + Fresh Database Reset (2026-09-21)
 - **Multi-Tenant Workspace Core**:
   - Transformed TuitionTrack into a true multi-tenant education platform centered on **Teacher Workspaces**.
@@ -227,8 +242,12 @@ TuitionTrack is a Next.js 14 application for managing tuition payments and stude
   - Generator script maintained at `scripts/generate_gtm_seo_pdf.py`.
 
 ## Current Production Status
-- **Live Production URL**: `https://tuitiontrack-app.vercel.app` (Deployment `dpl_Go5z7jMDy7RaMaY5y1dxw5ie9Wrs` LIVE).
+- **Live Production URL**: `https://tuitiontrack-app.vercel.app` (deployments `dpl_HYN1Hrbpqsg7njimnnZTkY1p4fjE` + auth-fix follow-up, both READY & ALIASED; commits `2e72401`, `c07836d` on `main`).
 - **Production Status**: READY & ALIASED.
+- **Teacher Homework Submissions**: full roster view live (all students, filters, missing list, answers vs keys, AI notes) — the #1 teacher complaint fixed.
+- **AI Homework Studio**: Classes 5–12 + English Grammar (5–12), live-AI-only generation with real provider/model display and validation.
+- **Notifications**: homework-assigned + homework-submitted fan-out live for student/teacher/guardian feeds.
+- **Automation**: daily universal assignment cron (`30 0 * * *`) + homework analytics API live; all prod env keys present (Groq/Gemini/OpenRouter/NVIDIA/HF, CRON_SECRET, Supabase).
 - **Portal Access System**: Teacher-controlled Parent & Student portal links with QR codes, WhatsApp sharing, and single-auth redemption.
 - **Parent Experience Layer**: 19 parent portal routes live, verified with 84/84 security tests passing.
 - **Student Learning Portal**: 8 dedicated student routes live with homework, tests, 3D lessons, and AI tutor.
@@ -236,4 +255,5 @@ TuitionTrack is a Next.js 14 application for managing tuition payments and stude
 - **BYOK AI Providers**: 12 providers configured (free-tier failover priority).
 - **Supabase Inactivity**: Keep-alive cron active every 2 days (400 OK prevented, zero-secret leak verified).
 - **Database**: 69 public tables, 127 RLS policies, 0 anonymous leaks.
-- **Verification**: 34/34 portal E2E, 49/49 parent security, 35/35 fee security, and 29/29 smoke tests passing.
+- **Verification**: 34/34 portal E2E, 49/49 parent security, 35/35 fee security, and 29/29 smoke tests passing (latest: against the 2026-09-23 prod build).
+- **Known follow-ups**: teacher feedback/override editing on submissions is view-only; student-portal provider/model receipt not yet shown; daily cron not yet observed firing on schedule.

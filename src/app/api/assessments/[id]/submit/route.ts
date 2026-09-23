@@ -19,7 +19,10 @@ async function handle(request: Request, assessmentId: string) {
     assessmentId, studentId: input.student_id, userId: context.user.id, responses: input.responses,
   });
   if ("error" in res) return NextResponse.json({ error: res.error }, { status: 400 });
-  return NextResponse.json({ attempt_id: res.attemptId, score: res.score, total: res.total }, { status: 201 });
+  return NextResponse.json(
+    { attempt_id: res.attemptId, status: "submitted", total: res.total, message: "Submitted — awaiting teacher review." },
+    { status: 201 },
+  );
 }
 
 export async function POST(request: Request, { params }: { params: { id: string } }) {

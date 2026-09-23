@@ -61,6 +61,9 @@ export async function GET(request: Request) {
       total_marks: number | string; percentage: number | string;
       is_late: boolean; status: string;
     }[]);
+    // ponytail: averages use teacher-finalized grades only. Pending-review
+    // submissions count toward submission rates, never toward scores.
+    const GRADED = new Set(["teacher_reviewed", "graded", "returned"]);
 
     const byAssignment = new Map<string, typeof submissions>();
     for (const s of submissions) {
@@ -71,17 +74,20 @@ export async function GET(request: Request) {
 
     const perAssignment = rows.map((a) => {
       const list = byAssignment.get(a.id) ?? [];
+      const gradedList = list.filter((s) => GRADED.has(s.status));
       const targets = Array.isArray(a.target_student_ids) ? (a.target_student_ids as unknown[]).map(String) : [];
       const assigned = targets.length > 0 ? targets.length : list.length;
       const submitted = new Set(list.map((s) => String(s.student_id))).size;
+      const pendingReview = list.filter((s) => !GRADED.has(s.status)).length;
       const late = list.filter((s) => s.is_late).length;
-      const avg = list.length > 0
-        ? Number((list.reduce((t, s) => t + (Number(s.percentage) || 0), 0) / list.length).toFixed(1))
+      const avg = gradedList.length > 0
+        ? Number((gradedList.reduce((t, s) => t + (Number(s.percentage) || 0), 0) / gradedList.length).toFixed(1))
         : null;
       return {
         id: a.id, title: a.title, classLevel: a.class_level, subject: a.subject,
         chapterSlug: a.chapter_slug, totalMarks: Number(a.total_marks) || 0,
-        assigned, submitted, missing: Math.max(0, assigned - submitted), late,
+        assigned, submitted, pendingReview, graded: gradedList.length,
+        missing: Math.max(0, assigned - submitted), late,
         submissionRate: assigned > 0 ? Number(((submitted / assigned) * 100).toFixed(1)) : null,
         averagePercentage: avg,
       };

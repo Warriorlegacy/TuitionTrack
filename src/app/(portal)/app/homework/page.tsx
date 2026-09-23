@@ -27,7 +27,7 @@ export default async function HomeworkPage() {
       <div className="flex flex-wrap items-center justify-between gap-4">
         <PageHeader
           title="Homework & Assignments"
-          description="Create AI-powered adaptive assignments, track student completions, and evaluate submissions."
+          description="Create AI-powered adaptive assignments, track student completions, and review submissions question by question."
         />
         <div className="flex flex-wrap items-center gap-2">
           <Link

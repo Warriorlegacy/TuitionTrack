@@ -8,7 +8,6 @@ import {
   ArrowLeftIcon,
   ArrowRightIcon,
   CheckCircle2Icon,
-  AlertTriangleIcon,
   CameraIcon,
   FlagIcon,
   SendIcon,
@@ -34,6 +33,9 @@ export type QuestionData = {
 
 export type SubmissionData = {
   id: string;
+  status?: string;
+  gradingStatus?: string;
+  isGraded?: boolean;
   score: number;
   totalMarks: number;
   percentage: number;
@@ -44,6 +46,11 @@ export type SubmissionData = {
   teacherFeedback?: string;
   handwrittenFiles?: string[];
 };
+
+function isMathsSubject(subject: unknown): boolean {
+  const s = String(subject ?? "").toLowerCase();
+  return s === "maths" || s === "math" || s === "mathematics";
+}
 
 export function StudentHomeworkPlayer({
   assignment,
@@ -81,6 +88,8 @@ export function StudentHomeworkPlayer({
   const [handwrittenFiles, setHandwrittenFiles] = useState<string[]>(submission?.handwrittenFiles || []);
 
   const currentQ = questions[currentIndex] || questions[0];
+  const mathsRequired = isMathsSubject(assignment.subject);
+  const graded = Boolean(submission?.isGraded);
 
   const handleSelectOption = (qId: string, label: string) => {
     if (submission) return; // read only after submission
@@ -103,12 +112,23 @@ export function StudentHomeworkPlayer({
     toast.success("Attachment added!");
   };
 
+  const handleRemoveFile = (idx: number) => {
+    if (submission) return;
+    setHandwrittenFiles((prev) => prev.filter((_, i) => i !== idx));
+  };
+
   const handleSubmit = () => {
-    const answeredCount = Object.keys(answers).length;
-    if (answeredCount < questions.length && handwrittenFiles.length === 0) {
-      if (!confirm(`You have answered ${answeredCount} of ${questions.length} questions. Are you sure you want to submit now?`)) {
-        return;
-      }
+    const unanswered = questions.filter((q) => !(answers[q.id] || "").trim());
+    if (unanswered.length > 0) {
+      toast.error(`Please answer all ${questions.length} questions before submitting (${unanswered.length} remaining).`);
+      const firstIdx = questions.findIndex((q) => !(answers[q.id] || "").trim());
+      if (firstIdx >= 0) setCurrentIndex(firstIdx);
+      return;
+    }
+    // Mathematics: handwritten notebook upload is mandatory (all classes).
+    if (mathsRequired && handwrittenFiles.length === 0) {
+      toast.error("Mathematics homework requires a handwritten notebook upload. Please attach at least one photo/PDF page.");
+      return;
     }
 
     startTransition(async () => {
@@ -151,49 +171,54 @@ export function StudentHomeworkPlayer({
         </div>
       </div>
 
-      {/* If Already Submitted: Detailed Score & Remedial Card */}
-      {submission && (
+      {/* Submission state — answer key is study material, never a grade */}
+      {submission && !graded && (
+        <Card className="border-indigo-200 bg-indigo-50/60 shadow-sm overflow-hidden">
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-indigo-800 uppercase tracking-wider">
+                Submitted — Awaiting Teacher Review
+              </span>
+              <Badge variant="outline" className="text-xs bg-white">Answer Key Available</Badge>
+            </div>
+            <CardTitle className="text-xl text-slate-900 mt-1">Submission received.</CardTitle>
+            <CardDescription className="text-xs text-slate-600">
+              Submitted on {new Date(submission.submittedAt).toLocaleString()} · Final score: Pending Teacher Review.
+              Your teacher will review every question and publish the result.
+            </CardDescription>
+          </CardHeader>
+          {submission.teacherFeedback && (
+            <CardContent>
+              <p className="text-xs text-slate-700 bg-white p-3 rounded-xl border border-slate-200/80 leading-relaxed">
+                <strong>Teacher feedback: </strong>{submission.teacherFeedback}
+              </p>
+            </CardContent>
+          )}
+        </Card>
+      )}
+      {submission && graded && (
         <Card className="border-emerald-200 bg-gradient-to-r from-emerald-50/70 via-white to-emerald-50/70 shadow-sm overflow-hidden">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-between">
               <span className="text-xs font-bold text-emerald-800 uppercase tracking-wider">
-                Submission Result · Graded with AI
+                Result Published · Teacher Graded
               </span>
               <Badge className="bg-emerald-600 text-white text-xs">
                 Score: {submission.score} / {submission.totalMarks} ({submission.percentage}%)
               </Badge>
             </div>
             <CardTitle className="text-xl text-slate-900 mt-1">
-              {submission.percentage >= 80 ? "🎉 Outstanding Work!" : submission.percentage >= 60 ? "👍 Good Effort!" : "📖 Concept Practice Recommended"}
+              {submission.percentage >= 80 ? "🎉 Outstanding Work!" : submission.percentage >= 60 ? "👍 Good Effort!" : "📖 Keep Practising!"}
             </CardTitle>
             <CardDescription className="text-xs text-slate-600">
-              Submitted on {new Date(submission.submittedAt).toLocaleString()}
+              Submitted on {new Date(submission.submittedAt).toLocaleString()} · Graded by your teacher.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            {submission.aiEvaluationNotes && (
+            {submission.teacherFeedback && (
               <p className="text-xs text-slate-700 bg-white p-3 rounded-xl border border-slate-200/80 leading-relaxed">
-                <strong>Feedback: </strong>{submission.aiEvaluationNotes}
+                <strong>Teacher feedback: </strong>{submission.teacherFeedback}
               </p>
-            )}
-
-            {submission.mistakeBreakdown && submission.mistakeBreakdown.length > 0 && (
-              <div className="space-y-2">
-                <h4 className="text-xs font-bold text-rose-900 flex items-center gap-1.5">
-                  <AlertTriangleIcon className="size-3.5 text-rose-600" />
-                  Areas to Review ({submission.mistakeBreakdown.length} questions missed):
-                </h4>
-                <div className="space-y-2">
-                  {submission.mistakeBreakdown.map((m, mIdx) => (
-                    <div key={mIdx} className="p-3 rounded-xl bg-rose-50/80 border border-rose-200 text-xs space-y-1">
-                      <p className="font-semibold text-slate-900">Q{m.questionPosition}. {m.stem}</p>
-                      <p className="text-slate-600">Your Answer: <span className="text-rose-700 font-semibold">{m.studentAnswer}</span></p>
-                      {/* ponytail: subjective keys hold rubric-style expected points, not a single correct answer — label them honestly. */}
-                      <p className="text-slate-600">{m.qtype === "mcq" || m.qtype === "numeric" || !m.qtype ? "Correct Answer:" : "Expected points:"} <span className="text-emerald-700 font-semibold">{m.correctAnswer}</span></p>
-                    </div>
-                  ))}
-                </div>
-              </div>
             )}
           </CardContent>
         </Card>
@@ -289,28 +314,36 @@ export function StudentHomeworkPlayer({
             </div>
           )}
 
-          {/* Solution Display (Post-submission) */}
+          {/* Answer key (post-submission study material — not a grade) */}
           {submission && currentQ?.solutionSteps?.length && (
             <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 text-xs space-y-1.5">
-              <span className="font-bold text-slate-900">Step-by-Step Solution:</span>
+              <span className="font-bold text-slate-900">Answer Key — Step-by-Step Solution:</span>
+              {currentQ.correctAnswer && (
+                <p className="text-slate-700">Correct answer: <span className="font-semibold text-emerald-700">{currentQ.correctAnswer}</span></p>
+              )}
               <div className="space-y-1 text-slate-600">
                 {currentQ.solutionSteps.map((s, sIdx) => (
                   <p key={sIdx}>{s}</p>
                 ))}
               </div>
+              {!graded && (
+                <p className="text-[11px] text-indigo-700 pt-1">Final score: Pending Teacher Review.</p>
+              )}
             </div>
           )}
 
-          {/* Handwritten Notebook Attachment Option */}
+          {/* Handwritten Notebook Attachment */}
           <div className="p-4 rounded-2xl bg-slate-50/70 border border-slate-200/80 space-y-3">
             <div className="flex items-center gap-2">
               <CameraIcon className="size-4 text-indigo-600" />
               <span className="text-xs font-bold text-slate-800">
-                Handwritten Notebook / Photo Upload (Optional)
+                Handwritten Notebook / Photo Upload {mathsRequired ? "(Required for Maths)" : "(Optional)"}
               </span>
             </div>
             <p className="text-[11px] text-slate-500 leading-relaxed">
-              If you solved this question in your notebook, paste the photo/document link or upload image URL here. AI will extract and evaluate your handwriting.
+              {mathsRequired
+                ? "Mathematics homework cannot be submitted without your handwritten notebook pages (photos/PDF links). Your teacher will review the written work manually."
+                : "If you solved this in your notebook, attach photo/document links here for your teacher to review."}
             </p>
 
             {!submission && (
@@ -330,11 +363,19 @@ export function StudentHomeworkPlayer({
             {handwrittenFiles.length > 0 && (
               <div className="space-y-1 pt-1">
                 {handwrittenFiles.map((file, fIdx) => (
-                  <div key={fIdx} className="text-xs text-indigo-700 bg-white p-2 rounded-lg border border-slate-200 truncate">
-                    📎 Attachment {fIdx + 1}: {file}
+                  <div key={fIdx} className="flex items-center gap-2 text-xs text-indigo-700 bg-white p-2 rounded-lg border border-slate-200">
+                    <span className="truncate flex-1">📎 Page {fIdx + 1}: {file}</span>
+                    {!submission && (
+                      <button type="button" onClick={() => handleRemoveFile(fIdx)} className="text-rose-600 font-semibold shrink-0">
+                        Remove
+                      </button>
+                    )}
                   </div>
                 ))}
               </div>
+            )}
+            {mathsRequired && !submission && handwrittenFiles.length === 0 && (
+              <p className="text-[11px] text-rose-600 font-medium">At least one notebook page is required to submit.</p>
             )}
           </div>
 

@@ -4,7 +4,11 @@ import { revalidatePath } from "next/cache";
 import { getAuthContext } from "@/lib/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import type { GeneratedQuestion, HomeworkMode } from "@/lib/homework/variation-engine";
-import { notifyHomeworkAssigned, notifyHomeworkSubmitted } from "@/lib/notifications";
+import {
+  notifyHomeworkAssigned,
+  notifyHomeworkSubmitted,
+  notifyHomeworkGraded,
+} from "@/lib/notifications";
 
 /**
  * Normalize an Indian family contact number to WhatsApp's digit-only
@@ -67,6 +71,7 @@ export type PublishAssignmentInput = {
   chapterSlug: string;
   preset: string;
   mode: HomeworkMode;
+  questionFormat?: "mixed" | "mcq";
   submissionMode: "online" | "handwritten" | "mixed";
   dueDate: string;
   totalMarks: number;
@@ -106,7 +111,9 @@ export async function publishAssignmentAction(input: PublishAssignmentInput) {
         total_marks: input.totalMarks,
         passing_marks: Math.round(input.totalMarks * 0.4),
         target_student_ids: input.targetStudentIds,
-        ai_grading_enabled: true,
+        ai_grading_enabled: false,
+        question_format: (input.questionFormat ?? "mixed") as never,
+        config: { question_format: input.questionFormat ?? "mixed" } as never,
       })
       .select("id")
       .single();
@@ -258,6 +265,15 @@ export type SubmitAssignmentInput = {
   handwrittenFiles?: string[]; // uploaded image/pdf URLs
 };
 
+/**
+ * Is this a Mathematics assessment? Handwritten notebook upload is mandatory
+ * for Maths (all classes 5-12) — other subjects follow their configured format.
+ */
+function isMathsSubject(subject: unknown): boolean {
+  const s = String(subject ?? "").toLowerCase();
+  return s === "maths" || s === "math" || s === "mathematics";
+}
+
 export async function submitAssignmentAction(input: SubmitAssignmentInput) {
   const context = await getAuthContext();
   if (!context.user) {
@@ -295,84 +311,38 @@ export async function submitAssignmentAction(input: SubmitAssignmentInput) {
       ? studentQuestions
       : questions.filter((q) => q.student_id === null);
 
-    // 3. Evaluate responses
-    let score = 0;
-    let totalMarks = 0;
-    const mistakes: { questionPosition: number; stem: string; studentAnswer: string; correctAnswer: string; category: string }[] = [];
-
+    // 3. Completion gate: every required question must be answered.
+    // Answer key is revealed only after this gate passes + submission saves.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    for (const q of resolvedQuestions as any[]) {
-      const qMarks = Number(q.marks) || 1;
-      totalMarks += qMarks;
-      const qId = String(q.id);
-      const studentAns = (input.answers[qId] || "").trim();
-      // ponytail: breakdown carries qtype so the review UI can label
-      // rubric-style expected answers correctly (not "Correct Answer").
-      const mistakeBase = { questionPosition: q.position, stem: q.stem, qtype: q.qtype };
-
-      if (q.qtype === "mcq") {
-        // The player submits the option LABEL ("A") but stored keys hold
-        // either the label or the option text ("2") — resolve both sides
-        // through the options list before comparing.
-        const opts: { label?: string; text?: string }[] = Array.isArray(q.options) ? q.options : [];
-        const norm = (v: unknown) => String(v ?? "").toLowerCase().trim();
-        const studentNorm = norm(studentAns);
-        const correctNorm = norm(q.correct_answer);
-        const studentOpt = opts.find((o) => norm(o.label) === studentNorm);
-        const correctOpt = opts.find((o) => norm(o.label) === correctNorm);
-        const resolvedStudent = studentOpt ? norm(studentOpt.text) : studentNorm;
-        const resolvedCorrect = correctOpt ? norm(correctOpt.text) : correctNorm;
-        const isCorrect =
-          studentNorm === correctNorm ||
-          resolvedStudent === resolvedCorrect ||
-          (resolvedCorrect.length > 0 && resolvedStudent.startsWith(resolvedCorrect));
-
-        if (isCorrect) {
-          score += qMarks;
-        } else {
-          mistakes.push({
-            ...mistakeBase,
-            studentAnswer: studentAns || "No answer",
-            correctAnswer: q.correct_answer,
-            category: "concept",
-          });
-        }
-      } else if (q.qtype === "numeric") {
-        const num = (v: string) => parseFloat(v.replace(/,/g, "").trim());
-        const studentNum = num(studentAns);
-        const correctNum = num(String(q.correct_answer ?? ""));
-        const isCorrect = !isNaN(studentNum) && !isNaN(correctNum) && Math.abs(studentNum - correctNum) < 0.01;
-
-        if (isCorrect) {
-          score += qMarks;
-        } else {
-          mistakes.push({
-            ...mistakeBase,
-            studentAnswer: studentAns || "No answer",
-            correctAnswer: q.correct_answer,
-            category: "calculation",
-          });
-        }
-      } else {
-        // Subjective or handwritten: award proportional score based on answer length/presence for auto-eval
-        if (studentAns.length > 20 || (input.handwrittenFiles && input.handwrittenFiles.length > 0)) {
-          const awarded = Math.round(qMarks * 0.8 * 10) / 10;
-          score += awarded;
-        } else {
-          mistakes.push({
-            ...mistakeBase,
-            studentAnswer: studentAns || "Incomplete",
-            correctAnswer: q.correct_answer,
-            category: "incomplete",
-          });
-        }
-      }
+    const unanswered = (resolvedQuestions as any[]).filter((q) => {
+      const ans = (input.answers[String(q.id)] || "").trim();
+      return ans.length === 0;
+    });
+    if (unanswered.length > 0) {
+      return {
+        success: false,
+        message: `Please answer all ${resolvedQuestions.length} questions before submitting (${unanswered.length} remaining).`,
+      };
     }
 
-    const percentage = totalMarks > 0 ? Math.round((score / totalMarks) * 100) : 0;
+    // 4. Mathematics gate: handwritten notebook upload is mandatory for Maths
+    // (all classes). Other subjects follow their configured submission format.
+    const files = input.handwrittenFiles || [];
+    if (isMathsSubject(typedAssignment.subject) && files.length === 0) {
+      return {
+        success: false,
+        message: "Mathematics homework requires a handwritten notebook upload (photo/PDF of your written work). Please attach at least one page.",
+      };
+    }
+
+    // 5. Total marks come from the question paper — NEVER an auto score.
+    // Official grade stays empty until the teacher reviews every question.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const totalMarks = (resolvedQuestions as any[]).reduce((t, q) => t + (Number(q.marks) || 1), 0);
     const isLate = new Date() > new Date(typedAssignment.due_date);
 
-    // 4. Save Submission
+    // 6. Save submission as SUBMITTED / PENDING teacher review.
+    // No AI evaluation, no auto score, no mistake breakdown, no graded_at.
     const { data: submission, error: sErr } = await supabase
       .from("assignment_submissions")
       .upsert(
@@ -380,17 +350,23 @@ export async function submitAssignmentAction(input: SubmitAssignmentInput) {
           assignment_id: input.assignmentId,
           student_id: input.studentId,
           answers: input.answers,
-          handwritten_files: input.handwrittenFiles || [],
-          score,
+          handwritten_files: files,
+          score: 0,
           total_marks: totalMarks,
-          percentage,
-          status: "ai_evaluated" as never,
-          ai_confidence: 0.92,
-          ai_evaluation_notes: `Auto-graded ${resolvedQuestions.length} questions. Objective items evaluated with 100% key verification. Subjective answers evaluated against grading rubrics.`,
-          mistake_breakdown: mistakes,
+          percentage: 0,
+          status: "submitted" as never,
+          grading_status: "pending",
+          grading_method: "teacher_manual",
+          teacher_marks: {},
+          question_feedback: {},
+          reviewed_questions: [],
+          ai_confidence: null,
+          ai_evaluation_notes: null,
+          mistake_breakdown: [],
           is_late: isLate,
           submitted_at: new Date().toISOString(),
-          graded_at: new Date().toISOString(),
+          graded_at: null,
+          finalized_at: null,
         },
         { onConflict: "assignment_id,student_id,attempt_number" }
       )
@@ -402,29 +378,14 @@ export async function submitAssignmentAction(input: SubmitAssignmentInput) {
       return { success: false, message: sErr?.message || "Failed to submit assignment." };
     }
 
-    // 5. If percentage < 60%, trigger remedial recommendation
-    if (percentage < 60) {
-      await supabase.from("remedial_homework_triggers").insert({
-        student_id: input.studentId,
-        chapter_slug: typedAssignment.chapter_slug,
-        trigger_concept: typedAssignment.title,
-        mastery_level: percentage,
-        status: "suggested",
-      });
-    }
-
-    // 6. Targeted notifications for this REAL event: submitting student gets a
-    // confirmation, the teacher gets a new-submission row, verified guardians
-    // of this student get a parent update. Best-effort — never fails submit.
+    // 7. Targeted notifications for this REAL event — no scores included.
+    // Teacher gets "awaiting review", student/parent get confirmations only.
     await notifyHomeworkSubmitted(supabase, {
       assignmentId: input.assignmentId,
       teacherId: String(typedAssignment.teacher_id ?? ""),
       title: String(typedAssignment.title ?? "Homework"),
       subject: String(typedAssignment.subject ?? ""),
       studentId: input.studentId,
-      score,
-      totalMarks,
-      percentage,
       isLate,
     });
 
@@ -435,13 +396,186 @@ export async function submitAssignmentAction(input: SubmitAssignmentInput) {
     return {
       success: true,
       submissionId: submission.id,
-      score,
-      totalMarks,
-      percentage,
-      message: `Homework submitted successfully! Score: ${score}/${totalMarks} (${percentage}%)`,
+      message: `Homework submitted successfully! Answer key is now available. Grade: Pending Teacher Review.`,
     };
   } catch (err) {
     console.error("submitAssignmentAction error:", err);
     return { success: false, message: (err as Error).message || "Submission failed." };
+  }
+}
+
+// ── Teacher manual review ─────────────────────────────────────────────────
+// Teacher marks are the ONLY source of truth for the official grade.
+// Finalize stays disabled until every question is reviewed.
+
+export type SaveQuestionReviewInput = {
+  submissionId: string;
+  questionId: string;
+  marksAwarded: number;
+  feedback?: string;
+};
+
+export async function saveQuestionReviewAction(input: SaveQuestionReviewInput) {
+  const context = await getAuthContext();
+  if (!context.user || context.role !== "teacher") {
+    return { success: false, message: "Unauthorized. Only teachers can review submissions." };
+  }
+  try {
+    const supabase = createSupabaseAdminClient();
+    const { data: sub, error: sErr } = await supabase
+      .from("assignment_submissions")
+      .select("id, assignment_id, teacher_marks, question_feedback, reviewed_questions, status")
+      .eq("id", input.submissionId)
+      .single();
+    if (sErr || !sub) return { success: false, message: "Submission not found." };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const typed = sub as any;
+
+    // Ownership: teacher must own the assignment (mirrors RLS).
+    const { data: asg } = await supabase
+      .from("assignments")
+      .select("id, teacher_id")
+      .eq("id", typed.assignment_id)
+      .single();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (!asg || (asg as any).teacher_id !== context.user.id) {
+      return { success: false, message: "Unauthorized. This submission belongs to another workspace." };
+    }
+
+    // Clamp marks to [0, max] using the question paper.
+    const { data: q } = await supabase
+      .from("assignment_questions")
+      .select("id, marks")
+      .eq("id", input.questionId)
+      .single();
+    const maxMarks = Number((q as { marks?: unknown } | null)?.marks) || 0;
+    const awarded = Math.min(Math.max(0, Number(input.marksAwarded) || 0), maxMarks);
+
+    const teacherMarks = { ...((typed.teacher_marks as Record<string, number>) ?? {}) };
+    const feedback = { ...((typed.question_feedback as Record<string, string>) ?? {}) };
+    const reviewed = new Set<string>(Array.isArray(typed.reviewed_questions) ? typed.reviewed_questions.map(String) : []);
+    teacherMarks[input.questionId] = awarded;
+    if (input.feedback !== undefined) feedback[input.questionId] = input.feedback;
+    reviewed.add(input.questionId);
+
+    const { error: uErr } = await supabase
+      .from("assignment_submissions")
+      .update({
+        teacher_marks: teacherMarks,
+        question_feedback: feedback,
+        reviewed_questions: Array.from(reviewed),
+        grading_status: "in_review",
+        teacher_overridden: true,
+      })
+      .eq("id", input.submissionId);
+    if (uErr) return { success: false, message: uErr.message };
+
+    revalidatePath(`/app/homework/${typed.assignment_id}`);
+    return { success: true, message: "Review saved." };
+  } catch (err) {
+    return { success: false, message: (err as Error).message || "Failed to save review." };
+  }
+}
+
+export async function finalizeSubmissionGradeAction(submissionId: string) {
+  const context = await getAuthContext();
+  if (!context.user || context.role !== "teacher") {
+    return { success: false, message: "Unauthorized. Only teachers can finalize grades." };
+  }
+  try {
+    const supabase = createSupabaseAdminClient();
+    const { data: sub, error: sErr } = await supabase
+      .from("assignment_submissions")
+      .select("id, assignment_id, student_id, teacher_marks, reviewed_questions, status")
+      .eq("id", submissionId)
+      .single();
+    if (sErr || !sub) return { success: false, message: "Submission not found." };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const typed = sub as any;
+
+    const { data: asg } = await supabase
+      .from("assignments")
+      .select("id, teacher_id, title, subject, chapter_slug")
+      .eq("id", typed.assignment_id)
+      .single();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const typedAsg = asg as any;
+    if (!typedAsg || typedAsg.teacher_id !== context.user.id) {
+      return { success: false, message: "Unauthorized. This submission belongs to another workspace." };
+    }
+
+    // Every question on the student's paper must be reviewed first.
+    const { data: qs } = await supabase
+      .from("assignment_questions")
+      .select("id, marks, student_id")
+      .eq("assignment_id", typed.assignment_id);
+    const all = ((qs ?? []) as { id: string; marks: unknown; student_id: string | null }[]);
+    const studentQs = all.filter((x) => x.student_id === typed.student_id);
+    const paper = studentQs.length > 0 ? studentQs : all.filter((x) => x.student_id === null);
+    const reviewed = new Set<string>(
+      Array.isArray(typed.reviewed_questions) ? typed.reviewed_questions.map(String) : [],
+    );
+    const pending = paper.filter((x) => !reviewed.has(String(x.id)));
+    if (pending.length > 0) {
+      return {
+        success: false,
+        message: `${pending.length} question(s) still require review. (${reviewed.size}/${paper.length} reviewed)`,
+      };
+    }
+
+    // Final score = SUM of teacher-entered marks. Nothing else.
+    const marks = (typed.teacher_marks as Record<string, number>) ?? {};
+    let score = 0;
+    let total = 0;
+    for (const x of paper) {
+      const max = Number(x.marks) || 0;
+      total += max;
+      score += Math.min(Math.max(0, Number(marks[String(x.id)]) || 0), max);
+    }
+    score = Math.round(score * 10) / 10;
+    const percentage = total > 0 ? Math.round((score / total) * 100) : 0;
+
+    const { error: uErr } = await supabase
+      .from("assignment_submissions")
+      .update({
+        score,
+        total_marks: total,
+        percentage,
+        status: "graded",
+        grading_status: "completed",
+        grading_method: "teacher_manual",
+        graded_at: new Date().toISOString(),
+        finalized_at: new Date().toISOString(),
+      })
+      .eq("id", submissionId);
+    if (uErr) return { success: false, message: uErr.message };
+
+    // Remedial signal now uses the teacher-finalized grade (never an AI score).
+    if (percentage < 60) {
+      await supabase.from("remedial_homework_triggers").insert({
+        student_id: typed.student_id,
+        chapter_slug: String(typedAsg.chapter_slug ?? ""),
+        trigger_concept: String(typedAsg.title ?? "Homework"),
+        mastery_level: percentage,
+        status: "suggested",
+      });
+    }
+
+    await notifyHomeworkGraded(supabase, {
+      assignmentId: String(typed.assignment_id),
+      teacherId: String(typedAsg.teacher_id ?? ""),
+      title: String(typedAsg.title ?? "Homework"),
+      subject: String(typedAsg.subject ?? ""),
+      studentId: String(typed.student_id),
+      score,
+      totalMarks: total,
+      percentage,
+    });
+
+    revalidatePath(`/app/homework/${typed.assignment_id}`);
+    revalidatePath(`/app/dashboard`);
+    return { success: true, message: `Grade finalized: ${score}/${total} (${percentage}%). Result published.` };
+  } catch (err) {
+    return { success: false, message: (err as Error).message || "Failed to finalize grade." };
   }
 }

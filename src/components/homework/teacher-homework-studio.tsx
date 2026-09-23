@@ -59,6 +59,7 @@ export function TeacherHomeworkStudio({ students }: { students: StudentRow[] }) 
   // Configuration states
   const [preset, setPreset] = useState<string>("chapter");
   const [mode, setMode] = useState<HomeworkMode>("variant");
+  const [questionFormat, setQuestionFormat] = useState<"mixed" | "mcq">("mixed");
   const [submissionMode, setSubmissionMode] = useState<"online" | "handwritten" | "mixed">("mixed");
   const [questionCount, setQuestionCount] = useState<number>(10);
   const difficulty = 3;
@@ -107,6 +108,8 @@ export function TeacherHomeworkStudio({ students }: { students: StudentRow[] }) 
           questionCount,
           difficulty,
           mode,
+          questionFormat,
+          questionTypes: questionFormat === "mcq" ? ["mcq"] : undefined,
           studentIds: studentIdsToSend,
         }),
       });
@@ -151,6 +154,7 @@ export function TeacherHomeworkStudio({ students }: { students: StudentRow[] }) 
         chapterSlug: currentChapter?.slug || selectedChapterSlug,
         preset,
         mode,
+        questionFormat,
         submissionMode,
         dueDate,
         totalMarks,
@@ -352,6 +356,32 @@ export function TeacherHomeworkStudio({ students }: { students: StudentRow[] }) 
                     : mode === "adaptive"
                     ? "🎯 Calibrates difficulty automatically to each student's current concept mastery."
                     : "📋 Identical question set for all assigned students."}
+                </p>
+              </div>
+
+              {/* Question Format: Mixed vs MCQ Only */}
+              <div className="space-y-1.5">
+                <Label className="text-xs font-semibold">Question Format</Label>
+                <div className="grid grid-cols-2 gap-1.5">
+                  {(["mixed", "mcq"] as const).map((f) => (
+                    <button
+                      key={f}
+                      type="button"
+                      onClick={() => setQuestionFormat(f)}
+                      className={`p-2 rounded-lg text-xs font-medium border text-left transition-all ${
+                        questionFormat === f
+                          ? "bg-indigo-50 border-indigo-400 text-indigo-900 font-semibold"
+                          : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100"
+                      }`}
+                    >
+                      {f === "mcq" ? "MCQ Only" : "Mixed Format"}
+                    </button>
+                  ))}
+                </div>
+                <p className="text-[11px] text-slate-500 leading-tight">
+                  {questionFormat === "mcq"
+                    ? "All generated questions will be MCQs (A/B/C/D with verified keys)."
+                    : "Mixed question types (MCQ, numeric, short, assertion-reason)."}
                 </p>
               </div>
 
