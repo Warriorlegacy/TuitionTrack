@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireAuthContext } from "@/lib/auth";
+import { getAuthContext } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { getBestKeyForTier } from "@/lib/ai/byok";
@@ -15,8 +15,14 @@ const ENDPOINT = "/api/ai/homework/generate";
 export async function POST(req: Request) {
   const started = Date.now();
   try {
-    const context = await requireAuthContext();
-    if (context.role !== "teacher" || !context.user) {
+    // ponytail: getAuthContext (not requireAuthContext) — require* throws a
+    // NEXT_REDIRECT digest that route handlers surface as a 500. API routes
+    // must return JSON status codes instead.
+    const context = await getAuthContext();
+    if (!context.user) {
+      return NextResponse.json({ error: "Unauthorized. Please sign in." }, { status: 401 });
+    }
+    if (context.role !== "teacher") {
       return NextResponse.json({ error: "Only teachers can generate homework." }, { status: 403 });
     }
 

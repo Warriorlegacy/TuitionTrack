@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireTeacherContext } from "@/lib/auth";
+import { getAuthContext } from "@/lib/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 // Homework analytics from REAL application data only: completion/submission
@@ -10,9 +10,14 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   try {
-    const context = await requireTeacherContext();
+    // ponytail: getAuthContext (not requireTeacherContext) — require*
+    // helpers throw NEXT_REDIRECT, which route handlers surface as a 500.
+    const context = await getAuthContext();
     if (!context.configured || !context.user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+    if (context.role !== "teacher") {
+      return NextResponse.json({ error: "Only teachers can view homework reports." }, { status: 403 });
     }
 
     const url = new URL(request.url);
