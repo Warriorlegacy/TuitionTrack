@@ -36,13 +36,16 @@ export function TeacherHomeworkStudio({ students }: { students: StudentRow[] }) 
   const [selectedClass, setSelectedClass] = useState<number>(8);
   const subjects = useMemo(() => getOfficialSubjectsForClass(selectedClass), [selectedClass]);
   const [selectedSubject, setSelectedSubject] = useState<string>(subjects[0] || "Maths");
+  // ponytail: selectedSubject/selectedChapterSlug go stale when the class
+  // changes — derive effective values so payload, chapters, and UI agree.
+  const effectiveSubject = subjects.includes(selectedSubject) ? selectedSubject : subjects[0] || "Maths";
 
   // Filter chapters by selected class and subject
   const availableChapters = useMemo(() => {
     return OFFICIAL_CHAPTERS.filter(
-      (c) => c.classLevel === selectedClass && c.subject.toLowerCase() === selectedSubject.toLowerCase()
+      (c) => c.classLevel === selectedClass && c.subject.toLowerCase() === effectiveSubject.toLowerCase()
     );
-  }, [selectedClass, selectedSubject]);
+  }, [selectedClass, effectiveSubject]);
 
   const [selectedChapterSlug, setSelectedChapterSlug] = useState<string>(
     availableChapters[0]?.slug || "c8-maths-01"
@@ -75,6 +78,13 @@ export function TeacherHomeworkStudio({ students }: { students: StudentRow[] }) 
   const [generatedQuestions, setGeneratedQuestions] = useState<GeneratedQuestion[]>([]);
   const [studentVariants, setStudentVariants] = useState<Record<string, GeneratedQuestion[]> | undefined>(undefined);
   const [assignmentTitle, setAssignmentTitle] = useState<string>("");
+  // REAL serving provider/model reported by the generate API — never hardcoded.
+  const [genMeta, setGenMeta] = useState<{
+    providerLabel: string;
+    model: string;
+    generatedAt?: string;
+    validation?: { checked: number; rejected: number; attempts: number };
+  } | null>(null);
 
   const handleGenerate = async () => {
     if (!currentChapter) {
@@ -83,6 +93,7 @@ export function TeacherHomeworkStudio({ students }: { students: StudentRow[] }) 
     }
 
     setGenerating(true);
+    setGenMeta(null);
     try {
       const studentIdsToSend = selectedStudentIds.length > 0 ? selectedStudentIds : classStudents.map((s) => s.id);
 
@@ -92,7 +103,7 @@ export function TeacherHomeworkStudio({ students }: { students: StudentRow[] }) 
         body: JSON.stringify({
           chapterSlug: currentChapter.slug,
           classLevel: selectedClass,
-          subject: selectedSubject,
+          subject: effectiveSubject,
           questionCount,
           difficulty,
           mode,
@@ -108,7 +119,13 @@ export function TeacherHomeworkStudio({ students }: { students: StudentRow[] }) 
       setGeneratedQuestions(data.assignment.questions);
       setStudentVariants(data.assignment.studentVariants);
       setAssignmentTitle(data.assignment.assignmentTitle);
-      toast.success(`Generated ${data.assignment.questions.length} questions for ${currentChapter.title}!`);
+      setGenMeta({
+        providerLabel: data.providerLabel || data.assignment.provider || "AI provider",
+        model: data.model || data.assignment.model || "unknown",
+        generatedAt: data.assignment.generatedAt,
+        validation: data.assignment.validation,
+      });
+      toast.success(`Generated ${data.assignment.questions.length} fresh questions for ${currentChapter.title}!`);
     } catch (err) {
       console.error(err);
       toast.error((err as Error).message || "Generation failed.");
@@ -130,7 +147,7 @@ export function TeacherHomeworkStudio({ students }: { students: StudentRow[] }) 
       const res = await publishAssignmentAction({
         title: assignmentTitle || `${currentChapter?.title || "Chapter"} Practice`,
         classLevel: selectedClass,
-        subject: selectedSubject,
+        subject: effectiveSubject,
         chapterSlug: currentChapter?.slug || selectedChapterSlug,
         preset,
         mode,
@@ -210,7 +227,7 @@ export function TeacherHomeworkStudio({ students }: { students: StudentRow[] }) 
               <div className="space-y-1.5">
                 <Label className="text-xs font-semibold">Class Level</Label>
                 <div className="flex flex-wrap gap-1.5">
-                  {[6, 7, 8, 9, 10, 11, 12].map((cls) => (
+                  {[5, 6, 7, 8, 9, 10, 11, 12].map((cls) => (
                     <button
                       key={cls}
                       type="button"
@@ -256,7 +273,7 @@ export function TeacherHomeworkStudio({ students }: { students: StudentRow[] }) 
               <div className="space-y-1.5">
                 <Label className="text-xs font-semibold">Chapter</Label>
                 <select
-                  value={selectedChapterSlug}
+                  value={currentChapter?.slug || ""}
                   onChange={(e) => setSelectedChapterSlug(e.target.value)}
                   className="w-full text-xs rounded-xl border border-slate-200 bg-white p-2.5 font-medium text-slate-900 shadow-sm focus:border-indigo-500 focus:outline-none"
                 >
@@ -405,6 +422,36 @@ export function TeacherHomeworkStudio({ students }: { students: StudentRow[] }) 
                 <SparklesIcon className="size-4" />
                 <span>{generating ? "Generating Unique Questions..." : "Generate AI Homework"}</span>
               </Button>
+
+              {/* Live generation pipeline status — every line reflects a real stage */}
+              {(generating || genMeta) && currentChapter && (
+                <div className="rounded-xl border border-indigo-100 bg-indigo-50/60 p-3 space-y-1.5 text-[11px]">
+                  <p className="font-bold text-indigo-900">Generation pipeline</p>
+                  <p className="text-indigo-800">
+                    <CheckCircle2Icon className="size-3.5 inline mr-1 text-emerald-600" />
+                    Curriculum context: Class {selectedClass} {effectiveSubject} · Ch {currentChapter.chapterNumber}: {currentChapter.title}
+                  </p>
+                  {generating ? (
+                    <p className="text-indigo-800">
+                      <RefreshCwIcon className="size-3.5 inline mr-1 animate-spin text-indigo-600" />
+                      Requesting fresh questions from live AI (unique per run)…
+                    </p>
+                  ) : genMeta ? (
+                    <>
+                      <p className="text-indigo-800">
+                        <CheckCircle2Icon className="size-3.5 inline mr-1 text-emerald-600" />
+                        Generated by {genMeta.providerLabel} · <span className="font-mono">{genMeta.model}</span>
+                      </p>
+                      {genMeta.validation && (
+                        <p className="text-indigo-800">
+                          <CheckCircle2Icon className="size-3.5 inline mr-1 text-emerald-600" />
+                          Validated {genMeta.validation.checked} questions · {genMeta.validation.rejected} rejected · {genMeta.validation.attempts} attempt{genMeta.validation.attempts === 1 ? "" : "s"}
+                        </p>
+                      )}
+                    </>
+                  ) : null}
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
@@ -426,9 +473,16 @@ export function TeacherHomeworkStudio({ students }: { students: StudentRow[] }) 
               </div>
 
               {generatedQuestions.length > 0 && (
-                <Badge variant="outline" className="text-indigo-700 bg-indigo-50 border-indigo-200 text-xs">
-                  {generatedQuestions.reduce((s, q) => s + q.marks, 0)} Total Marks
-                </Badge>
+                <div className="flex flex-col items-end gap-1.5 shrink-0">
+                  <Badge variant="outline" className="text-indigo-700 bg-indigo-50 border-indigo-200 text-xs">
+                    {generatedQuestions.reduce((s, q) => s + q.marks, 0)} Total Marks
+                  </Badge>
+                  {genMeta && (
+                    <Badge variant="secondary" className="text-[10px] font-mono" title={`Generated at ${genMeta.generatedAt || "unknown time"}`}>
+                      {genMeta.providerLabel} · {genMeta.model}
+                    </Badge>
+                  )}
+                </div>
               )}
             </CardHeader>
             <CardContent className="space-y-4">

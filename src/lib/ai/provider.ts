@@ -94,6 +94,24 @@ const ENV_MODELS: Record<"A" | "B" | "C", string | undefined> = {
 // ── Provider detection from key prefix ─────────────────────────────
 export type ProviderKind = "openai" | "anthropic" | "google" | "groq" | "together" | "openrouter" | "huggingface" | "nvidia" | "deepseek" | "ollama" | "github" | "custom";
 
+/** Human label for the REAL serving provider — used by generation UIs. */
+export function providerDisplayName(kind: ProviderKind | string): string {
+  switch (kind) {
+    case "openai": return "OpenAI";
+    case "anthropic": return "Anthropic";
+    case "google": return "Google";
+    case "groq": return "Groq";
+    case "together": return "Together AI";
+    case "openrouter": return "OpenRouter";
+    case "huggingface": return "Hugging Face";
+    case "nvidia": return "NVIDIA NIM";
+    case "deepseek": return "DeepSeek";
+    case "github": return "GitHub Models";
+    case "ollama": return "Ollama (local)";
+    default: return "Custom endpoint";
+  }
+}
+
 export interface ResolvedProvider {
   kind: ProviderKind;
   baseUrl: string;
@@ -261,6 +279,9 @@ export type CompleteArgs = {
 export type CompleteResult = {
   text: string;
   model: string;
+  // ponytail: which provider served this result — set on live completions so
+  // callers can show the REAL provider/model instead of hardcoding a label.
+  provider?: ProviderKind;
   inputTokens: number;
   outputTokens: number;
   costUsd: number;
@@ -458,7 +479,8 @@ export async function complete(args: CompleteArgs): Promise<CompleteResult> {
           throw new Error(`provider ${provider.kind} ${provider.model} returned empty content`);
         }
         return {
-          text, model: provider.model, inputTokens: inTok, outputTokens: outTok,
+          text, model: provider.model, provider: provider.kind,
+          inputTokens: inTok, outputTokens: outTok,
           costUsd: estimateCostUsd(provider.model, inTok, outTok),
           cached: false, stubbed: false, latencyMs: Date.now() - started,
         };
@@ -593,7 +615,8 @@ export async function streamComplete(
     const finish = (): CompleteResult => {
       const finalOut = outTok || Math.max(1, approxTokens(full));
       return {
-        text: full, model: provider.model, inputTokens: inTok, outputTokens: finalOut,
+        text: full, model: provider.model, provider: provider.kind,
+        inputTokens: inTok, outputTokens: finalOut,
         costUsd: estimateCostUsd(provider.model, inTok, finalOut),
         cached: false, stubbed: false, latencyMs: Date.now() - started,
       };

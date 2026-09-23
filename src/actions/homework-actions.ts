@@ -4,6 +4,7 @@ import { revalidatePath } from "next/cache";
 import { getAuthContext } from "@/lib/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import type { GeneratedQuestion, HomeworkMode } from "@/lib/homework/variation-engine";
+import { notifyHomeworkAssigned, notifyHomeworkSubmitted } from "@/lib/notifications";
 
 /**
  * Normalize an Indian family contact number to WhatsApp's digit-only
@@ -174,54 +175,16 @@ export async function publishAssignmentAction(input: PublishAssignmentInput) {
       return { success: false, message: questionsError.message };
     }
 
-    // ponytail: notify verified guardians via their in-app Notifications feed.
-    // Best-effort — a notification failure must never fail the publish.
-    try {
-      const targetIds = Array.from(new Set(input.targetStudentIds)).filter(Boolean);
-      if (targetIds.length > 0) {
-        const [{ data: rels }, { data: namedStudents }] = await Promise.all([
-          supabase
-            .from("guardian_student_relationships")
-            .select("guardian_user_id, student_id")
-            .in("student_id", targetIds)
-            .eq("status", "active")
-            .not("verified_at", "is", null),
-          supabase.from("students").select("id, name").in("id", targetIds),
-        ]);
-        const names = new Map(
-          ((namedStudents ?? []) as { id: string; name: string }[]).map((s) => [s.id, s.name]),
-        );
-        const seen = new Set<string>();
-        const relList = (((rels ?? []) as { guardian_user_id: string; student_id: string }[]).filter(
-          (r) => {
-            const key = `${r.guardian_user_id}:${r.student_id}`;
-            if (seen.has(key)) return false;
-            seen.add(key);
-            return true;
-          },
-        ));
-        const rows = relList.map((r) => ({
-          actor_id: r.guardian_user_id,
-          action: "homework_assigned",
-          entity: "assignment",
-          entity_id: assignment.id,
-          metadata: {
-            assignmentId: assignment.id,
-            title: input.title,
-            subject: input.subject,
-            classLevel: input.classLevel,
-            dueDate: input.dueDate,
-            studentId: r.student_id,
-            studentName: names.get(r.student_id) ?? "your child",
-          },
-        }));
-        if (rows.length > 0) {
-          await supabase.from("audit_logs").insert(rows as never);
-        }
-      }
-    } catch (notifyErr) {
-      console.error("Parent homework notification failed (non-blocking):", notifyErr);
-    }
+    // ponytail: ping targeted students + verified guardians via their
+    // in-app Notifications feeds. Best-effort — never fails the publish.
+    await notifyHomeworkAssigned(supabase, {
+      assignmentId: (assignment as { id: string }).id,
+      title: input.title,
+      subject: input.subject,
+      classLevel: input.classLevel,
+      dueDate: input.dueDate,
+      studentIds: input.targetStudentIds,
+    });
 
     // ponytail: auto-WhatsApp to guardians' family numbers via Meta Cloud API.
     // Needs WHATSAPP_TOKEN + WHATSAPP_PHONE_NUMBER_ID; without them this is a
@@ -449,6 +412,21 @@ export async function submitAssignmentAction(input: SubmitAssignmentInput) {
         status: "suggested",
       });
     }
+
+    // 6. Targeted notifications for this REAL event: submitting student gets a
+    // confirmation, the teacher gets a new-submission row, verified guardians
+    // of this student get a parent update. Best-effort — never fails submit.
+    await notifyHomeworkSubmitted(supabase, {
+      assignmentId: input.assignmentId,
+      teacherId: String(typedAssignment.teacher_id ?? ""),
+      title: String(typedAssignment.title ?? "Homework"),
+      subject: String(typedAssignment.subject ?? ""),
+      studentId: input.studentId,
+      score,
+      totalMarks,
+      percentage,
+      isLate,
+    });
 
     revalidatePath(`/app/homework`);
     revalidatePath(`/app/homework/${input.assignmentId}`);

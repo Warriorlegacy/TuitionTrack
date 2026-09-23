@@ -1,7 +1,7 @@
-import { BellIcon, CalendarIcon, IndianRupeeIcon, BookOpenIcon, CalendarCheckIcon } from "lucide-react";
+import { BellIcon, MegaphoneIcon, BookOpenIcon, CalendarIcon } from "lucide-react";
 
 import { Card } from "@/components/ui/card";
-import { requireParentContext } from "@/lib/parent/auth";
+import { requireStudentContext } from "@/lib/student/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
@@ -17,59 +17,33 @@ type AuditEntry = {
 };
 
 function getEventIcon(action: string) {
-  if (action.includes("payment")) return IndianRupeeIcon;
+  if (action === "announcement_made") return MegaphoneIcon;
   if (action.includes("homework") || action.includes("assignment")) return BookOpenIcon;
-  if (action.includes("attendance")) return CalendarCheckIcon;
   return CalendarIcon;
 }
 
 function getEventLabel(action: string): string {
   const map: Record<string, string> = {
-    payment_proof_submitted: "Payment proof submitted",
-    payment_proof_verified: "Payment verified by teacher",
-    payment_proof_rejected: "Payment proof rejected",
-    homework_completed: "Homework marked complete",
+    announcement_made: "New announcement",
     homework_assigned: "New homework assigned",
     homework_submitted: "Homework submitted",
-    assignment_submitted: "Assignment submitted",
-    attendance_marked: "Attendance recorded",
-    invite_accepted: "Parent invitation accepted",
-    guardian_link_created: "Guardian link created",
   };
   return map[action] ?? action.replaceAll("_", " ");
 }
 
 function getEventDescription(action: string, meta: Record<string, unknown>): string | null {
-  if (action === "payment_proof_submitted") {
-    const amount = meta?.amount;
-    const utr = meta?.utr_reference;
-    if (amount && utr) return `₹${Number(amount).toLocaleString("en-IN")} · UTR ${utr}`;
-    if (amount) return `₹${Number(amount).toLocaleString("en-IN")}`;
+  const bits: string[] = [];
+  if (typeof meta?.title === "string" && meta.title) bits.push(meta.title);
+  if (action === "announcement_made" && typeof meta?.message === "string" && meta.message) {
+    bits.push(meta.message);
   }
-  if (action === "payment_proof_rejected") {
-    return meta?.rejection_reason ? `Reason: ${meta.rejection_reason}` : null;
+  if (typeof meta?.subject === "string" && meta.subject) bits.push(meta.subject);
+  if (typeof meta?.dueDate === "string" && meta.dueDate) {
+    bits.push(
+      `Due ${new Date(meta.dueDate).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}`,
+    );
   }
-  if (action === "homework_assigned") {
-    const bits: string[] = [];
-    if (typeof meta?.studentName === "string" && meta.studentName) bits.push(String(meta.studentName));
-    if (typeof meta?.title === "string" && meta.title) bits.push(String(meta.title));
-    if (typeof meta?.subject === "string" && meta.subject) bits.push(String(meta.subject));
-    if (typeof meta?.dueDate === "string" && meta.dueDate) {
-      bits.push(`Due ${new Date(String(meta.dueDate)).toLocaleDateString("en-IN", { day: "numeric", month: "short" })}`);
-    }
-    return bits.length > 0 ? bits.join(" · ") : null;
-  }
-  if (action === "homework_submitted") {
-    const bits: string[] = [];
-    if (typeof meta?.studentName === "string" && meta.studentName) bits.push(String(meta.studentName));
-    if (typeof meta?.title === "string" && meta.title) bits.push(String(meta.title));
-    if (typeof meta?.score !== "undefined" && typeof meta?.totalMarks !== "undefined") {
-      bits.push(`Score ${Number(meta.score)}/${Number(meta.totalMarks)}`);
-    }
-    if (meta?.isLate === true) bits.push("Late");
-    return bits.length > 0 ? bits.join(" · ") : null;
-  }
-  return null;
+  return bits.length > 0 ? bits.join(" · ") : null;
 }
 
 function fmtDate(iso: string): string {
@@ -82,35 +56,19 @@ function fmtDate(iso: string): string {
   });
 }
 
-export default async function ParentNotificationsPage({
-  searchParams,
-}: {
-  searchParams?: { [key: string]: string | string[] | undefined };
-}) {
-  const requested = typeof searchParams?.child === "string" ? searchParams.child : undefined;
-  const context = await requireParentContext(requested);
+export default async function StudentNotificationsPage() {
+  const context = await requireStudentContext();
 
-  if (!context.user) {
-    return (
-      <div className="mx-auto max-w-3xl py-10">
-        <h1 className="text-2xl font-semibold tracking-tight text-slate-950">Notifications</h1>
-        <p className="mt-2 text-sm text-slate-600">No child linked yet.</p>
-      </div>
-    );
-  }
-
-  // Read audit_logs for this guardian's activity
   const supabase = createSupabaseServerClient();
   const { data } = await supabase
     .from("audit_logs")
     .select("id, action, entity, created_at, metadata")
-    .eq("actor_id", context.user.id)
+    .eq("actor_id", context.user?.id ?? "")
     .order("created_at", { ascending: false })
     .limit(60);
 
   const events: AuditEntry[] = (data as AuditEntry[] | null) ?? [];
 
-  // Group by date (local date string)
   const groups = new Map<string, AuditEntry[]>();
   const today = new Date().toISOString().slice(0, 10);
   const yesterday = new Date(Date.now() - 86400_000).toISOString().slice(0, 10);
@@ -118,7 +76,11 @@ export default async function ParentNotificationsPage({
   for (const ev of events) {
     const date = ev.created_at.slice(0, 10);
     const label =
-      date === today ? "Today" : date === yesterday ? "Yesterday" : new Date(date).toLocaleDateString("en-IN", { day: "numeric", month: "long" });
+      date === today
+        ? "Today"
+        : date === yesterday
+          ? "Yesterday"
+          : new Date(date).toLocaleDateString("en-IN", { day: "numeric", month: "long" });
     if (!groups.has(label)) groups.set(label, []);
     groups.get(label)!.push(ev);
   }
@@ -127,7 +89,7 @@ export default async function ParentNotificationsPage({
     <div className="mx-auto max-w-3xl space-y-6 py-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight text-slate-950">Notifications</h1>
-        <p className="mt-1 text-sm text-slate-600">Your account activity</p>
+        <p className="mt-1 text-sm text-slate-600">Announcements and homework for you</p>
       </div>
 
       {events.length === 0 ? (
@@ -135,7 +97,7 @@ export default async function ParentNotificationsPage({
           <BellIcon className="mx-auto size-8 text-slate-300" aria-hidden />
           <p className="mt-3 text-sm font-medium text-slate-600">No activity yet</p>
           <p className="mt-1 text-xs text-slate-400">
-            Payment submissions, attendance updates, and other events will appear here.
+            New announcements and homework assignments will appear here.
           </p>
         </Card>
       ) : (
@@ -161,9 +123,7 @@ export default async function ParentNotificationsPage({
                           <p className="text-sm font-semibold text-slate-900">
                             {getEventLabel(ev.action)}
                           </p>
-                          {desc && (
-                            <p className="mt-0.5 text-xs text-slate-500">{desc}</p>
-                          )}
+                          {desc && <p className="mt-0.5 text-xs text-slate-500">{desc}</p>}
                           <p className="mt-1 text-xs text-slate-400">{fmtDate(ev.created_at)}</p>
                         </div>
                       </div>

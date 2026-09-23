@@ -11,6 +11,7 @@ import {
   LineChartIcon,
   MegaphoneIcon,
   UserIcon,
+  BellIcon,
   LogOutIcon,
 } from "lucide-react";
 import { Brand } from "@/components/brand";
@@ -28,11 +29,13 @@ export type StudentNavItem = {
     | "play"
     | "line-chart"
     | "megaphone"
-    | "user";
+    | "user"
+    | "bell";
 };
 
 export const studentNav: StudentNavItem[] = [
   { href: "/student/dashboard", label: "Dashboard", icon: "layout-dashboard" },
+  { href: "/student/notifications", label: "Notifications", icon: "bell" },
   { href: "/student/profile", label: "Profile & Settings", icon: "user" },
 ];
 
@@ -45,6 +48,7 @@ const iconMap = {
   "line-chart": LineChartIcon,
   megaphone: MegaphoneIcon,
   user: UserIcon,
+  bell: BellIcon,
 };
 
 export function StudentSidebar({

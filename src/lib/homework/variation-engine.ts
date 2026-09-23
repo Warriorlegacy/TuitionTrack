@@ -1,9 +1,22 @@
-// AI Unique Question Blueprint, Variation & Verification Engine
-// Implements parameterized variation dimensions (numbers, contexts, variables)
-// Ensures mathematical/scientific correctness and zero repetitive duplicates.
+// AI Homework Generation Engine — fully AI-powered, curriculum-grounded.
+//
+// Contract (production, no mocks):
+// - Every question comes from a live AI provider call. There is NO static
+//   question bank, NO deterministic template fallback, NO placeholder output.
+// - On AI failure / invalid output the call THROWS with an actionable error so
+//   the UI shows a real error state — never fake success with dummy questions.
+// - Freshness: each run sends a random variation seed + higher temperature, and
+//   recent question stems are passed as avoidance context, so Generate #1 ≠ #2.
+// - Curriculum grounding: Class + Subject + Chapter (+ level descriptor,
+//   learning objectives, key topics) are embedded in the prompt, and output is
+//   validated (schema, chapter relevance, duplicates, difficulty) with retries.
 
 import { createHash } from "node:crypto";
 import { getOfficialChapterBySlug, type OfficialChapter } from "@/lib/curriculum/official-registry";
+import { complete, type CompleteArgs, type ProviderKind } from "@/lib/ai/provider";
+
+/** Server-resolved key override (BYOK preferred, platform chain otherwise). Never comes from the client. */
+export type AiKeyOverride = Pick<CompleteArgs, "apiKeyOverride" | "providerKind" | "baseUrlOverride" | "modelOverride">;
 
 export type QuestionType = "mcq" | "numeric" | "short" | "long" | "assertion_reason" | "fill_blank" | "case_study";
 export type HomeworkMode = "class" | "variant" | "adaptive";
@@ -37,6 +50,8 @@ export type HomeworkGenerationRequest = {
   mode?: HomeworkMode;
   studentIds?: string[];
   excludeFingerprints?: string[];
+  /** Normalized or raw stems of recently assigned questions (same workspace/class/subject/chapter) to avoid repeating. */
+  recentStems?: string[];
   teacherInstructions?: string;
 };
 
@@ -50,9 +65,16 @@ export type HomeworkGenerationResult = {
   questions: GeneratedQuestion[];
   // If in variant mode, mapped by student ID
   studentVariants?: Record<string, GeneratedQuestion[]>;
+  /** REAL provider/model that served this generation — show in UI, never hardcode. */
+  provider: ProviderKind;
+  model: string;
+  generatedAt: string;
+  validation: { checked: number; rejected: number; attempts: number };
 };
 
-// Computes a deterministic canonical fingerprint for duplicate detection
+// Computes a deterministic canonical fingerprint for duplicate detection.
+// Stable across runs on purpose: the DB can detect re-issued questions even
+// when stems differ only by numbers/whitespace.
 export function computeQuestionFingerprint(
   concept: string,
   stemPattern: string,
@@ -63,295 +85,289 @@ export function computeQuestionFingerprint(
   return createHash("sha256").update(norm).digest("hex").slice(0, 24);
 }
 
-/**
- * Procedural variation blueprints for common academic archetypes
- */
-function generateDeterministicVariants(
-  chapter: OfficialChapter,
-  count: number,
-  difficulty: number,
-  types: QuestionType[],
-  seedOffset: number = 0
-): GeneratedQuestion[] {
-  const questions: GeneratedQuestion[] = [];
-  const validTypes = types.length > 0 ? types : (["mcq", "short", "numeric", "assertion_reason"] as QuestionType[]);
+// ── Curriculum context pipeline: Class → Subject → Chapter → Level ──
 
-  for (let i = 0; i < count; i++) {
-    const qIndex = i + 1;
-    const qtype = validTypes[i % validTypes.length];
-    const diff = Math.min(5, Math.max(1, difficulty + ((i % 3) - 1)));
-    const seed = (i + 1) * 17 + seedOffset * 31;
-
-    // Mathematics / Physics parameter variation
-    const a = (seed % 12) + 3;
-    const b = (seed % 19) + 4;
-    const c = a * 2 + b;
-    const xAns = (c - b) / a;
-
-    let stem = "";
-    let options: { label: string; text: string; isCorrect: boolean }[] = [];
-    let correctAnswer = "";
-    let solutionSteps: string[] = [];
-    let rubric: { criterion: string; marks: number }[] = [];
-    const marks = qtype === "long" ? 5 : qtype === "short" || qtype === "case_study" ? 3 : qtype === "numeric" ? 2 : 1;
-
-    if (chapter.subject.toLowerCase().includes("math")) {
-      if (qtype === "mcq") {
-        stem = `In the study of ${chapter.title}, if an algebraic condition satisfies the linear relation ${a}x + ${b} = ${c}, what is the unique value of x?`;
-        correctAnswer = String(xAns);
-        options = [
-          { label: "A", text: String(xAns), isCorrect: true },
-          { label: "B", text: String(xAns + 1), isCorrect: false },
-          { label: "C", text: String(xAns - 1), isCorrect: false },
-          { label: "D", text: String(Math.max(1, xAns + 2)), isCorrect: false },
-        ];
-        solutionSteps = [
-          `Step 1: Given equation is ${a}x + ${b} = ${c}.`,
-          `Step 2: Transpose ${b} to RHS: ${a}x = ${c} - ${b} = ${c - b}.`,
-          `Step 3: Divide by ${a}: x = ${c - b} / ${a} = ${xAns}.`,
-        ];
-      } else if (qtype === "numeric") {
-        stem = `Evaluate the exact value of the expression when applying the distributive property: ${a} × (${b} + ${c}) - ${a * c}. Write your final numerical result.`;
-        correctAnswer = String(a * b);
-        solutionSteps = [
-          `Step 1: Apply the distributive identity: ${a} × (${b} + ${c}) = ${a} × ${b} + ${a} × ${c}.`,
-          `Step 2: Subtract ${a * c}: (${a * b} + ${a * c}) - ${a * c} = ${a * b}.`,
-        ];
-      } else {
-        stem = `State the fundamental governing theorem or rule of ${chapter.title}. Explain how this property is used to verify equations under Class ${chapter.classLevel} standards.`;
-        correctAnswer = `State the property accurately, illustrate with algebraic notation (${a}x + ${b}), and demonstrate step-by-step simplification.`;
-        solutionSteps = [
-          `1. Definition & formal statement of the rule (1 mark).`,
-          `2. Explicit algebraic demonstration with test values (1 mark).`,
-          `3. Analysis of edge conditions and unit consistency (1 mark).`,
-        ];
-        rubric = [
-          { criterion: "Accuracy of mathematical definition", marks: 1 },
-          { criterion: "Correct application and derivation", marks: 1 },
-          { criterion: "Final conclusion and reasoning", marks: 1 },
-        ];
-      }
-    } else if (chapter.subject.toLowerCase().includes("sci") || chapter.subject.toLowerCase().includes("phys") || chapter.subject.toLowerCase().includes("chem")) {
-      if (qtype === "mcq") {
-        stem = `Which of the following statements is strictly correct regarding the core phenomenon of ${chapter.title}?`;
-        correctAnswer = `It strictly obeys the conservation principle under controlled thermodynamic/state conditions.`;
-        options = [
-          { label: "A", text: `It strictly obeys the conservation principle under standard conditions.`, isCorrect: true },
-          { label: "B", text: `The total invariant increases exponentially without energy input.`, isCorrect: false },
-          { label: "C", text: `The rate is completely independent of temperature and physical state.`, isCorrect: false },
-          { label: "D", text: `It operates only in vacuum environments and cannot occur in aqueous medium.`, isCorrect: false },
-        ];
-        solutionSteps = [
-          `Step 1: In ${chapter.title}, fundamental conservation laws govern systemic behavior.`,
-          `Step 2: Statement A accurately defines the invariant conservation property.`,
-        ];
-      } else if (qtype === "assertion_reason") {
-        stem = `Assertion (A): In ${chapter.title}, external driving potential directly impacts observed equilibrium.\nReason (R): Governing laws require proportional response to applied gradient forces under closed conditions.`;
-        correctAnswer = `Both (A) and (R) are true and (R) is the correct explanation of (A).`;
-        options = [
-          { label: "A", text: "Both (A) and (R) are true and (R) is the correct explanation of (A).", isCorrect: true },
-          { label: "B", text: "Both (A) and (R) are true but (R) is NOT the correct explanation of (A).", isCorrect: false },
-          { label: "C", text: "(A) is true but (R) is false.", isCorrect: false },
-          { label: "D", text: "(A) is false but (R) is true.", isCorrect: false },
-        ];
-        solutionSteps = [
-          `Step 1: Evaluate Assertion (A) based on Class ${chapter.classLevel} NCERT principles: True.`,
-          `Step 2: Evaluate Reason (R) for logical validity and direct causation: True and explains (A).`,
-        ];
-      } else {
-        stem = `Explain the mechanism of ${chapter.title} with a labeled diagram or step-by-step reaction/process sequence. Identify one common experimental pitfall.`;
-        correctAnswer = `Structured scientific answer covering: (1) Principle, (2) Reaction/Process steps, (3) Common experimental error and preventive measure.`;
-        solutionSteps = [
-          `1. Core scientific principle stated clearly (1 mark).`,
-          `2. Process mechanism with correct terminology (1 mark).`,
-          `3. Identification of pitfall and correct resolution (1 mark).`,
-        ];
-        rubric = [
-          { criterion: "Scientific principle and terminology", marks: 1 },
-          { criterion: "Detailed process/mechanism", marks: 1 },
-          { criterion: "Error identification and precautions", marks: 1 },
-        ];
-      }
-    } else {
-      // Social Science / Humanities / Languages
-      if (qtype === "mcq") {
-        stem = `In the context of ${chapter.title}, what was the primary catalyst or defining characteristic outlined in the official NCERT text?`;
-        correctAnswer = `Socio-economic transformation and institutional evolution.`;
-        options = [
-          { label: "A", text: "Socio-economic transformation and institutional evolution.", isCorrect: true },
-          { label: "B", text: "Isolation from all regional and international trade networks.", isCorrect: false },
-          { label: "C", text: "Total cessation of administrative documentation and records.", isCorrect: false },
-          { label: "D", text: "Complete homogeneity with no divergence in regional policies.", isCorrect: false },
-        ];
-        solutionSteps = [
-          `Step 1: Reference NCERT Class ${chapter.classLevel} chapter ${chapter.chapterNumber}.`,
-          `Step 2: Option A correctly reflects the historical/thematic evidence.`,
-        ];
-      } else {
-        stem = `Critically analyze the key factors associated with ${chapter.title}. How did these dynamics influence regional development or cultural expression?`;
-        correctAnswer = `Structured 3-point essay covering trigger events, institutional responses, and lasting historical/geographic impacts.`;
-        solutionSteps = [
-          `1. Context and background (1 mark).`,
-          `2. Analysis of core factors with historical/textual evidence (1 mark).`,
-          `3. Concluding impact and significance (1 mark).`,
-        ];
-        rubric = [
-          { criterion: "Historical/textual accuracy", marks: 1 },
-          { criterion: "Argumentation and supporting evidence", marks: 1 },
-          { criterion: "Conclusion and synthesis", marks: 1 },
-        ];
-      }
-    }
-
-    const fingerprint = computeQuestionFingerprint(chapter.title, stem, qtype, { seed, a, b, c });
-
-    questions.push({
-      id: `gen-q-${chapter.slug}-${qIndex}-${seed}`,
-      fingerprint,
-      blueprintId: `bp-${chapter.slug}-${qtype}-${diff}`,
-      position: qIndex,
-      qtype,
-      difficulty: diff,
-      marks,
-      timeSec: marks * 90,
-      stem,
-      options,
-      correctAnswer,
-      solutionSteps,
-      rubric,
-      competency: chapter.competencies?.[i % (chapter.competencies.length || 1)]?.statement || `Applies core concepts of ${chapter.title}`,
-      learningObjective: chapter.learningObjectives?.[i % (chapter.learningObjectives.length || 1)] || `Mastery of ${chapter.title}`,
-    });
-  }
-
-  return questions;
+/** Age-appropriate level line shared by studio + daily generation. */
+export function classLevelDescriptor(classLevel: number): string {
+  if (classLevel <= 5)
+    return "FOUNDATIONAL stage (age ~10-11). Use very simple vocabulary, single-step problems, concrete everyday examples, and short sentences. NEVER use abstract formalism, board-exam jargon, or multi-step derivations.";
+  if (classLevel <= 8)
+    return "MIDDLE stage (age ~11-14). Use clear grade-level vocabulary, guided single-concept problems with worked structure, and simple real-life contexts. Avoid senior-level abstraction.";
+  if (classLevel <= 10)
+    return "SECONDARY stage (board-exam rigor). NCERT exercise style: precise definitions, MCQ + assertion-reason + short/long problems, and CBSE marking-scheme expectations.";
+  return "SENIOR SECONDARY stage (age ~16-18). Advanced derivations, multi-step numericals, previous-year-question style rigor, and precise technical terminology.";
 }
 
-import { complete } from "@/lib/ai/provider";
+function isGrammarSubject(subject: string): boolean {
+  return subject.toLowerCase().includes("grammar");
+}
 
-/**
- * Generates questions using real LLM API keys for the specified chapter and parameters.
- * No mock data: queries live AI model with strict CBSE/NCERT curriculum prompts.
- */
+function grammarGuidance(classLevel: number): string {
+  if (classLevel <= 5)
+    return "Focus ONLY on the named grammar topic. Use short, familiar sentences (family, school, animals). One clear rule per question; avoid metalanguage beyond the topic name.";
+  if (classLevel <= 8)
+    return "Focus ONLY on the named grammar topic. Use everyday school-life sentences. Test usage (choose/correct/complete), not definitions of unrelated topics.";
+  if (classLevel <= 10)
+    return "Focus ONLY on the named grammar topic in CBSE board format (gap filling, editing, omission, sentence reordering/transformation, reported speech). Every question must be solvable by the topic rule alone.";
+  return "Focus ONLY on the named grammar topic at board-plus level (error correction, integrated grammar, subtle usage distinctions). Sentences should resemble authentic editorials and literature.";
+}
+
+// ── Validation helpers ──
+
+const ALLOWED_QTYPES: QuestionType[] = ["mcq", "numeric", "short", "long", "assertion_reason", "fill_blank", "case_study"];
+
+/** Normalized stem for exact/near-duplicate detection across runs. */
+export function normalizeStem(stem: string): string {
+  return stem.toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\d+/g, "#").replace(/\s+/g, " ").trim();
+}
+
+function contentWords(s: string): string[] {
+  return s.toLowerCase().replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter((w) => w.length >= 4);
+}
+
+const asRecord = (v: unknown): Record<string, unknown> =>
+  v && typeof v === "object" && !Array.isArray(v) ? (v as Record<string, unknown>) : {};
+const asString = (v: unknown): string => (typeof v === "string" ? v : "");
+const asArray = (v: unknown): unknown[] => (Array.isArray(v) ? v : []);
+
+type ValidateCtx = {
+  chapter: OfficialChapter;
+  difficulty: number;
+  position: number;
+  seed: number;
+  runToken: string;
+  seen: Set<string>;
+  fingerprintBlocklist: Set<string>;
+};
+
+function validateOne(raw: unknown, ctx: ValidateCtx): GeneratedQuestion | null {
+  const item = asRecord(raw);
+  const qtype = asString(item.qtype) as QuestionType;
+  if (!ALLOWED_QTYPES.includes(qtype)) return null;
+
+  const stem = asString(item.stem).trim();
+  // Reject stubs/placeholders and one-liners that carry no assessable content.
+  if (stem.length < 20) return null;
+  if (/^(question on|lorem|todo|placeholder|sample question)/i.test(stem)) return null;
+
+  const correctAnswer = asString(item.correctAnswer).trim();
+  if (correctAnswer.length === 0) return null;
+
+  const solutionSteps = asArray(item.solutionSteps).map(asString).map((s) => s.trim()).filter(Boolean);
+  if (solutionSteps.length === 0) return null;
+
+  const norm = normalizeStem(stem);
+  if (ctx.seen.has(norm)) return null; // exact/near duplicate
+
+  // Chapter/topic relevance heuristic: the stem must share at least one
+  // content word with the chapter title, key topics, or subject. Prefix
+  // matching absorbs singular/plural and inflections ("noun" ≈ "nouns").
+  // The prompt carries the full curriculum context; this is the backstop.
+  const chapterVocab = new Set([
+    ...contentWords(ctx.chapter.title),
+    ...ctx.chapter.keyTopics.flatMap(contentWords),
+    ...contentWords(ctx.chapter.subject),
+  ]);
+  const stemWords = new Set(contentWords(stem));
+  const overlaps = Array.from(stemWords).some((w) =>
+    Array.from(chapterVocab).some((v) => v === w || (v.length >= 4 && w.length >= 4 && (v.startsWith(w) || w.startsWith(v))))
+  );
+  if (!overlaps) return null;
+
+  // MCQ-style questions need real options with a marked key.
+  const rawOptions = asArray(item.options);
+  const options = rawOptions.map((o) => {
+    const r = asRecord(o);
+    return { label: asString(r.label).trim().toUpperCase().slice(0, 2) || "?", text: asString(r.text).trim(), isCorrect: r.isCorrect === true };
+  }).filter((o) => o.text.length > 0);
+  if ((qtype === "mcq" || qtype === "assertion_reason") && (options.length < 2 || !options.some((o) => o.isCorrect))) return null;
+
+  const marksRaw = Number(item.marks);
+  const marks = Number.isFinite(marksRaw) ? Math.min(10, Math.max(1, Math.round(marksRaw))) : qtype === "long" ? 5 : 1;
+  const diffRaw = Number(item.difficulty);
+  const qDifficulty = Number.isFinite(diffRaw) ? Math.min(5, Math.max(1, Math.round(diffRaw))) : ctx.difficulty;
+
+  const fingerprint = computeQuestionFingerprint(ctx.chapter.title, stem, qtype, { seed: ctx.seed });
+  if (ctx.fingerprintBlocklist.has(fingerprint)) return null;
+
+  ctx.seen.add(norm);
+  const rubric = asArray(item.rubric).map((r) => {
+    const rr = asRecord(r);
+    return { criterion: asString(rr.criterion).trim() || "Accuracy", marks: Number(rr.marks) || marks };
+  });
+
+  return {
+    id: `gen-q-${ctx.chapter.slug}-${ctx.position}-${ctx.runToken}`,
+    fingerprint,
+    blueprintId: `bp-${ctx.chapter.slug}-${qtype}-${qDifficulty}`,
+    position: ctx.position,
+    qtype,
+    difficulty: qDifficulty,
+    marks,
+    timeSec: marks * 90,
+    stem,
+    options,
+    correctAnswer,
+    solutionSteps,
+    rubric: rubric.length > 0 ? rubric : [{ criterion: "Accuracy", marks }],
+    competency: asString(item.competency).trim() || `Applies core concepts of ${ctx.chapter.title}`,
+    learningObjective: asString(item.learningObjective).trim() || `Mastery of ${ctx.chapter.title}`,
+  };
+}
+
+function extractJsonArray(text: string, provider: string, model: string): unknown[] {
+  let raw = text.trim();
+  if (raw.startsWith("```json")) raw = raw.slice(7);
+  if (raw.startsWith("```")) raw = raw.slice(3);
+  if (raw.endsWith("```")) raw = raw.slice(0, -3);
+  raw = raw.trim();
+  const startIdx = raw.indexOf("[");
+  const endIdx = raw.lastIndexOf("]");
+  if (startIdx === -1 || endIdx === -1 || endIdx <= startIdx) {
+    // ponytail: 200-char preview tells us refusal vs truncation vs prose
+    // without dumping tokens into logs.
+    throw new Error(`AI (${provider}/${model}) did not return a question list. Preview: ${text.slice(0, 200)}`);
+  }
+  try {
+    const parsed: unknown = JSON.parse(raw.substring(startIdx, endIdx + 1));
+    if (!Array.isArray(parsed)) throw new Error("not an array");
+    return parsed;
+  } catch {
+    throw new Error(`AI (${provider}/${model}) returned malformed questions. Please retry generation.`);
+  }
+}
+
+// ── Live AI generation (throws on failure — never falls back to templates) ──
+
+const MAX_ATTEMPTS = 3;
+
 async function generateQuestionsWithAI(
   chapter: OfficialChapter,
   count: number,
   difficulty: number,
   types: QuestionType[],
-  teacherInstructions?: string,
-  userId?: string,
-  seedOffset: number = 0
-): Promise<GeneratedQuestion[]> {
-  const system = `You are a CBSE & NCERT master curriculum educator and exam question creator.
-You create authentic, syllabus-aligned homework questions for Class ${chapter.classLevel} ${chapter.subject}.
-You MUST generate REAL, mathematically and conceptually sound questions based strictly on the NCERT syllabus. NEVER output placeholder or mock data.
-Output ONLY a strictly valid JSON array of objects conforming to the schema. Do not include markdown code block backticks.`;
+  opts: {
+    teacherInstructions?: string;
+    userId?: string;
+    studentSeed?: number;
+    avoidStems?: string[];
+    excludeFingerprints?: string[];
+    key?: AiKeyOverride;
+  } = {}
+): Promise<{ questions: GeneratedQuestion[]; provider: ProviderKind; model: string; stats: { checked: number; rejected: number; attempts: number } }> {
+  const seed = opts.studentSeed ?? 0;
+  // ponytail: per-run randomness so every Generate click yields a fresh set
+  // while the chapter/curriculum constraints stay fixed.
+  const runToken = `${Date.now().toString(36)}${Math.floor(Math.random() * 0xffffff).toString(36)}`;
+  const seen = new Set((opts.avoidStems ?? []).map(normalizeStem).filter(Boolean));
+  const fingerprintBlocklist = new Set(opts.excludeFingerprints ?? []);
 
-  const user = `Generate ${count} high-quality homework questions for:
-Class: Class ${chapter.classLevel}
-Subject: ${chapter.subject}
-Chapter: ${chapter.title} (NCERT Book: ${(chapter as unknown as { bookName?: string }).bookName || chapter.subject})
-Difficulty: ${difficulty} out of 5
-Allowed Question Types: ${types.join(", ")}
-${teacherInstructions ? `Teacher Custom Instructions: ${teacherInstructions}` : ""}
-${seedOffset > 0 ? `Seed Variation: Make these questions unique variations for student #${seedOffset}.` : ""}
+  const levelLine = classLevelDescriptor(chapter.classLevel);
+  const grammarLine = isGrammarSubject(chapter.subject) ? grammarGuidance(chapter.classLevel) : null;
+  const objectives = chapter.learningObjectives.slice(0, 4).map((o, i) => `${i + 1}. ${o}`).join("\n");
+  const topics = chapter.keyTopics.slice(0, 6).join("; ");
+  const competencies = (chapter.competencies ?? []).slice(0, 3).map((c) => `- ${c.statement} [${c.bloomLevel}]`).join("\n");
 
-Required JSON schema (Array of Question objects):
-[
-  {
-    "position": 1,
-    "qtype": "mcq",
-    "difficulty": ${difficulty},
-    "marks": 1,
-    "stem": "Clear, precise problem statement formatted properly...",
-    "options": [
-      { "label": "A", "text": "Option A text", "isCorrect": false },
-      { "label": "B", "text": "Option B text", "isCorrect": true },
-      { "label": "C", "text": "Option C text", "isCorrect": false },
-      { "label": "D", "text": "Option D text", "isCorrect": false }
-    ],
-    "correctAnswer": "Option B text or direct answer value",
-    "solutionSteps": [
-      "Step 1: ...",
-      "Step 2: ..."
-    ],
-    "rubric": [
-      { "criterion": "Core formula / concept", "marks": 1 }
-    ],
-    "competency": "Specific NCERT learning competency",
-    "learningObjective": "Specific chapter learning objective"
-  }
-]`;
+  const system = `You are a CBSE & NCERT master curriculum educator and exam question creator for Class ${chapter.classLevel} ${chapter.subject}.
+STRICT SCOPE: generate questions ONLY for the chapter/topic below, at the class level specified. NEVER borrow questions from other chapters, other classes, or general knowledge. If a question does not test this chapter's concepts, it is WRONG.
+Output ONLY a strictly valid JSON array of question objects. No markdown fences, no commentary.`;
 
-  try {
+  const user = `Generate ${count} FRESH, high-quality homework questions (never before published, varied from any previous set).
+
+CURRICULUM CONTEXT (exact scope — do not leave it):
+- Class: ${chapter.classLevel} | Subject: ${chapter.subject} | Chapter ${chapter.chapterNumber}: ${chapter.title}
+- Textbook: ${chapter.bookTitle} (${chapter.board} aligned)
+- Level: ${levelLine}
+${grammarLine ? `- GRAMMAR MODE: ${grammarLine}\n` : ""}- Learning objectives:
+${objectives}
+- Key topics to draw from: ${topics}
+- Competencies:
+${competencies || "- Applies core concepts of the chapter"}
+- Difficulty: ${difficulty}/5 | Allowed types: ${types.join(", ")}
+${opts.teacherInstructions ? `- Teacher instructions: ${opts.teacherInstructions}\n` : ""}${seed > 0 ? `- Variant set for learner #${seed}: change all numbers, names, and scenarios while testing the SAME concepts at the SAME difficulty.\n` : ""}- Variation seed ${runToken}: every question must differ in wording, numbers, and scenarios from any previous generation.
+
+JSON schema per question:
+[{"position":1,"qtype":"mcq","difficulty":${difficulty},"marks":1,"stem":"...","options":[{"label":"A","text":"...","isCorrect":false},{"label":"B","text":"...","isCorrect":true},{"label":"C","text":"...","isCorrect":false},{"label":"D","text":"...","isCorrect":false}],"correctAnswer":"...","solutionSteps":["Step 1: ...","Step 2: ..."],"rubric":[{"criterion":"...","marks":1}],"competency":"...","learningObjective":"..."}]
+Rules: exactly one option isCorrect for mcq/assertion_reason; non-option types use "options":[]; solutionSteps must show the full working; correctAnswer must be exact and verifiable.`;
+
+  const collected: GeneratedQuestion[] = [];
+  let checked = 0;
+  let rejected = 0;
+  let attempts = 0;
+  let provider: ProviderKind = "custom";
+  let model = "unknown";
+
+  while (collected.length < count && attempts < MAX_ATTEMPTS) {
+    attempts += 1;
     const aiRes = await complete({
       tier: "B",
       system,
       user,
-      userId,
-      maxTokens: Math.max(1500, count * 500),
-      temperature: 0.35,
+      userId: opts.userId,
+      // ponytail: questions carry full solutions + rubrics (~500-800 tokens
+      // each); a small cap truncates the JSON mid-array and fails validation.
+      maxTokens: Math.max(3000, count * 800),
+      temperature: 0.75,
+      ...(opts.key ?? {}),
     });
-
-    let raw = aiRes.text.trim();
-    if (raw.startsWith("```json")) raw = raw.slice(7);
-    if (raw.startsWith("```")) raw = raw.slice(3);
-    if (raw.endsWith("```")) raw = raw.slice(0, -3);
-    raw = raw.trim();
-
-    const startIdx = raw.indexOf("[");
-    const endIdx = raw.lastIndexOf("]");
-    if (startIdx !== -1 && endIdx !== -1 && endIdx > startIdx) {
-      raw = raw.substring(startIdx, endIdx + 1);
+    if (aiRes.stubbed) {
+      throw new Error("AI is not configured. Add a provider key (Settings → AI, or GROQ/GEMINI/OPENROUTER_API_KEY) to generate homework.");
     }
+    provider = aiRes.provider ?? provider;
+    if (aiRes.model) model = aiRes.model;
 
-    const parsed = JSON.parse(raw) as Record<string, unknown>[];
-    if (Array.isArray(parsed) && parsed.length > 0) {
-      return parsed.map((item, idx) => {
-        const qIndex = (item.position as number) || idx + 1;
-        const qtype = (item.qtype as QuestionType) || types[idx % types.length] || "mcq";
-        const marks = Number(item.marks) || (qtype === "short" ? 2 : 1);
-        const stem = (item.stem as string) || `Question on ${chapter.title}`;
-        const fingerprint = computeQuestionFingerprint(chapter.title, stem, qtype, { seed: seedOffset, idx });
-
-        return {
-          id: `gen-q-${chapter.slug}-${qIndex}-${Date.now()}-${idx}`,
-          fingerprint,
-          blueprintId: `bp-${chapter.slug}-${qtype}-${difficulty}`,
-          position: qIndex,
-          qtype,
-          difficulty: Number(item.difficulty) || difficulty,
-          marks,
-          timeSec: marks * 90,
-          stem,
-          options: Array.isArray(item.options) ? item.options : [],
-          correctAnswer: (item.correctAnswer as string) || "",
-          solutionSteps: Array.isArray(item.solutionSteps) ? item.solutionSteps : [],
-          rubric: Array.isArray(item.rubric) ? item.rubric : [{ criterion: "Accuracy", marks }],
-          competency: (item.competency as string) || `Applies core concepts of ${chapter.title}`,
-          learningObjective: (item.learningObjective as string) || `Mastery of ${chapter.title}`,
-        };
+    const parsed = extractJsonArray(aiRes.text, provider, model);
+    for (const item of parsed) {
+      if (collected.length >= count) break;
+      checked += 1;
+      const q = validateOne(item, {
+        chapter,
+        difficulty,
+        position: collected.length + 1,
+        seed,
+        runToken: `${runToken}-${seed}-${collected.length}`,
+        seen,
+        fingerprintBlocklist,
       });
+      if (!q) {
+        rejected += 1;
+        continue;
+      }
+      collected.push(q);
     }
-  } catch (err) {
-    console.warn("Live AI question generation encountered error, falling back to deterministic template:", err);
   }
 
-  // Fallback if AI provider is unreachable
-  return generateDeterministicVariants(chapter, count, difficulty, types, seedOffset);
+  if (collected.length < count) {
+    throw new Error(
+      `AI (${provider}/${model}) produced only ${collected.length}/${count} valid chapter-aligned questions after ${attempts} attempts (${rejected} rejected). Please retry generation.`
+    );
+  }
+
+  return { questions: collected, provider, model, stats: { checked, rejected, attempts } };
 }
 
 /**
- * Generates unique homework questions for a given chapter and configuration using the real AI API keys.
- * In 'variant' mode with student IDs provided, creates distinct parameter variants for each student.
+ * Generates unique homework questions for a given chapter using the live AI
+ * provider chain. Throws on AI failure — callers must surface the error.
+ * In 'variant'/'adaptive' mode with student IDs, creates distinct variants
+ * per student testing the same concepts.
  */
 export async function generateHomeworkAssignment(
   req: HomeworkGenerationRequest,
-  userId?: string
+  userId?: string,
+  key?: AiKeyOverride
 ): Promise<HomeworkGenerationResult> {
   const chapter = getOfficialChapterBySlug(req.chapterSlug);
   if (!chapter) {
     throw new Error(`Official chapter with slug '${req.chapterSlug}' not found in curriculum registry.`);
+  }
+  // Defense in depth: the requested class/subject must match the chapter's own
+  // registry entry, so a mismatched client payload can't silently generate
+  // out-of-scope questions.
+  if (req.classLevel !== chapter.classLevel || req.subject.toLowerCase() !== chapter.subject.toLowerCase()) {
+    throw new Error(
+      `Request mismatch: chapter '${chapter.title}' belongs to Class ${chapter.classLevel} ${chapter.subject}, not Class ${req.classLevel} ${req.subject}.`
+    );
   }
 
   const questionCount = Math.min(25, Math.max(1, req.questionCount || 5));
@@ -359,17 +375,15 @@ export async function generateHomeworkAssignment(
   const mode = req.mode || "variant";
   const types = req.questionTypes || ["mcq", "numeric", "short", "assertion_reason"];
 
-  // Base question set generated using live AI API keys
-  const baseQuestions = await generateQuestionsWithAI(
-    chapter,
-    questionCount,
-    difficulty,
-    types,
-    req.teacherInstructions,
+  const base = await generateQuestionsWithAI(chapter, questionCount, difficulty, types, {
+    teacherInstructions: req.teacherInstructions,
     userId,
-    0
-  );
-  const totalMarks = baseQuestions.reduce((acc, q) => acc + q.marks, 0);
+    studentSeed: 0,
+    avoidStems: req.recentStems,
+    excludeFingerprints: req.excludeFingerprints,
+    key,
+  });
+  const totalMarks = base.questions.reduce((acc, q) => acc + q.marks, 0);
 
   const result: HomeworkGenerationResult = {
     assignmentTitle: `${chapter.title} — Homework Practice`,
@@ -378,30 +392,34 @@ export async function generateHomeworkAssignment(
     subject: chapter.subject,
     mode,
     totalMarks,
-    questions: baseQuestions,
+    questions: base.questions,
+    provider: base.provider,
+    model: base.model,
+    generatedAt: new Date().toISOString(),
+    validation: base.stats,
   };
 
-  // If in Variant or Adaptive mode and students are specified:
+  // If in Variant or Adaptive mode and students are specified, each learner
+  // gets a distinct variant set; base stems are avoided so variants differ.
   if ((mode === "variant" || mode === "adaptive") && req.studentIds && req.studentIds.length > 0) {
     const studentVariants: Record<string, GeneratedQuestion[]> = {};
+    const variantAvoid = [...(req.recentStems ?? []), ...base.questions.map((q) => q.stem)];
 
     for (let idx = 0; idx < req.studentIds.length; idx++) {
       const studentId = req.studentIds[idx];
-      const studentSeed = idx + 1;
-      const studentQuestions = (await generateQuestionsWithAI(
-        chapter,
-        questionCount,
-        difficulty,
-        types,
-        req.teacherInstructions,
+      const studentQuestions = await generateQuestionsWithAI(chapter, questionCount, difficulty, types, {
+        teacherInstructions: req.teacherInstructions,
         userId,
-        studentSeed
-      )).map((q) => ({
+        studentSeed: idx + 1,
+        avoidStems: [...variantAvoid, ...Object.values(studentVariants).flat().map((q) => q.stem)],
+        excludeFingerprints: req.excludeFingerprints,
+        key,
+      });
+      studentVariants[studentId] = studentQuestions.questions.map((q) => ({
         ...q,
         studentId,
         id: `gen-q-${chapter.slug}-${q.position}-${studentId.slice(0, 8)}`,
       }));
-      studentVariants[studentId] = studentQuestions;
     }
 
     result.studentVariants = studentVariants;

@@ -208,7 +208,7 @@ function findBookCodeFor(classLevel: number, subject: string): string {
 
 /**
  * Procedurally assembles the authoritative curriculum chapters registry
- * covering all 517 chapters across Classes 6 to 12.
+ * covering core chapters across Classes 5 to 12 (including English Grammar).
  */
 function buildOfficialChaptersCatalog(): OfficialChapter[] {
   const chapters: OfficialChapter[] = [];

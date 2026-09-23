@@ -225,6 +225,18 @@ export async function saveHomeworkAction(
     return { success: false, message: error.message };
   }
 
+  // ponytail: ping targeted students + verified guardians on new assignments
+  // only — edits don't re-notify. Best-effort via shared helper.
+  if (!parsed.data.id) {
+    const { createSupabaseAdminClient } = await import("@/lib/supabase/admin");
+    const { notifyHomeworkAssigned } = await import("@/lib/notifications");
+    await notifyHomeworkAssigned(createSupabaseAdminClient(), {
+      title: parsed.data.title,
+      dueDate: parsed.data.due_date,
+      studentIds: parsed.data.student_ids,
+    });
+  }
+
   revalidatePortal();
   return {
     success: true,
@@ -455,6 +467,18 @@ export async function saveAnnouncementAction(
 
   if (error) {
     return { success: false, message: error.message };
+  }
+
+  // ponytail: ping all students + their verified guardians on new
+  // announcements only — edits don't re-notify. Best-effort via shared helper.
+  if (!parsed.data.id) {
+    const { createSupabaseAdminClient } = await import("@/lib/supabase/admin");
+    const { notifyAnnouncement } = await import("@/lib/notifications");
+    await notifyAnnouncement(createSupabaseAdminClient(), {
+      teacherId: context.profile.id,
+      title: parsed.data.title,
+      message: parsed.data.message,
+    });
   }
 
   revalidatePortal();

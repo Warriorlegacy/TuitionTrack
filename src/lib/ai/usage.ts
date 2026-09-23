@@ -8,6 +8,7 @@ import { PROMPT_VERSION } from "@/lib/ai/provider";
 export const RATE_LIMITS: Record<string, { perMin: number; perDay: number }> = {
   "/api/ai/tutor": { perMin: 10, perDay: 100 },
   "/api/ai/quiz": { perMin: 6, perDay: 30 },
+  "/api/ai/homework/generate": { perMin: 3, perDay: 30 },
   "/api/ai/flashcards": { perMin: 6, perDay: 30 },
   "/api/ai/video": { perMin: 2, perDay: 10 }, // video renders are slow + quota-hungry
   "/api/documents": { perMin: 6, perDay: 30 },

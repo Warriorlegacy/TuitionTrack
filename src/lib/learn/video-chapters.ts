@@ -1,4 +1,4 @@
-// Chapter data: every chapter of every core subject, Classes 6–12.
+// Chapter data: every chapter of every core subject, Classes 5–12.
 //
 // CBSE-first (rationalized NCERT + current NCF books: Curiosity 6–8,
 // Poorvi 6–7, Honeycomb/Honeydew where still prescribed). `board` marks
@@ -12,6 +12,43 @@ export type ChapterBand = { subject: string; board: Board; chapters: string[] };
 export type ClassBand = { classLevel: number; bands: ChapterBand[] };
 
 export const CHAPTER_BANDS: ClassBand[] = [
+  {
+    classLevel: 5,
+    bands: [
+      { subject: "Maths", board: "Both", chapters: [
+        "The Fish Tale", "Shapes and Angles", "How Many Squares?",
+        "Parts and Wholes", "Does It Look the Same?",
+        "Be My Multiple, I'll Be Your Factor", "Can You See the Pattern?",
+        "Mapping Your Way", "Boxes and Sketches", "Tenths and Hundredths",
+        "Area and Its Boundary", "Smart Charts", "Ways to Multiply and Divide",
+        "How Big? How Heavy?",
+      ] },
+      { subject: "English", board: "CBSE", chapters: [
+        "Wonderful Waste", "Flying Together", "Robinson Crusoe Discovers a Footprint",
+        "My Elder Brother", "Rip Van Winkle", "The Talkative Barber",
+        "Topsy-turvy Land", "Gulliver's Travels", "Nobody's Friend",
+        "The Little Bully", "Sing a Song of People", "Malu Bhalu",
+        "Who Will Be Ningthou?",
+      ] },
+      { subject: "EVS", board: "CBSE", chapters: [
+        "Super Senses", "A Snake Charmer's Story", "From Tasting to Digesting",
+        "Mangoes Round the Year", "Seeds and Seeds", "Every Drop Counts",
+        "Experiments with Water", "A Treat for Mosquitoes", "Up You Go!",
+        "Walls Tell Stories", "Sunita in Space", "What If It Finishes",
+        "A Shelter So High", "When the Earth Shook", "Blow Hot, Blow Cold",
+        "Who Will Do This Work?", "Across the Wall", "No Place for Us",
+        "A Seed Tells a Farmer's Story", "Whose Forests?",
+        "Like Father, Like Daughter", "On the Move Again",
+      ] },
+      { subject: "English Grammar", board: "CBSE", chapters: [
+        "Nouns and Their Kinds", "Pronouns and Their Uses",
+        "Verbs: Simple Present and Past", "Adjectives and Articles",
+        "Prepositions of Place and Time", "Punctuation and Capital Letters",
+        "Singular and Plural Nouns", "Sentences: Types and Parts",
+        "Subject and Predicate", "Synonyms and Antonyms",
+      ] },
+    ],
+  },
   {
     classLevel: 6,
     bands: [
@@ -56,6 +93,13 @@ export const CHAPTER_BANDS: ClassBand[] = [
         "What is Government", "Key Elements of a Democratic Government",
         "Panchayati Raj", "Rural Livelihoods", "Urban Livelihoods",
         "Rural Administration", "Urban Administration", "Making a Living",
+      ] },
+      { subject: "English Grammar", board: "CBSE", chapters: [
+        "Nouns: Kinds and Cases", "Pronouns and Possessives",
+        "Present, Past and Continuous Tenses", "Adjectives: Degrees of Comparison",
+        "Adverbs and Their Positions", "Prepositions", "Conjunctions",
+        "Articles and Determiners", "Punctuation and Capitalisation",
+        "Vocabulary: Synonyms, Antonyms and Word Formation",
       ] },
     ],
   },
@@ -107,6 +151,13 @@ export const CHAPTER_BANDS: ClassBand[] = [
         "How the State Government Works", "Growing Up as Boys and Girls",
         "Women Change the World", "Understanding Media", "Markets Around Us",
         "A Shirt in the Market",
+      ] },
+      { subject: "English Grammar", board: "CBSE", chapters: [
+        "Tenses Review and Practice", "Modals: Can, Must, Should",
+        "Subject-Verb Agreement Basics", "Adjectives and Adverbs in Use",
+        "Prepositional Phrases", "Conjunctions and Sentence Joining",
+        "Direct and Indirect Speech: Introduction", "Active and Passive Voice: Introduction",
+        "Sentence Types and Transformation", "Editing: Spotting Errors",
       ] },
     ],
   },
@@ -160,6 +211,13 @@ export const CHAPTER_BANDS: ClassBand[] = [
         "Understanding Marginalisation", "Confronting Marginalisation",
         "Public Facilities", "Law and Social Justice",
       ] },
+      { subject: "English Grammar", board: "CBSE", chapters: [
+        "Tenses and Modals in Context", "Subject-Verb Concord",
+        "Clauses: Introduction", "Reported Speech: Statements and Questions",
+        "Active and Passive Voice", "Determiners", "Prepositions",
+        "Conjunctions and Connectors", "Sentence Transformation",
+        "Editing and Omission",
+      ] },
     ],
   },
   {
@@ -207,6 +265,13 @@ export const CHAPTER_BANDS: ClassBand[] = [
       { subject: "Economics", board: "CBSE", chapters: [
         "The Story of Village Palampur", "People as Resource",
         "Poverty as a Challenge", "Food Security in India",
+      ] },
+      { subject: "English Grammar", board: "CBSE", chapters: [
+        "Tenses: Advanced Usage", "Modals: Obligation and Possibility",
+        "Subject-Verb Concord", "Reported Speech: Commands and Requests",
+        "Clauses: Noun, Adjective and Adverb", "Determiners and Quantifiers",
+        "Prepositions", "Sentence Reordering", "Editing and Error Correction",
+        "Integrated Grammar Practice",
       ] },
     ],
   },
@@ -257,6 +322,13 @@ export const CHAPTER_BANDS: ClassBand[] = [
         "Development", "Sectors of the Indian Economy", "Money and Credit",
         "Globalisation and the Indian Economy", "Consumer Rights",
       ] },
+      { subject: "English Grammar", board: "CBSE", chapters: [
+        "Tenses and Modals in Discourse", "Subject-Verb Concord",
+        "Reported Speech in Narratives", "Clauses and Sentence Structure",
+        "Determiners", "Prepositions and Phrasal Verbs",
+        "Sentence Transformation", "Editing, Omission and Gap Filling",
+        "Sentence Reordering", "Integrated Grammar Practice",
+      ] },
     ],
   },
   {
@@ -305,6 +377,13 @@ export const CHAPTER_BANDS: ClassBand[] = [
         "Ranga's Marriage", "Albert Einstein at School", "Mother's Day", "Birth",
         "The Tale of Melon City",
       ] },
+      { subject: "English Grammar", board: "CBSE", chapters: [
+        "Tenses and Aspect", "Modals and Auxiliaries",
+        "Phrases and Clauses", "Reported Speech: Advanced Forms",
+        "Active and Passive Voice: Advanced", "Determiners and Quantifiers",
+        "Prepositions and Appropriacy", "Sentence Reordering and Transformation",
+        "Editing and Error Correction", "Integrated Grammar in Context",
+      ] },
     ],
   },
   {
@@ -347,6 +426,13 @@ export const CHAPTER_BANDS: ClassBand[] = [
         "A Roadside Stand", "Aunt Jennifer's Tigers",
         "The Third Level", "The Tiger King", "Journey to the End of the Earth",
         "The Enemy", "On the Face of It", "Memories of Childhood",
+      ] },
+      { subject: "English Grammar", board: "CBSE", chapters: [
+        "Tenses in Board Context", "Modals: Deduction and Speculation",
+        "Clauses: Defining and Non-defining", "Reported Speech: Mixed Forms",
+        "Determiners and Articles", "Prepositions and Fixed Expressions",
+        "Subject-Verb Concord", "Sentence Transformation",
+        "Editing, Omission and Reordering", "Integrated Grammar and Composition",
       ] },
     ],
   },
