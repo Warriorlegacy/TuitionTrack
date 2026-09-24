@@ -55,7 +55,7 @@ const PROVIDERS: ProviderInfo[] = [
   { value: "groq", label: "Groq", freeModel: "qwen/qwen3.8-27b", keyHint: "gsk_…", url: "https://console.groq.com/keys", description: "Free tier with ultra-fast inference (Qwen, Llama, OSS).", tier: "free-tier" },
   { value: "google", label: "Google Gemini", freeModel: "gemini-2.5-flash-lite", keyHint: "AIza… / AQ.…", url: "https://aistudio.google.com/apikey", description: "Free tier: 15 RPM, 1M tokens/min.", tier: "free-tier" },
   { value: "openrouter", label: "OpenRouter", freeModel: "google/gemma-4-26b-a4b-it:free", keyHint: "sk-or-v1-…", url: "https://openrouter.ai/keys", description: "Free models available. Mixes OpenAI / Anthropic / Google / NVIDIA behind one key.", tier: "free-tier" },
-  { value: "ollama_cloud", label: "Ollama Cloud", freeModel: "llama3.1:8b", keyHint: "optional API key / token", url: "https://ollama.com", description: "Hosted or cloud Ollama server over HTTPS. Works on cloud deployments like Vercel.", tier: "free-tier" },
+  { value: "ollama_cloud", label: "Ollama Cloud", freeModel: "gemma4:31b", keyHint: "API key from ollama.com/settings/keys", url: "https://ollama.com/settings/keys", description: "Official Ollama Cloud API (ollama.com/v1). Free usage credits for Gemma 4, GPT-OSS & Nemotron 3.", tier: "free-tier" },
   { value: "ollama", label: "Ollama (local, free)", freeModel: "llama3.1:8b", keyHint: "no key needed", url: "", description: "100% free, private, offline via http://localhost:11434/v1.", tier: "free-local" },
   { value: "openai", label: "OpenAI", freeModel: "gpt-4o-mini", keyHint: "sk-…", url: "https://platform.openai.com/api-keys", description: "Paid. gpt-4o-mini is cheapest.", tier: "paid" },
   { value: "anthropic", label: "Anthropic", freeModel: "claude-3-haiku-20240307", keyHint: "sk-ant-…", url: "https://console.anthropic.com/", description: "Paid. Haiku is cheapest.", tier: "paid" },
@@ -220,10 +220,10 @@ export function AiSettings() {
   }, []);
 
   const providerInfo = useMemo(() => PROVIDERS.find((p) => p.value === form.provider) ?? PROVIDERS[0], [form.provider]);
-  const isOllamaLike = form.provider === "ollama" || form.provider === "ollama_cloud";
+  const isLocalOllama = form.provider === "ollama";
 
   async function saveKey() {
-    const effectiveKey = form.api_key.trim() || (isOllamaLike ? "ollama" : "");
+    const effectiveKey = form.api_key.trim() || (isLocalOllama ? "ollama" : "");
     if (!effectiveKey) return toast.error("Paste an API key first.");
     setSaving(true);
     try {
@@ -257,7 +257,7 @@ export function AiSettings() {
   }
 
   async function testKey() {
-    const effectiveKey = form.api_key.trim() || (isOllamaLike ? "ollama" : "");
+    const effectiveKey = form.api_key.trim() || (isLocalOllama ? "ollama" : "");
     if (!effectiveKey) return toast.error("Paste an API key first.");
     setTesting(true);
     try {
@@ -349,7 +349,7 @@ export function AiSettings() {
                     ...f,
                     provider: p,
                     model: "",
-                    base_url: p === "ollama_cloud" && !f.base_url ? "https://api.ollamacloud.com/v1" : f.base_url,
+                    base_url: p === "ollama_cloud" && !f.base_url ? "https://ollama.com/v1" : f.base_url,
                   }));
                 }}
               >
@@ -398,13 +398,13 @@ export function AiSettings() {
                   type={showKey ? "text" : "password"}
                   value={form.api_key}
                   onChange={(e) => setForm((f) => ({ ...f, api_key: e.target.value }))}
-                  placeholder={isOllamaLike ? "optional for Ollama instances" : providerInfo.keyHint}
+                  placeholder={isLocalOllama ? "optional (local Ollama does not require a key)" : providerInfo.keyHint}
                   className="font-mono"
                 />
                 <Button variant="outline" size="icon" onClick={() => setShowKey((v) => !v)}>
                   {showKey ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </Button>
-                <Button variant="secondary" onClick={testKey} disabled={testing || (!form.api_key.trim() && !isOllamaLike)}>
+                <Button variant="secondary" onClick={testKey} disabled={testing || (!form.api_key.trim() && !isLocalOllama)}>
                   <TestTube2 className="mr-2 h-4 w-4" /> {testing ? "Testing…" : "Test"}
                 </Button>
               </div>
@@ -418,7 +418,7 @@ export function AiSettings() {
                       form.provider === "ollama"
                         ? "http://localhost:11434/v1"
                         : form.provider === "ollama_cloud"
-                          ? "https://api.ollamacloud.com/v1"
+                          ? "https://ollama.com/v1"
                           : "https://your-endpoint/v1"
                     }
                     className="font-mono text-xs"
@@ -433,7 +433,7 @@ export function AiSettings() {
             </div>
 
             <div className="sm:col-span-2 flex flex-wrap items-center gap-3">
-              <Button onClick={saveKey} disabled={saving || (!form.api_key.trim() && !isOllamaLike)}>
+              <Button onClick={saveKey} disabled={saving || (!form.api_key.trim() && !isLocalOllama)}>
                 {saving ? "Saving…" : "Save key"}
               </Button>
               {form.model ? (

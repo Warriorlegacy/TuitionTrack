@@ -73,9 +73,25 @@ async function liveGoogleModels(apiKey: string): Promise<string[]> {
   return models;
 }
 
+async function liveOllamaCloudModels(apiKey?: string, baseUrl?: string): Promise<string[]> {
+  const base = baseUrl?.replace(/\/+$/, "") || "https://ollama.com/v1";
+  const res = await fetch(`${base}/models`, {
+    headers: apiKey?.trim() ? { Authorization: `Bearer ${apiKey.trim()}` } : {},
+    signal: AbortSignal.timeout(10000),
+  });
+  if (!res.ok) throw new Error(`Ollama returned ${res.status}`);
+  const data = (await res.json()) as { data?: { id?: string }[] };
+  const models = ((data.data ?? []) as { id?: string }[])
+    .map((m) => m.id ?? "")
+    .filter(Boolean)
+    .sort();
+  return models;
+}
+
 async function resolveModels(
   provider: string,
-  apiKey?: string
+  apiKey?: string,
+  baseUrl?: string
 ): Promise<{ provider: string; models: string[]; live: boolean; all?: unknown; warning?: string }> {
   const kind = provider as ProviderKind;
   if (kind === "opencode") {
@@ -102,7 +118,16 @@ async function resolveModels(
     }
   }
 
-  // If a live API key is supplied, attempt live model catalog discovery
+  // Live model catalog discovery
+  if (kind === "ollama_cloud" && (apiKey || baseUrl)) {
+    try {
+      const models = await liveOllamaCloudModels(apiKey, baseUrl);
+      if (models.length) return { provider, models, live: true };
+    } catch {
+      // Fall through to curated list
+    }
+  }
+
   if (apiKey && apiKey.trim() && apiKey.trim() !== "ollama") {
     try {
       if (kind === "groq") {
@@ -116,7 +141,6 @@ async function resolveModels(
         if (models.length) return { provider, models, live: true };
       }
     } catch (err) {
-      // Return curated list on error with warning
       return {
         provider,
         models: PROVIDER_FREE_MODELS[kind] ?? [],
@@ -137,12 +161,13 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const provider = (url.searchParams.get("provider") ?? "openrouter").toLowerCase();
   const apiKey = url.searchParams.get("apiKey") ?? undefined;
+  const baseUrl = url.searchParams.get("baseUrl") ?? undefined;
 
   if (!VALID_PROVIDERS.has(provider)) {
     return NextResponse.json({ error: `Unknown provider: ${provider}` }, { status: 400 });
   }
 
-  const result = await resolveModels(provider, apiKey);
+  const result = await resolveModels(provider, apiKey, baseUrl);
   return NextResponse.json(result);
 }
 
@@ -151,14 +176,15 @@ export async function POST(request: Request) {
   if (!context.user) {
     return NextResponse.json({ error: "Unauthorized. Please sign in." }, { status: 401 });
   }
-  const body = (await request.json().catch(() => null)) as { provider?: string; apiKey?: string } | null;
+  const body = (await request.json().catch(() => null)) as { provider?: string; apiKey?: string; baseUrl?: string } | null;
   const provider = (body?.provider ?? "openrouter").toLowerCase();
   const apiKey = body?.apiKey;
+  const baseUrl = body?.baseUrl;
 
   if (!VALID_PROVIDERS.has(provider)) {
     return NextResponse.json({ error: `Unknown provider: ${provider}` }, { status: 400 });
   }
 
-  const result = await resolveModels(provider, apiKey);
+  const result = await resolveModels(provider, apiKey, baseUrl);
   return NextResponse.json(result);
 }

@@ -53,7 +53,7 @@ const ENDPOINTS: Record<string, { base: string; kind: "openai" | "anthropic" | "
   deepseek:    { base: "https://api.deepseek.com/v1", kind: "openai" },
   github:      { base: "https://models.github.ai/inference", kind: "openai" },
   ollama:      { base: "http://localhost:11434/v1", kind: "openai" },
-  ollama_cloud: { base: "https://api.ollamacloud.com/v1", kind: "openai" },
+  ollama_cloud: { base: "https://ollama.com/v1", kind: "openai" },
   opencode:    { base: "https://opencode.ai/inference/openai/v1", kind: "openai" },
   custom:      { base: "", kind: "custom" },
 };
@@ -75,21 +75,21 @@ const FREE_MODELS: Record<"A" | "B" | "C", Record<string, string>> = {
     groq: "qwen/qwen3.8-27b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     openrouter: "google/gemma-4-26b-a4b-it:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
     nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", deepseek: "deepseek-chat",
-    ollama: "llama3.1:8b", ollama_cloud: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
+    ollama: "llama3.1:8b", ollama_cloud: "gemma4:31b", github: "openai/gpt-4o-mini", custom: "",
   },
   B: {
     openai: "gpt-4o-mini", anthropic: "claude-3-haiku-20240307", google: "gemini-2.5-flash-lite",
     groq: "qwen/qwen3.8-27b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     openrouter: "google/gemma-4-26b-a4b-it:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
     nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", deepseek: "deepseek-chat",
-    ollama: "llama3.1:8b", ollama_cloud: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
+    ollama: "llama3.1:8b", ollama_cloud: "gemma4:31b", github: "openai/gpt-4o-mini", custom: "",
   },
   C: {
     openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-2.5-flash",
     groq: "openai/gpt-oss-120b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     openrouter: "google/gemma-4-31b-it:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
     nvidia: "nvidia/nemotron-3-super-120b-a12b", deepseek: "deepseek-chat",
-    ollama: "qwen2.5:14b", ollama_cloud: "qwen2.5:14b", github: "openai/gpt-4o", custom: "",
+    ollama: "qwen2.5:14b", ollama_cloud: "gpt-oss:120b", github: "openai/gpt-4o", custom: "",
   },
 };
 
@@ -99,21 +99,21 @@ const PAID_MODELS: Record<"A" | "B" | "C", Record<string, string>> = {
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     openrouter: "openai/gpt-4o-mini", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
     nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", deepseek: "deepseek-chat",
-    ollama: "llama3.1:8b", ollama_cloud: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
+    ollama: "llama3.1:8b", ollama_cloud: "gemma4:31b", github: "openai/gpt-4o-mini", custom: "",
   },
   B: {
     openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-3.5-flash",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     openrouter: "openai/gpt-4o", huggingface: "meta-llama/Llama-3.1-70B-Instruct",
     nvidia: "nvidia/nemotron-3-super-120b-a12b", deepseek: "deepseek-chat",
-    ollama: "llama3.1:8b", ollama_cloud: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
+    ollama: "llama3.1:8b", ollama_cloud: "gemma4:31b", github: "openai/gpt-4o-mini", custom: "",
   },
   C: {
     openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-3.5-flash",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     openrouter: "openai/gpt-4o", huggingface: "meta-llama/Llama-3.1-70B-Instruct",
     nvidia: "nvidia/nemotron-3-super-120b-a12b", deepseek: "deepseek-chat",
-    ollama: "qwen2.5:14b", ollama_cloud: "qwen2.5:14b", github: "openai/gpt-4o", custom: "",
+    ollama: "qwen2.5:14b", ollama_cloud: "gpt-oss:120b", github: "openai/gpt-4o", custom: "",
   },
 };
 
@@ -308,6 +308,12 @@ const PRICE_PER_1K: Record<string, { in: number; out: number }> = {
   "deepseek-chat": { in: 0.00014, out: 0.00028 },
   "llama3.1:8b": { in: 0, out: 0 },
   "qwen2.5:14b": { in: 0, out: 0 },
+  "gemma4:31b": { in: 0, out: 0 },
+  "gpt-oss:20b": { in: 0, out: 0 },
+  "gpt-oss:120b": { in: 0, out: 0 },
+  "nemotron-3-nano:30b": { in: 0, out: 0 },
+  "nemotron-3-super": { in: 0, out: 0 },
+  "nemotron-3-ultra": { in: 0, out: 0 },
 };
 const FALLBACK_PRICE = { in: 0.00015, out: 0.0006 };
 
@@ -606,7 +612,14 @@ export const PROVIDER_FREE_MODELS: Record<ProviderKind, string[]> = {
   deepseek: ["deepseek-chat", "deepseek-reasoner"],
   github: ["openai/gpt-4o-mini", "openai/gpt-4o"],
   ollama: ["llama3.1:8b", "qwen2.5:14b", "deepseek-r1:8b", "mistral:7b"],
-  ollama_cloud: ["llama3.3:70b", "llama3.1:8b", "qwen2.5:14b", "deepseek-r1:8b", "mistral:7b"],
+  ollama_cloud: [
+    "gemma4:31b",
+    "gpt-oss:20b",
+    "gpt-oss:120b",
+    "nemotron-3-nano:30b",
+    "nemotron-3-super",
+    "nemotron-3-ultra",
+  ],
   // OpenCode: served LIVE from the inference catalog (see /api/ai/models) —
   // keyless external free calls 403, so no static free list is trusted here.
   opencode: [],
