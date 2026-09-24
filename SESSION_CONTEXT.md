@@ -11,6 +11,61 @@ TuitionTrack is a Next.js 14 application for managing tuition payments and stude
 
 ## Recent Changes
 
+### AI Model Selection, Official Ollama Cloud Integration & PostgreSQL Enum Expansion (2026-09-25)
+- **Interactive AI Model Selection & Real-Time Discovery**:
+  - Added dynamic `ModelSelect` component in `/app/ai-settings` (`src/components/settings/ai-settings.tsx`) allowing teachers to choose from live provider models, curated free models, or input custom model slugs.
+  - Implemented `/api/ai/models` route with live catalog fetching for Groq (`/openai/v1/models`), OpenAI (`/v1/models`), Google Gemini (`/v1beta/models`), and Ollama Cloud (`/v1/models`).
+  - Stored `selected_model` per BYOK key in `user_ai_keys.metadata.selected_model` and wired it into key resolution and tier fallback engine.
+  - Enhanced `/api/ai/keys/test` to test explicit models with fallback disabled so teachers can diagnose and verify specific models directly.
+  - Switched default Groq model from reasoning `openai/gpt-oss-20b` (which was outputting tokens in `reasoning` and hitting token limits) to ultra-fast non-reasoning `qwen/qwen3.8-27b` (4ms response). Added fallback reasoning extraction for any remaining reasoning models.
+- **Official Ollama Cloud (`ollama_cloud`) Integration**:
+  - Integrated official Ollama Cloud service (`https://ollama.com/v1`) with free-tier model catalog:
+    - `gemma4:31b` (default)
+    - `gpt-oss:20b`
+    - `gpt-oss:120b`
+    - `nemotron-3-nano:30b`
+    - `nemotron-3-super`
+    - `nemotron-3-ultra`
+  - Added direct link to `https://ollama.com/settings/keys` in settings UI for generating cloud API keys.
+  - Differentiated local keyless Ollama (`http://localhost:11434/v1`) vs official Ollama Cloud which requires bearer authentication.
+- **PostgreSQL Enum Expansion (`public.ai_provider`)**:
+  - Resolved `invalid input value for enum ai_provider: "ollama_cloud"` error on key save.
+  - Authored and applied idempotent migration `supabase/migrations/20260924000000_ai_provider_enum_expansion.sql` using `scripts/apply-migrations.mjs`:
+    - Added `ollama`, `ollama_cloud`, `nvidia`, `deepseek`, `github`, `opencode` to `public.ai_provider`.
+  - Updated `DbEnums.ai_provider` in `src/lib/db/types.ts` to reflect the expanded enum.
+- **Quality Gates & Deployment**:
+  - `npm run lint`: 0 warnings, 0 errors.
+  - `npm run typecheck`: 0 errors.
+  - `npx -y tsx tests/ai-fallback.ts`: 19/19 tests passed.
+  - `npm run build`: 72/72 static & dynamic routes compiled clean.
+  - Deployed to Vercel production: `https://tuitiontrack-app.vercel.app` (verified HTTP 200 OK).
+
+### Universal Persistent Agent Memory System Integration (`agentmemory`) (2026-09-25)
+- **Universal Coding Agent Memory**: Set up and configured `rohitg00/agentmemory` (v0.9.29) powered by the `iii-engine` (pinned v0.11.2) across the entire developer workstation.
+- **Engine Infrastructure & Setup**:
+  - Downloaded and verified the pinned Windows x86_64 `iii.exe` binary v0.11.2 into `C:\Users\Piyush\.local\bin\iii.exe` and `C:\Users\Piyush\.agentmemory\bin\iii.exe`.
+  - Configured `agentmemory` local daemon exposing REST/MCP on port `3111`, WebSocket streams on port `3112`, and the real-time live memory viewer at `http://localhost:3113`.
+  - Configured silent Windows login auto-start via `%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup\start-agentmemory.vbs`.
+- **Global Skill Library (17 Skills)**:
+  - Installed all 17 agentmemory skills (`recall`, `remember`, `forget`, `recap`, `lesson`, `session-history`, `handoff`, `commit-context`, `commit-history`, `memory-discipline`, `agentmemory-mcp-tools`, etc.) into:
+    - Global IDE directory: `C:\Users\Piyush\.gemini\config\skills\`
+    - Global OpenCode directory: `C:\Users\Piyush\.config\opencode\skills\`
+    - Workspace directory: `d:\TuitionTrack\.agents\skills\`
+- **Wired MCP Client Integrations (7 Agent Environments)**:
+  - **Antigravity IDE**: Global `C:\Users\Piyush\.gemini\config\mcp_config.json` and App `C:\Users\Piyush\.gemini\antigravity-ide\mcp_config.json`.
+  - **OpenCode**: `C:\Users\Piyush\.config\opencode\opencode.json`.
+  - **Cursor**: `C:\Users\Piyush\.cursor\mcp.json`.
+  - **Claude Code**: `C:\Users\Piyush\.claude\.mcp.json`.
+  - **Codex CLI**: `C:\Users\Piyush\.codex\config.toml`.
+  - **GitHub Copilot CLI**: `C:\Users\Piyush\.copilot\mcp.json`.
+  - **OpenClaw**: `C:\Users\Piyush\.openclaw\openclaw.json`.
+- **Tool Protocol & Fallback Architecture**:
+  - Standardized all agents on `node C:/Users/Piyush/AppData/Roaming/npm/node_modules/@agentmemory/mcp/bin.mjs` with `AGENTMEMORY_URL="http://localhost:3111"`.
+  - Tested & verified: Exposes all 54 MCP tools when daemon is active; gracefully falls back to 7 core local tools (`memory_recall`, `memory_save`, `memory_sessions`, `memory_smart_search`, `memory_export`, `memory_audit`, `memory_governance_delete`) if the server is unreachable.
+- **Verification & Probes**:
+  - Ran `agentmemory demo`: Seeded 3 test sessions with 6 observations; verified 100% hybrid search recall across keyword and semantic queries ("jwt auth middleware", "database performance optimization", "rate limiting").
+  - Live memory viewer active and responding at `http://localhost:3113` (HTTP 200).
+
 ### Teacher Submission Access Fix + Fully AI-Powered Homework Studio (2026-09-23)
 - **Root cause — teachers saw ≤1 submission**: `/app/homework/[id]` only loaded `accessibleStudents[0]`'s submission (RLS was fine; the page query was the bug). The teacher branch now ownership-checks (`assignment.teacher_id === user.id`, mirroring RLS — no checks weakened) and loads ALL submissions with a student join. New `TeacherSubmissionsView` (`src/components/homework/teacher-submissions-view.tsx`): student/status filters, late/missing roster, per-question answers vs keys, marks, AI notes, feedback, question bank.
 - **Class 5 + English Grammar**: Class 5 band added to `video-chapters.ts` (Maths/Math-Magic, English/Marigold, EVS/Looking Around — real NCERT chapters) plus an `English Grammar` subject for classes 5–12 with class-graded topics (nouns/articles → clauses/integrated grammar). Studio selector is now 5–12; stale subject/chapter selection bug fixed (derived effective values).
