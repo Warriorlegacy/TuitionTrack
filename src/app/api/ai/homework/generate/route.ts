@@ -8,6 +8,7 @@ import { providerDisplayName } from "@/lib/ai/provider";
 import { generateHomeworkAssignment, type AiKeyOverride, type HomeworkGenerationRequest } from "@/lib/homework/variation-engine";
 
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
 
 // Rate limits for the studio (generation is expensive: 1 + N student calls).
 const ENDPOINT = "/api/ai/homework/generate";

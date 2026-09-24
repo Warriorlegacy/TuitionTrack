@@ -70,21 +70,21 @@ const ENDPOINTS: Record<string, { base: string; kind: "openai" | "anthropic" | "
 // never takes a feature down.
 const FREE_MODELS: Record<"A" | "B" | "C", Record<string, string>> = {
   A: {
-    openai: "gpt-4o-mini", anthropic: "claude-3-haiku-20240307", google: "gemini-3.5-flash-lite",
+    openai: "gpt-4o-mini", anthropic: "claude-3-haiku-20240307", google: "gemini-2.5-flash-lite",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     openrouter: "google/gemma-4-26b-a4b-it:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
     nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", deepseek: "deepseek-chat",
     ollama: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
   },
   B: {
-    openai: "gpt-4o-mini", anthropic: "claude-3-haiku-20240307", google: "gemini-3.5-flash-lite",
+    openai: "gpt-4o-mini", anthropic: "claude-3-haiku-20240307", google: "gemini-2.5-flash-lite",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     openrouter: "google/gemma-4-26b-a4b-it:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
     nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", deepseek: "deepseek-chat",
     ollama: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
   },
   C: {
-    openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-3.5-flash",
+    openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-2.5-flash",
     groq: "openai/gpt-oss-120b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     openrouter: "google/gemma-4-31b-it:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
     nvidia: "nvidia/nemotron-3-super-120b-a12b", deepseek: "deepseek-chat",
@@ -447,10 +447,9 @@ function nextFreeFallback(tier: "A" | "B" | "C", failedModel: string): string | 
 // takes a feature down — single hop, then the normal chain takes over.
 const GOOGLE_MODEL_SUCCESSORS: Record<string, string> = {
   "gemini-2.5-flash-lite": "gemini-3.5-flash-lite",
-  "gemini-2.5-flash": "gemini-3.5-flash-lite",
-  "gemini-2.5-pro": "gemini-3.5-flash",
-  "gemini-2.0-flash": "gemini-3.1-flash-lite",
-  "gemini-2.0-flash-lite": "gemini-3.1-flash-lite",
+  "gemini-2.5-flash": "gemini-3.5-flash",
+  "gemini-2.0-flash": "gemini-2.5-flash-lite",
+  "gemini-2.0-flash-lite": "gemini-2.5-flash-lite",
 };
 
 /** Successor for a retired Google model, or null (single hop only). */
@@ -551,7 +550,13 @@ export function isFreeModel(kind: ProviderKind, model: string): boolean {
 // ── Capability filter ──────────────────────────────────────────────────
 // All registry models do text + prompted structured output. Vision is the only
 // discriminating capability today (no caller requires it yet — plumbing first).
-const VISION_MODELS = new Set(["gemini-3.5-flash-lite", "gemini-3.5-flash", "gemini-3.1-flash-lite"]);
+const VISION_MODELS = new Set([
+  "gemini-2.5-flash-lite",
+  "gemini-2.5-flash",
+  "gemini-3.5-flash-lite",
+  "gemini-3.5-flash",
+  "gemini-3.1-flash-lite",
+]);
 
 export function supportsCapabilities(kind: ProviderKind, model: string, requirements?: { vision?: boolean }): boolean {
   if (requirements?.vision && !(kind === "google" && VISION_MODELS.has(model))) return false;
@@ -573,7 +578,7 @@ export function shouldSkipPaidModel(kind: ProviderKind, model: string, freeOnly:
 // its :free roster churns; this table is the fallback for every provider.
 export const PROVIDER_FREE_MODELS: Record<ProviderKind, string[]> = {
   openrouter: [...FREE_MODEL_FALLBACKS.B, ...FREE_MODEL_FALLBACKS.C.filter((m) => !FREE_MODEL_FALLBACKS.B.includes(m))],
-  google: ["gemini-3.5-flash-lite", "gemini-3.5-flash", "gemini-3.1-flash-lite"],
+  google: ["gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-3.5-flash-lite", "gemini-3.5-flash", "gemini-3.1-flash-lite"],
   groq: ["openai/gpt-oss-20b", "openai/gpt-oss-120b"],
   openai: ["gpt-4o-mini", "gpt-4o"],
   anthropic: ["claude-3-5-haiku-20241022", "claude-3-haiku-20240307", "claude-3-5-sonnet-20241022"],
@@ -623,9 +628,13 @@ async function requestCompletion(
   const maxTokens = args.maxTokens ?? 600;
   const temperature = args.temperature ?? (tier === "A" ? 0.1 : 0.6);
   const streamBody = stream ? { stream: true } : {};
+  const timeoutSignal = AbortSignal.timeout(25000);
+  const signal = args.signal
+    ? (typeof AbortSignal.any === "function" ? AbortSignal.any([args.signal, timeoutSignal]) : args.signal)
+    : timeoutSignal;
   if (provider.kind === "anthropic") {
     return fetch(`${provider.baseUrl}/messages`, {
-      method: "POST", headers: provider.headers, signal: args.signal,
+      method: "POST", headers: provider.headers, signal,
       body: JSON.stringify({
         model: provider.model, max_tokens: maxTokens, temperature,
         ...streamBody, system: args.system, messages: [{ role: "user", content: args.user }],
@@ -636,7 +645,7 @@ async function requestCompletion(
     const action = stream ? `streamGenerateContent?alt=sse&` : `generateContent?`;
     const url = `${provider.baseUrl}/models/${provider.model}:${action}key=${encodeURIComponent(provider.apiKey)}`;
     return fetch(url, {
-      method: "POST", headers: { "Content-Type": "application/json" }, signal: args.signal,
+      method: "POST", headers: { "Content-Type": "application/json" }, signal,
       body: JSON.stringify({
         contents: [{ parts: [{ text: args.user }] }],
         systemInstruction: { parts: [{ text: args.system }] },
@@ -646,7 +655,7 @@ async function requestCompletion(
   }
   // OpenAI-compatible (openai, groq, together, openrouter, huggingface, nvidia, deepseek, github, ollama, custom)
   return fetch(`${provider.baseUrl}/chat/completions`, {
-    method: "POST", headers: provider.headers, signal: args.signal,
+    method: "POST", headers: provider.headers, signal,
     body: JSON.stringify({
       model: provider.model, max_tokens: maxTokens, temperature, ...streamBody,
       messages: [
@@ -711,7 +720,8 @@ export async function complete(args: CompleteArgs): Promise<CompleteResult> {
         let outTok = 0;
         if (provider.kind === "google") {
           const data = await res.json();
-          text = data.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
+          const parts = (data.candidates?.[0]?.content?.parts ?? []) as { text?: string }[];
+          text = parts.map((p) => p.text || "").join("").trim();
           outTok = approxTokens(text);
         } else if (provider.kind === "anthropic") {
           const data = await res.json();

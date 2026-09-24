@@ -4,6 +4,9 @@ import { z } from "zod";
 import type { Database } from "@/lib/db/types";
 import { requireTeacherContext } from "@/lib/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { complete, providerDisplayName, type ProviderKind } from "@/lib/ai/provider";
+import { getBestKeyForTier } from "@/lib/ai/byok";
+import { logUsage } from "@/lib/ai/usage";
 
 const generateSchema = z.object({
   student_id: z.string().uuid(),
@@ -114,55 +117,94 @@ export async function POST(request: Request) {
     const attendancePct = latestRecord?.attendance_pct ?? 0;
     const homeworkPct = latestRecord?.homework_pct ?? 0;
 
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json(
-        { error: "OpenAI API key is not configured" },
-        { status: 400 }
-      );
-    }
-
-    const langInstruction = language === "hi" 
+    const langInstruction = language === "hi"
       ? "Write the report in Hindi, but keep names and subjects in English where appropriate."
       : "Write in warm professional Indian-English.";
 
-    const prompt = `You are a professional academic progress report writer for Indian CBSE private tutors. Write a 150-200 word parent progress update for: Student: ${student.name}, Class: ${student.class}, Subject: ${subjectLabel}, Attendance: ${attendancePct}%, Test scores: ${scores}, Homework: ${homeworkPct}%, Tutor's notes: ${tutor_notes ?? "None"}. ${langInstruction} One area of strength and one area for improvement. Sound like a real teacher, not a form letter.`;
+    // Deterministic facts from the database — the AI only summarizes these and
+    // must never invent metrics. Routed through the centralized free-first AI
+    // gateway (never a direct provider call): free models first, paid models
+    // NEVER called while free-only mode is active (default). Keys stay server-side.
+    const facts =
+      `Student: ${student.name}, Class: ${student.class}, Subject: ${subjectLabel}, ` +
+      `Attendance: ${attendancePct}%, Test scores: ${scores}, Homework: ${homeworkPct}%, ` +
+      `Tutor's notes: ${tutor_notes ?? "None"}.`;
+
+    // BYOK first (teacher's own key + model prefs), platform chain otherwise.
+    let key: { apiKeyOverride: string; providerKind: ProviderKind; baseUrlOverride: string; modelOverride: string } | undefined;
+    let allowFallbacks = true;
+    let freeOnly = true;
+    try {
+      const best = await getBestKeyForTier(supabase, context.user.id, "B");
+      if (best) {
+        key = {
+          apiKeyOverride: best.key,
+          providerKind: best.provider.kind,
+          baseUrlOverride: best.provider.baseUrl,
+          modelOverride: best.model,
+        };
+        allowFallbacks = best.allowFallbacks;
+        freeOnly = best.freeOnly;
+      }
+    } catch {
+      // Fall through to the platform chain.
+    }
 
     let aiContent: string;
+    let provider = "unknown";
+    let model = "unknown";
 
     try {
-      const response = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${apiKey}`,
-        },
-        body: JSON.stringify({
-          model: "gpt-4o-mini",
-          max_tokens: 400,
-          temperature: 0.7,
-          messages: [{ role: "user", content: prompt }],
-        }),
+      const started = Date.now();
+      const result = await complete({
+        tier: "B",
+        system:
+          `You are a professional academic progress report writer for Indian CBSE private tutors. ` +
+          `${langInstruction} Write a 150-200 word parent progress update using ONLY the figures provided. ` +
+          `Never invent metrics, scores, or attendance figures. ` +
+          `One area of strength and one area for improvement. ` +
+          `Sound like a real teacher, not a form letter.`,
+        user: facts,
+        maxTokens: 400,
+        temperature: 0.7,
+        task: "report_summary",
+        ...(key ?? {}),
+        allowFallbacks,
+        freeOnly,
       });
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("OpenAI API error:", response.status, errorText);
+      if (result.stubbed) {
         return NextResponse.json(
-          { error: "Failed to generate report via AI", details: errorText },
-          { status: 500 }
+          { error: "No free AI model is currently available for this task. No paid model was used." },
+          { status: 503 }
         );
       }
+      aiContent = result.text.trim();
+      provider = result.provider ?? "unknown";
+      model = result.model;
+      if (!aiContent) throw new Error("AI returned empty content.");
 
-      const data = await response.json();
-      aiContent =
-        data.choices?.[0]?.message?.content ??
-        "Unable to generate report at this time.";
+      // Best-effort cost tracking (same model_usage ledger other AI features use).
+      try {
+        await logUsage(supabase, {
+          user_id: context.user.id,
+          student_id,
+          tier: "B",
+          model,
+          endpoint: "/api/reports/generate",
+          input_tokens: result.inputTokens,
+          output_tokens: result.outputTokens,
+          cost_usd: result.costUsd,
+          latency_ms: Date.now() - started,
+          status: `ok:${provider}`,
+        });
+      } catch {
+        // Never fail report generation on ledger errors.
+      }
     } catch (aiErr) {
-      console.error("OpenAI API call failed:", aiErr);
+      console.error("Report AI call failed:", (aiErr as Error).message);
       return NextResponse.json(
-        { error: "Unable to reach OpenAI API", details: (aiErr as Error).message },
-        { status: 500 }
+        { error: "AI summary unavailable", details: (aiErr as Error).message },
+        { status: 502 }
       );
     }
 
@@ -210,7 +252,12 @@ export async function POST(request: Request) {
     revalidatePath("/app/reports");
     revalidatePath(`/app/students/${student_id}`);
 
-    return NextResponse.json(report, { status: 201 });
+    // Real serving provider/model (never hardcoded) so the UI can show what
+    // actually generated the summary. Report stays a draft — teacher reviews.
+    return NextResponse.json(
+      { ...report, provider, providerLabel: providerDisplayName(provider), model },
+      { status: 201 }
+    );
   } catch (err) {
     console.error("Unhandled error in report generate:", err);
     return NextResponse.json(

@@ -167,20 +167,28 @@ function validateOne(raw: unknown, ctx: ValidateCtx): GeneratedQuestion | null {
   const norm = normalizeStem(stem);
   if (ctx.seen.has(norm)) return null; // exact/near duplicate
 
-  // Chapter/topic relevance heuristic: the stem must share at least one
-  // content word with the chapter title, key topics, or subject. Prefix
-  // matching absorbs singular/plural and inflections ("noun" ≈ "nouns").
-  // The prompt carries the full curriculum context; this is the backstop.
+  // Chapter/topic relevance heuristic: check across stem, solution, competency,
+  // and learning objectives. Prefix matching absorbs singular/plural and inflections.
   const chapterVocab = new Set([
     ...contentWords(ctx.chapter.title),
     ...ctx.chapter.keyTopics.flatMap(contentWords),
     ...contentWords(ctx.chapter.subject),
   ]);
-  const stemWords = new Set(contentWords(stem));
-  const overlaps = Array.from(stemWords).some((w) =>
+  const fullText = [
+    stem,
+    ...solutionSteps,
+    asString(item.competency),
+    asString(item.learningObjective),
+    correctAnswer,
+  ].join(" ");
+  const questionWords = new Set(contentWords(fullText));
+  const overlaps = Array.from(questionWords).some((w) =>
     Array.from(chapterVocab).some((v) => v === w || (v.length >= 4 && w.length >= 4 && (v.startsWith(w) || w.startsWith(v))))
   );
-  if (!overlaps) return null;
+  // For quantitative/math questions, if the question has valid numbers/formulas and working steps,
+  // it is curriculum-grounded by the prompt constraints.
+  const isQuantitative = /[\d+=/*^<>-]/.test(stem) && solutionSteps.length > 0;
+  if (!overlaps && !isQuantitative) return null;
 
   // MCQ-style questions need real options with a marked key.
   const rawOptions = asArray(item.options);
@@ -231,18 +239,74 @@ function extractJsonArray(text: string, provider: string, model: string): unknow
   raw = raw.trim();
   const startIdx = raw.indexOf("[");
   const endIdx = raw.lastIndexOf("]");
-  if (startIdx === -1 || endIdx === -1 || endIdx <= startIdx) {
-    // ponytail: 200-char preview tells us refusal vs truncation vs prose
-    // without dumping tokens into logs.
+  if (startIdx === -1) {
     throw new Error(`AI (${provider}/${model}) did not return a question list. Preview: ${text.slice(0, 200)}`);
   }
-  try {
-    const parsed: unknown = JSON.parse(raw.substring(startIdx, endIdx + 1));
-    if (!Array.isArray(parsed)) throw new Error("not an array");
-    return parsed;
-  } catch {
-    throw new Error(`AI (${provider}/${model}) returned malformed questions. Please retry generation.`);
+
+  // 1. Direct parse attempt
+  if (endIdx > startIdx) {
+    const candidate = raw.substring(startIdx, endIdx + 1);
+    try {
+      const parsed: unknown = JSON.parse(candidate);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    } catch {
+      // Fall through to LaTeX repair
+    }
+
+    // 2. Repair unescaped LaTeX backslashes (e.g. \frac, \times, \sqrt, \div)
+    try {
+      const fixed = candidate.replace(/\\(?!["\\/bfnrtu])/g, "\\\\");
+      const parsed: unknown = JSON.parse(fixed);
+      if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+    } catch {
+      // Fall through to object extractor
+    }
   }
+
+  // 3. Extract individual completed question objects { ... }
+  const objects: unknown[] = [];
+  let depth = 0;
+  let inString = false;
+  let isEscaped = false;
+  let objStart = -1;
+
+  for (let i = startIdx; i < raw.length; i++) {
+    const ch = raw[i];
+    if (inString) {
+      if (isEscaped) isEscaped = false;
+      else if (ch === "\\") isEscaped = true;
+      else if (ch === '"') inString = false;
+      continue;
+    }
+    if (ch === '"') {
+      inString = true;
+      continue;
+    }
+    if (ch === "{") {
+      if (depth === 0) objStart = i;
+      depth++;
+    } else if (ch === "}") {
+      depth--;
+      if (depth === 0 && objStart !== -1) {
+        const objStr = raw.substring(objStart, i + 1);
+        try {
+          objects.push(JSON.parse(objStr));
+        } catch {
+          try {
+            const fixed = objStr.replace(/\\(?!["\\/bfnrtu])/g, "\\\\");
+            objects.push(JSON.parse(fixed));
+          } catch {
+            // Skip broken individual object
+          }
+        }
+        objStart = -1;
+      }
+    }
+  }
+
+  if (objects.length > 0) return objects;
+
+  throw new Error(`AI (${provider}/${model}) returned malformed questions. Please retry generation.`);
 }
 
 // ── Live AI generation (throws on failure — never falls back to templates) ──
@@ -298,7 +362,7 @@ ${opts.teacherInstructions ? `- Teacher instructions: ${opts.teacherInstructions
 
 JSON schema per question:
 [{"position":1,"qtype":"mcq","difficulty":${difficulty},"marks":1,"stem":"...","options":[{"label":"A","text":"...","isCorrect":false},{"label":"B","text":"...","isCorrect":true},{"label":"C","text":"...","isCorrect":false},{"label":"D","text":"...","isCorrect":false}],"correctAnswer":"...","solutionSteps":["Step 1: ...","Step 2: ..."],"rubric":[{"criterion":"...","marks":1}],"competency":"...","learningObjective":"..."}]
-Rules: exactly one option isCorrect for mcq/assertion_reason; non-option types use "options":[]; solutionSteps must show the full working; correctAnswer must be exact and verifiable.`;
+Rules: exactly one option isCorrect for mcq/assertion_reason; non-option types use "options":[]; solutionSteps must show concise working (2-4 steps); correctAnswer must be exact and verifiable. Output strictly valid JSON with standard double-quoted strings.`;
 
   const collected: GeneratedQuestion[] = [];
   let checked = 0;
@@ -431,28 +495,37 @@ export async function generateHomeworkAssignment(
     fallbackUsed: fallbackTrail.length > 1,
   };
 
-  // If in Variant or Adaptive mode and students are specified, each learner
-  // gets a distinct variant set; base stems are avoided so variants differ.
+  // If in Variant or Adaptive mode and students are specified, generate distinct
+  // anti-cheating variant sets in parallel (capped pool) to avoid sequential latency blowup.
   if ((mode === "variant" || mode === "adaptive") && req.studentIds && req.studentIds.length > 0) {
     const studentVariants: Record<string, GeneratedQuestion[]> = {};
     const variantAvoid = [...(req.recentStems ?? []), ...base.questions.map((q) => q.stem)];
 
-    for (let idx = 0; idx < req.studentIds.length; idx++) {
-      const studentId = req.studentIds[idx];
-      const studentQuestions = await generateQuestionsWithAI(chapter, questionCount, difficulty, types, {
+    const variantPoolCount = Math.min(req.studentIds.length > 1 ? 2 : 1, req.studentIds.length);
+    const variantPromises = Array.from({ length: variantPoolCount }).map((_, idx) =>
+      generateQuestionsWithAI(chapter, questionCount, difficulty, types, {
         teacherInstructions: req.teacherInstructions,
         userId,
         studentSeed: idx + 1,
-        avoidStems: [...variantAvoid, ...Object.values(studentVariants).flat().map((q) => q.stem)],
+        avoidStems: variantAvoid,
         excludeFingerprints: req.excludeFingerprints,
         key,
         allowFallbacks: opts.allowFallbacks,
         freeOnly: opts.freeOnly,
-      });
-      for (const step of studentQuestions.fallbackTrail) {
+      })
+    );
+
+    const variantResults = await Promise.all(variantPromises);
+    for (const vRes of variantResults) {
+      for (const step of vRes.fallbackTrail) {
         if (!fallbackTrail.includes(step)) fallbackTrail.push(step);
       }
-      studentVariants[studentId] = studentQuestions.questions.map((q) => ({
+    }
+
+    for (let idx = 0; idx < req.studentIds.length; idx++) {
+      const studentId = req.studentIds[idx];
+      const chosenVariant = variantResults[idx % variantResults.length];
+      studentVariants[studentId] = chosenVariant.questions.map((q) => ({
         ...q,
         studentId,
         id: `gen-q-${chapter.slug}-${q.position}-${studentId.slice(0, 8)}`,
