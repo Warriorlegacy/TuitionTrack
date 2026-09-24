@@ -646,7 +646,7 @@ export type DbEnums = {
   subscription_plan: SubscriptionPlan;
   subscription_status: SubscriptionStatus;
   user_role: AppRole;
-      ai_provider: "openai" | "anthropic" | "google" | "groq" | "together" | "openrouter" | "huggingface" | "custom";
+  ai_provider: "openai" | "anthropic" | "google" | "groq" | "together" | "openrouter" | "huggingface" | "nvidia" | "deepseek" | "ollama" | "ollama_cloud" | "github" | "opencode" | "custom";
   ai_key_status: "active" | "revoked" | "expired";
   payment_proof_status: PaymentProofStatus;
 };
