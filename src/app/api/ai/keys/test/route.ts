@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { requireAuthContext } from "@/lib/auth";
-import { complete, detectProviderFromKey, pickModel } from "@/lib/ai/provider";
+import { complete, detectProviderFromKey, pickModel, clearCooldown, type ProviderKind } from "@/lib/ai/provider";
 
 export const dynamic = "force-dynamic";
 
@@ -13,29 +13,45 @@ export async function POST(request: Request) {
   const apiKey = body?.api_key as string | undefined;
   const provider = body?.provider as string | undefined;
   const baseUrl = body?.base_url as string | undefined;
+  const requestedModel = body?.model as string | undefined;
 
-  if (!provider || (!apiKey && provider !== "ollama")) {
+  const isOllamaLike = provider === "ollama" || provider === "ollama_cloud";
+  if (!provider || (!apiKey && !isOllamaLike)) {
     return NextResponse.json({ error: "api_key and provider required" }, { status: 400 });
   }
 
-  // ponytail: local ollama needs no key — dummy key + local base override.
-  const key = apiKey || "ollama";
+  const key = apiKey || (isOllamaLike ? "ollama" : "");
   const base = baseUrl || (provider === "ollama"
     ? process.env.OLLAMA_BASE_URL || "http://localhost:11434/v1"
-    : undefined);
-  const kind = provider === "custom" ? "custom"
-    : provider === "ollama" ? "ollama" : detectProviderFromKey(key);
-  // Provider-correct free default (the old hardcoded gpt-4o-mini broke Groq/
-  // Together/HuggingFace tests with model_not_found).
-  const model = pickModel("A", kind, true, null, null);
+    : provider === "ollama_cloud"
+      ? process.env.OLLAMA_CLOUD_BASE_URL || "https://api.ollamacloud.com/v1"
+      : undefined);
+
+  const kind: ProviderKind = provider === "custom"
+    ? "custom"
+    : provider === "ollama"
+      ? "ollama"
+      : provider === "ollama_cloud"
+        ? "ollama_cloud"
+        : detectProviderFromKey(key);
+
+  const model = requestedModel?.trim() || pickModel("A", kind, true, null, null);
+
+  // Clear any existing cooldown for this model so an explicit test always executes fresh
+  clearCooldown(kind, model);
 
   try {
     const result = await complete({
-      tier: "A", system: "You are a helpful assistant.", user: "Say 'OK' only.",
-      apiKeyOverride: key, providerKind: kind, baseUrlOverride: base, modelOverride: model,
-      // Free models can be reasoning models that spend tokens on a thinking
-      // trace before answering — a tiny budget returns the trace, not the answer.
+      tier: "A",
+      system: "You are a helpful assistant.",
+      user: "Say 'OK' only.",
+      apiKeyOverride: key,
+      providerKind: kind,
+      baseUrlOverride: base,
+      modelOverride: model,
       maxTokens: 300,
+      allowFallbacks: false, // Explicitly test THIS key and model, no failover
+      freeOnly: false, // Testing a key tests the key itself regardless of platform cost mode
     });
     return NextResponse.json({ ok: true, model: result.model, latencyMs: result.latencyMs, text: result.text });
   } catch (e) {

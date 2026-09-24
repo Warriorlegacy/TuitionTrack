@@ -53,6 +53,7 @@ const ENDPOINTS: Record<string, { base: string; kind: "openai" | "anthropic" | "
   deepseek:    { base: "https://api.deepseek.com/v1", kind: "openai" },
   github:      { base: "https://models.github.ai/inference", kind: "openai" },
   ollama:      { base: "http://localhost:11434/v1", kind: "openai" },
+  ollama_cloud: { base: "https://api.ollamacloud.com/v1", kind: "openai" },
   opencode:    { base: "https://opencode.ai/inference/openai/v1", kind: "openai" },
   custom:      { base: "", kind: "custom" },
 };
@@ -71,24 +72,24 @@ const ENDPOINTS: Record<string, { base: string; kind: "openai" | "anthropic" | "
 const FREE_MODELS: Record<"A" | "B" | "C", Record<string, string>> = {
   A: {
     openai: "gpt-4o-mini", anthropic: "claude-3-haiku-20240307", google: "gemini-2.5-flash-lite",
-    groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+    groq: "qwen/qwen3.8-27b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     openrouter: "google/gemma-4-26b-a4b-it:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
     nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", deepseek: "deepseek-chat",
-    ollama: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
+    ollama: "llama3.1:8b", ollama_cloud: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
   },
   B: {
     openai: "gpt-4o-mini", anthropic: "claude-3-haiku-20240307", google: "gemini-2.5-flash-lite",
-    groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
+    groq: "qwen/qwen3.8-27b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     openrouter: "google/gemma-4-26b-a4b-it:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
     nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", deepseek: "deepseek-chat",
-    ollama: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
+    ollama: "llama3.1:8b", ollama_cloud: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
   },
   C: {
     openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-2.5-flash",
     groq: "openai/gpt-oss-120b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     openrouter: "google/gemma-4-31b-it:free", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
     nvidia: "nvidia/nemotron-3-super-120b-a12b", deepseek: "deepseek-chat",
-    ollama: "qwen2.5:14b", github: "openai/gpt-4o", custom: "",
+    ollama: "qwen2.5:14b", ollama_cloud: "qwen2.5:14b", github: "openai/gpt-4o", custom: "",
   },
 };
 
@@ -98,21 +99,21 @@ const PAID_MODELS: Record<"A" | "B" | "C", Record<string, string>> = {
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo",
     openrouter: "openai/gpt-4o-mini", huggingface: "meta-llama/Llama-3.1-8B-Instruct",
     nvidia: "nvidia/nemotron-3.5-lightning-30b-a3b", deepseek: "deepseek-chat",
-    ollama: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
+    ollama: "llama3.1:8b", ollama_cloud: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
   },
   B: {
     openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-3.5-flash",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     openrouter: "openai/gpt-4o", huggingface: "meta-llama/Llama-3.1-70B-Instruct",
     nvidia: "nvidia/nemotron-3-super-120b-a12b", deepseek: "deepseek-chat",
-    ollama: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
+    ollama: "llama3.1:8b", ollama_cloud: "llama3.1:8b", github: "openai/gpt-4o-mini", custom: "",
   },
   C: {
     openai: "gpt-4o", anthropic: "claude-3-5-sonnet-20241022", google: "gemini-3.5-flash",
     groq: "openai/gpt-oss-20b", together: "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
     openrouter: "openai/gpt-4o", huggingface: "meta-llama/Llama-3.1-70B-Instruct",
     nvidia: "nvidia/nemotron-3-super-120b-a12b", deepseek: "deepseek-chat",
-    ollama: "qwen2.5:14b", github: "openai/gpt-4o", custom: "",
+    ollama: "qwen2.5:14b", ollama_cloud: "qwen2.5:14b", github: "openai/gpt-4o", custom: "",
   },
 };
 
@@ -123,7 +124,7 @@ const ENV_MODELS: Record<"A" | "B" | "C", string | undefined> = {
 };
 
 // ── Provider detection from key prefix ─────────────────────────────
-export type ProviderKind = "openai" | "anthropic" | "google" | "groq" | "together" | "openrouter" | "huggingface" | "nvidia" | "deepseek" | "ollama" | "github" | "opencode" | "custom";
+export type ProviderKind = "openai" | "anthropic" | "google" | "groq" | "together" | "openrouter" | "huggingface" | "nvidia" | "deepseek" | "ollama" | "ollama_cloud" | "github" | "opencode" | "custom";
 
 /** Human label for the REAL serving provider — used by generation UIs. */
 export function providerDisplayName(kind: ProviderKind | string): string {
@@ -140,6 +141,7 @@ export function providerDisplayName(kind: ProviderKind | string): string {
     case "github": return "GitHub Models";
     case "opencode": return "OpenCode";
     case "ollama": return "Ollama (local)";
+    case "ollama_cloud": return "Ollama Cloud";
     default: return "Custom endpoint";
   }
 }
@@ -294,8 +296,11 @@ const PRICE_PER_1K: Record<string, { in: number; out: number }> = {
   "anthropic/claude-3-haiku-20240307": { in: 0.00025, out: 0.00125 },
   "anthropic/claude-3-5-sonnet-20241022": { in: 0.003, out: 0.015 },
   "groq/llama-3.1-8b-instant": { in: 0, out: 0 },
+  "qwen/qwen3.8-27b": { in: 0, out: 0 },
+  "allam-2-7b": { in: 0, out: 0 },
   "openai/gpt-oss-20b": { in: 0, out: 0 },
   "openai/gpt-oss-120b": { in: 0, out: 0 },
+  "openai/gpt-oss-safeguard-20b": { in: 0, out: 0 },
   "nvidia/nemotron-3.5-lightning-30b-a3b": { in: 0, out: 0 },
   "nvidia/nemotron-3-super-120b-a12b": { in: 0, out: 0 },
   "meta-llama/Llama-3.1-8B-Instruct": { in: 0, out: 0 },
@@ -521,6 +526,18 @@ export function recordSuccess(kind: ProviderKind, model: string): void {
   MODEL_HEALTH.delete(`${kind}::${model}`);
 }
 
+export function clearCooldown(kind?: ProviderKind, model?: string): void {
+  if (kind && model) {
+    MODEL_HEALTH.delete(`${kind}::${model}`);
+  } else if (kind) {
+    for (const key of Array.from(MODEL_HEALTH.keys())) {
+      if (key.startsWith(`${kind}::`)) MODEL_HEALTH.delete(key);
+    }
+  } else {
+    MODEL_HEALTH.clear();
+  }
+}
+
 export function isCooledDown(kind: ProviderKind, model: string): boolean {
   const e = MODEL_HEALTH.get(`${kind}::${model}`);
   if (!e) return false;
@@ -543,6 +560,7 @@ export function isFreeModel(kind: ProviderKind, model: string): boolean {
   if (kind === "opencode") return isOpenCodeFreeModel(model);
   if (!model) return true; // auto → tier free pool
   if (PAID_KINDS.has(kind)) return false;
+  if (kind === "ollama" || kind === "ollama_cloud") return true;
   if (kind === "openrouter") return model.endsWith(":free");
   return (PROVIDER_FREE_MODELS[kind] ?? []).includes(model);
 }
@@ -578,16 +596,17 @@ export function shouldSkipPaidModel(kind: ProviderKind, model: string, freeOnly:
 // its :free roster churns; this table is the fallback for every provider.
 export const PROVIDER_FREE_MODELS: Record<ProviderKind, string[]> = {
   openrouter: [...FREE_MODEL_FALLBACKS.B, ...FREE_MODEL_FALLBACKS.C.filter((m) => !FREE_MODEL_FALLBACKS.B.includes(m))],
-  google: ["gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-3.5-flash-lite", "gemini-3.5-flash", "gemini-3.1-flash-lite"],
-  groq: ["openai/gpt-oss-20b", "openai/gpt-oss-120b"],
-  openai: ["gpt-4o-mini", "gpt-4o"],
+  google: ["gemini-2.5-flash-lite", "gemini-2.5-flash", "gemini-3.5-flash-lite", "gemini-3.5-flash", "gemini-2.0-flash", "gemini-2.0-flash-lite", "gemini-1.5-flash"],
+  groq: ["qwen/qwen3.8-27b", "openai/gpt-oss-20b", "openai/gpt-oss-120b", "allam-2-7b", "meta-llama/llama-prompt-guard-2-86m", "meta-llama/llama-prompt-guard-2-22m"],
+  openai: ["gpt-4o-mini", "gpt-4o", "o3-mini", "o1-mini"],
   anthropic: ["claude-3-5-haiku-20241022", "claude-3-haiku-20240307", "claude-3-5-sonnet-20241022"],
-  huggingface: ["meta-llama/Llama-3.1-8B-Instruct"],
+  huggingface: ["meta-llama/Llama-3.1-8B-Instruct", "Qwen/Qwen2.5-72B-Instruct", "mistralai/Mistral-7B-Instruct-v0.3"],
   together: ["meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo", "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo"],
   nvidia: ["nvidia/nemotron-3.5-lightning-30b-a3b", "nvidia/nemotron-3-super-120b-a12b"],
-  deepseek: ["deepseek-chat"],
+  deepseek: ["deepseek-chat", "deepseek-reasoner"],
   github: ["openai/gpt-4o-mini", "openai/gpt-4o"],
-  ollama: ["llama3.1:8b", "qwen2.5:14b"],
+  ollama: ["llama3.1:8b", "qwen2.5:14b", "deepseek-r1:8b", "mistral:7b"],
+  ollama_cloud: ["llama3.3:70b", "llama3.1:8b", "qwen2.5:14b", "deepseek-r1:8b", "mistral:7b"],
   // OpenCode: served LIVE from the inference catalog (see /api/ai/models) —
   // keyless external free calls 403, so no static free list is trusted here.
   opencode: [],
@@ -601,7 +620,7 @@ function resolveAttemptProvider(
 ): ResolvedProvider {
   const provider = resolveProviderFromKind(entry.kind, entry.key,
     args.baseUrlOverride || process.env.AI_BASE_URL ||
-    (entry.kind === "ollama" ? process.env.OLLAMA_BASE_URL : undefined) || undefined);
+    (entry.kind === "ollama" ? process.env.OLLAMA_BASE_URL : entry.kind === "ollama_cloud" ? process.env.OLLAMA_CLOUD_BASE_URL : undefined) || undefined);
   // Explicit per-call override wins (BYOK user pref flows through here);
   // otherwise fall back to platform env defaults, then the free pool.
   provider.model = args.modelOverride || pickModel(tier, provider.kind, true, ENV_MODELS[tier], null);
@@ -730,18 +749,16 @@ export async function complete(args: CompleteArgs): Promise<CompleteResult> {
           outTok = data.usage?.output_tokens ?? approxTokens(text);
         } else {
           const data = await res.json();
-          text = asStr(asObj(asObj(data.choices?.[0]).message).content);
-          // Reasoning models (nemotron, groq gpt-oss, ...) put the thinking
-          // trace in `reasoning` and the answer in `content`. When the token
-          // budget runs out mid-trace, `content` comes back empty — the model
-          // never got to the answer.
-          const finish = data.choices?.[0]?.finish_reason;
+          const choice = data.choices?.[0];
+          const msg = choice?.message ?? {};
+          text = asStr(msg.content);
+          const reasoning = asStr(msg.reasoning || msg.reasoning_content);
+          const finish = choice?.finish_reason;
           text = stripReasoningTrace(text);
+          if (!text.trim() && reasoning.trim()) {
+            text = reasoning.trim();
+          }
           if (!text.trim()) {
-            // An empty answer is a FAILURE, not a success. Returning it here
-            // would stop the chain and surface as a confusing downstream error
-            // (e.g. "model returned no plan") instead of trying the next
-            // provider. `length` means the budget ran out on the trace.
             const why = finish === "length"
               ? `hit the ${args.maxTokens ?? 600}-token cap while reasoning (raise maxTokens)`
               : "returned empty content";

@@ -92,7 +92,7 @@ check("isFreeModel classification", () => {
   assert.equal(isFreeModel("custom", ""), false);
 });
 check("pickModel ignores paid user pref in free-only mode", () => {
-  const freeKinds: ProviderKind[] = ["openrouter", "google", "groq", "nvidia", "github", "ollama"];
+  const freeKinds: ProviderKind[] = ["openrouter", "google", "groq", "nvidia", "github", "ollama", "ollama_cloud"];
   for (const kind of freeKinds) {
     for (const tier of ["A", "B", "C"] as const) {
       const m = pickModel(tier, kind, true, null, "openai/gpt-4o");

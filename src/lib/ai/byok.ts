@@ -70,13 +70,15 @@ export async function getBestKeyForTier(
   // Prefer user's default provider for all tiers unless tier-specific override exists
   const preferred = keys.find((k) => k.provider === prefsProvider) ?? keys[0];
   const plainKey = await decryptKey(preferred.encrypted_key);
-  const kind = detectProviderFromKey(plainKey);
-  const provider = resolveProviderFromKind(kind, plainKey);
-  // Per-tier user pref wins; else user's default model; else tier pool.
+  const kind: ProviderKind = (preferred.provider as ProviderKind) || detectProviderFromKey(plainKey);
+  const baseUrl = (preferred.metadata?.base_url as string) || undefined;
+  const provider = resolveProviderFromKind(kind, plainKey, baseUrl);
+  const keySelectedModel = (preferred.metadata?.selected_model as string) || null;
+  // Per-tier user pref wins; else user's default model / key model; else tier pool.
   const model = pickModel(
     tier, kind, prefs?.prefer_free_tiers ?? true,
     tierModelMap[tier === "deterministic" ? "B" : tier],
-    tier === "deterministic" ? null : prefs?.default_model || null,
+    tier === "deterministic" ? null : (prefs?.default_model || keySelectedModel),
   );
 
   // Touch last_used_at (fire-and-forget) so key usage is visible in the UI.

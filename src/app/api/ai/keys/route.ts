@@ -26,6 +26,8 @@ export async function GET() {
     last_error: k.last_error,
     created_at: k.created_at,
     key_preview: `${k.key_fingerprint}••••••••`,
+    model: ((k.metadata as Record<string, unknown>)?.selected_model as string) || null,
+    base_url: ((k.metadata as Record<string, unknown>)?.base_url as string) || null,
   }));
 
   return NextResponse.json({
@@ -52,8 +54,12 @@ export async function POST(request: Request) {
   }
   const {
     provider, api_key, label, base_url, prefs_only,
-    model_override, tier_a_model, tier_b_model, tier_c_model, prefer_free_tiers,
+    model, model_override, tier_a_model, tier_b_model, tier_c_model, prefer_free_tiers,
   } = body as Record<string, unknown>;
+
+  const selectedModel = (typeof model === "string" && model.trim())
+    || (typeof model_override === "string" && model_override.trim())
+    || undefined;
 
   const isPrefsOnly = prefs_only === true || typeof api_key !== "string" || !api_key.trim();
 
@@ -78,6 +84,7 @@ export async function POST(request: Request) {
         status: "active",
         metadata: {
           detected: detectProviderFromKey(plainKey),
+          ...(selectedModel ? { selected_model: selectedModel } : {}),
           ...(typeof base_url === "string" && base_url.trim() ? { base_url: (base_url as string).trim() } : {}),
         },
       }, { onConflict: "user_id,provider,label" })
@@ -113,7 +120,7 @@ export async function POST(request: Request) {
         ? { default_model: body.default_model as string }
         : {}
       : {
-          default_model: pickModel(
+          default_model: selectedModel || pickModel(
             "B",
             detectProviderFromKey((api_key as string) || ""),
             (prefer_free_tiers as boolean) ?? true,
