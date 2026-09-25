@@ -6,8 +6,8 @@ import {
   TeacherSubmissionsView,
   type TeacherQuestion,
   type TeacherSubmission,
-  normalizeQuestionOptions,
 } from "@/components/homework/teacher-submissions-view";
+import { normalizeQuestionOptions } from "@/lib/homework/options";
 
 export const dynamic = "force-dynamic";
 
@@ -61,7 +61,13 @@ export default async function HomeworkDetailPage({
   // Security: strict ownership — assignment.teacher_id must equal the signed-in
   // teacher (mirrors the assignments RLS policy). No security checks removed.
   if (isTeacherOrAdmin) {
-    if (!context.user || (typedAssignment.teacher_id !== context.user.id && !context.canManage)) {
+    const isAuthorized =
+      context.user &&
+      (typedAssignment.teacher_id === context.user.id ||
+        context.canManage ||
+        (Array.isArray(context.teacherIds) && context.teacherIds.includes(typedAssignment.teacher_id)));
+
+    if (!isAuthorized) {
       notFound();
     }
 

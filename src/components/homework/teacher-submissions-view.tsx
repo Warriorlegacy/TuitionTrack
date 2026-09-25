@@ -35,18 +35,14 @@ export type TeacherSubmission = {
   reviewedQuestions?: string[];
 };
 
-export {
-  normalizeQuestionOptions,
-  cleanAnswerToken,
-  isOptionMatch,
-  type QuestionOption,
-} from "@/lib/homework/options";
 import {
+  type QuestionOption,
   normalizeQuestionOptions,
   cleanAnswerToken,
   isOptionMatch,
-  type QuestionOption,
 } from "@/lib/homework/options";
+
+export type { QuestionOption };
 
 export type TeacherQuestion = {
   id: string;
@@ -511,7 +507,7 @@ export function TeacherSubmissionsView({
             Class {assignment.classLevel} · {assignment.subject}
           </Badge>
           <Badge variant="outline" className="text-xs text-slate-500">
-            Due {new Date(assignment.dueDate).toLocaleDateString()}
+            Due {assignment.dueDate ? new Date(assignment.dueDate).toLocaleDateString() : "—"}
           </Badge>
         </div>
       </div>
