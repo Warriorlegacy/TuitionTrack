@@ -1,6 +1,7 @@
 import "server-only";
 
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { normalizeQuestionOptions } from "@/lib/homework/options";
 
 export type StudentHomeworkStatus =
   | "pending"
@@ -328,7 +329,7 @@ export async function getStudentAssignmentPlayerDetails(
     stem: String(q.stem),
     qtype: String(q.qtype),
     marks: Number(q.marks) || 1,
-    options: (q.options as { label: string; text: string; isCorrect?: boolean }[]) || [],
+    options: normalizeQuestionOptions(q.options, q.qtype, q.stem, q.correct_answer),
     correctAnswer: hasSubmitted ? String(q.correct_answer || "") : undefined,
     solutionSteps: hasSubmitted ? (q.solution_steps as string[]) : undefined,
   }));

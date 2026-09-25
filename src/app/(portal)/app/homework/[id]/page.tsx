@@ -34,7 +34,7 @@ export default async function HomeworkDetailPage({
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const typedAssignment = assignment as any;
-  const isTeacher = context.role === "teacher";
+  const isTeacherOrAdmin = context.role === "teacher" || context.canManage;
 
   // 2. Fetch questions (base + all student variants)
   const { data: allQuestions, error: qErr } = await supabase
@@ -60,8 +60,8 @@ export default async function HomeworkDetailPage({
   // none). Teachers now get the full submission roster with filters.
   // Security: strict ownership — assignment.teacher_id must equal the signed-in
   // teacher (mirrors the assignments RLS policy). No security checks removed.
-  if (isTeacher) {
-    if (!context.user || typedAssignment.teacher_id !== context.user.id) {
+  if (isTeacherOrAdmin) {
+    if (!context.user || (typedAssignment.teacher_id !== context.user.id && !context.canManage)) {
       notFound();
     }
 
@@ -104,7 +104,7 @@ export default async function HomeworkDetailPage({
       stem: String(q.stem),
       qtype: String(q.qtype),
       marks: Number(q.marks) || 1,
-      options: normalizeQuestionOptions(q.options),
+      options: normalizeQuestionOptions(q.options, q.qtype, q.stem, q.correct_answer),
       correctAnswer: String(q.correct_answer || ""),
       solutionSteps: (q.solution_steps as string[]) || [],
       studentId: q.student_id ? String(q.student_id) : null,
@@ -175,7 +175,7 @@ export default async function HomeworkDetailPage({
     stem: String(q.stem),
     qtype: String(q.qtype),
     marks: Number(q.marks) || 1,
-    options: normalizeQuestionOptions(q.options),
+    options: normalizeQuestionOptions(q.options, q.qtype, q.stem, q.correct_answer),
     // Answer key is revealed after submission (study material, not a grade).
     correctAnswer: typedSubmission ? String(q.correct_answer || "") : undefined,
     solutionSteps: typedSubmission ? (q.solution_steps as string[]) : undefined,

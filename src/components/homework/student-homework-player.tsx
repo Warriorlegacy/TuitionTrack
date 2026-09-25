@@ -19,6 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { normalizeQuestionOptions, isOptionMatch } from "@/lib/homework/options";
 
 export type QuestionData = {
   id: string;
@@ -268,51 +269,63 @@ export function StudentHomeworkPlayer({
 
         <CardContent className="pt-6 space-y-6">
           {/* Options for MCQ */}
-          {currentQ?.options?.length > 0 ? (
-            <div className="space-y-2.5">
-              {currentQ.options.map((opt) => {
-                const isSelected = answers[currentQ.id] === opt.label;
-                const isCorrect = submission && opt.isCorrect;
-                return (
-                  <button
-                    key={opt.label}
-                    type="button"
-                    disabled={Boolean(submission)}
-                    onClick={() => handleSelectOption(currentQ.id, opt.label)}
-                    className={`w-full p-4 rounded-xl border text-left text-xs sm:text-sm transition-all flex items-center gap-3 ${
-                      isCorrect
-                        ? "bg-emerald-50 border-emerald-400 text-emerald-950 font-semibold"
-                        : isSelected
-                        ? "bg-indigo-50 border-indigo-500 text-indigo-950 font-semibold shadow-sm"
-                        : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
-                    }`}
-                  >
-                    <span
-                      className={`flex size-6 shrink-0 items-center justify-center rounded-lg font-bold text-xs ${
-                        isSelected ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"
-                      }`}
-                    >
-                      {opt.label}
-                    </span>
-                    <span className="flex-1 leading-relaxed">{opt.text}</span>
-                    {isSelected && <CheckCircle2Icon className="size-4 text-indigo-600 ml-auto shrink-0" />}
-                  </button>
-                );
-              })}
-            </div>
-          ) : (
-            /* Numeric / Text input */
-            <div className="space-y-2">
-              <Label className="text-xs font-semibold text-slate-700">Your Answer / Calculation</Label>
-              <Textarea
-                placeholder="Type your final answer or solution steps here..."
-                disabled={Boolean(submission)}
-                value={answers[currentQ?.id] || ""}
-                onChange={(e) => handleTextAnswer(currentQ.id, e.target.value)}
-                className="text-xs sm:text-sm min-h-[100px]"
-              />
-            </div>
-          )}
+          {(() => {
+            const currentOptions =
+              currentQ?.options?.length > 0
+                ? currentQ.options
+                : normalizeQuestionOptions(currentQ?.options, currentQ?.qtype, currentQ?.stem, currentQ?.correctAnswer);
+            if (currentOptions.length > 0) {
+              return (
+                <div className="space-y-2.5">
+                  {currentOptions.map((opt) => {
+                    const isSelected =
+                      answers[currentQ.id] === opt.label || isOptionMatch(answers[currentQ.id], opt);
+                    const isCorrect =
+                      submission &&
+                      (opt.isCorrect === true || isOptionMatch(currentQ.correctAnswer, opt));
+                    return (
+                      <button
+                        key={opt.label}
+                        type="button"
+                        disabled={Boolean(submission)}
+                        onClick={() => handleSelectOption(currentQ.id, opt.label)}
+                        className={`w-full p-4 rounded-xl border text-left text-xs sm:text-sm transition-all flex items-center gap-3 ${
+                          isCorrect
+                            ? "bg-emerald-50 border-emerald-400 text-emerald-950 font-semibold"
+                            : isSelected
+                            ? "bg-indigo-50 border-indigo-500 text-indigo-950 font-semibold shadow-sm"
+                            : "bg-white border-slate-200 text-slate-700 hover:bg-slate-50"
+                        }`}
+                      >
+                        <span
+                          className={`flex size-6 shrink-0 items-center justify-center rounded-lg font-bold text-xs ${
+                            isSelected ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-600"
+                          }`}
+                        >
+                          {opt.label}
+                        </span>
+                        <span className="flex-1 leading-relaxed">{opt.text}</span>
+                        {isSelected && <CheckCircle2Icon className="size-4 text-indigo-600 ml-auto shrink-0" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              );
+            }
+            return (
+              /* Numeric / Text input */
+              <div className="space-y-2">
+                <Label className="text-xs font-semibold text-slate-700">Your Answer / Calculation</Label>
+                <Textarea
+                  placeholder="Type your final answer or solution steps here..."
+                  disabled={Boolean(submission)}
+                  value={answers[currentQ?.id] || ""}
+                  onChange={(e) => handleTextAnswer(currentQ.id, e.target.value)}
+                  className="text-xs sm:text-sm min-h-[100px]"
+                />
+              </div>
+            );
+          })()}
 
           {/* Answer key (post-submission study material — not a grade) */}
           {submission && currentQ?.solutionSteps?.length && (

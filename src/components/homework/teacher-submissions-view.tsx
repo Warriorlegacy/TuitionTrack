@@ -35,54 +35,18 @@ export type TeacherSubmission = {
   reviewedQuestions?: string[];
 };
 
-export type QuestionOption = {
-  label: string;
-  text: string;
-  isCorrect?: boolean;
-};
-
-export function normalizeQuestionOptions(raw: unknown): QuestionOption[] {
-  if (!raw) return [];
-  let parsed = raw;
-  if (typeof raw === "string") {
-    try {
-      parsed = JSON.parse(raw);
-    } catch {
-      return [];
-    }
-  }
-
-  if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
-    const entries = Object.entries(parsed as Record<string, unknown>);
-    return entries
-      .map(([key, val], idx) => {
-        const label = key.trim().toUpperCase() || String.fromCharCode(65 + idx);
-        const text = typeof val === "string" ? val : (val as { text?: string })?.text ?? String(val ?? "");
-        const isCorrect = typeof val === "object" && val !== null ? Boolean((val as { isCorrect?: boolean }).isCorrect) : false;
-        return { label, text: String(text).trim(), isCorrect };
-      })
-      .filter((opt) => opt.text.length > 0 || opt.label.length > 0);
-  }
-
-  if (!Array.isArray(parsed)) return [];
-
-  return parsed
-    .map((item, idx) => {
-      if (typeof item === "string") {
-        const defaultLabel = String.fromCharCode(65 + idx);
-        return { label: defaultLabel, text: item.trim(), isCorrect: false };
-      }
-      if (item && typeof item === "object") {
-        const r = item as Record<string, unknown>;
-        const label = String(r.label || String.fromCharCode(65 + idx)).trim().toUpperCase();
-        const text = String(r.text || r.value || r.option || "").trim();
-        const isCorrect = r.isCorrect === true || r.correct === true;
-        return { label, text, isCorrect };
-      }
-      return { label: String.fromCharCode(65 + idx), text: String(item ?? "").trim(), isCorrect: false };
-    })
-    .filter((opt) => opt.text.length > 0 || opt.label.length > 0);
-}
+export {
+  normalizeQuestionOptions,
+  cleanAnswerToken,
+  isOptionMatch,
+  type QuestionOption,
+} from "@/lib/homework/options";
+import {
+  normalizeQuestionOptions,
+  cleanAnswerToken,
+  isOptionMatch,
+  type QuestionOption,
+} from "@/lib/homework/options";
 
 export type TeacherQuestion = {
   id: string;
@@ -109,8 +73,21 @@ function statusOf(s: TeacherSubmission): string {
   return "submitted";
 }
 
-function paperFor(questions: TeacherQuestion[], studentId: string): TeacherQuestion[] {
-  const specific = questions.filter((q) => q.studentId === studentId);
+function paperFor(questions: TeacherQuestion[], submission: TeacherSubmission): TeacherQuestion[] {
+  const answerKeys = Object.keys(submission.answers || {});
+  if (answerKeys.length > 0) {
+    const answeredQs = questions.filter((q) => answerKeys.includes(q.id));
+    if (answeredQs.length > 0) {
+      const specific = questions.filter((q) => q.studentId === submission.studentId);
+      const pool = specific.length > 0 ? specific : questions.filter((q) => !q.studentId);
+      const combined = new Map<string, TeacherQuestion>();
+      pool.forEach((q) => combined.set(q.id, q));
+      answeredQs.forEach((q) => combined.set(q.id, q));
+      return Array.from(combined.values()).sort((a, b) => a.position - b.position);
+    }
+  }
+
+  const specific = questions.filter((q) => q.studentId === submission.studentId);
   const paper = specific.length > 0 ? specific : questions.filter((q) => !q.studentId);
   return [...paper].sort((a, b) => a.position - b.position);
 }
@@ -131,30 +108,26 @@ function ReviewRow({
   const reviewed = (submission.reviewedQuestions ?? []).includes(question.id);
   const rawAnswer = submission.answers[question.id] ?? "";
   const answer = rawAnswer.trim();
-  const options = question.options ?? [];
 
-  const normAnswer = answer.toLowerCase();
-  const normKey = (question.correctAnswer ?? "").trim().toLowerCase();
+  // Normalize options defensively with fallback to stem/qtype/correctAnswer
+  const options = useMemo(() => {
+    if (question.options && question.options.length > 0) {
+      return question.options;
+    }
+    return normalizeQuestionOptions(question.options, question.qtype, question.stem, question.correctAnswer);
+  }, [question]);
 
-  const studentOpt = options.find((opt) => {
-    const l = opt.label.trim().toLowerCase();
-    const t = opt.text.trim().toLowerCase();
-    return normAnswer.length > 0 && (normAnswer === l || normAnswer === t || normAnswer.startsWith(l + ".") || normAnswer.startsWith(l + ")"));
-  });
+  const cleanAnswer = cleanAnswerToken(answer);
+  const cleanKey = cleanAnswerToken(question.correctAnswer);
 
-  const correctOpt = options.find((opt) => {
-    const l = opt.label.trim().toLowerCase();
-    const t = opt.text.trim().toLowerCase();
-    return (
-      opt.isCorrect === true ||
-      (normKey.length > 0 &&
-        (normKey === l || normKey === t || normKey.startsWith(l + ".") || normKey.startsWith(l + ")")))
-    );
-  });
+  const studentOpt = options.find((opt) => isOptionMatch(answer, opt));
+  const correctOpt = options.find(
+    (opt) => opt.isCorrect === true || isOptionMatch(question.correctAnswer, opt)
+  );
 
   const isStudentChoiceCorrect = Boolean(
-    (studentOpt && correctOpt && studentOpt.label === correctOpt.label) ||
-      (normAnswer.length > 0 && normKey.length > 0 && normAnswer === normKey)
+    (studentOpt && correctOpt && studentOpt.label.toLowerCase() === correctOpt.label.toLowerCase()) ||
+    (cleanAnswer.length > 0 && cleanKey.length > 0 && cleanAnswer === cleanKey)
   );
 
   const handleSave = (customMarks?: number) => {
@@ -208,21 +181,13 @@ function ReviewRow({
 
           <div className="grid sm:grid-cols-2 gap-2">
             {options.map((opt) => {
-              const normOptLabel = opt.label.trim().toLowerCase();
-              const normOptText = opt.text.trim().toLowerCase();
               const isSelected =
-                normAnswer.length > 0 &&
-                (normAnswer === normOptLabel ||
-                  normAnswer === normOptText ||
-                  normAnswer.startsWith(normOptLabel + ".") ||
-                  normAnswer.startsWith(normOptLabel + ")"));
+                isOptionMatch(answer, opt) ||
+                (studentOpt !== undefined && studentOpt.label.toUpperCase() === opt.label.toUpperCase());
               const isKey =
                 opt.isCorrect === true ||
-                (normKey.length > 0 &&
-                  (normKey === normOptLabel ||
-                    normKey === normOptText ||
-                    normKey.startsWith(normOptLabel + ".") ||
-                    normKey.startsWith(normOptLabel + ")")));
+                isOptionMatch(question.correctAnswer, opt) ||
+                (correctOpt !== undefined && correctOpt.label.toUpperCase() === opt.label.toUpperCase());
 
               let cardStyle = "bg-slate-50/60 border-slate-200 text-slate-700";
               let badgeStyle = "bg-slate-200 text-slate-700 border-slate-300";
@@ -268,6 +233,13 @@ function ReviewRow({
               );
             })}
           </div>
+        </div>
+      )}
+
+      {options.length === 0 && (question.qtype === "mcq" || question.qtype === "assertion_reason") && (
+        <div className="p-2.5 rounded-lg border border-dashed border-amber-200 bg-amber-50/60 text-[11px] text-amber-800 flex items-center justify-between">
+          <span>MCQ options were not recorded in the question bank for this question.</span>
+          <span className="font-semibold">Review student answer against key below.</span>
         </div>
       )}
 
@@ -389,7 +361,7 @@ function SubmissionCard({
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [finalizing, startFinalize] = useTransition();
-  const paper = useMemo(() => paperFor(questions, s.studentId), [questions, s.studentId]);
+  const paper = useMemo(() => paperFor(questions, s), [questions, s]);
   const reviewedSet = useMemo(() => new Set(s.reviewedQuestions ?? []), [s.reviewedQuestions]);
   const reviewedCount = paper.filter((q) => reviewedSet.has(q.id)).length;
   const allReviewed = paper.length > 0 && reviewedCount === paper.length;
@@ -618,7 +590,10 @@ export function TeacherSubmissionsView({
         </CardHeader>
         <CardContent className="space-y-2">
           {questions.slice(0, 50).map((qt) => {
-            const qtOptions = qt.options ?? [];
+            const qtOptions =
+              qt.options && qt.options.length > 0
+                ? qt.options
+                : normalizeQuestionOptions(qt.options, qt.qtype, qt.stem, qt.correctAnswer);
             return (
               <div key={qt.id} className="p-3.5 rounded-xl border border-slate-200 bg-white text-xs space-y-2">
                 <div className="flex items-center justify-between gap-2">
@@ -633,11 +608,9 @@ export function TeacherSubmissionsView({
                 {qtOptions.length > 0 && (
                   <div className="grid sm:grid-cols-2 gap-1.5 py-1">
                     {qtOptions.map((opt) => {
-                      const normKey = (qt.correctAnswer || "").trim().toLowerCase();
                       const isKey =
                         opt.isCorrect === true ||
-                        normKey === opt.label.trim().toLowerCase() ||
-                        normKey === opt.text.trim().toLowerCase();
+                        isOptionMatch(qt.correctAnswer, opt);
                       return (
                         <div
                           key={opt.label}
