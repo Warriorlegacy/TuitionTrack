@@ -35,12 +35,62 @@ export type TeacherSubmission = {
   reviewedQuestions?: string[];
 };
 
+export type QuestionOption = {
+  label: string;
+  text: string;
+  isCorrect?: boolean;
+};
+
+export function normalizeQuestionOptions(raw: unknown): QuestionOption[] {
+  if (!raw) return [];
+  let parsed = raw;
+  if (typeof raw === "string") {
+    try {
+      parsed = JSON.parse(raw);
+    } catch {
+      return [];
+    }
+  }
+
+  if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+    const entries = Object.entries(parsed as Record<string, unknown>);
+    return entries
+      .map(([key, val], idx) => {
+        const label = key.trim().toUpperCase() || String.fromCharCode(65 + idx);
+        const text = typeof val === "string" ? val : (val as { text?: string })?.text ?? String(val ?? "");
+        const isCorrect = typeof val === "object" && val !== null ? Boolean((val as { isCorrect?: boolean }).isCorrect) : false;
+        return { label, text: String(text).trim(), isCorrect };
+      })
+      .filter((opt) => opt.text.length > 0 || opt.label.length > 0);
+  }
+
+  if (!Array.isArray(parsed)) return [];
+
+  return parsed
+    .map((item, idx) => {
+      if (typeof item === "string") {
+        const defaultLabel = String.fromCharCode(65 + idx);
+        return { label: defaultLabel, text: item.trim(), isCorrect: false };
+      }
+      if (item && typeof item === "object") {
+        const r = item as Record<string, unknown>;
+        const label = String(r.label || String.fromCharCode(65 + idx)).trim().toUpperCase();
+        const text = String(r.text || r.value || r.option || "").trim();
+        const isCorrect = r.isCorrect === true || r.correct === true;
+        return { label, text, isCorrect };
+      }
+      return { label: String.fromCharCode(65 + idx), text: String(item ?? "").trim(), isCorrect: false };
+    })
+    .filter((opt) => opt.text.length > 0 || opt.label.length > 0);
+}
+
 export type TeacherQuestion = {
   id: string;
   position: number;
   stem: string;
   qtype: string;
   marks: number;
+  options?: QuestionOption[];
   correctAnswer: string;
   solutionSteps?: string[];
   studentId: string | null;
@@ -79,10 +129,36 @@ function ReviewRow({
   );
   const [feedback, setFeedback] = useState<string>(submission.questionFeedback?.[question.id] ?? "");
   const reviewed = (submission.reviewedQuestions ?? []).includes(question.id);
-  const answer = submission.answers[question.id] ?? "";
+  const rawAnswer = submission.answers[question.id] ?? "";
+  const answer = rawAnswer.trim();
+  const options = question.options ?? [];
 
-  const handleSave = () => {
-    const val = Number(marks);
+  const normAnswer = answer.toLowerCase();
+  const normKey = (question.correctAnswer ?? "").trim().toLowerCase();
+
+  const studentOpt = options.find((opt) => {
+    const l = opt.label.trim().toLowerCase();
+    const t = opt.text.trim().toLowerCase();
+    return normAnswer.length > 0 && (normAnswer === l || normAnswer === t || normAnswer.startsWith(l + ".") || normAnswer.startsWith(l + ")"));
+  });
+
+  const correctOpt = options.find((opt) => {
+    const l = opt.label.trim().toLowerCase();
+    const t = opt.text.trim().toLowerCase();
+    return (
+      opt.isCorrect === true ||
+      (normKey.length > 0 &&
+        (normKey === l || normKey === t || normKey.startsWith(l + ".") || normKey.startsWith(l + ")")))
+    );
+  });
+
+  const isStudentChoiceCorrect = Boolean(
+    (studentOpt && correctOpt && studentOpt.label === correctOpt.label) ||
+      (normAnswer.length > 0 && normKey.length > 0 && normAnswer === normKey)
+  );
+
+  const handleSave = (customMarks?: number) => {
+    const val = customMarks !== undefined ? customMarks : Number(marks);
     if (!Number.isFinite(val) || val < 0 || val > question.marks) {
       toast.error(`Marks must be between 0 and ${question.marks}.`);
       return;
@@ -96,34 +172,159 @@ function ReviewRow({
       });
       if (!res.success) toast.error(res.message);
       else {
+        setMarks(String(val));
         toast.success(`Q${question.position} reviewed: ${val}/${question.marks}.`);
       }
     });
   };
 
   return (
-    <div className={`p-3 rounded-xl border text-xs space-y-2 ${reviewed ? "bg-emerald-50/60 border-emerald-200" : "bg-white border-slate-200"}`}>
+    <div className={`p-3.5 rounded-xl border text-xs space-y-2.5 ${reviewed ? "bg-emerald-50/60 border-emerald-200" : "bg-white border-slate-200"}`}>
       <div className="flex items-center justify-between gap-2">
-        <p className="font-semibold text-slate-900">
+        <p className="font-semibold text-slate-900 leading-snug">
           Q{question.position}. {question.stem}
           <span className="ml-2 font-normal text-slate-400">({question.marks} {question.marks === 1 ? "mark" : "marks"})</span>
         </p>
-        <Badge variant="outline" className="text-[10px] shrink-0">
+        <Badge variant={reviewed ? "outline" : "secondary"} className={`text-[10px] shrink-0 ${reviewed ? "border-emerald-300 text-emerald-800 bg-emerald-50" : ""}`}>
           {reviewed ? "Reviewed" : "Not reviewed"}
         </Badge>
       </div>
-      <p className="text-slate-600">Student answer: <span className="font-medium text-slate-900">{answer || "—"}</span></p>
-      <p className="text-slate-500">Answer key: <span className="text-emerald-700 font-medium">{question.correctAnswer}</span></p>
+
+      {/* MCQ options display */}
+      {options.length > 0 && (
+        <div className="space-y-1.5 pt-1">
+          <div className="flex items-center justify-between text-[11px] font-semibold text-slate-700">
+            <span>Multiple Choice Options:</span>
+            {isStudentChoiceCorrect ? (
+              <span className="text-emerald-700 font-semibold flex items-center gap-1 text-[11px]">
+                <CheckCircle2Icon className="size-3.5" /> Correct Answer Selected
+              </span>
+            ) : studentOpt ? (
+              <span className="text-amber-700 font-semibold flex items-center gap-1 text-[11px]">
+                <AlertTriangleIcon className="size-3.5" /> Incorrect Option Selected
+              </span>
+            ) : null}
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-2">
+            {options.map((opt) => {
+              const normOptLabel = opt.label.trim().toLowerCase();
+              const normOptText = opt.text.trim().toLowerCase();
+              const isSelected =
+                normAnswer.length > 0 &&
+                (normAnswer === normOptLabel ||
+                  normAnswer === normOptText ||
+                  normAnswer.startsWith(normOptLabel + ".") ||
+                  normAnswer.startsWith(normOptLabel + ")"));
+              const isKey =
+                opt.isCorrect === true ||
+                (normKey.length > 0 &&
+                  (normKey === normOptLabel ||
+                    normKey === normOptText ||
+                    normKey.startsWith(normOptLabel + ".") ||
+                    normKey.startsWith(normOptLabel + ")")));
+
+              let cardStyle = "bg-slate-50/60 border-slate-200 text-slate-700";
+              let badgeStyle = "bg-slate-200 text-slate-700 border-slate-300";
+
+              if (isSelected && isKey) {
+                cardStyle = "bg-emerald-50 border-emerald-400 text-emerald-950 font-medium shadow-sm ring-1 ring-emerald-400";
+                badgeStyle = "bg-emerald-600 text-white border-emerald-600";
+              } else if (isKey) {
+                cardStyle = "bg-emerald-50/70 border-emerald-300 text-emerald-900 font-medium";
+                badgeStyle = "bg-emerald-600 text-white border-emerald-600";
+              } else if (isSelected) {
+                cardStyle = "bg-amber-50/90 border-amber-300 text-amber-950 font-medium shadow-sm ring-1 ring-amber-400";
+                badgeStyle = "bg-amber-600 text-white border-amber-600";
+              }
+
+              return (
+                <div
+                  key={opt.label}
+                  className={`p-2.5 rounded-xl border text-xs flex items-center gap-2.5 transition-all ${cardStyle}`}
+                >
+                  <span
+                    className={`flex size-6 shrink-0 items-center justify-center rounded-lg font-bold text-xs border ${badgeStyle}`}
+                  >
+                    {opt.label}
+                  </span>
+                  <span className="flex-1 leading-snug break-words">{opt.text}</span>
+                  {isSelected && isKey && (
+                    <Badge className="bg-emerald-600 hover:bg-emerald-600 text-white text-[10px] shrink-0 gap-1 h-5 px-1.5 font-semibold">
+                      <CheckCircle2Icon className="size-3" /> Correct Choice
+                    </Badge>
+                  )}
+                  {!isSelected && isKey && (
+                    <Badge variant="outline" className="text-emerald-700 border-emerald-300 bg-emerald-50 text-[10px] shrink-0 gap-1 h-5 px-1.5 font-semibold">
+                      <CheckCircle2Icon className="size-3" /> Key
+                    </Badge>
+                  )}
+                  {isSelected && !isKey && (
+                    <Badge variant="outline" className="text-amber-800 border-amber-300 bg-amber-100 text-[10px] shrink-0 h-5 px-1.5 font-semibold">
+                      Student Choice
+                    </Badge>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* Answer summary */}
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-1 text-slate-600 pt-0.5">
+        <p>
+          Student answer:{" "}
+          <span className={`font-semibold ${
+            studentOpt
+              ? isStudentChoiceCorrect
+                ? "text-emerald-700"
+                : "text-amber-700"
+              : "text-slate-900"
+          }`}>
+            {studentOpt ? `${studentOpt.label}. ${studentOpt.text}` : answer || "—"}
+          </span>
+        </p>
+        <p>
+          Answer key:{" "}
+          <span className="text-emerald-700 font-semibold">
+            {correctOpt ? `${correctOpt.label}. ${correctOpt.text}` : question.correctAnswer}
+          </span>
+        </p>
+      </div>
+
       {question.solutionSteps && question.solutionSteps.length > 0 && (
-        <div className="text-slate-500 space-y-0.5">
+        <div className="text-slate-500 space-y-0.5 bg-slate-50/80 p-2.5 rounded-lg border border-slate-100">
+          <p className="font-semibold text-slate-700 text-[11px] mb-0.5">Step-by-step solution:</p>
           {question.solutionSteps.map((s, i) => (
             <p key={i}>{s}</p>
           ))}
         </div>
       )}
+
       <div className="grid sm:grid-cols-2 gap-2 pt-1">
         <label className="space-y-1">
-          <span className="font-semibold text-slate-700">Marks awarded (max {question.marks})</span>
+          <div className="flex items-center justify-between">
+            <span className="font-semibold text-slate-700">Marks awarded (max {question.marks})</span>
+            {!finalized && (
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={() => setMarks("0")}
+                  className="px-1.5 py-0.5 text-[10px] rounded bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium"
+                >
+                  0
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setMarks(String(question.marks))}
+                  className="px-1.5 py-0.5 text-[10px] rounded bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-medium border border-emerald-200"
+                >
+                  Full ({question.marks})
+                </button>
+              </div>
+            )}
+          </div>
           <Input
             type="number"
             min={0}
@@ -147,11 +348,26 @@ function ReviewRow({
           />
         </label>
       </div>
+
       {!finalized && (
-        <Button size="sm" onClick={handleSave} disabled={pending} className="text-xs h-8">
-          {pending ? "Saving…" : reviewed ? "Update review" : "Save review"}
-        </Button>
+        <div className="flex items-center gap-2 pt-0.5">
+          <Button size="sm" onClick={() => handleSave()} disabled={pending} className="text-xs h-8">
+            {pending ? "Saving…" : reviewed ? "Update review" : "Save review"}
+          </Button>
+          {!reviewed && (
+            <Button
+              size="sm"
+              variant="outline"
+              disabled={pending}
+              onClick={() => handleSave(isStudentChoiceCorrect ? question.marks : 0)}
+              className="text-xs h-8 text-slate-700"
+            >
+              Quick Save ({isStudentChoiceCorrect ? `${question.marks}/${question.marks}` : `0/${question.marks}`})
+            </Button>
+          )}
+        </div>
       )}
+
       {finalized && submission.teacherMarks?.[question.id] !== undefined && (
         <p className="font-semibold text-emerald-700">
           Awarded: {submission.teacherMarks[question.id]}/{question.marks}
@@ -401,15 +617,65 @@ export function TeacherSubmissionsView({
           <CardDescription className="text-[11px]">Base + student-specific variants with verified keys.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
-          {questions.slice(0, 50).map((qt) => (
-            <div key={qt.id} className="p-3 rounded-xl border border-slate-200 bg-white text-xs space-y-1">
-              <p className="font-semibold text-slate-900">
-                Q{qt.position}. {qt.stem}
-                {qt.studentId && <span className="ml-2 font-normal text-indigo-500">(variant)</span>}
-              </p>
-              <p className="text-slate-500">Key: <span className="text-emerald-700 font-medium">{qt.correctAnswer}</span> · {qt.marks} {qt.marks === 1 ? "mark" : "marks"}</p>
-            </div>
-          ))}
+          {questions.slice(0, 50).map((qt) => {
+            const qtOptions = qt.options ?? [];
+            return (
+              <div key={qt.id} className="p-3.5 rounded-xl border border-slate-200 bg-white text-xs space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="font-semibold text-slate-900 leading-snug">
+                    Q{qt.position}. {qt.stem}
+                    {qt.studentId && <span className="ml-2 font-normal text-indigo-500">(variant)</span>}
+                  </p>
+                  <span className="text-slate-400 font-medium shrink-0">
+                    {qt.marks} {qt.marks === 1 ? "mark" : "marks"}
+                  </span>
+                </div>
+                {qtOptions.length > 0 && (
+                  <div className="grid sm:grid-cols-2 gap-1.5 py-1">
+                    {qtOptions.map((opt) => {
+                      const normKey = (qt.correctAnswer || "").trim().toLowerCase();
+                      const isKey =
+                        opt.isCorrect === true ||
+                        normKey === opt.label.trim().toLowerCase() ||
+                        normKey === opt.text.trim().toLowerCase();
+                      return (
+                        <div
+                          key={opt.label}
+                          className={`px-2.5 py-1.5 rounded-lg border text-xs flex items-center gap-2 ${
+                            isKey
+                              ? "bg-emerald-50/80 border-emerald-300 text-emerald-900 font-medium"
+                              : "bg-slate-50 border-slate-200 text-slate-700"
+                          }`}
+                        >
+                          <span
+                            className={`size-5 rounded flex items-center justify-center font-bold text-[10px] ${
+                              isKey ? "bg-emerald-600 text-white" : "bg-slate-200 text-slate-700"
+                            }`}
+                          >
+                            {opt.label}
+                          </span>
+                          <span className="flex-1 truncate">{opt.text}</span>
+                          {isKey && (
+                            <span className="text-[10px] text-emerald-700 font-bold shrink-0">Key</span>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+                <p className="text-slate-500">
+                  Key: <span className="text-emerald-700 font-medium">{qt.correctAnswer}</span>
+                </p>
+                {qt.solutionSteps && qt.solutionSteps.length > 0 && (
+                  <div className="text-slate-500 space-y-0.5 pt-1 border-t border-slate-100 text-[11px]">
+                    {qt.solutionSteps.map((s, i) => (
+                      <p key={i}>{s}</p>
+                    ))}
+                  </div>
+                )}
+              </div>
+            );
+          })}
           {questions.length > 50 && (
             <p className="text-[11px] text-slate-500">Showing 50 of {questions.length} questions.</p>
           )}

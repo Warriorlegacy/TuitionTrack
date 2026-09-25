@@ -2,7 +2,12 @@ import { notFound } from "next/navigation";
 import { requireAuthContext } from "@/lib/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { StudentHomeworkPlayer } from "@/components/homework/student-homework-player";
-import { TeacherSubmissionsView, type TeacherQuestion, type TeacherSubmission } from "@/components/homework/teacher-submissions-view";
+import {
+  TeacherSubmissionsView,
+  type TeacherQuestion,
+  type TeacherSubmission,
+  normalizeQuestionOptions,
+} from "@/components/homework/teacher-submissions-view";
 
 export const dynamic = "force-dynamic";
 
@@ -99,6 +104,7 @@ export default async function HomeworkDetailPage({
       stem: String(q.stem),
       qtype: String(q.qtype),
       marks: Number(q.marks) || 1,
+      options: normalizeQuestionOptions(q.options),
       correctAnswer: String(q.correct_answer || ""),
       solutionSteps: (q.solution_steps as string[]) || [],
       studentId: q.student_id ? String(q.student_id) : null,
@@ -169,7 +175,7 @@ export default async function HomeworkDetailPage({
     stem: String(q.stem),
     qtype: String(q.qtype),
     marks: Number(q.marks) || 1,
-    options: (q.options as { label: string; text: string; isCorrect?: boolean }[]) || [],
+    options: normalizeQuestionOptions(q.options),
     // Answer key is revealed after submission (study material, not a grade).
     correctAnswer: typedSubmission ? String(q.correct_answer || "") : undefined,
     solutionSteps: typedSubmission ? (q.solution_steps as string[]) : undefined,
